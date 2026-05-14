@@ -18,8 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Prompt caching**: System/user message split across `llm.js`, `llm-coached.js`, and `openrouter-client.js`. The system message (register + rules) is identical across batches for a given locale, enabling provider-level prompt caching (Anthropic, Gemini).
 - **Per-language config overrides**: Language definitions now support `model`, `batchSize`, `maxRetries`, and `script` fields. Inheritance chain: pair-level > language-level > global config > defaults.
 - **`[GATE]` log prefix**: Quality gate failures are logged to stderr with `[GATE]` prefix, key name, reason, and value preview. No silent fallbacks.
-- **Script converter wiring**: Post-translation orthography conversion is now live in the sync pipeline. Locales with registered converters (Plains Cree SRO → Syllabics, Serbian Latin → Cyrillic) are automatically converted after translation and quality gate. Deterministic, no LLM needed.
-- **33 new tests** (`test/conlang-hardening.test.js`): Config schema, prompt caching, retry cascade, quality gate validation, and script converter integration. Suite total: **665 tests / 152 suites**.
+- **Script converter pipeline**: Post-translation orthography conversion runs automatically in the sync pipeline for locales with registered converters. Five converters ship out of the box:
+  - Plains Cree SRO → Syllabics (`crk`)
+  - Serbian Latin → Cyrillic (`sr`)
+  - Klingon Romanization → pIqaD (`tlh`, CSUR PUA)
+  - Sindarin Latin → Tengwar, Mode of Beleriand (`x-elvish-s`, CSUR PUA)
+  - Latin → Kryptonian (`x-kryptonian`, font-based cipher)
+- **`fontNote` metadata**: `getConverterInfo()` now returns font-requirement metadata for PUA-based script converters, so consumers can display rendering instructions.
+- **59 new tests** (`test/conlang-hardening.test.js`): Config schema, prompt caching, retry cascade, quality gate validation, and script converter integration (including edge cases for trigraphs, case sensitivity, and glottal stops). Suite total: **691 tests / 156 suites**.
 
 ### Changed
 - `callOpenRouterJSON()` now returns `{ _parseError: true, rawContent, error }` on JSON parse failure instead of `null`. Callers can distinguish "API returned nothing" from "API returned garbage" and retry accordingly.
@@ -28,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `--fallback` help text clarified: writes `[EN]-prefixed placeholders`, not real translations.
 
 ### Removed
-- `test/benchmark/` untracked from git (1.1 GB of scraped site data). Files remain on disk for local dev; excluded from npm via `files` whitelist.
+- `test/benchmark/` purged from git history (1.1 GB of scraped site data). Files remain on disk for local dev; excluded from both git (`.gitignore`) and npm (`files` whitelist).
 
 ## [3.1.0] - 2026-05-13
 
