@@ -4,9 +4,11 @@
 [![CI](https://github.com/gamedaysuits/i18n-rosetta/actions/workflows/ci.yml/badge.svg)](https://github.com/gamedaysuits/i18n-rosetta/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> Most translation tools assume Google Translate speaks your language. What if it doesn't?
+> Most translation tools assume Google Translate speaks your language. For thousands of languages, it doesn't.
 
-**i18n-rosetta** is a pluggable translation engine where each language pair can use a different method — LLM, coached LLM with grammar rules, Google Translate, or a custom API. Born from translating a production website into Plains Cree, where no off-the-shelf API exists.
+**i18n-rosetta** is an open framework for deploying translation methods to any language — including ones that no commercial API supports. Each language pair can use a different method: an LLM prompt, coached LLM with grammar rules, Google Translate, a deterministic converter, or a custom API built by someone who actually speaks the language.
+
+Born from translating a production website into Plains Cree, where no off-the-shelf API exists. If you can figure out how to translate a language pair — whether through prompt engineering, community dictionaries, FST pipelines, or fine-tuned models — rosetta lets you package that method and deploy it.
 
 ```bash
 npx i18n-rosetta sync       # translate all missing keys
@@ -63,11 +65,13 @@ Or set it permanently in your config:
 { "inputLocale": "fr" }
 ```
 
-## Why Per-Pair Methods?
+## Why This Exists
 
-Translating into French and translating into Plains Cree are fundamentally different problems. French has massive training data, grammar checkers, and Google Translate support. Plains Cree has none of that — it needs coached LLM prompts with morphological rules, or a custom API backed by community-built resources.
+Existing i18n translation tools are either **proprietary black boxes** (Google Translate, DeepL) that work great for major languages but offer nothing for underserved ones, or **manual workflows** where developers copy-paste into translation services and hope for the best.
 
-Rosetta lets each language pair use whatever method actually works:
+Rosetta takes a different approach: **the translation method is configurable per language pair.** Use Google Translate for French, an LLM with morphological coaching for Plains Cree, and a community-hosted API for Quechua — all in the same project, all with the same CLI.
+
+The companion [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) lets you benchmark and compare translation approaches, then export working methods as rosetta plugins. Anyone who speaks both languages can develop, test, and share a translation method — no proprietary platform required.
 
 ```json
 {
