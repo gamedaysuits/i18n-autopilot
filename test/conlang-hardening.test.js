@@ -1,0 +1,428 @@
+#!/usr/bin/env node
+/**
+ * Conlang hardening test suite — validates the retry cascade,
+ * quality gate, prompt caching, and config schema extensions.
+ *
+ * Tests cover:
+ *   Phase 1: Config schema — per-language model/batchSize/maxRetries/script
+ *   Phase 2: Prompt caching — system/user message split
+ *   Phase 3: Retry cascade — parse error recovery (batch → half → individual)
+ *   Phase 4: Quality gate — repetition, length ratio, script compliance, echo
+ */
+
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+
+// Phase 1: Config schema
+import { resolveConfig } from '../lib/config.js';
+import { resolvePairs, PAIR_DEFAULTS } from '../lib/pairs.js';
+
+// Phase 2: Prompt caching
+import { buildSystemMessage, buildUserMessage, buildPrompt } from '../lib/methods/llm.js';
+import { buildCoachedSystemMessage, buildCoachedPrompt } from '../lib/methods/llm-coached.js';
+
+// Phase 4: Quality gate
+import {
+  validateTranslations,
+  measureRepetition,
+  isAsciiOnly,
+  NON_LATIN_LOCALES,
+  DEFAULT_THRESHOLDS,
+} from '../lib/validate.js';
+
+// =================================================================
+// Phase 1: Config schema — per-language overrides
+// =================================================================
+describe('Config schema: per-language overrides', () => {
+  it('passes model through from language config', () => {
+    // resolvePairs expects resolvedLanguages (post-resolveLanguages output)
+    // Language-level fields should flow through to the pair config
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        tlh: {
+          name: 'Klingon',
+          register: 'Warrior formal.',
+          model: 'google/gemini-3.1-pro-thinking',
+        },
+      },
+    });
+
+    const pair = pairs.get('en:tlh');
+    assert.ok(pair, 'Pair should exist');
+    assert.equal(pair.model, 'google/gemini-3.1-pro-thinking');
+  });
+
+  it('passes batchSize through from language config', () => {
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        crk: {
+          name: 'Plains Cree',
+          register: 'Respectful.',
+          batchSize: 5,
+        },
+      },
+    });
+
+    const pair = pairs.get('en:crk');
+    assert.ok(pair, 'Pair should exist');
+    assert.equal(pair.batchSize, 5);
+  });
+
+  it('passes maxRetries through from language config', () => {
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        tlh: {
+          name: 'Klingon',
+          register: 'Warrior formal.',
+          maxRetries: 7,
+        },
+      },
+    });
+
+    const pair = pairs.get('en:tlh');
+    assert.ok(pair, 'Pair should exist');
+    assert.equal(pair.maxRetries, 7);
+  });
+
+  it('passes script field through from language config', () => {
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        crk: {
+          name: 'Plains Cree',
+          register: 'Respectful.',
+          script: 'syllabics',
+        },
+      },
+    });
+
+    const pair = pairs.get('en:crk');
+    assert.ok(pair, 'Pair should exist');
+    assert.equal(pair.script, 'syllabics');
+  });
+
+  it('defaults maxRetries to PAIR_DEFAULTS value', () => {
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        fr: { name: 'French', register: 'Standard.' },
+      },
+    });
+
+    const pair = pairs.get('en:fr');
+    assert.ok(pair, 'Pair should exist');
+    assert.equal(pair.maxRetries, PAIR_DEFAULTS.maxRetries);
+    assert.equal(pair.maxRetries, 3, 'Default maxRetries should be 3');
+  });
+
+  it('pair-level overrides beat language-level values', () => {
+    const pairs = resolvePairs({
+      inputLocale: 'en',
+      resolvedLanguages: {
+        tlh: {
+          name: 'Klingon',
+          register: 'Warrior formal.',
+          model: 'google/gemini-3.1-pro-thinking',
+          maxRetries: 5,
+        },
+      },
+      pairs: {
+        'en:tlh': {
+          model: 'anthropic/claude-opus-4',
+          maxRetries: 10,
+        },
+      },
+    });
+
+    const pair = pairs.get('en:tlh');
+    assert.equal(pair.model, 'anthropic/claude-opus-4', 'Pair-level model wins');
+    assert.equal(pair.maxRetries, 10, 'Pair-level maxRetries wins');
+  });
+});
+
+// =================================================================
+// Phase 2: Prompt caching — system/user message split
+// =================================================================
+describe('Prompt caching: system/user message split', () => {
+  it('buildSystemMessage contains register and rules', () => {
+    const system = buildSystemMessage({ name: 'Klingon', register: 'Warrior formal.' });
+
+    assert.ok(system.includes('Klingon'), 'Should mention target language');
+    assert.ok(system.includes('Warrior formal.'), 'Should include register');
+    assert.ok(system.includes('Translate ONLY the values'), 'Should include translation rules');
+    assert.ok(system.includes('Return ONLY valid JSON'), 'Should include JSON instruction');
+  });
+
+  it('buildSystemMessage does NOT contain batch-specific data', () => {
+    const system = buildSystemMessage({ name: 'French', register: 'Standard.' });
+
+    // System message should not contain any JSON payload or key-value data
+    assert.ok(!system.includes('{'), 'System message should not contain JSON');
+    assert.ok(!system.includes('hero.title'), 'System message should not contain keys');
+  });
+
+  it('buildUserMessage contains JSON payload and UI hints', () => {
+    const user = buildUserMessage({
+      'hero.title': 'Welcome',
+      'nav.button': 'Click me',
+    });
+
+    assert.ok(user.includes('"hero.title"'), 'Should contain key in JSON');
+    assert.ok(user.includes('"Welcome"'), 'Should contain value in JSON');
+    assert.ok(user.includes('heading/title'), 'Should infer heading type hint');
+    assert.ok(user.includes('button label'), 'Should infer button type hint');
+  });
+
+  it('buildPrompt combines system + user (backward compat)', () => {
+    const prompt = buildPrompt(
+      { 'test.key': 'Hello' },
+      { name: 'French', register: 'Standard.' },
+    );
+
+    assert.ok(prompt.includes('French'), 'Contains system part');
+    assert.ok(prompt.includes('"test.key"'), 'Contains user part');
+    assert.ok(prompt.includes('"Hello"'), 'Contains JSON payload');
+  });
+
+  it('buildCoachedSystemMessage includes coaching context', () => {
+    const system = buildCoachedSystemMessage(
+      { name: 'Klingon', register: 'Warrior formal.' },
+      {
+        grammar_rules: ['Always use imperative mood.'],
+        dictionary: {},
+        style_notes: 'Aggressive, clipped.',
+      },
+    );
+
+    assert.ok(system.includes('Klingon'), 'Should mention target language');
+    assert.ok(system.includes('GRAMMAR RULES'), 'Should include grammar block');
+    assert.ok(system.includes('Always use imperative mood.'), 'Should include rules');
+    assert.ok(system.includes('STYLE GUIDE'), 'Should include style notes');
+    assert.ok(system.includes('Aggressive, clipped.'), 'Should include style content');
+  });
+
+  it('buildCoachedPrompt includes dictionary hints in user portion', () => {
+    const prompt = buildCoachedPrompt(
+      { 'greeting': 'Hello warrior' },
+      { name: 'Klingon', register: 'Warrior formal.' },
+      {
+        grammar_rules: ['Use direct address.'],
+        dictionary: { warrior: "SuvwI'" },
+        style_notes: '',
+      },
+    );
+
+    assert.ok(prompt.includes('REQUIRED TERMINOLOGY'), 'Should include dictionary hints');
+    assert.ok(prompt.includes("SuvwI'"), 'Should include dictionary translation');
+  });
+});
+
+// =================================================================
+// Phase 3: Retry cascade — parse error structured return
+// =================================================================
+describe('Retry cascade: structured parse errors', () => {
+  // These tests verify the _parseError protocol at the client level.
+  // Full cascade behavior is tested via integration tests with mock fetch.
+
+  it('PAIR_DEFAULTS includes maxRetries', () => {
+    assert.ok('maxRetries' in PAIR_DEFAULTS, 'PAIR_DEFAULTS should have maxRetries');
+    assert.equal(typeof PAIR_DEFAULTS.maxRetries, 'number');
+    assert.ok(PAIR_DEFAULTS.maxRetries > 0, 'maxRetries should be positive');
+  });
+});
+
+// =================================================================
+// Phase 4: Quality gate — deterministic validation
+// =================================================================
+describe('Quality gate: validateTranslations', () => {
+  const basicPairConfig = { target: 'fr' };
+
+  it('passes valid translations through', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'Bonjour', 'key2': 'Au revoir' },
+      { 'key1': 'Hello', 'key2': 'Goodbye' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 2);
+    assert.equal(failures.length, 0);
+    assert.equal(validated['key1'], 'Bonjour');
+  });
+
+  it('rejects empty translations', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': '', 'key2': '   ' },
+      { 'key1': 'Hello', 'key2': 'World' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 0);
+    assert.equal(failures.length, 2);
+    assert.ok(failures[0].reason.includes('empty'));
+  });
+
+  it('rejects source echo (identical to English)', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'Hello', 'key2': 'Bonjour' },
+      { 'key1': 'Hello', 'key2': 'Hello' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 1);
+    assert.equal(failures.length, 1);
+    assert.ok(failures[0].reason.includes('source echo'));
+    assert.equal(failures[0].key, 'key1');
+  });
+
+  it('rejects hallucination loops (high repetition)', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': "Qo' Qo' Qo' Qo' Qo' Qo' Qo' Qo' Qo'" },
+      { 'key1': 'Welcome' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 0);
+    assert.equal(failures.length, 1);
+    assert.ok(failures[0].reason.includes('repetition'));
+  });
+
+  it('rejects length inflation', () => {
+    // Use diverse natural text to avoid triggering the repetition detector.
+    // Lorem ipsum has enough trigram diversity to pass (rate ~0.41 < 0.60).
+    const longValue = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum';
+    const { validated, failures } = validateTranslations(
+      { 'key1': longValue },
+      { 'key1': 'Hi' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 0);
+    assert.equal(failures.length, 1);
+    assert.ok(failures[0].reason.includes('length inflation'));
+  });
+
+  it('rejects suspiciously short translations', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'X' },
+      { 'key1': 'This is a long description of a feature that does many things.' },
+      basicPairConfig,
+    );
+
+    assert.equal(Object.keys(validated).length, 0);
+    assert.equal(failures.length, 1);
+    assert.ok(failures[0].reason.includes('short'));
+  });
+
+  it('rejects ASCII-only for non-Latin locales', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'Privet' },         // Should be Привет (Cyrillic)
+      { 'key1': 'Hello' },
+      { target: 'ru' },
+    );
+
+    assert.equal(Object.keys(validated).length, 0);
+    assert.equal(failures.length, 1);
+    assert.ok(failures[0].reason.includes('wrong script'));
+  });
+
+  it('accepts ASCII for Latin-script locales', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'Bonjour' },
+      { 'key1': 'Hello' },
+      { target: 'fr' },
+    );
+
+    assert.equal(Object.keys(validated).length, 1);
+    assert.equal(failures.length, 0);
+  });
+
+  it('accepts non-ASCII for non-Latin locales', () => {
+    const { validated, failures } = validateTranslations(
+      { 'key1': 'Привет' },
+      { 'key1': 'Hello' },
+      { target: 'ru' },
+    );
+
+    assert.equal(Object.keys(validated).length, 1);
+    assert.equal(failures.length, 0);
+  });
+
+  it('respects per-language maxLengthRatio override', () => {
+    // Diverse text that passes the repetition detector but is long relative to source
+    const longValue = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
+    const { validated: v1, failures: f1 } = validateTranslations(
+      { 'key1': longValue },
+      { 'key1': 'Hello' },
+      basicPairConfig,
+      { maxLengthRatio: 4.0 },  // default: 4x, text is ~24x
+    );
+    assert.equal(f1.length, 1, 'Should fail at default 4x ratio');
+
+    const { validated: v2, failures: f2 } = validateTranslations(
+      { 'key1': longValue },
+      { 'key1': 'Hello' },
+      basicPairConfig,
+      { maxLengthRatio: 200.0 },  // permissive
+    );
+    assert.equal(f2.length, 0, 'Should pass at 200x ratio');
+  });
+});
+
+describe('Quality gate: measureRepetition', () => {
+  it('returns 0 for short text', () => {
+    assert.equal(measureRepetition('Hi'), 0);
+  });
+
+  it('returns low rate for normal text', () => {
+    const rate = measureRepetition('The quick brown fox jumps over the lazy dog.');
+    assert.ok(rate < 0.5, `Normal text should have low repetition: ${rate}`);
+  });
+
+  it('returns high rate for hallucinated text', () => {
+    const rate = measureRepetition("Qo' Qo' Qo' Qo' Qo' Qo' Qo' Qo'");
+    assert.ok(rate > 0.5, `Repeated text should have high repetition: ${rate}`);
+  });
+});
+
+describe('Quality gate: isAsciiOnly', () => {
+  it('returns true for pure ASCII', () => {
+    assert.equal(isAsciiOnly('Hello world 123!'), true);
+  });
+
+  it('returns false for text with non-ASCII', () => {
+    assert.equal(isAsciiOnly('Привет'), false);
+    assert.equal(isAsciiOnly('こんにちは'), false);
+    assert.equal(isAsciiOnly('Héllo'), false);
+  });
+});
+
+describe('Quality gate: NON_LATIN_LOCALES', () => {
+  it('includes CJK locales', () => {
+    assert.ok(NON_LATIN_LOCALES.has('zh'));
+    assert.ok(NON_LATIN_LOCALES.has('ja'));
+    assert.ok(NON_LATIN_LOCALES.has('ko'));
+  });
+
+  it('includes Cyrillic locales', () => {
+    assert.ok(NON_LATIN_LOCALES.has('ru'));
+    assert.ok(NON_LATIN_LOCALES.has('uk'));
+  });
+
+  it('includes Arabic/RTL locales', () => {
+    assert.ok(NON_LATIN_LOCALES.has('ar'));
+    assert.ok(NON_LATIN_LOCALES.has('he'));
+  });
+
+  it('includes Plains Cree', () => {
+    assert.ok(NON_LATIN_LOCALES.has('crk'));
+  });
+
+  it('does NOT include Latin-script locales', () => {
+    assert.ok(!NON_LATIN_LOCALES.has('fr'));
+    assert.ok(!NON_LATIN_LOCALES.has('de'));
+    assert.ok(!NON_LATIN_LOCALES.has('es'));
+  });
+});

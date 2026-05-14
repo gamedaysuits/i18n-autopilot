@@ -603,8 +603,11 @@ describe('integration: batch splitting', () => {
     globalThis.fetch = async (url, options) => {
       callCount++;
       const body = JSON.parse(options.body);
-      // Return only the keys that were actually in this batch's prompt
-      const batchKeys = keys.filter(k => body.messages[0].content.includes(k));
+      // Keys are in the user message (last in the messages array).
+      // With the system/user split, messages[0] is the preamble and
+      // the JSON payload is in the final message.
+      const userContent = body.messages[body.messages.length - 1].content;
+      const batchKeys = keys.filter(k => userContent.includes(k));
       const batchResult = {};
       for (const k of batchKeys) {
         batchResult[k] = mockResponse[k];
