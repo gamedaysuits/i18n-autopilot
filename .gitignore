@@ -36,3 +36,4 @@ test/fixtures/_tmp_*
 
 # Benchmark data — large scraped corpora and results (kept locally, not in git/npm)
 test/benchmark/
+.rosetta/

@@ -1,0 +1,98 @@
+---
+sidebar_position: 1
+title: Installation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+## Requirements
+
+- **Node.js 20.11+** (native ESM)
+- A translation API key (see below)
+
+## Install
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="npx" label="npx (no install)">
+
+```bash
+npx i18n-rosetta sync
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add -D i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add --dev i18n-rosetta
+```
+
+  </TabItem>
+</Tabs>
+
+## Get an API Key
+
+Rosetta needs a translation backend. Pick one:
+
+| Provider | Environment Variable | Best For |
+|----------|---------------------|----------|
+| **OpenRouter** (recommended) | `OPENROUTER_API_KEY` | Content-heavy projects, Markdown, 200+ models |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs (130+ languages) |
+
+<Tabs>
+  <TabItem value="openrouter" label="OpenRouter (recommended)" default>
+
+[OpenRouter](https://openrouter.ai) provides a unified API for 200+ LLM models. Free tier available.
+
+```bash
+# Sign up at https://openrouter.ai, then:
+export OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+Or add to `.env.local`:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+```
+
+Best for: content-heavy projects, Markdown translation, and projects needing content-aware shielding (code blocks, shortcodes, interpolation variables).
+
+  </TabItem>
+  <TabItem value="google" label="Google Translate">
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=...
+```
+
+Best for: high-volume key-value string pairs (130+ languages). **Not recommended** for Markdown content — Google Translate has no awareness of code blocks, shortcodes, or interpolation variables.
+
+:::tip Smart detection
+If only `GOOGLE_TRANSLATE_API_KEY` is set (no OpenRouter key), rosetta auto-switches to Google Translate. No config change needed.
+:::
+
+  </TabItem>
+</Tabs>
+
+## Verify Installation
+
+```bash
+npx i18n-rosetta --help
+```
+
+You should see the list of available commands. You're ready for the [Quick Start](/docs/getting-started/quick-start).

@@ -1,0 +1,131 @@
+/**
+ * i18n-rosetta documentation theme
+ *
+ * Color palette: teal/emerald tones — professional, dev-tool appropriate,
+ * avoids generic blue/orange vibecode. Named after the Rosetta Stone's
+ * carved green granodiorite.
+ */
+
+/* ---------- Light mode ---------- */
+:root {
+  /* Primary — deep teal, evokes the stone's patina */
+  --ifm-color-primary: #0d7377;
+  --ifm-color-primary-dark: #0b676a;
+  --ifm-color-primary-darker: #0a6164;
+  --ifm-color-primary-darkest: #085052;
+  --ifm-color-primary-light: #0f7f84;
+  --ifm-color-primary-lighter: #10858a;
+  --ifm-color-primary-lightest: #149ca2;
+
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --docusaurus-highlighted-code-line-bg: rgba(13, 115, 119, 0.1);
+}
+
+/* ---------- Dark mode ---------- */
+[data-theme='dark'] {
+  --ifm-color-primary: #38b2ac;
+  --ifm-color-primary-dark: #2c9f99;
+  --ifm-color-primary-darker: #299691;
+  --ifm-color-primary-darkest: #227b77;
+  --ifm-color-primary-light: #4bbdb8;
+  --ifm-color-primary-lighter: #54c1bc;
+  --ifm-color-primary-lightest: #76cec9;
+
+  --docusaurus-highlighted-code-line-bg: rgba(56, 178, 172, 0.15);
+}
+
+/* ---------- Typography ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ---------- Global refinements ---------- */
+
+/* Slightly tighter sidebar for cleaner hierarchy */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Code blocks — subtle rounded corners */
+.prism-code {
+  border-radius: 8px;
+}
+
+/* Navbar — subtle bottom border */
+.navbar {
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Footer — muted links */
+.footer__link-item {
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+.footer__link-item:hover {
+  opacity: 1;
+}
+
+/* Hero section on landing page */
+.hero--primary {
+  background: linear-gradient(135deg, #0d7377 0%, #085052 100%);
+}
+
+[data-theme='dark'] .hero--primary {
+  background: linear-gradient(135deg, #1a1a2e 0%, #0d2137 50%, #0a3d3f 100%);
+}
+
+/* ---------- Code block copy button ---------- */
+.theme-code-block {
+  border-radius: 10px;
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+.clean-btn[class*="copyButton"] {
+  border-radius: 6px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.clean-btn[class*="copyButton"]:hover {
+  opacity: 1;
+  background: rgba(56, 178, 172, 0.15);
+}
+
+/* ---------- Admonitions ---------- */
+.admonition {
+  border-radius: 10px;
+  border-left-width: 4px;
+}
+
+/* ---------- Tabs ---------- */
+.tabs__item--active {
+  border-bottom-color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* ---------- Sidebar active item ---------- */
+.menu__link--active:not(.menu__link--sublist) {
+  border-left: 3px solid var(--ifm-color-primary);
+  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 3px);
+}
+
+/* ---------- Smooth scrolling ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Table styling ---------- */
+table {
+  font-size: 0.92rem;
+}
+
+table thead th {
+  background: rgba(56, 178, 172, 0.06);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+[data-theme='dark'] table thead th {
+  background: rgba(56, 178, 172, 0.08);
+}

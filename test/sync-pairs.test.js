@@ -458,7 +458,7 @@ describe('sync-pairs: full pipeline config → method → cost estimate', () => 
     restoreConsole();
   });
 
-  it('end-to-end: config → pair → method instantiation → cost query', () => {
+  it('end-to-end: config → pair → method instantiation → cost query', async () => {
     // Step 1: Build pair graph from config
     const config = {
       inputLocale: 'en',
@@ -480,13 +480,13 @@ describe('sync-pairs: full pipeline config → method → cost estimate', () => 
     assert.equal(method.name, 'google-translate');
 
     // Step 3: Query cost — Google has real documented pricing
-    const cost = method.estimateCost(100);
+    const cost = await method.estimateCost(100, frPair);
     assert.ok(cost.estimatedCost > 0, 'Google should have real pricing');
     assert.equal(cost.source, 'google-cloud-pricing');
     assert.equal(cost.currency, 'USD');
   });
 
-  it('end-to-end: LLM method returns honest null cost', () => {
+  it('end-to-end: LLM method returns live pricing or unknown', async () => {
     const config = {
       inputLocale: 'en',
       model: 'openai/gpt-4o-mini',
@@ -501,8 +501,9 @@ describe('sync-pairs: full pipeline config → method → cost estimate', () => 
     const method = getMethod(frPair.method);
 
     assert.equal(method.name, 'llm');
-    const cost = method.estimateCost(100);
-    assert.equal(cost.estimatedCost, null, 'LLM cost is model-dependent');
-    assert.equal(cost.source, 'model-dependent');
+    const cost = await method.estimateCost(100, frPair);
+    // Online: returns real cost from OpenRouter; offline: null with 'unknown' source
+    assert.equal(cost.currency, 'USD');
+    assert.ok(typeof cost.source === 'string' && cost.source.length > 0);
   });
 });

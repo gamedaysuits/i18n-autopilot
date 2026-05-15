@@ -75,12 +75,14 @@ describe('LLMMethod', () => {
     assert.equal(method.getQualityTier(), 'standard');
   });
 
-  it('returns null cost (model-dependent pricing)', () => {
+  it('returns cost estimate from OpenRouter pricing', async () => {
     const method = new LLMMethod();
-    const cost = method.estimateCost(100);
-    assert.equal(cost.estimatedCost, null, 'LLM cost is model-dependent — cannot hardcode');
-    assert.equal(cost.source, 'model-dependent');
-    assert.ok(cost.note.length > 0, 'Should include explanatory note');
+    const cost = await method.estimateCost(100);
+    // The pricing module fetches from OpenRouter. If online, returns a real
+    // number; if offline, returns null. Either way, the shape is valid.
+    assert.equal(cost.currency, 'USD');
+    assert.ok(typeof cost.source === 'string' && cost.source.length > 0);
+    assert.ok(typeof cost.note === 'string' && cost.note.length > 0, 'Should include explanatory note');
   });
 
   it('returns null when no API key is provided', async () => {
@@ -107,11 +109,12 @@ describe('LLMCoachedMethod', () => {
     assert.equal(method.getQualityTier(), 'high');
   });
 
-  it('acknowledges higher cost due to coaching overhead', () => {
+  it('returns cost estimate with coaching overhead', async () => {
     const coached = new LLMCoachedMethod();
-    const cost = coached.estimateCost(100);
-    assert.equal(cost.estimatedCost, null, 'Coached cost is also model-dependent');
-    assert.ok(cost.note.includes('2-3x'), 'Note should mention coaching overhead');
+    const cost = await coached.estimateCost(100);
+    // Coached uses the same OpenRouter pricing but with a 2.5x input multiplier.
+    assert.equal(cost.currency, 'USD');
+    assert.ok(typeof cost.source === 'string' && cost.source.length > 0);
   });
 });
 

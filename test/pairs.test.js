@@ -370,30 +370,30 @@ describe('getPairForTarget', () => {
 // estimateCost
 // =================================================================
 describe('estimateCost', () => {
-  it('delegates to method class — LLM returns null (model-dependent)', () => {
-    const result = estimateCost(100, { method: 'llm' });
-    assert.equal(result.estimatedCost, null, 'LLM pricing is model-dependent');
+  it('delegates to method class — LLM returns live pricing or unknown', async () => {
+    const result = await estimateCost(100, { method: 'llm' });
+    // Online: returns real cost from OpenRouter; offline: null with 'unknown' source
     assert.equal(result.currency, 'USD');
-    assert.equal(result.source, 'model-dependent');
+    assert.ok(typeof result.source === 'string' && result.source.length > 0);
   });
 
-  it('delegates to method class — Google returns real pricing', () => {
-    const result = estimateCost(100, { method: 'google-translate' });
+  it('delegates to method class — Google returns real pricing', async () => {
+    const result = await estimateCost(100, { method: 'google-translate' });
     assert.ok(result.estimatedCost > 0, 'Google has documented pricing');
     assert.equal(result.source, 'google-cloud-pricing');
   });
 
-  it('handles unknown method by falling back to LLM', () => {
-    // getMethod falls back to LLM for unknown methods, so cost is model-dependent
-    const result = estimateCost(100, { method: 'nonexistent-xyz' });
-    assert.equal(result.estimatedCost, null);
-    assert.equal(result.source, 'model-dependent');
+  it('handles unknown method by falling back to LLM', async () => {
+    // getMethod falls back to LLM for unknown methods, so cost comes from OpenRouter
+    const result = await estimateCost(100, { method: 'nonexistent-xyz' });
+    assert.equal(result.currency, 'USD');
+    assert.ok(typeof result.source === 'string');
   });
 
-  it('defaults to llm method when unspecified', () => {
-    const result = estimateCost(100, {});
-    assert.equal(result.estimatedCost, null);
-    assert.equal(result.source, 'model-dependent');
+  it('defaults to llm method when unspecified', async () => {
+    const result = await estimateCost(100, {});
+    assert.equal(result.currency, 'USD');
+    assert.ok(typeof result.source === 'string');
   });
 });
 

@@ -1,0 +1,249 @@
+/* ---- Hero Banner ---- */
+.heroBanner {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroTitle {
+  font-size: 3.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.heroSubtitle {
+  font-size: 1.35rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.75rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hero code block — override Docusaurus CodeBlock for inline look */
+.heroCode {
+  margin-bottom: 2rem;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroCode pre {
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(79, 209, 197, 0.25) !important;
+  border-radius: 10px !important;
+}
+
+.heroCode code {
+  color: #4fd1c5 !important;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttonOutline {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+.buttonOutline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* ---- Stats Bar ---- */
+.statsBar {
+  background: var(--ifm-color-primary);
+  padding: 2.5rem 0;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .statsBar {
+  background: rgba(56, 178, 172, 0.08);
+  border-top: 1px solid rgba(56, 178, 172, 0.15);
+  border-bottom: 1px solid rgba(56, 178, 172, 0.15);
+}
+
+.stat {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 0;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .stat {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.statsBar p {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin-top: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+/* ---- Features Section ---- */
+.features {
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 3rem;
+}
+
+.feature {
+  margin-bottom: 1.5rem;
+}
+
+/* Clickable card wrapper — strip default link styling */
+.featureCardLink {
+  text-decoration: none !important;
+  color: inherit !important;
+  display: block;
+  height: 100%;
+}
+
+.featureCardLink:hover {
+  text-decoration: none !important;
+}
+
+.featureCard {
+  padding: 1.5rem;
+  border-radius: 12px;
+  height: 100%;
+  border: 1px solid var(--ifm-toc-border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.featureCard:hover {
+  border-color: var(--ifm-color-primary);
+  background: rgba(56, 178, 172, 0.04);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(56, 178, 172, 0.1);
+}
+
+[data-theme='dark'] .featureCard:hover {
+  background: rgba(56, 178, 172, 0.06);
+}
+
+.featureIcon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.featureCard h3 {
+  color: var(--ifm-color-primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.featureCard p {
+  font-size: 0.92rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ---- Quick Example ---- */
+.quickExample {
+  padding: 4rem 0;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+/* ---- Use Cases Section ---- */
+.useCases {
+  padding: 4rem 0;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.useCaseCard {
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--ifm-toc-border-color);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.useCaseCard:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 16px rgba(56, 178, 172, 0.1);
+}
+
+.useCaseCard h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.useCaseCard p {
+  font-size: 0.92rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.useCaseLink {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.useCaseLink:hover {
+  color: var(--ifm-color-primary-darker);
+  text-decoration: underline;
+}
+
+/* ---- Comparison Teaser ---- */
+.comparisonTeaser {
+  padding: 4rem 0;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+.comparisonSubtitle {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  font-size: 1.05rem;
+  color: var(--ifm-font-color-secondary);
+  line-height: 1.7;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .stat {
+    font-size: 2rem;
+  }
+}

@@ -25,13 +25,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Sindarin Latin → Tengwar, Mode of Beleriand (`x-elvish-s`, CSUR PUA)
   - Latin → Kryptonian (`x-kryptonian`, font-based cipher)
 - **`fontNote` metadata**: `getConverterInfo()` now returns font-requirement metadata for PUA-based script converters, so consumers can display rendering instructions.
-- **59 new tests** (`test/conlang-hardening.test.js`): Config schema, prompt caching, retry cascade, quality gate validation, and script converter integration (including edge cases for trigraphs, case sensitivity, and glottal stops). Suite total: **691 tests / 156 suites**.
+- **Live cost estimation** (`lib/methods/openrouter-pricing.js` → `lib/pairs.js` → `lib/sync.js`): Pre-sync cost estimates display per-pair breakdown (method, key count, approximate USD) with formatted table output. LLM and coached methods fetch live per-token pricing from the OpenRouter `/api/v1/models` endpoint (cached per-process). Google Translate returns documented rates ($20/1M chars). API returns server-determined. Cost estimation is gated on `OPENROUTER_API_KEY` presence — without a key, no paid translations occur so cost estimation is skipped. Non-blocking: errors in cost estimation never prevent translation.
+- **Watch infrastructure hardening** (`lib/watch.js`):
+  - Migrated from `fs.watch` (FSEvents) to `fs.watchFile` (stat polling, 500ms interval) for reliable detection across all platforms and filesystem types (including `/tmp` on macOS).
+  - `startWatch` is now `async` — initial `runSync` is `await`ed before the watcher registers, eliminating the race condition where sync writes interfered with watcher initialization.
+  - Returns a never-resolving Promise to block the CLI's `process.exit()` call, keeping the watch session alive until SIGINT.
+  - `[WATCH] Ready` signal emitted after watcher is fully active, enabling deterministic test synchronization.
+- **70 new tests** since v3.1.0 across coaching data, cost estimation, script converters, quality gate, retry cascade, and watch lifecycle. Suite total: **702 tests / 163 suites, 100% pass rate**.
 
 ### Changed
 - `callOpenRouterJSON()` now returns `{ _parseError: true, rawContent, error }` on JSON parse failure instead of `null`. Callers can distinguish "API returned nothing" from "API returned garbage" and retry accordingly.
 - `callOpenRouter()` accepts optional `systemMessage` parameter. When provided, messages array becomes `[system, user]` instead of `[user]`. Falls back to single-message format when absent (backward compatible).
 - `PAIR_DEFAULTS` now includes `maxRetries: 3`.
 - `--fallback` help text clarified: writes `[EN]-prefixed placeholders`, not real translations.
+- `lib/commands/watch.js` now `await`s `startWatch()` to properly propagate the async lifecycle.
 
 ### Removed
 - `test/benchmark/` purged from git history (1.1 GB of scraped site data). Files remain on disk for local dev; excluded from both git (`.gitignore`) and npm (`files` whitelist).
