@@ -1,0 +1,2643 @@
+{
+  "datasets": [
+    {
+      "id": "edtekla-dev-v1",
+      "name": "EDTeKLA Development Set v1",
+      "pair": "en>crk",
+      "domain": "educational",
+      "size": 124,
+      "version": "1.0.0",
+      "hash": "sha256:0de2a6f4...62d273a1",
+      "primary": true,
+      "public": true,
+      "source": "EDTeKLA project, University of Alberta",
+      "notes": "62 gold standard + 62 textbook entries. Curated CRK evaluation set. DO NOT TRAIN."
+    }
+  ],
+  "entries": [
+    {
+      "method": "prompt-v6",
+      "model": "claude-opus-4.7",
+      "condition": "v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 73.2,
+        "exactMatch": 70.2,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v7",
+      "model": "gemini-3.1-pro",
+      "condition": "v7",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 71.9,
+        "exactMatch": 68.5,
+        "fstAcceptance": 50.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "claude-opus-4.7",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 70.4,
+        "exactMatch": 67.7,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v7",
+      "model": "claude-opus-4.7",
+      "condition": "v7",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 69.7,
+        "exactMatch": 68.5,
+        "fstAcceptance": 49.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v6",
+      "model": "gpt-5.5",
+      "condition": "v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 69.3,
+        "exactMatch": 66.1,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v7",
+      "model": "gpt-5.5",
+      "condition": "v7",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 68.4,
+        "exactMatch": 63.7,
+        "fstAcceptance": 46.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gemini-3.1-pro",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 68.1,
+        "exactMatch": 63.7,
+        "fstAcceptance": 46.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gemini-3.1-pro",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 67.6,
+        "exactMatch": 62.1,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v6",
+      "model": "claude-sonnet-4",
+      "condition": "v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 66.6,
+        "exactMatch": 63.7,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v7",
+      "model": "claude-sonnet-4",
+      "condition": "v7",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 65.4,
+        "exactMatch": 63.7,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gemini-3.1-pro",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 64.8,
+        "exactMatch": 64.5,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "claude-opus-4.7",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 64.7,
+        "exactMatch": 65.3,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "claude-opus-4.7",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 63.8,
+        "exactMatch": 63.7,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v6",
+      "model": "gemini-3.1-pro",
+      "condition": "v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 62.4,
+        "exactMatch": 65.3,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gpt-5.5",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 62.1,
+        "exactMatch": 60.5,
+        "fstAcceptance": 46.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gpt-5.5",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 61.9,
+        "exactMatch": 59.7,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "claude-sonnet-4",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 61.6,
+        "exactMatch": 59.7,
+        "fstAcceptance": 45.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v7",
+      "model": "deepseek-v4-pro",
+      "condition": "v7",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 61.2,
+        "exactMatch": 62.9,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gemini-3.1-pro",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 61.0,
+        "exactMatch": 50.8,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gpt-5.5",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 60.7,
+        "exactMatch": 58.1,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "deepseek-v4-pro",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 60.5,
+        "exactMatch": 56.5,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v6",
+      "model": "deepseek-v4-pro",
+      "condition": "v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 60.5,
+        "exactMatch": 58.1,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gemini-3.1-pro",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 59.8,
+        "exactMatch": 42.7,
+        "fstAcceptance": 42.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v6.6",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v6.6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 58.6,
+        "exactMatch": 56.5,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "claude-opus-4.7",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 57.7,
+        "exactMatch": 52.4,
+        "fstAcceptance": 46.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v4.4",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v4.4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 57.1,
+        "exactMatch": 54.8,
+        "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "deepseek-v4-pro",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 57.1,
+        "exactMatch": 54.0,
+        "fstAcceptance": 43.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gemini-2.5-pro",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 57.1,
+        "exactMatch": 54.0,
+        "fstAcceptance": 41.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "claude-sonnet-4",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 57.0,
+        "exactMatch": 58.9,
+        "fstAcceptance": 44.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "mistral-large",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 56.9,
+        "exactMatch": 46.8,
+        "fstAcceptance": 41.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gemini-2.5-pro",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 56.1,
+        "exactMatch": 54.0,
+        "fstAcceptance": 43.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v2.2",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v2.2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 55.5,
+        "exactMatch": 54.8,
+        "fstAcceptance": 45.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "deepseek-v4-pro",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 55.5,
+        "exactMatch": 52.4,
+        "fstAcceptance": 45.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "claude-opus-4.7",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 55.4,
+        "exactMatch": 41.9,
+        "fstAcceptance": 43.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gemini-2.5-pro",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 54.5,
+        "exactMatch": 51.6,
+        "fstAcceptance": 44.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v3.3",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v3.3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 54.4,
+        "exactMatch": 51.6,
+        "fstAcceptance": 45.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gemini-3.5-flash",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 53.8,
+        "exactMatch": 37.1,
+        "fstAcceptance": 41.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-21"
+    },
+    {
+      "method": "prompt-fst-v5.5",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v5.5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 53.5,
+        "exactMatch": 52.4,
+        "fstAcceptance": 49.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gpt-5.5",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 53.5,
+        "exactMatch": 41.9,
+        "fstAcceptance": 42.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gpt-4.1",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 53.1,
+        "exactMatch": 52.4,
+        "fstAcceptance": 40.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gpt-5.5",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 52.9,
+        "exactMatch": 46.8,
+        "fstAcceptance": 44.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gemini-2.5-flash",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 52.3,
+        "exactMatch": 42.7,
+        "fstAcceptance": 33.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "claude-sonnet-4",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 51.5,
+        "exactMatch": 52.4,
+        "fstAcceptance": 41.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gpt-4o",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 51.0,
+        "exactMatch": 45.2,
+        "fstAcceptance": 37.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gemini-2.5-flash",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 50.8,
+        "exactMatch": 46.8,
+        "fstAcceptance": 40.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "mistral-medium-3.1",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 50.0,
+        "exactMatch": 40.3,
+        "fstAcceptance": 34.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gemini-2.5-pro",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 49.9,
+        "exactMatch": 41.9,
+        "fstAcceptance": 41.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "deepseek-r1",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 49.2,
+        "exactMatch": 50.8,
+        "fstAcceptance": 42.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v3",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 49.1,
+        "exactMatch": 50.8,
+        "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "deepseek-v4-pro",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 48.8,
+        "exactMatch": 41.1,
+        "fstAcceptance": 43.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gemini-2.5-pro",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 48.3,
+        "exactMatch": 33.9,
+        "fstAcceptance": 37.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "llama-4-maverick",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 47.4,
+        "exactMatch": 41.1,
+        "fstAcceptance": 33.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "deepseek-v4-pro",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 47.1,
+        "exactMatch": 31.5,
+        "fstAcceptance": 38.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gemini-2.5-flash",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 47.0,
+        "exactMatch": 46.0,
+        "fstAcceptance": 39.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "llama-3.3-70b",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 46.8,
+        "exactMatch": 36.3,
+        "fstAcceptance": 33.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gpt-4o",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 46.7,
+        "exactMatch": 41.9,
+        "fstAcceptance": 37.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "mistral-large",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 46.5,
+        "exactMatch": 42.7,
+        "fstAcceptance": 44.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v6",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v6",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 45.6,
+        "exactMatch": 52.4,
+        "fstAcceptance": 54.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "glm-4.7",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 44.9,
+        "exactMatch": 42.7,
+        "fstAcceptance": 36.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "mistral-medium-3.1",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 44.6,
+        "exactMatch": 37.1,
+        "fstAcceptance": 38.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "cohere-command-a",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 44.3,
+        "exactMatch": 35.5,
+        "fstAcceptance": 30.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "gemma-3-27b",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 44.2,
+        "exactMatch": 34.7,
+        "fstAcceptance": 35.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "llama-4-maverick",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 44.0,
+        "exactMatch": 43.5,
+        "fstAcceptance": 36.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v2",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 43.8,
+        "exactMatch": 47.6,
+        "fstAcceptance": 45.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "mistral-large",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 43.8,
+        "exactMatch": 39.5,
+        "fstAcceptance": 41.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "qwen-3.6-plus",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 43.2,
+        "exactMatch": 43.5,
+        "fstAcceptance": 36.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gpt-4o",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 41.5,
+        "exactMatch": 41.9,
+        "fstAcceptance": 39.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "claude-sonnet-4",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 41.4,
+        "exactMatch": 40.3,
+        "fstAcceptance": 40.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "cohere-command-a",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 40.7,
+        "exactMatch": 34.7,
+        "fstAcceptance": 37.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gemma-3-27b",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 40.5,
+        "exactMatch": 33.1,
+        "fstAcceptance": 31.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "llama-3.3-70b",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 39.9,
+        "exactMatch": 34.7,
+        "fstAcceptance": 33.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "deepseek-r1",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 39.6,
+        "exactMatch": 39.5,
+        "fstAcceptance": 39.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "llama-4-maverick",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 39.0,
+        "exactMatch": 40.3,
+        "fstAcceptance": 39.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "mistral-medium-3.1",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 38.7,
+        "exactMatch": 33.9,
+        "fstAcceptance": 35.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "claude-sonnet-4",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 37.3,
+        "exactMatch": 23.4,
+        "fstAcceptance": 38.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "glm-4.7",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 37.2,
+        "exactMatch": 41.9,
+        "fstAcceptance": 35.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "qwen-3.5-plus",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 36.6,
+        "exactMatch": 35.5,
+        "fstAcceptance": 37.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gemini-2.5-flash",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 35.9,
+        "exactMatch": 35.5,
+        "fstAcceptance": 37.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gpt-4.1",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 34.9,
+        "exactMatch": 34.7,
+        "fstAcceptance": 37.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "llama-3.3-70b",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 34.9,
+        "exactMatch": 31.5,
+        "fstAcceptance": 30.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "cohere-command-a",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 34.8,
+        "exactMatch": 32.3,
+        "fstAcceptance": 33.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gemma-3-27b",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 34.7,
+        "exactMatch": 32.3,
+        "fstAcceptance": 29.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v1",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v1",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 34.6,
+        "exactMatch": 28.2,
+        "fstAcceptance": 25.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gpt-4o",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 33.7,
+        "exactMatch": 33.9,
+        "fstAcceptance": 37.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "mistral-large",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 33.6,
+        "exactMatch": 29.8,
+        "fstAcceptance": 36.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "qwen-3.6-plus",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 30.8,
+        "exactMatch": 37.1,
+        "fstAcceptance": 36.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "glm-4.7",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 29.9,
+        "exactMatch": 29.8,
+        "fstAcceptance": 32.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v5",
+      "model": "glm-4.7",
+      "condition": "v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 29.8,
+        "exactMatch": 32.3,
+        "fstAcceptance": 31.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "deepseek-r1",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 29.5,
+        "exactMatch": 16.9,
+        "fstAcceptance": 27.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-fst-v4",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 29.3,
+        "exactMatch": 47.6,
+        "fstAcceptance": 54.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gemini-2.5-flash",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 29.0,
+        "exactMatch": 19.4,
+        "fstAcceptance": 49.2
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "962f9ad",
+        "hash": "sha256:8f4f9f2b71bec5482..."
+      },
+      "harnessVersion": "2.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-21",
+      "cost_usd": 0.051979,
+      "elapsed_seconds": 6.8
+    },
+    {
+      "method": "prompt-fst-v5",
+      "model": "claude-opus-4.7",
+      "condition": "fst-v5",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 28.8,
+        "exactMatch": 47.6,
+        "fstAcceptance": 52.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "gpt-4.1",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 28.7,
+        "exactMatch": 46.0,
+        "fstAcceptance": 41.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "mistral-medium-3.1",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 27.2,
+        "exactMatch": 24.2,
+        "fstAcceptance": 34.7
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "llama-4-maverick",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 26.4,
+        "exactMatch": 33.1,
+        "fstAcceptance": 33.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "qwen-3.6-plus",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 24.6,
+        "exactMatch": 21.0,
+        "fstAcceptance": 29.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "llama-3.3-70b",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 24.3,
+        "exactMatch": 21.8,
+        "fstAcceptance": 29.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "mistral-large",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 23.7,
+        "exactMatch": 11.3,
+        "fstAcceptance": 29.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "gemma-3-27b",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 23.3,
+        "exactMatch": 21.0,
+        "fstAcceptance": 27.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "cohere-command-a",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 23.0,
+        "exactMatch": 21.8,
+        "fstAcceptance": 33.9
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v3",
+      "model": "phi-4",
+      "condition": "v3",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 22.3,
+        "exactMatch": 22.6,
+        "fstAcceptance": 29.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "qwen-3.5-plus",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 22.2,
+        "exactMatch": 24.2,
+        "fstAcceptance": 30.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "glm-4.7",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 18.8,
+        "exactMatch": 8.9,
+        "fstAcceptance": 25.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "mistral-medium-3.1",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 16.0,
+        "exactMatch": 7.3,
+        "fstAcceptance": 18.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gpt-4.1",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 14.7,
+        "exactMatch": 12.9,
+        "fstAcceptance": 21.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "prompt-v4",
+      "model": "gpt-4.1",
+      "condition": "v4",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 12.9,
+        "exactMatch": 47.6,
+        "fstAcceptance": 40.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gpt-4o",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 11.8,
+        "exactMatch": 12.1,
+        "fstAcceptance": 25.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "gemma-3-27b",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 11.7,
+        "exactMatch": 0.0,
+        "fstAcceptance": 6.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "llama-3.3-70b",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 11.2,
+        "exactMatch": 0.8,
+        "fstAcceptance": 11.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "qwen-3.5-plus",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 10.5,
+        "exactMatch": 4.0,
+        "fstAcceptance": 11.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "cohere-command-a",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 9.5,
+        "exactMatch": 0.8,
+        "fstAcceptance": 8.1
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "llama-4-maverick",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 8.3,
+        "exactMatch": 5.6,
+        "fstAcceptance": 11.3
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "coached-baseline",
+      "model": "phi-4",
+      "condition": "coached",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 6.3,
+        "exactMatch": 17.7,
+        "fstAcceptance": 25.8
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "naive-baseline",
+      "model": "phi-4",
+      "condition": "naive",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 0.5,
+        "exactMatch": 0.0,
+        "fstAcceptance": 1.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    }
+  ]
+}
