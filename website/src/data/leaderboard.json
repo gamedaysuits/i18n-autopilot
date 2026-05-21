@@ -16,6 +16,70 @@
   ],
   "entries": [
     {
+      "method": "fst-gate-v8+fst-gate-r2",
+      "model": "claude-opus-4.7",
+      "condition": "v8+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 75.7,
+        "exactMatch": 70.2,
+        "fstAcceptance": 98.4
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 74.6,
+        "pass_0_exact_pct": 67.7,
+        "pass_0_fst_pct": 92.7,
+        "improved_by_retry": 3,
+        "degraded_by_retry": 0,
+        "chrf_delta": 1.1,
+        "exact_delta_pp": 2.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-v8.2+fst-gate-r2",
+      "model": "gemini-3.1-pro",
+      "condition": "v8.2+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 73.7,
+        "exactMatch": 51.4,
+        "fstAcceptance": 96.2
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 71.8,
+        "pass_0_exact_pct": 50.9,
+        "pass_0_fst_pct": 84.1,
+        "improved_by_retry": 8,
+        "degraded_by_retry": 6,
+        "chrf_delta": 1.9,
+        "exact_delta_pp": 0.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 395,
+      "date": "2026-05-09"
+    },
+    {
       "method": "prompt-v6",
       "model": "claude-opus-4.7",
       "condition": "v6",
@@ -25,6 +89,70 @@
         "chrF": 73.2,
         "exactMatch": 70.2,
         "fstAcceptance": 47.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-v6+fst-gate-r2",
+      "model": "gemini-3.1-pro",
+      "condition": "v6+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 73.2,
+        "exactMatch": 71.0,
+        "fstAcceptance": 99.2
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 72.4,
+        "pass_0_exact_pct": 71.0,
+        "pass_0_fst_pct": 96.0,
+        "improved_by_retry": 0,
+        "degraded_by_retry": 0,
+        "chrf_delta": 0.8,
+        "exact_delta_pp": 0.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-v6+fst-gate-r2",
+      "model": "claude-opus-4.7",
+      "condition": "v6+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 73.1,
+        "exactMatch": 71.0,
+        "fstAcceptance": 100.0
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 72.2,
+        "pass_0_exact_pct": 68.5,
+        "pass_0_fst_pct": 94.4,
+        "improved_by_retry": 3,
+        "degraded_by_retry": 0,
+        "chrf_delta": 0.9,
+        "exact_delta_pp": 2.5
       },
       "author": "Curtis Forbes",
       "trust": "self",
@@ -62,6 +190,38 @@
       "date": "2026-05-06"
     },
     {
+      "method": "fst-gate-v8.1+fst-gate-r2+tools",
+      "model": "claude-sonnet-4",
+      "condition": "v8.1+fst-gate-r2+tools",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 70.5,
+        "exactMatch": 65.3,
+        "fstAcceptance": 98.4
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 67.5,
+        "pass_0_exact_pct": 65.3,
+        "pass_0_fst_pct": 97.6,
+        "improved_by_retry": 0,
+        "degraded_by_retry": 0,
+        "chrf_delta": 3.0,
+        "exact_delta_pp": 0.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-07"
+    },
+    {
       "method": "prompt-v5",
       "model": "claude-opus-4.7",
       "condition": "v5",
@@ -83,6 +243,70 @@
       "harnessVersion": "1.0.0",
       "corpusSize": 124,
       "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-v8.1+fst-gate-r2",
+      "model": "gemini-3.1-pro",
+      "condition": "v8.1+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 70.3,
+        "exactMatch": 43.7,
+        "fstAcceptance": 95.7
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 69.6,
+        "pass_0_exact_pct": 44.3,
+        "pass_0_fst_pct": 81.8,
+        "improved_by_retry": 9,
+        "degraded_by_retry": 12,
+        "chrf_delta": 0.7,
+        "exact_delta_pp": -0.6
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 494,
+      "date": "2026-05-09"
+    },
+    {
+      "method": "fst-gate-v8.1+fst-gate-r2",
+      "model": "claude-sonnet-4",
+      "condition": "v8.1+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 70.1,
+        "exactMatch": 64.5,
+        "fstAcceptance": 94.4
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 70.0,
+        "pass_0_exact_pct": 64.5,
+        "pass_0_fst_pct": 88.7,
+        "improved_by_retry": 0,
+        "degraded_by_retry": 0,
+        "chrf_delta": 0.1,
+        "exact_delta_pp": 0.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-07"
     },
     {
       "method": "prompt-v7",
@@ -200,6 +424,38 @@
       "date": "2026-05-06"
     },
     {
+      "method": "fst-gate-v8+fst-gate-r2",
+      "model": "claude-sonnet-4",
+      "condition": "v8+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 67.6,
+        "exactMatch": 62.1,
+        "fstAcceptance": 95.2
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 67.1,
+        "pass_0_exact_pct": 62.1,
+        "pass_0_fst_pct": 88.7,
+        "improved_by_retry": 0,
+        "degraded_by_retry": 0,
+        "chrf_delta": 0.5,
+        "exact_delta_pp": 0.0
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
       "method": "prompt-v6",
       "model": "claude-sonnet-4",
       "condition": "v6",
@@ -209,6 +465,70 @@
         "chrF": 66.6,
         "exactMatch": 63.7,
         "fstAcceptance": 48.4
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 124,
+      "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-v8.1+fst-gate-r2+tools",
+      "model": "gemini-3.1-pro",
+      "condition": "v8.1+fst-gate-r2+tools",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 66.1,
+        "exactMatch": 42.3,
+        "fstAcceptance": 96.6
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 66.8,
+        "pass_0_exact_pct": 42.8,
+        "pass_0_fst_pct": 91.4,
+        "improved_by_retry": 3,
+        "degraded_by_retry": 5,
+        "chrf_delta": -0.7,
+        "exact_delta_pp": -0.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 407,
+      "date": "2026-05-09"
+    },
+    {
+      "method": "fst-gate-v6+fst-gate-r2",
+      "model": "claude-sonnet-4",
+      "condition": "v6+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 65.5,
+        "exactMatch": 64.5,
+        "fstAcceptance": 95.2
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 64.7,
+        "pass_0_exact_pct": 64.5,
+        "pass_0_fst_pct": 88.7,
+        "improved_by_retry": 0,
+        "degraded_by_retry": 0,
+        "chrf_delta": 0.8,
+        "exact_delta_pp": 0.0
       },
       "author": "Curtis Forbes",
       "trust": "self",
@@ -545,6 +865,38 @@
       "date": "2026-05-06"
     },
     {
+      "method": "fst-gate-v8.1+fst-gate-r2+tools",
+      "model": "gemini-2.5-flash",
+      "condition": "v8.1+fst-gate-r2+tools",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 59.3,
+        "exactMatch": 36.3,
+        "fstAcceptance": 85.5
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 59.5,
+        "pass_0_exact_pct": 36.8,
+        "pass_0_fst_pct": 81.9,
+        "improved_by_retry": 1,
+        "degraded_by_retry": 3,
+        "chrf_delta": -0.2,
+        "exact_delta_pp": -0.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 408,
+      "date": "2026-05-09"
+    },
+    {
       "method": "prompt-fst-v6.6",
       "model": "claude-opus-4.7",
       "condition": "fst-v6.6",
@@ -842,6 +1194,38 @@
       "harnessVersion": "1.0.0",
       "corpusSize": 124,
       "date": "2026-05-06"
+    },
+    {
+      "method": "fst-gate-raw+fst-gate-r2",
+      "model": "gemini-3.1-pro",
+      "condition": "raw+fst-gate-r2",
+      "pair": "en>crk",
+      "dataset": "edtekla-dev-v1",
+      "metrics": {
+        "chrF": 54.0,
+        "exactMatch": 23.1,
+        "fstAcceptance": 87.7
+      },
+      "fst_gate_details": {
+        "pass_0_chrF": 46.7,
+        "pass_0_exact_pct": 20.6,
+        "pass_0_fst_pct": 58.7,
+        "improved_by_retry": 12,
+        "degraded_by_retry": 0,
+        "chrf_delta": 7.3,
+        "exact_delta_pp": 2.5
+      },
+      "author": "Curtis Forbes",
+      "trust": "self",
+      "fingerprint": {
+        "type": "pipeline",
+        "repo": "gamedaysuits/crk-translate",
+        "commit": "N/A",
+        "hash": "N/A"
+      },
+      "harnessVersion": "1.0.0",
+      "corpusSize": 494,
+      "date": "2026-05-09"
     },
     {
       "method": "naive-baseline",
