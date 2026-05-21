@@ -14,47 +14,5 @@
       "notes": "62 gold standard + 62 textbook entries. DO NOT TRAIN."
     }
   ],
-  "entries": [
-    {
-      "method": "naive-baseline",
-      "model": "gemini-2.5-flash",
-      "condition": "naive",
-      "pair": "en>crk",
-      "dataset": "edtekla-dev-v1",
-      "metrics": {
-        "chrF": 29.0,
-        "exactMatch": 19.4,
-        "fstAcceptance": 49.2
-      },
-      "author": "Curtis Forbes",
-      "trust": "self",
-      "fingerprint": {
-        "type": "pipeline",
-        "repo": "gamedaysuits/crk-translate",
-        "commit": "962f9ad",
-        "hash": "sha256:8f4f9f2b71bec548228af218783858d6ef548e7449b589c6bdcf619cc3956243"
-      },
-      "harnessVersion": "2.0.0",
-      "runCardHash": "sha256:f9ff37f1d937727f854038b087d70f99494c5986fff0677c3df01c648a6407bd",
-      "corpusSize": 124,
-      "date": "2026-05-21",
-      "cost_usd": 0.051979,
-      "elapsed_seconds": 6.8,
-      "scores_detail": {
-        "exact_matches": 24,
-        "fst_accepted": 61,
-        "errors": 0,
-        "avg_latency": 0.08,
-        "median_latency": 0.08,
-        "p95_latency": 0.15
-      },
-      "tokens": {
-        "prompt": 20764,
-        "completion": 18300,
-        "reasoning": 0,
-        "cached": 0,
-        "cost_per_entry": 0.000419
-      }
-    }
-  ]
+  "entries": []
 }
