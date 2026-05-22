@@ -1,0 +1,142 @@
+# -----------------------------------------------------------------
+# Decap CMS Configuration for i18n-rosetta Docs
+# -----------------------------------------------------------------
+# Auth:   GitHub PKCE (no server-side proxy needed)
+# Host:   Vercel (i18n-rosetta.com)
+# Repo:   gamedaysuits/i18n-rosetta
+# Branch: main
+#
+# Setup:  Create a GitHub OAuth App at
+#         https://github.com/settings/developers
+#         - Homepage URL:  https://i18n-rosetta.com
+#         - Callback URL:  https://i18n-rosetta.com/admin/
+#         Then paste the Client ID below.
+# -----------------------------------------------------------------
+
+backend:
+  name: github
+  repo: gamedaysuits/i18n-rosetta
+  branch: main
+  # PKCE auth — no server proxy required
+  auth_type: pkce
+  # TODO: Replace with your GitHub OAuth App Client ID
+  app_id: REPLACE_WITH_GITHUB_OAUTH_CLIENT_ID
+  base_url: https://api.github.com
+
+# Where uploaded images go (relative to the repo root)
+media_folder: "website/static/img/uploads"
+public_folder: "/img/uploads"
+
+# Enable editorial workflow for draft → review → publish
+publish_mode: editorial_workflow
+
+# Slug formatting
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# -----------------------------------------------------------------
+# Collections — one per docs subfolder
+# -----------------------------------------------------------------
+
+collections:
+
+  # ── Top-level pages ──────────────────────────────────────────────
+  - name: "top-level"
+    label: "📄 Top-Level Pages"
+    folder: "website/docs"
+    create: false
+    extension: "md"
+    filter: { field: "title" }  # only files with frontmatter
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Getting Started ──────────────────────────────────────────────
+  - name: "getting-started"
+    label: "🚀 Getting Started"
+    folder: "website/docs/getting-started"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Core Concepts ────────────────────────────────────────────────
+  - name: "concepts"
+    label: "🧠 Core Concepts"
+    folder: "website/docs/concepts"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Guides ───────────────────────────────────────────────────────
+  - name: "guides"
+    label: "📘 Guides"
+    folder: "website/docs/guides"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Tutorials ────────────────────────────────────────────────────
+  - name: "tutorials"
+    label: "🎓 Tutorials"
+    folder: "website/docs/tutorials"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Eval / MT Research ───────────────────────────────────────────
+  - name: "eval"
+    label: "🧪 Eval & MT Research"
+    folder: "website/docs/eval"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Reference ────────────────────────────────────────────────────
+  - name: "reference"
+    label: "📋 Reference"
+    folder: "website/docs/reference"
+    create: true
+    extension: "md"
+    fields:
+      - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "string", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
+
+  # ── Blog ─────────────────────────────────────────────────────────
+  - name: "blog"
+    label: "✍️ Blog Posts"
+    folder: "website/blog"
+    create: true
+    extension: "md"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "slug", label: "Slug", widget: "string", required: false }
+      - { name: "authors", label: "Authors", widget: "list", required: false }
+      - { name: "tags", label: "Tags", widget: "list", required: false }
+      - { name: "body", label: "Content", widget: "markdown" }
