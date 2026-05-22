@@ -20,7 +20,7 @@ backend:
   # PKCE auth — no server proxy required
   auth_type: pkce
   # TODO: Replace with your GitHub OAuth App Client ID
-  app_id: REPLACE_WITH_GITHUB_OAUTH_CLIENT_ID
+  app_id: Ov23liQWU9J9SbbK57ub
   base_url: https://api.github.com
 
 # Where uploaded images go (relative to the repo root)
