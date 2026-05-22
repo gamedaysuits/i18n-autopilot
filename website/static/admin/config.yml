@@ -1,20 +1,18 @@
 # -----------------------------------------------------------------
 # Sveltia CMS Configuration for i18n-rosetta Docs
 # -----------------------------------------------------------------
-# Auth:   GitHub Fine-grained Personal Access Token (PAT)
-#         No OAuth proxy, no external services required.
+# Auth:   GitHub Classic Personal Access Token (PAT)
 # Host:   GitHub Pages (i18n-rosetta.com)
 # Repo:   gamedaysuits/i18n-rosetta
 # Branch: main
 #
 # Login:  Go to /admin → click "Sign in with GitHub" →
-#         paste a Fine-grained PAT with Contents read/write
-#         scope for gamedaysuits/i18n-rosetta.
+#         paste a Classic PAT with "repo" scope.
 #
-# Create a PAT at:
-#   https://github.com/settings/tokens?type=beta
-#   Repository access: gamedaysuits/i18n-rosetta
-#   Permissions: Contents → Read and write
+# Create a Classic PAT at:
+#   https://github.com/settings/tokens/new
+#   Scope: repo (full control of private repositories)
+#   Note: "rosetta-cms"
 # -----------------------------------------------------------------
 
 backend:
@@ -25,9 +23,6 @@ backend:
 # Where uploaded images go (relative to the repo root)
 media_folder: "website/static/img/uploads"
 public_folder: "/img/uploads"
-
-# Enable editorial workflow for draft → review → publish
-publish_mode: editorial_workflow
 
 # Slug formatting
 slug:
