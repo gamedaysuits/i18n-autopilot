@@ -1,0 +1,107 @@
+{
+  "hero": {
+    "title_line1": "Fully customizable",
+    "title_line2": "internationalization",
+    "subtitle": "One command translates your locale files. Every translation method — Google Translate, LLMs, custom APIs, coached pipelines — is a config option. Use what works for each language.",
+    "cta_primary": "Get Started →",
+    "cta_secondary": "See Methods"
+  },
+  "stats": {
+    "tests": 752,
+    "dependencies": 0,
+    "script_converters": 5,
+    "language_registers": 47
+  },
+  "features": [
+    {
+      "icon": "⚡",
+      "title": "One Command",
+      "description": "Auto-detect your locale files, format, and target languages. Translate what changed. Skip what didn't."
+    },
+    {
+      "icon": "🔀",
+      "title": "Per-Pair Methods",
+      "description": "Google Translate for French, an LLM for Japanese, a coached plugin for Plains Cree — all in the same config."
+    },
+    {
+      "icon": "🎭",
+      "title": "Registers & Coaching",
+      "description": "Steer the LLM with per-language tone instructions. Formal Sie-form for German, Taglish code-switching for Filipino, warrior's honor for Klingon."
+    },
+    {
+      "icon": "🧱",
+      "title": "Content Aware",
+      "description": "Code blocks, shortcodes, interpolation variables, and raw HTML are shielded during translation. The LLM never sees your code."
+    },
+    {
+      "icon": "📦",
+      "title": "Zero Dependencies",
+      "description": "Node.js built-ins only. No SDKs, no native modules, no build step. Works anywhere Node 20+ runs."
+    },
+    {
+      "icon": "🛡️",
+      "title": "Quality Gate",
+      "description": "Every translation is validated before writing. Wrong-script output, source echoes, length inflation, and placeholder corruption are caught and rejected."
+    }
+  ],
+  "use_cases": [
+    {
+      "title": "SaaS Internationalization",
+      "description": "Translate your Next.js, Hugo, or React app to 30+ languages with per-pair quality control.",
+      "link_text": "Translate 30 Languages →"
+    },
+    {
+      "title": "Build a Custom Pipeline",
+      "description": "Chain LLMs with FST validators, dictionaries, and post-processors. Package it as a plugin.",
+      "link_text": "FST Pipeline Cookbook →"
+    },
+    {
+      "title": "Language Preservation",
+      "description": "Coached LLM translation for languages with no API coverage — Indigenous, endangered, constructed.",
+      "link_text": "Low-Resource Guide →"
+    }
+  ],
+  "comparison": {
+    "title": "Not another TMS platform",
+    "description": "Crowdin, Phrase, and Locize are cloud platforms that require accounts, dashboards, and monthly fees. Rosetta is a CLI tool that runs in your project — no accounts, no dashboards, no vendor lock-in."
+  },
+  "arena": {
+    "eyebrow": "THE ARENA",
+    "title_line1": "Think you have the best method",
+    "title_line2": "for translating",
+    "tagline": "Prove it.",
+    "description": "7,000+ languages. ~130 have machine translation. The rest are an unsolved problem — and an open invitation. rosetta's evaluation harness benchmarks any method with fingerprinted, reproducible scoring. The leaderboard tracks every submission.",
+    "callout_line1": "This is an unsolved problem that everyone in the world can contribute to.",
+    "callout_line2": "Build a method. Score it. Give it back.",
+    "cards": [
+      {
+        "icon": "🧪",
+        "title": "Plug and Test",
+        "description": "Run your method against standardized benchmarks. chrF++, exact match, FST acceptance — all computed by the same harness.",
+        "link_text": "Eval Harness →"
+      },
+      {
+        "icon": "🏆",
+        "title": "Claim Your Score",
+        "description": "Every submission is fingerprinted to a Git commit and scored against the same dataset. Open a PR to submit.",
+        "link_text": "Leaderboard →"
+      },
+      {
+        "icon": "🤝",
+        "title": "Respect the Data",
+        "description": "Indigenous languages belong to their communities. rosetta supports OCAP, CARE, and Māori Data Sovereignty principles.",
+        "link_text": "Data Sovereignty →"
+      }
+    ]
+  },
+  "leaderboard_widget": {
+    "title": "🏆 Method Leaderboard",
+    "subtitle": "Top translation methods ranked by chrF++ score.",
+    "cta": "Think you can beat them?",
+    "full_leaderboard_text": "Full Leaderboard →"
+  },
+  "seo": {
+    "title_suffix": "Fully customizable internationalization",
+    "description": "An i18n framework where every translation method is a config option. Google Translate, LLMs, custom pipelines — one command, per-pair control, quality-gated."
+  }
+}

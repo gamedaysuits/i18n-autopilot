@@ -31,10 +31,92 @@ slug:
   sanitize_replacement: "-"
 
 # -----------------------------------------------------------------
-# Collections — one per docs subfolder
+# Collections
 # -----------------------------------------------------------------
 
 collections:
+
+  # ── Homepage Content ─────────────────────────────────────────────
+  # Edits the landing page text (hero, stats, features, arena, etc.)
+  - name: "homepage"
+    label: "🏠 Homepage"
+    editor:
+      preview: false
+    files:
+      - name: "homepage-content"
+        label: "Landing Page Content"
+        file: "website/src/data/homepage.json"
+        fields:
+          - label: "Hero Section"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { name: "title_line1", label: "Title Line 1", widget: "string" }
+              - { name: "title_line2", label: "Title Line 2", widget: "string" }
+              - { name: "subtitle", label: "Subtitle", widget: "text" }
+              - { name: "cta_primary", label: "Primary Button", widget: "string" }
+              - { name: "cta_secondary", label: "Secondary Button", widget: "string" }
+          - label: "Stats Bar"
+            name: "stats"
+            widget: "object"
+            fields:
+              - { name: "tests", label: "Tests", widget: "number" }
+              - { name: "dependencies", label: "Dependencies", widget: "number" }
+              - { name: "script_converters", label: "Script Converters", widget: "number" }
+              - { name: "language_registers", label: "Language Registers", widget: "number" }
+          - label: "Feature Cards"
+            name: "features"
+            widget: "list"
+            fields:
+              - { name: "icon", label: "Icon (emoji)", widget: "string" }
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "description", label: "Description", widget: "text" }
+          - label: "Use Cases"
+            name: "use_cases"
+            widget: "list"
+            fields:
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "description", label: "Description", widget: "text" }
+              - { name: "link_text", label: "Link Text", widget: "string" }
+          - label: "Comparison Section"
+            name: "comparison"
+            widget: "object"
+            fields:
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "description", label: "Description", widget: "text" }
+          - label: "Arena Section"
+            name: "arena"
+            widget: "object"
+            fields:
+              - { name: "eyebrow", label: "Eyebrow Text", widget: "string" }
+              - { name: "title_line1", label: "Title Line 1", widget: "string" }
+              - { name: "title_line2", label: "Title Line 2", widget: "string" }
+              - { name: "tagline", label: "Tagline", widget: "string" }
+              - { name: "description", label: "Description", widget: "text" }
+              - { name: "callout_line1", label: "Callout Line 1", widget: "text" }
+              - { name: "callout_line2", label: "Callout Line 2", widget: "string" }
+              - label: "Cards"
+                name: "cards"
+                widget: "list"
+                fields:
+                  - { name: "icon", label: "Icon (emoji)", widget: "string" }
+                  - { name: "title", label: "Title", widget: "string" }
+                  - { name: "description", label: "Description", widget: "text" }
+                  - { name: "link_text", label: "Link Text", widget: "string" }
+          - label: "Leaderboard Widget"
+            name: "leaderboard_widget"
+            widget: "object"
+            fields:
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "subtitle", label: "Subtitle", widget: "string" }
+              - { name: "cta", label: "CTA Text", widget: "string" }
+              - { name: "full_leaderboard_text", label: "Full Leaderboard Button", widget: "string" }
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            fields:
+              - { name: "title_suffix", label: "Page Title Suffix", widget: "string" }
+              - { name: "description", label: "Meta Description", widget: "text" }
 
   # ── Top-level pages ──────────────────────────────────────────────
   - name: "top-level"
@@ -42,9 +124,9 @@ collections:
     folder: "website/docs"
     create: false
     extension: "md"
-    filter: { field: "title" }
     fields:
       - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
+      - { name: "slug", label: "Slug", widget: "string", required: false }
       - { name: "title", label: "Title", widget: "string" }
       - { name: "description", label: "Description", widget: "string", required: false }
       - { name: "body", label: "Content", widget: "markdown" }
@@ -55,6 +137,7 @@ collections:
     folder: "website/docs/getting-started"
     create: true
     extension: "md"
+    format: "frontmatter"
     fields:
       - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
       - { name: "title", label: "Title", widget: "string" }
