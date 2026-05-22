@@ -269,44 +269,57 @@ function ComparisonTeaser() {
 /*  Positioned after the framework pitch, visually distinct            */
 /* ------------------------------------------------------------------ */
 
-const ROTATING_LANGUAGES = [
-  { name: 'Plains Cree' },
-  { name: 'Quechua' },
-  { name: 'Inuktitut' },
-  { name: 'Ojibwe' },
-  { name: 'Navajo' },
-  { name: 'Welsh' },
-  { name: 'Basque' },
-  { name: 'Yoruba' },
-  { name: 'Māori' },
-  { name: 'Turkish' },
+/**
+ * Rotating language pairs for the Arena headline.
+ * Each shows a real translation challenge — source→target.
+ * Speed: 1.6s per pair, 250ms fade.
+ */
+const ROTATING_PAIRS = [
+  { src: 'English',    tgt: 'Plains Cree' },
+  { src: 'Spanish',    tgt: 'Quechua' },
+  { src: 'English',    tgt: 'Inuktitut' },
+  { src: 'Turkish',    tgt: 'Azerbaijani' },
+  { src: 'English',    tgt: 'Navajo' },
+  { src: 'French',     tgt: 'Wolof' },
+  { src: 'English',    tgt: 'Māori' },
+  { src: 'Russian',    tgt: 'Sakha' },
+  { src: 'English',    tgt: 'Yoruba' },
+  { src: 'Portuguese', tgt: 'Guarani' },
+  { src: 'English',    tgt: 'Welsh' },
+  { src: 'Mandarin',   tgt: 'Cantonese' },
+  { src: 'English',    tgt: 'Ojibwe' },
+  { src: 'Japanese',   tgt: 'Ainu' },
 ];
 
 function ArenaSection() {
-  const [langIndex, setLangIndex] = useState(0);
+  const [pairIndex, setPairIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {
-        setLangIndex((prev) => (prev + 1) % ROTATING_LANGUAGES.length);
+        setPairIndex((prev) => (prev + 1) % ROTATING_PAIRS.length);
         setIsVisible(true);
-      }, 400);
-    }, 2800);
+      }, 250);
+    }, 1600);
     return () => clearInterval(interval);
   }, []);
 
-  const currentLang = ROTATING_LANGUAGES[langIndex];
+  const pair = ROTATING_PAIRS[pairIndex];
 
   return (
     <section className={styles.arena}>
       <div className="container text--center">
         <p className={styles.arenaEyebrow}>THE ARENA</p>
         <Heading as="h2" className={styles.arenaTitle}>
-          Think your machine can translate to{' '}
-          <span className={clsx(styles.heroRotating, isVisible && styles.heroRotatingVisible)}>
-            {currentLang.name}
+          Think you have the best method for translating{' '}
+          <span className={clsx(styles.arenaPair, isVisible && styles.arenaPairVisible)}>
+            {pair.src}
+          </span>
+          {' → '}
+          <span className={clsx(styles.arenaPair, styles.arenaPairTarget, isVisible && styles.arenaPairVisible)}>
+            {pair.tgt}
           </span>
           ?
         </Heading>

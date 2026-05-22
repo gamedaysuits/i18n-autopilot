@@ -6,8 +6,6 @@
   overflow: hidden;
 }
 
-/* Rotating language name — used in the Arena section */
-
 .heroTitle {
   font-size: 3rem;
   font-weight: 800;
@@ -17,18 +15,23 @@
   line-height: 1.15;
 }
 
-.heroRotating {
+/* Rotating language pair — used in the Arena section */
+
+.arenaPair {
   display: inline-block;
-  color: #00E5E6;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  min-width: 180px;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.heroRotatingVisible {
+.arenaPairVisible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Source language: white. Target language: cyan. */
+.arenaPairTarget {
+  color: #00E5E6;
 }
 
 .heroSubtitle {
@@ -415,10 +418,14 @@
 }
 
 .arenaTitle {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 1.25rem;
   letter-spacing: -0.02em;
+  line-height: 1.4;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .arenaDescription {
