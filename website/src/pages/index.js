@@ -69,7 +69,7 @@ function StatsBar() {
             <p>Script converters</p>
           </div>
           <div className="col col--3 text--center">
-            <Heading as="h3" className={styles.stat}>35+</Heading>
+            <Heading as="h3" className={styles.stat}>47</Heading>
             <p>Language registers</p>
           </div>
         </div>

@@ -83,7 +83,7 @@ Every language pair gets culturally-appropriate tone instructions for the LLM:
 }
 ```
 
-No other tool ships with 35+ pre-configured language registers, or lets you define custom ones per project.
+No other tool ships with 47 pre-configured language registers, or lets you define custom ones per project.
 
 ### 2. Deterministic Script Converters
 
