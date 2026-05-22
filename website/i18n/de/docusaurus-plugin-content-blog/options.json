@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "[EN] i18n-rosetta Blog",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "Release Notes, technische Deep-Dives und Einblicke in das Translation Engineering.",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "Aktuelle Beiträge",
+    "description": "The label for the left sidebar"
+  }
+}

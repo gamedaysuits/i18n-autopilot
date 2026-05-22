@@ -40,25 +40,35 @@ Your API service must implement a single endpoint that accepts and returns JSON:
 
 ### Request Format
 
+rosetta sends this exact JSON body (see [api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js)):
+
 ```json
 POST /translate
 Content-Type: application/json
+Authorization: Bearer <ROSETTA_API_KEY>
 
 {
-  "keys": ["greeting", "farewell"],
-  "sourceStrings": {
+  "source_locale": "en",
+  "target_locale": "crk",
+  "method": "crk-coached-v1",
+  "keys": {
     "greeting": "Hello, welcome to our app",
     "farewell": "Goodbye and thanks"
-  },
-  "sourceLocale": "en",
-  "targetLocale": "crk",
-  "context": {
-    "register": "Formal Plains Cree. Use SRO (Standard Roman Orthography)."
   }
 }
 ```
 
+| Field | Type | Description |
+|-------|------|-------------|
+| `source_locale` | string | BCP 47 source language code |
+| `target_locale` | string | BCP 47 target language code |
+| `method` | string | Plugin name or `"default"` |
+| `keys` | object | Map of key → source string to translate |
+```
+
 ### Response Format
+
+Your service must return a `translations` object. An optional `meta` object can include cost and diagnostic info:
 
 ```json
 {
@@ -66,13 +76,20 @@ Content-Type: application/json
     "greeting": "tânisi, pê-kîwêw ôta",
     "farewell": "ekosi mâka, kinanâskomitin"
   },
-  "metadata": {
-    "model": "gds-mt-eval-harness/crk-pipeline-v2",
-    "method": "decompose-translate-validate",
-    "confidence": 0.87
+  "meta": {
+    "model": "my-custom-pipeline/v1",
+    "cost_usd": 0.0042,
+    "method": "decompose-translate-validate"
   }
 }
 ```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `translations` | object | ✅ | Map of key → translated string |
+| `meta` | object | — | Optional metadata |
+| `meta.cost_usd` | number | — | If present, displayed in rosetta's output |
+| `errors` | object | — | For partial success (HTTP 207): map of key → `{ message }` |
 
 ### Minimal Express Server
 
@@ -82,23 +99,27 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
+/**
+ * rosetta API contract:
+ *
+ * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
+ * Response: { translations: { "key": "translated" }, meta: { ... } }
+ */
 app.post('/translate', async (req, res) => {
-  const { keys, sourceStrings, sourceLocale, targetLocale, context } = req.body;
+  const { source_locale, target_locale, method, keys } = req.body;
 
   const translations = {};
 
-  for (const key of keys) {
-    const source = sourceStrings[key];
-
+  for (const [key, source] of Object.entries(keys)) {
     // --- Your pipeline goes here ---
     // Step 1: Morphological decomposition
-    const morphemes = await decompose(source, sourceLocale);
+    const morphemes = await decompose(source, source_locale);
 
     // Step 2: LLM translation with context
-    const draft = await llmTranslate(morphemes, targetLocale, context);
+    const draft = await llmTranslate(morphemes, target_locale);
 
     // Step 3: FST validation
-    const validated = await fstValidate(draft, targetLocale);
+    const validated = await fstValidate(draft, target_locale);
 
     // Step 4: Post-processing (orthography normalization, etc.)
     translations[key] = await postProcess(validated);
@@ -106,7 +127,7 @@ app.post('/translate', async (req, res) => {
 
   res.json({
     translations,
-    metadata: {
+    meta: {
       model: 'my-custom-pipeline/v1',
       method: 'decompose-translate-validate',
     },
@@ -145,7 +166,11 @@ i18n-rosetta will POST your source strings to the endpoint and write the returne
 
 ## Case Study: Plains Cree Pipeline
 
-The **gds-mt-eval-harness** project demonstrates this pattern in production. Its Plains Cree pipeline uses:
+:::info Under Development
+The Plains Cree pipeline described below is **under active development** and is not yet running in production. Details here reflect the current design direction and may change as the project evolves.
+:::
+
+The **gds-mt-eval-harness** project demonstrates this pattern. Its Plains Cree pipeline uses:
 
 1. **Morphological decomposition** — Break polysynthetic Cree words into translatable morpheme chains
 2. **LLM translation** — Context-enriched GPT-4o translation with coaching data (SRO orthography rules, register instructions)
@@ -156,17 +181,16 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 
 ### Running Evaluations
 
-The harness provides structured evaluation tooling via the `mt-eval` CLI. After translating, you can evaluate output quality:
+After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# Install the harness
-pip install mt-eval-harness
+# Clone the harness
+git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
+cd gds-mt-eval-harness
+pip install -e .
 
-# Run the evaluation against your translations
-mt-eval run --corpus data/corpus.json --model openai/gpt-4o
-
-# Analyze the results
-mt-eval test eval/logs/run_*.json
+# Run the evaluation against your method's output
+python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
 This produces structured evaluation records with chrF++, BLEU, and exact match scores that can be used as regression baselines.
@@ -186,6 +210,20 @@ If your API requires authentication, set the `apiKey` field or use an environmen
   }
 }
 ```
+
+## Data Sovereignty & OCAP Principles
+
+The `api` method is particularly important for **Indigenous language communities**. By self-hosting the translation pipeline, a community keeps full control over:
+
+- **Proprietary coaching data** — register instructions, orthography rules, and domain glossaries never leave community infrastructure.
+- **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
+- **Access policies** — the community decides who can call the endpoint and under what terms.
+
+This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+
+:::tip
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+:::
 
 ## Cost Estimation
 
@@ -215,3 +253,12 @@ The `api` method returns `null` for cost estimation by default — your service 
 ## Licensing
 
 The `api` method pattern is fully open — there are no licensing restrictions on wrapping your own translation pipeline as an HTTP service. The `gds-mt-eval-harness` is available under MIT license for reference implementations.
+
+## See Also
+
+- [Translation Methods](/docs/guides/translation-methods) — overview of every built-in method (`openai`, `google`, `api`, etc.)
+- [Plugin Specification](/docs/reference/plugin-spec) — full schema for `i18n-rosetta.config.json` including `api` method fields
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — end-to-end guide for under-resourced languages, including OCAP principles
+- [Architecture](/docs/concepts/architecture) — how i18n-rosetta's sync loop, batching, and method dispatch work
+- [MT Evaluation](/docs/eval/) — evaluation methodology, metrics, and the leaderboard submission process
+- [Method Leaderboard](/leaderboard) — live quality rankings across methods and language pairs

@@ -86,3 +86,13 @@ Security properties are verified by the adversarial test suite:
 ```bash
 npm run test:redteam    # prototype pollution, path traversal, encoding attacks
 ```
+
+---
+
+## See Also
+
+- [Architecture](/docs/concepts/architecture) — how the three-piece ecosystem connects
+- [CLI Reference — integrity](/docs/reference/cli#integrity) — integrity checking command
+- [CLI Reference — provenance](/docs/reference/cli#provenance) — provenance auditing command
+- [Plugin Specification](/docs/reference/plugin-spec) — provenance fields in plugin manifests
+- [Quality Gate](/docs/concepts/quality-gate) — translation-level safety checks

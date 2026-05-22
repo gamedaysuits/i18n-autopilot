@@ -73,3 +73,13 @@ The system message (register, grammar rules, style notes) is split from the user
 - Result: the first batch pays full token cost, subsequent batches pay only for the user message
 
 This can significantly reduce token costs for projects with many batches.
+
+---
+
+## See Also
+
+- [How Sync Works](/docs/concepts/how-sync-works) — where the quality gate fits in the pipeline
+- [Translation Methods](/docs/guides/translation-methods) — methods that feed into the gate
+- [Script Converters](/docs/concepts/script-converters) — post-gate script conversion
+- [Coaching Data](/docs/concepts/coaching-data) — improving translation quality upstream
+- [CLI Reference — sync](/docs/reference/cli#sync) — sync flags including retry behavior

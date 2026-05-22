@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "[EN] 3.2.0",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "البدء",
+    "description": "The label for category 'Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Tutorials & Cookbooks": {
+    "message": "دروس تعليمية وأدلة تطبيقية",
+    "description": "The label for category 'Tutorials & Cookbooks' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "أدلة",
+    "description": "The label for category 'Guides' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "مفاهيم",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "مرجع",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Evaluation": {
+    "message": "تقييم",
+    "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  }
+}

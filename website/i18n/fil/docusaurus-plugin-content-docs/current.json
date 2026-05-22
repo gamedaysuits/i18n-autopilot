@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "[EN] 3.2.0",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "Pagsisimula",
+    "description": "The label for category 'Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Tutorials & Cookbooks": {
+    "message": "Mga Tutorial at Cookbook",
+    "description": "The label for category 'Tutorials & Cookbooks' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "Mga Gabay",
+    "description": "The label for category 'Guides' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "Mga Konsepto",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "Sanggunian",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Evaluation": {
+    "message": "Ebalwasyon",
+    "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  }
+}

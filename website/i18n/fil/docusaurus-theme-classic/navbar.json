@@ -1,0 +1,30 @@
+{
+  "title": {
+    "message": "[EN] i18n-rosetta",
+    "description": "The title in the navbar"
+  },
+  "item.label.Docs": {
+    "message": "Dokumentasyon",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.Blog": {
+    "message": "[EN] Blog",
+    "description": "Navbar item with label Blog"
+  },
+  "item.label.Eval": {
+    "message": "[EN] Eval",
+    "description": "Navbar item with label Eval"
+  },
+  "item.label.Leaderboard": {
+    "message": "[EN] Leaderboard",
+    "description": "Navbar item with label Leaderboard"
+  },
+  "item.label.npm": {
+    "message": "[EN] npm",
+    "description": "Navbar item with label npm"
+  },
+  "item.label.GitHub": {
+    "message": "[EN] GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

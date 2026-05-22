@@ -130,3 +130,13 @@ User maintains their own grammar rules and dictionary in `.rosetta/coaching/fr.j
 3. **IP protection is architectural.** Proprietary techniques stay server-side. The npm package ships nothing proprietary.
 4. **The plugin format is the contract.** Everything flows through `method.json`.
 5. **Each tool has one job.** Harness → develop methods. Rosetta Translate → host methods. Rosetta → translate files.
+
+---
+
+## See Also
+
+- [Translation Methods](/docs/guides/translation-methods) — how each built-in method works
+- [Plugin Specification](/docs/reference/plugin-spec) — the method.json manifest format
+- [Eval Harness](/docs/eval/harness) — the companion research tool
+- [Serving a Method via API](/docs/guides/serving-a-method) — hosting custom translation pipelines
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — the use case that drove this architecture

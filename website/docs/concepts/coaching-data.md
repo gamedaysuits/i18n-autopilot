@@ -128,8 +128,12 @@ mt-eval test eval/logs/run_*.json
 
 This gives you chrF++, BLEU, and exact match scores. Create multiple coaching file versions and compare — objective metrics beat subjective review.
 
+---
+
 ## See Also
 
-- [Low-Resource Languages](/docs/guides/low-resource-languages) — full walkthrough for building a translation pipeline from scratch
-- [Translation Methods](/docs/guides/translation-methods) — comparison of all available methods
-- [Build a Plugin](/docs/tutorials/build-a-plugin) — package a coached method as a reusable plugin
+- [Translation Methods](/docs/guides/translation-methods) — the llm-coached method
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — coaching in practice
+- [Plugin Specification](/docs/reference/plugin-spec) — packaging coaching data in a plugin
+- [Quality Gate](/docs/concepts/quality-gate) — how coached translations are validated
+- [Configuration](/docs/getting-started/configuration) — per-pair coaching config

@@ -26,9 +26,12 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 ## Global Options
 
 ```
+--help, -h              Show help (global or per-command)
+--version, -v           Print version and exit
+--yes, -y               Skip interactive prompts, use defaults
 --config <path>         Custom config file path
 --dir <path>            Override locales directory
---content-dir <path>    Hugo content directory for Markdown translation
+--content-dir <path>    Hugo/Docusaurus content directory for Markdown translation
 --source <code>         Override source locale (default: en)
 --model <model>         Override translation model
 --method <method>       Translation method: llm, google-translate (default: from config)
@@ -223,3 +226,14 @@ Use `lint`, `sync`, and `audit` together for bulletproof i18n:
 | **Lint** | `lint` | Pre-commit | Block commits with hardcoded strings |
 | **Sync** | `sync` | Post-commit / CI | Translate missing and changed keys |
 | **Audit** | `audit` | Build step | Fail deployment if any locale is incomplete |
+
+---
+
+## See Also
+
+- [Configuration](/docs/getting-started/configuration) — config file reference
+- [Translation Methods](/docs/guides/translation-methods) — method selection per pair
+- [Plugin Specification](/docs/reference/plugin-spec) — plugin manifest format
+- [CI/CD Guide](/docs/guides/ci-cd) — automating CLI commands in your pipeline
+- [How Sync Works](/docs/concepts/how-sync-works) — understanding the sync pipeline
+- [Quality Gate](/docs/concepts/quality-gate) — how translations are validated

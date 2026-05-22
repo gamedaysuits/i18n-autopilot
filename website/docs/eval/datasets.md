@@ -77,7 +77,7 @@ Every dataset follows the same JSON schema:
 
 ### EDTeKLA Development Set v1
 
-The first evaluation dataset, built for English→Plains Cree (SRO) translation.
+The first evaluation dataset, built for English→Plains Cree (SRO) translation. Created by the [EdTeKLA research group](https://spaces.facsci.ualberta.ca/edtekla/) at the University of Alberta.
 
 | Property | Value |
 |----------|-------|
@@ -87,7 +87,7 @@ The first evaluation dataset, built for English→Plains Cree (SRO) translation.
 | **Entry count** | 124 |
 | **Difficulty distribution** | Easy, Medium, Hard |
 | **Provenance** | `gold_standard` (verified by speakers), `textbook` (published educational materials) |
-| **License** | CC-BY-NC-4.0 |
+| **License** | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
 
 **What it tests:**
 
@@ -152,3 +152,32 @@ The harness will error on missing fields, duplicate indices, or schema violation
 ### 7. Submit for inclusion
 
 Open a pull request against the [eval harness repository](https://github.com/gamedaysuits/gds-mt-eval-harness) with your dataset file in the `data/` directory. Include documentation of your verification methodology and provenance sources.
+
+---
+
+## FLORES+ Devtest
+
+A broad-coverage multilingual benchmark maintained by the [Open Language Data Initiative (OLDI)](https://huggingface.co/datasets/openlanguagedata/flores_plus). Used for rosetta's multi-model frontier benchmark.
+
+| Property | Value |
+|----------|-------|
+| **ID** | `flores-plus-devtest` |
+| **Language pairs** | EN → 39 languages (all rosetta registered natural languages) |
+| **Entry count** | 1,012 sentences per language |
+| **License** | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| **Source** | Originally Meta FLORES-200, now OLDI-maintained |
+| **Location** | Pre-extracted fixtures at `test/benchmark/fixtures/` in the main rosetta repo |
+
+:::danger Evaluation only
+FLORES+ is intended solely for evaluation. The curators explicitly request that it **not be used as training data**. Ensure its contents are excluded from any training corpora.
+:::
+
+---
+
+## See Also
+
+- [MT Evaluation](/docs/eval/) — overview of the evaluation framework and leaderboard
+- [Eval Harness](/docs/eval/harness) — how to run evaluations against these datasets
+- [Run Card Specification](/docs/eval/run-card) — the JSON schema for recording results
+- [Method Leaderboard](/leaderboard) — live benchmark scores
+- [EdTeKLA Project](https://spaces.facsci.ualberta.ca/edtekla/) — the University of Alberta research group behind the Cree dataset

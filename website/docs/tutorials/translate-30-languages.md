@@ -29,7 +29,6 @@ Not all 30 languages need the same approach. Group them by available method qual
   "version": 3,
   "inputLocale": "en",
   "localesDir": "./locales",
-  "localeFileFormat": "nested-json",
   "defaultMethod": "google-translate",
   "model": "openai/gpt-4o-mini",
   "languages": {
@@ -52,6 +51,10 @@ Not all 30 languages need the same approach. Group them by available method qual
 ```
 
 **Note:** Languages not listed in `pairs` inherit `defaultMethod: "google-translate"`. You don't need to list all 30.
+
+:::info
+`crk` support is under development — see [Support a Low-Resource Language](/docs/guides/low-resource-languages) for status and contribution guidelines.
+:::
 
 ## Step 3: Set Up API Keys
 
@@ -154,8 +157,11 @@ For a project with 500 source keys across 30 languages:
 
 Incremental syncs (5–20 changed keys) cost a fraction of a full sync.
 
-## Next Steps
+## See Also
 
-- **[Build a Plugin](/docs/tutorials/build-a-plugin)** — Create coaching data for any of your Tier 3 languages
-- **[CI/CD Guide](/docs/guides/ci-cd)** — Advanced CI patterns including PR preview builds
-- **[Quality Gate](/docs/concepts/quality-gate)** — How rosetta validates every translation before writing it
+- [Translation Methods](/docs/guides/translation-methods) — How each translation method works and when to use it
+- [Plugin Specification](/docs/reference/plugin-spec) — Create coaching data for any of your Tier 3 languages
+- [CI/CD Guide](/docs/guides/ci-cd) — Advanced CI patterns including PR preview builds
+- [Quality Gate](/docs/concepts/quality-gate) — How Rosetta validates every translation before writing it
+- [Supported Languages](/docs/reference/supported-languages) — Full list of language codes and method compatibility
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — Add coaching data for languages without broad MT coverage

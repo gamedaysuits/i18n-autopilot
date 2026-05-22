@@ -107,3 +107,13 @@ jobs:
 | **Lint** | `lint` | Pre-commit | Block commits with hardcoded strings |
 | **Sync** | `sync` | Post-commit / CI | Translate missing and changed keys |
 | **Audit** | `audit` | Build step | Fail deployment if any locale is incomplete |
+
+---
+
+## See Also
+
+- [CLI Reference](/docs/reference/cli) — full command reference
+- [How Sync Works](/docs/concepts/how-sync-works) — understanding incremental sync
+- [Translation Methods](/docs/guides/translation-methods) — method selection per pair
+- [Quality Gate](/docs/concepts/quality-gate) — what happens when translations fail
+- [Configuration](/docs/getting-started/configuration) — config reference

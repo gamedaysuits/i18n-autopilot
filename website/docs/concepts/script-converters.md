@@ -164,8 +164,12 @@ SCRIPT_CONVERTERS['chr'] = {
 };
 ```
 
+---
+
 ## See Also
 
-- [Low-Resource Languages](/docs/guides/low-resource-languages) — full pipeline walkthrough including script conversion
-- [Coaching Data](/docs/concepts/coaching-data) — how to teach the LLM about your language before conversion
-- [Quality Gate](/docs/concepts/quality-gate) — the `script compliance` check that validates output script
+- [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) — PUA fonts, Unicode, adding new converters
+- [Quality Gate](/docs/concepts/quality-gate) — validation that runs before script conversion
+- [Supported Languages](/docs/reference/supported-languages) — which languages have script converters
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — SRO→Syllabics in context
+- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — script conversion in a multi-stage pipeline

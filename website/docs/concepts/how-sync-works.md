@@ -157,3 +157,13 @@ Each translation method provides its own cost estimate:
 
 When a method can't determine cost (LLM methods, remote APIs), rosetta reports `—` rather than guessing. Use `--dry` to see cost estimates without actually translating.
 
+---
+
+## See Also
+
+- [CLI Reference — sync](/docs/reference/cli#sync) — command flags and options
+- [Quality Gate](/docs/concepts/quality-gate) — how translations are validated
+- [Translation Methods](/docs/guides/translation-methods) — how each method works
+- [Configuration](/docs/getting-started/configuration) — config reference
+- [CI/CD Guide](/docs/guides/ci-cd) — automating syncs in your pipeline
+

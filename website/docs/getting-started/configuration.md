@@ -45,6 +45,11 @@ npx i18n-rosetta init
 }
 ```
 
+:::note typegen is not yet implemented
+The `typegen` config block is recognized and preserved by the config loader, but TypeScript type generation is not yet implemented. This is a placeholder for a planned feature. Setting these values has no effect.
+:::
+
+
 ### Fields
 
 | Field | Type | Default | Description |
@@ -105,12 +110,34 @@ Each source→target pair can be independently configured:
 
 ## Language Configuration
 
-Languages can be configured with a register string (shorthand) or a full object:
+Languages accept three formats:
+
+### Array of codes (simplest)
+
+```json
+{
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+Each language gets its default register from the built-in register table. Languages without a default get `"Professional register."`.
+
+### Object with register strings
 
 ```json
 {
   "languages": {
     "fr": "Formal academic French. Use vous-form.",
+    "de": "Standard German. Use Sie-form."
+  }
+}
+```
+
+### Object with full config
+
+```json
+{
+  "languages": {
     "crk": {
       "name": "Plains Cree",
       "register": "SRO syllabics with grammatical precision.",
@@ -122,6 +149,9 @@ Languages can be configured with a register string (shorthand) or a full object:
   }
 }
 ```
+
+You can mix shorthand and full objects in the same block.
+
 
 ### Language Fields
 
@@ -172,3 +202,14 @@ src/components/legacy/**
 src/utils/constants.js
 **/*.test.js
 ```
+
+---
+
+## See Also
+
+- [CLI Reference](/docs/reference/cli) — all commands and flags
+- [Translation Methods](/docs/guides/translation-methods) — choosing and mixing methods
+- [Plugin Specification](/docs/reference/plugin-spec) — method plugin manifest format
+- [Architecture](/docs/concepts/architecture) — how the pieces connect
+- [Supported Languages](/docs/reference/supported-languages) — built-in language support
+- [How Sync Works](/docs/concepts/how-sync-works) — the translation pipeline

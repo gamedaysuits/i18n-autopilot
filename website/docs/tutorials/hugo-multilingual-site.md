@@ -14,24 +14,32 @@ Set up Hugo's multilingual system with i18n-rosetta handling both JSON string fi
 
 ## Project Structure
 
-Hugo expects this layout for multilingual content:
+Rosetta uses Hugo's **filename-based** translation mode. Translated files are placed in the same directory as the source file, with a language suffix added to the filename (e.g. `about.fr.md`):
 
 ```
 my-hugo-site/
 ├── content/
-│   ├── en/
-│   │   ├── _index.md
-│   │   ├── about.md
-│   │   └── blog/
-│   │       └── first-post.md
-│   ├── fr/        ← rosetta generates these
-│   └── ja/        ← rosetta generates these
+│   └── en/
+│       ├── _index.md
+│       ├── _index.fr.md           ← rosetta generates
+│       ├── _index.ja.md           ← rosetta generates
+│       ├── about.md
+│       ├── about.fr.md            ← rosetta generates
+│       ├── about.ja.md            ← rosetta generates
+│       └── blog/
+│           ├── first-post.md
+│           ├── first-post.fr.md   ← rosetta generates
+│           └── first-post.ja.md   ← rosetta generates
 ├── i18n/
-│   ├── en.json    ← your source strings
-│   ├── fr.json    ← rosetta generates these
-│   └── ja.json    ← rosetta generates these
+│   ├── en.json
+│   ├── fr.json                    ← rosetta generates
+│   └── ja.json                    ← rosetta generates
 └── hugo.toml
 ```
+
+:::note Hugo i18n Modes
+Hugo supports two translation strategies: **filename-based** (`about.fr.md` next to `about.md`) and **directory-based** (separate `content/fr/about.md` trees). Rosetta uses filename-based translation because its `getTargetContentPath()` function generates target paths by appending a language suffix to the source filename. Make sure your `hugo.toml` is configured for filename-based translation when using rosetta.
+:::
 
 ## Step 1: Configure Hugo
 
@@ -123,7 +131,7 @@ npx i18n-rosetta sync
 Rosetta processes both types:
 
 1. **String files** (`i18n/en.json` → `i18n/fr.json`, `i18n/ja.json`)
-2. **Content files** (`content/en/*.md` → `content/fr/*.md`, `content/ja/*.md`)
+2. **Content files** (`content/en/about.md` → `content/en/about.fr.md`, `content/en/about.ja.md`)
 
 ### Content Translation Details
 
@@ -174,8 +182,10 @@ npx i18n-rosetta sync
 
 The lock file tracks content hashes per file, so stable pages aren't retranslated.
 
-## Next Steps
+## See Also
 
 - **[Content Translation Guide](/docs/guides/content-translation)** — Deep dive into shielding, front matter, and edge cases
 - **[Framework Integration](/docs/guides/framework-integration)** — Next.js and React setups
 - **[CI/CD Guide](/docs/guides/ci-cd)** — Automate syncs on push to `content/en/`
+- **[Translation Methods](/docs/guides/translation-methods)** — Compare LLM, TM, and hybrid translation strategies
+- **[Supported Languages](/docs/reference/supported-languages)** — Full list of supported locales and language codes

@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "[EN] 3.2.0",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "Primeiros Passos",
+    "description": "The label for category 'Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Tutorials & Cookbooks": {
+    "message": "Tutoriais e Cookbooks",
+    "description": "The label for category 'Tutorials & Cookbooks' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "Conceitos",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Evaluation": {
+    "message": "Avaliação",
+    "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  }
+}

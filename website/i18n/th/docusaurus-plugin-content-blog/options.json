@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "บล็อก i18n-rosetta",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "Release notes, บทความเจาะลึกด้านเทคนิค และข้อมูลเชิงลึกด้าน Translation engineering",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "บทความล่าสุด",
+    "description": "The label for the left sidebar"
+  }
+}

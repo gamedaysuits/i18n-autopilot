@@ -21,9 +21,12 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 ## Global Options
 
 ```
+--help, -h              Show help (global or per-command)
+--version, -v           Print version and exit
+--yes, -y               Skip interactive prompts, use defaults
 --config <path>         Custom config file path
 --dir <path>            Override locales directory
---content-dir <path>    Hugo content directory for Markdown translation
+--content-dir <path>    Hugo/Docusaurus content directory for Markdown translation
 --source <code>         Override source locale (default: en)
 --model <model>         Override translation model
 --method <method>       Translation method: llm, google-translate (default: from config)

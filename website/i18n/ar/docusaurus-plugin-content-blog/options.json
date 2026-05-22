@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "مدونة i18n-rosetta",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "ملاحظات الإصدار، وتحليلات تقنية متعمقة، ورؤى حول هندسة الترجمة.",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "أحدث المقالات",
+    "description": "The label for the left sidebar"
+  }
+}

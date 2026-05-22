@@ -6,63 +6,131 @@ title: Introduction
 
 # i18n-rosetta
 
-Translate your locale files with one command:
+A fully customizable internationalization framework. One command translates your locale files. One config controls every method, model, and language pair. And if the built-in methods aren't enough — build your own, prove it works, and deploy it.
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-Rosetta auto-detects your locale files, their format, and the target languages. It translates missing keys, skips what's already done, and writes the results. That's it.
+rosetta auto-detects your locale files, format, and target languages. It translates what's missing, skips what's done, validates every result, and writes clean output. That's the starting line.
+
+---
 
 ## Why Not Just Script It Yourself?
 
-You could write a quick script that loops through your English keys and calls Google Translate. Most developers do — it takes about 30 lines. Here's why it breaks:
+You could write a quick loop that calls Google Translate on each key. Most developers do — it takes about 30 lines. Here's where it breaks:
 
-- **No change detection.** When you update an English string, the translation stays stale forever. Rosetta tracks every source value with SHA-256 hashes and re-translates only what changed.
-- **No batching.** One API call per key means 200 keys = 200 round trips. Rosetta batches intelligently (configurable, default 30 keys/batch for LLM, 128 for Google).
-- **No quality gate.** Machine translation hallucinates, echoes the source back, or outputs in the wrong script. Rosetta validates every translation before writing it — wrong-script, length inflation, and source echoes are caught and rejected.
-- **No format awareness.** Hardcoded to JSON? Rosetta handles JSON, TOML, YAML, and Hugo Markdown (frontmatter + body) with auto-detection.
-- **No safety.** Rosetta guards against prototype pollution, path traversal via crafted locale codes, and code block corruption during Markdown translation.
+- **No change detection.** Update an English string — the translation stays stale forever. rosetta tracks every source value with SHA-256 hashes and re-translates only what changed.
+- **No batching.** One API call per key means 200 keys = 200 round trips. rosetta batches intelligently (configurable, default 30 keys/batch for LLM, 128 for Google).
+- **No quality gate.** Machine translation hallucinates, echoes the source back, or outputs in the wrong script. rosetta validates every translation before writing it — wrong-script, length inflation, and source echoes are caught and rejected.
+- **No format awareness.** Hardcoded to JSON? rosetta handles JSON, TOML, YAML, and Hugo Markdown (frontmatter + body) with auto-detection.
+- **No method control.** Every pair gets the same method. rosetta lets you use Google Translate for French, an LLM for Japanese, and a custom community-hosted pipeline for Cree — in the same config file.
 
-Rosetta is the production version of that script.
+rosetta is the production version of that script.
 
-## What It Does
+---
 
-You handle the i18n framework (next-intl, i18next, Hugo). Rosetta handles the translation files.
+## What Makes It Different
 
-- **Multi-format** — JSON, TOML, YAML, and Hugo Markdown (front matter + body)
-- **Incremental** — Only translates what changed (SHA-256 hash tracking)
-- **Quality-gated** — Validates every translation: catches hallucinations, wrong-script output, source echoes, and length inflation
-- **Content-aware** — LLM methods shield code blocks, shortcodes, links, and interpolation variables during Markdown translation
-- **Pipeline tools** — `lint`, `audit`, `integrity`, `seo` for CI gates
-- **Zero dependencies** — Node.js built-ins only. No SDKs, no native modules. Requires Node 20+
+### Every method is a plugin
 
-## Beyond Google Translate
+The translation method is **configurable per language pair**. Mix Google Translate, LLMs, coached prompts, and custom APIs in the same project:
 
-The quick start gets you running with an LLM or Google Translate. But Google Translate supports ~130 languages. There are over 7,000.
-
-**Rosetta's core idea: the translation method is configurable per language pair.** Use Google Translate for French, an LLM with morphological coaching for Plains Cree, and a community-hosted API for Quechua — all in the same project, all with the same CLI.
-
-```json
+```json title="i18n-rosetta.config.json"
 {
   "version": 3,
   "pairs": {
     "en:fr": { "method": "google-translate" },
-    "en:ja": { "method": "llm" },
+    "en:ja": { "method": "llm", "model": "google/gemini-2.5-pro" },
     "en:crk": { "methodPlugin": "crk-coached-v1" }
   }
 }
 ```
 
-If you can figure out how to translate a language pair — through prompt engineering, community dictionaries, FST pipelines, or fine-tuned models — rosetta lets you package that method as a plugin and deploy it alongside everything else.
+French gets Google Translate (fast, cheap). Japanese gets a premium LLM (nuanced). Plains Cree gets a coached plugin with grammar rules, dictionaries, and morphological validation. Same `sync` command. Same quality gate. Same CLI.
 
-> Born from translating a production website into Plains Cree, where no off-the-shelf API exists. The per-pair architecture isn't theoretical — it exists because one project needed Google Translate for French and a coached FST pipeline for an Indigenous language, running side by side in the same sync command.
+### Prove it, then use it
 
-The companion [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) lets you benchmark and compare translation approaches, then export working methods as rosetta plugins.
+Think your method can translate English to Spanish? Turkish to Azerbaijani? English to Cree?
+
+**Prove it.** The companion [eval harness](/docs/eval/harness) benchmarks any translation method with reproducible, fingerprinted scoring. The [leaderboard](/leaderboard) tracks every submission.
+
+**Then use it.** The eval harness and the production CLI share the same plugin interface. A method that scores well in the harness deploys to your website with one config change. No rewriting, no porting.
+
+```bash
+# Benchmark your method (in the eval harness repo)
+cd gds-mt-eval-harness
+python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
+
+# Deploy it (in your project)
+npx i18n-rosetta sync
+```
+
+Same plugin. Plug and test, plug and play.
+
+### The full toolkit
+
+rosetta isn't just `sync`. It's a complete i18n pipeline:
+
+| Command | What It Does |
+|---------|-------------|
+| `sync` | Translate missing, stale, and fallback keys |
+| `watch` | Auto-sync when your source file changes |
+| `lint` | Scan source code for hardcoded strings |
+| `wrap` | Auto-wrap hardcoded strings in `t()` calls |
+| `audit` | List all untranslated `[EN]` fallback values |
+| `integrity` | Detect placeholder corruption and encoding issues |
+| `seo` | Generate hreflang tags, sitemaps, and JSON-LD |
+| `status` | Show pair config, plugins, and benchmark scores |
+| `provenance` | Audit translation resource licensing |
+| `plugin` | Install, remove, and list method plugins |
+
+Three of these — `lint`, `sync`, `audit` — form a CI pipeline that catches hardcoded strings, translates them, and fails the build if any locale is incomplete.
+
+---
+
+## The Arena
+
+The [Method Leaderboard](/leaderboard) is the scoreboard. Every submission is fingerprinted to a Git commit, versioned to a specific dataset, and scored by the same harness. Anyone can submit.
+
+**What can you prove?** The harness takes JSON. Plugins take JSON. Any method that produces JSON can be tested:
+
+| Approach | Example |
+|----------|---------|
+| **Coached LLM** | Inject grammar rules and dictionaries into a frontier model's prompt |
+| **Fine-tuned model** | Train an open model on parallel text — just not on the eval data |
+| **FST-gated pipeline** | LLM generates → finite-state transducer validates morphology → retry |
+| **Chained models** | Model A drafts → Model B post-edits → Model C scores |
+| **Dictionary + LLM** | Force known terms from a dictionary, let the LLM handle the rest |
+| **Evolutionary** | Generate candidates, score them, mutate the best, repeat |
+| **Partial translation** | Translate a sample by hand, prove your LLM matches, auto-translate the rest |
+
+Fine-tune models. Deploy evolutionary algorithms. Test student answers on language exams. Build lookup tables. Chain three models together. As long as your method produces JSON, the harness scores it and the framework runs it.
+
+:::danger The one rule
+**Do not train on the evaluation data.** Methods exposed to the benchmark dataset will be disqualified. Fine-tune on whatever you want. Just not on the test set.
+:::
+
+This is an open invitation. If you work with a low-resource language — as a researcher, a community member, a student, or just someone who cares — build a method, run the harness, and claim the top score. The problem is unsolved. The infrastructure is here.
+
+**[→ View the leaderboard](/leaderboard)**
+
+---
 
 ## Next Steps
 
-- **[Installation](/docs/getting-started/installation)** — Get set up in 2 minutes
-- **[Quick Start](/docs/getting-started/quick-start)** — Run your first sync
-- **[Translation Methods](/docs/guides/translation-methods)** — Choose the right method for your project
-- **[Architecture](/docs/concepts/architecture)** — Understand the ecosystem
+**Getting started:**
+- [Installation](/docs/getting-started/installation) — Set up in 2 minutes
+- [Quick Start](/docs/getting-started/quick-start) — Run your first sync
+- [Supported Languages](/docs/reference/supported-languages) — What's available out of the box
+
+**Customizing your setup:**
+- [Translation Methods](/docs/guides/translation-methods) — Choose the right method per pair
+- [Configuration](/docs/getting-started/configuration) — Full config reference
+- [Hugo Multilingual Site](/docs/tutorials/hugo-multilingual-site) — Markdown content translation
+
+**Going deeper:**
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — The challenge that started it all
+- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Build a decomposition pipeline
+- [MT Evaluation](/docs/eval/) — How the harness and leaderboard work
+- [Method Leaderboard](/leaderboard) — Live scores and submissions

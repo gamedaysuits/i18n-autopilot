@@ -1,0 +1,66 @@
+{
+  "link.title.Documentation": {
+    "message": "[EN] Documentation",
+    "description": "The title of the footer links column with title=Documentation in the footer"
+  },
+  "link.title.Learn": {
+    "message": "Apprendre",
+    "description": "The title of the footer links column with title=Learn in the footer"
+  },
+  "link.title.More": {
+    "message": "Plus",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.Getting Started": {
+    "message": "Premiers pas",
+    "description": "The label of footer link with label=Getting Started linking to /docs/getting-started/installation"
+  },
+  "link.item.label.CLI Reference": {
+    "message": "Référence CLI",
+    "description": "The label of footer link with label=CLI Reference linking to /docs/reference/cli"
+  },
+  "link.item.label.Plugin Spec": {
+    "message": "Spécifications du Plugin",
+    "description": "The label of footer link with label=Plugin Spec linking to /docs/reference/plugin-spec"
+  },
+  "link.item.label.Build a Plugin": {
+    "message": "Développer un Plugin",
+    "description": "The label of footer link with label=Build a Plugin linking to /docs/tutorials/build-a-plugin"
+  },
+  "link.item.label.Translate 30 Languages": {
+    "message": "Traduire 30 langues",
+    "description": "The label of footer link with label=Translate 30 Languages linking to /docs/tutorials/translate-30-languages"
+  },
+  "link.item.label.Translation Methods": {
+    "message": "Méthodes de traduction",
+    "description": "The label of footer link with label=Translation Methods linking to /docs/guides/translation-methods"
+  },
+  "link.item.label.Troubleshooting": {
+    "message": "Dépannage",
+    "description": "The label of footer link with label=Troubleshooting linking to /docs/guides/troubleshooting"
+  },
+  "link.item.label.Blog": {
+    "message": "[EN] Blog",
+    "description": "The label of footer link with label=Blog linking to /blog"
+  },
+  "link.item.label.Leaderboard": {
+    "message": "Classement",
+    "description": "The label of footer link with label=Leaderboard linking to /leaderboard"
+  },
+  "link.item.label.GitHub": {
+    "message": "[EN] GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/gamedaysuits/i18n-rosetta"
+  },
+  "link.item.label.npm": {
+    "message": "[EN] npm",
+    "description": "The label of footer link with label=npm linking to https://www.npmjs.com/package/i18n-rosetta"
+  },
+  "link.item.label.Eval Harness": {
+    "message": "[EN] Eval Harness",
+    "description": "The label of footer link with label=Eval Harness linking to https://github.com/gamedaysuits/gds-mt-eval-harness"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 Curtis Forbes. Réalisé avec Docusaurus.",
+    "description": "The footer copyright"
+  }
+}

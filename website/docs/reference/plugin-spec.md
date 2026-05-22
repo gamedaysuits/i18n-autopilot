@@ -101,6 +101,10 @@ A method plugin is a single JSON file (`method.json`) with optional coaching dat
 | `model` | string | ✅ | Model used during eval |
 | `harness_version` | string | ✅ | Version of the evaluation harness used |
 
+:::info Which metrics are displayed?
+The `rosetta status` command displays **chrF++** and **exact match rate** from the benchmark block. `corpus_bleu` is accepted in the manifest but is not currently displayed or used by any rosetta command. The [Method Leaderboard](/leaderboard) tracks chrF++, exact match, and FST acceptance rate.
+:::
+
 ---
 
 ### Provenance Object
@@ -232,3 +236,14 @@ Reference the schema in your `method.json` for IDE autocompletion:
 - ❌ No internal prompt templates (those live in rosetta's method implementations)
 
 The plugin is **data only**: configuration, coaching content, and benchmark results.
+
+---
+
+## See Also
+
+- [Translation Methods](/docs/guides/translation-methods) — how each built-in method works
+- [Configuration](/docs/getting-started/configuration) — per-pair and per-language config
+- [Serving a Method via API](/docs/guides/serving-a-method) — hosting methods as HTTP services
+- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — building and packaging a pipeline
+- [MT Evaluation](/docs/eval/) — benchmarking methods for leaderboard submission
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — the use case for community plugins

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-05-22
+
+### Added
+- **Docusaurus i18n support**: Auto-detect Docusaurus projects and sync translations using the native `{message, description}` JSON format. New content discovery functions (`discoverDocusaurusContentFiles`, `getDocusaurusTargetPath`) support the Docusaurus directory-per-locale layout.
+- **Docusaurus format helpers** (`lib/format.js`): `isDocusaurusJSON()` detects the `{message, description}` structure. `extractDocusaurusMessages()` and `injectDocusaurusMessages()` handle extraction and round-trip injection of translatable strings.
+- **JSDoc type layer**: Comprehensive `@param`/`@returns` annotations across all exported functions. New `lib/types.js` provides shared typedefs (`RosettaConfig`, `PairConfig`, `CLIArgs`, `CoachingData`, `DiffResult`). `jsconfig.json` enables IDE type-checking with zero runtime dependencies — no TypeScript compiler needed.
+- **Short CLI flags**: `-h` (help), `-v` (version), `-y` (yes/skip wizard) — standard UNIX conventions.
+- **Plugin precedence tracking**: `resolvePairs()` now tracks which fields were filled from system defaults (`_defaults` set). `resolvePluginForPair()` uses this to override only defaulted fields — explicit user configuration is never clobbered by a plugin.
+- **Shared string classification** (`lib/string-classify.js`): Extracted common regex heuristics (URL detection, dot-notation, hex colors, template expressions) from `lint.js` and `autofix.js` into a shared module. Both consumers now use identical classification logic.
+- **36 new tests** (702 → 738): Docusaurus format helpers, plugin precedence, CLI edge cases (`--force-keys`, subcommand positionals), and `util.parseArgs` validation.
+
+### Changed
+- **CLI parser**: Migrated from hand-rolled `argv` loop to Node.js built-in `util.parseArgs` with `strict: false`. Preserves all existing flag behavior while gaining proper type validation for known options.
+- **Constants centralized**: `DEFAULT_MODEL` (`openai/gpt-4o-mini`) and `DEFAULT_BATCH_SIZE` (`30`) are now named exports from `config.js`. All consumers (`pairs.js`, `llm.js`, `llm-coached.js`, `translate.js`, `init.js`) import the constants instead of repeating inline literals. Changing the default model or batch size is now a single-line edit.
+- **Coached cascade dedup**: `LLMCoachedMethod` now delegates its retry cascade to `LLMMethod.runCascade()` instead of duplicating the full cascade logic. The coached method only provides its custom `batchFn` and label.
+- **CI stability**: Workflow matrix now uses `fail-fast: false` so a single flaky test doesn't cancel the entire matrix. Added `timeout-minutes: 5` as a safety net.
+
+### Fixed
+- **Missing Docusaurus exports**: `discoverDocusaurusContentFiles` and `getDocusaurusTargetPath` were referenced by `sync.js` but not committed to `content.js`, causing a `SyntaxError` on CI.
+
 ## [3.2.0] - 2026-05-14
 
 ### Added

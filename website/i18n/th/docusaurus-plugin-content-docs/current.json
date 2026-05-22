@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "[EN] 3.2.0",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "เริ่มต้นใช้งาน",
+    "description": "The label for category 'Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Tutorials & Cookbooks": {
+    "message": "บทช่วยสอนและคู่มือ",
+    "description": "The label for category 'Tutorials & Cookbooks' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "คู่มือแนะนำ",
+    "description": "The label for category 'Guides' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "แนวคิด",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "ข้อมูลอ้างอิง",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Evaluation": {
+    "message": "การประเมิน",
+    "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  }
+}

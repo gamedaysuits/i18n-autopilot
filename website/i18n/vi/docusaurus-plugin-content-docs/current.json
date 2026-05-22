@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "[EN] 3.2.0",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Getting Started": {
+    "message": "Bắt đầu",
+    "description": "The label for category 'Getting Started' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Tutorials & Cookbooks": {
+    "message": "Hướng dẫn thực hành & Cẩm nang",
+    "description": "The label for category 'Tutorials & Cookbooks' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Guides": {
+    "message": "Hướng dẫn",
+    "description": "The label for category 'Guides' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Concepts": {
+    "message": "Khái niệm",
+    "description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Reference": {
+    "message": "Tham khảo",
+    "description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Evaluation": {
+    "message": "Đánh giá",
+    "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  }
+}

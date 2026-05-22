@@ -327,3 +327,13 @@ card["run_card_hash"] = ""
 card_json = json.dumps(card, sort_keys=True, ensure_ascii=False)
 card["run_card_hash"] = hashlib.sha256(card_json.encode()).hexdigest()
 ```
+
+---
+
+## See Also
+
+- [MT Evaluation](/docs/eval/) — overview, leaderboard value, and good/bad method guidance
+- [Eval Harness](/docs/eval/harness) — how to run evaluations and generate run cards
+- [Evaluation Datasets](/docs/eval/datasets) — dataset format, EDTeKLA, FLORES+
+- [Building a Method](/docs/eval/methods) — the method interface and method card spec
+- [Method Leaderboard](/leaderboard) — live benchmark scores

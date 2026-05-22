@@ -113,8 +113,11 @@ See the [Plugin Spec](/docs/reference/plugin-spec) for the rosetta-side interfac
 When a method card is attached to a run (via `--method-card`), it's embedded in the run card and displayed on the leaderboard:
 
 ```bash
-mt-eval run --corpus data/corpus.json --method-card method_card.json
-mt-eval submit run_card.json
+# Run with method card attached
+python eval/baseline_experiment.py \
+  --dataset data/edtekla-dev-v1.json \
+  --method-card method_card.json \
+  --submit
 ```
 
 The leaderboard shows:
@@ -124,3 +127,18 @@ The leaderboard shows:
 - **Open source indicator**
 
 When no method card is attached, the leaderboard shows harness-native configuration (model, condition, temperature, tools enabled).
+
+:::danger DO NOT TRAIN on evaluation data
+Methods whose development process included exposure to the evaluation dataset — as training data, few-shot examples, dictionary entries, or prompt tuning material — will be **disqualified** from the leaderboard. See [MT Evaluation](/docs/eval/) for what distinguishes a good method from a bad one.
+:::
+
+---
+
+## See Also
+
+- [MT Evaluation](/docs/eval/) — overview, leaderboard value, and good/bad method guidance
+- [Eval Harness](/docs/eval/harness) — how to run evaluations
+- [Evaluation Datasets](/docs/eval/datasets) — available datasets (EDTeKLA, FLORES+)
+- [Run Card Specification](/docs/eval/run-card) — the run card JSON schema
+- [Plugin Spec](/docs/reference/plugin-spec) — rosetta-side plugin interface
+- [Method Leaderboard](/leaderboard) — live benchmark scores

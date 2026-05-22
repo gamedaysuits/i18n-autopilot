@@ -1,6 +1,6 @@
 {
   "name": "i18n-rosetta",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Research-grade translation engine for i18n projects. Pluggable methods, per-pair quality tiers, and deterministic script converters. Supports JSON (next-intl, i18next), TOML, and YAML (Hugo).",
   "type": "module",
   "bin": {

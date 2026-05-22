@@ -197,3 +197,18 @@ curl -X POST https://i18n-rosetta.com/api/leaderboard/submit \
 :::warning Leaderboard validation
 The leaderboard validates submitted run cards against the dataset registry. Submissions referencing unknown datasets, or with a broken `run_card_hash`, are rejected.
 :::
+
+:::danger DO NOT TRAIN on evaluation data
+If your method has seen the evaluation dataset during development — as training data, few-shot examples, dictionary entries, or prompt engineering material — your submission will be **disqualified**. See [MT Evaluation](/docs/eval/) for what makes a good vs. bad method.
+:::
+
+---
+
+## See Also
+
+- [MT Evaluation](/docs/eval/) — overview, leaderboard value proposition, and good/bad method guidance
+- [Evaluation Datasets](/docs/eval/datasets) — dataset format, EDTeKLA, FLORES+
+- [Run Card Specification](/docs/eval/run-card) — the full JSON schema
+- [Building a Method](/docs/eval/methods) — the method interface for creating evaluable methods
+- [Method Leaderboard](/leaderboard) — live benchmark scores
+

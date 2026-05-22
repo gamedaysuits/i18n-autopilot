@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "[EN] i18n-rosetta Blog",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "Mga release note, malalalim na teknikal na pagsusuri, at mga insight sa translation engineering.",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "Mga kamakailang post",
+    "description": "The label for the left sidebar"
+  }
+}

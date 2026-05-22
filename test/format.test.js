@@ -20,6 +20,9 @@ import {
   flatToYAML,
   groupFlatKeys,
   sectionsToFlat,
+  isDocusaurusJSON,
+  extractDocusaurusMessages,
+  injectDocusaurusMessages,
 } from '../lib/format.js';
 
 // =================================================================
@@ -337,5 +340,141 @@ describe('RED TEAM: format edge cases', () => {
     const yaml = flatToYAML({ empty: '' });
     const parsed = parseYAMLToFlat(yaml);
     assert.equal(parsed['empty'], '');
+  });
+});
+
+// =================================================================
+// 8. Docusaurus format helpers
+// =================================================================
+describe('isDocusaurusJSON', () => {
+  it('detects Docusaurus {message, description} format', () => {
+    const data = {
+      'theme.title': { message: 'Hello', description: 'The title' },
+      'theme.tagline': { message: 'World', description: 'The tagline' },
+    };
+    assert.equal(isDocusaurusJSON(data), true);
+  });
+
+  it('rejects flat key-value JSON', () => {
+    const data = { 'nav.home': 'Home', 'nav.about': 'About' };
+    assert.equal(isDocusaurusJSON(data), false);
+  });
+
+  it('rejects nested JSON without message field', () => {
+    const data = { nav: { home: 'Home', about: 'About' } };
+    assert.equal(isDocusaurusJSON(data), false);
+  });
+
+  it('rejects empty objects', () => {
+    assert.equal(isDocusaurusJSON({}), false);
+  });
+
+  it('rejects null and non-objects', () => {
+    assert.equal(isDocusaurusJSON(null), false);
+    assert.equal(isDocusaurusJSON('string'), false);
+    assert.equal(isDocusaurusJSON(42), false);
+  });
+
+  it('rejects mixed format (some message, some string)', () => {
+    const data = {
+      'a': { message: 'Hello', description: 'desc' },
+      'b': 'plain string',
+    };
+    // First 5 values sampled — 'b' is a string, not {message}, so false
+    assert.equal(isDocusaurusJSON(data), false);
+  });
+});
+
+describe('extractDocusaurusMessages', () => {
+  it('extracts message values from {message, description} objects', () => {
+    const data = {
+      'theme.title': { message: 'Hello', description: 'The title' },
+      'theme.tagline': { message: 'World', description: 'The tagline' },
+    };
+    const flat = extractDocusaurusMessages(data);
+    assert.deepEqual(flat, { 'theme.title': 'Hello', 'theme.tagline': 'World' });
+  });
+
+  it('passes through plain string values', () => {
+    const data = {
+      'theme.title': { message: 'Hello', description: 'desc' },
+      'simple.key': 'Plain value',
+    };
+    const flat = extractDocusaurusMessages(data);
+    assert.equal(flat['theme.title'], 'Hello');
+    assert.equal(flat['simple.key'], 'Plain value');
+  });
+
+  it('skips non-string, non-object values', () => {
+    const data = {
+      'a': { message: 'Hello', description: 'desc' },
+      'b': 42,
+      'c': null,
+      'd': ['array'],
+    };
+    const flat = extractDocusaurusMessages(data);
+    assert.deepEqual(flat, { 'a': 'Hello' });
+  });
+
+  it('handles empty input', () => {
+    assert.deepEqual(extractDocusaurusMessages({}), {});
+  });
+});
+
+describe('injectDocusaurusMessages', () => {
+  it('replaces message values while preserving descriptions', () => {
+    const source = {
+      'theme.title': { message: 'Hello', description: 'The title' },
+      'theme.tagline': { message: 'World', description: 'The tagline' },
+    };
+    const translated = { 'theme.title': 'Bonjour', 'theme.tagline': 'Monde' };
+    const result = injectDocusaurusMessages(source, translated);
+    assert.deepEqual(result, {
+      'theme.title': { message: 'Bonjour', description: 'The title' },
+      'theme.tagline': { message: 'Monde', description: 'The tagline' },
+    });
+  });
+
+  it('falls back to original message when key not in translated map', () => {
+    const source = {
+      'a': { message: 'Hello', description: 'desc A' },
+      'b': { message: 'World', description: 'desc B' },
+    };
+    const translated = { 'a': 'Bonjour' }; // 'b' not translated
+    const result = injectDocusaurusMessages(source, translated);
+    assert.equal(result['a'].message, 'Bonjour');
+    assert.equal(result['b'].message, 'World'); // unchanged
+    assert.equal(result['b'].description, 'desc B'); // preserved
+  });
+
+  it('preserves extra metadata fields in source objects', () => {
+    const source = {
+      'key': { message: 'Hello', description: 'desc', customField: 'keep me' },
+    };
+    const translated = { 'key': 'Bonjour' };
+    const result = injectDocusaurusMessages(source, translated);
+    assert.equal(result['key'].message, 'Bonjour');
+    assert.equal(result['key'].customField, 'keep me');
+  });
+
+  it('handles plain string values in source', () => {
+    const source = {
+      'a': { message: 'Hello', description: 'desc' },
+      'b': 'plain',
+    };
+    const translated = { 'a': 'Bonjour', 'b': 'simple' };
+    const result = injectDocusaurusMessages(source, translated);
+    assert.equal(result['a'].message, 'Bonjour');
+    assert.equal(result['b'], 'simple');
+  });
+
+  it('round-trips: extract → inject with same data = identity', () => {
+    const source = {
+      'theme.title': { message: 'Hello', description: 'The title' },
+      'theme.tagline': { message: 'World', description: 'The tagline' },
+    };
+    const flat = extractDocusaurusMessages(source);
+    const result = injectDocusaurusMessages(source, flat);
+    assert.deepEqual(result, source);
   });
 });

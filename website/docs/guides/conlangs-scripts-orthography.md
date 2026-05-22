@@ -1,0 +1,259 @@
+---
+sidebar_position: 3
+title: "Conlangs, Scripts & Orthography"
+---
+
+# Conlangs, Scripts & Orthography
+
+rosetta has first-class support for constructed languages via LLM registers and deterministic script converters. This guide covers how conlang support works, what fonts you need, and how to add your own.
+
+:::tip Why conlangs matter
+Conlangs aren't just novelty — they exercise the exact same infrastructure used for real underserved languages. The quality gate, coaching system, and script conversion pipeline work identically for Klingon and Plains Cree. If your conlang pipeline works, your low-resource language pipeline will too.
+:::
+
+---
+
+## Supported Constructed Languages
+
+| Language | Code | Script Converter | Font Required |
+|----------|------|:----------------:|:-------------:|
+| Klingon | `tlh` | ✅ Romanization → pIqaD | PUA font (e.g., pIqaD qolqoS) |
+| Sindarin (Tolkien Elvish) | `x-elvish-s` | ✅ Latin → Tengwar | CSUR PUA font |
+| Kryptonian | `x-kryptonian` | ✅ Latin → Kryptonian | PUA font |
+| Pirate English | `x-pirate` | ❌ register only | None |
+| Shakespearean English | `x-shakespeare` | ❌ register only | None |
+| Yoda-speak | `x-yoda` | ❌ register only | None |
+
+Conlang codes use the `x-` prefix per BCP-47 private-use convention, except Klingon (`tlh`) which has an [ISO 639-3](https://iso639-3.sil.org/code/tlh) code assigned by SIL International.
+
+---
+
+## Unicode, PUA, and Font Requirements
+
+### The Private Use Area
+
+Klingon (pIqaD), Sindarin (Tengwar), and Kryptonian use Unicode **Private Use Area (PUA)** characters. PUA is the range U+E000–U+F8FF — these codepoints have **no standard assignment**. The [ConScript Unicode Registry (CSUR)](https://www.evertype.com/standards/csur/) maintains community-agreed mappings for fictional scripts, but these are not part of the Unicode standard.
+
+What this means in practice:
+
+- PUA text renders as **empty boxes** (□□□) without the correct font loaded
+- Different fonts may map different glyphs to the same PUA codepoints
+- rosetta does NOT bundle PUA fonts — you must load them yourself
+- System fonts will never render these characters
+
+### PUA Ranges by Script
+
+| Script | PUA Range | CSUR Reference |
+|--------|-----------|---------------|
+| Klingon (pIqaD) | U+F8D0–U+F8FF | [CSUR Klingon](https://www.evertype.com/standards/csur/klingon.html) |
+| Tengwar (Elvish) | U+E000–U+E07F | [CSUR Tengwar](https://www.evertype.com/standards/csur/tengwar.html) |
+| Kryptonian | Varies by font | No CSUR standard |
+
+### Loading PUA Web Fonts
+
+To display PUA-based conlang text in your web application, load the appropriate font via CSS:
+
+```css
+/* Load a Klingon PUA font */
+@font-face {
+  font-family: 'pIqaD';
+  src: url('/fonts/piqad.woff2') format('woff2');
+  unicode-range: U+F8D0-U+F8FF;
+}
+
+/* Apply to Klingon text elements */
+[lang="tlh"] {
+  font-family: 'pIqaD', sans-serif;
+}
+```
+
+:::warning Unicode support is NOT guaranteed
+The Unicode Consortium has [explicitly declined](https://www.unicode.org/faq/private_use.html) to encode fictional scripts in the standard. PUA assignments are community-maintained and may conflict between font implementations. Always specify the exact font your project uses, and test rendering across browsers.
+:::
+
+---
+
+## Script Converters
+
+### How They Work
+
+rosetta's script conversion is a **post-translation hook**:
+
+1. The LLM translates text into a **working script** (usually Latin or SRO)
+2. The [quality gate](/docs/concepts/quality-gate) validates the output
+3. The deterministic converter transforms the validated text into the **display script**
+4. The converted text is written to disk
+
+This two-step approach works because LLMs produce better output when working in Latin-based scripts. The deterministic converter guarantees correct script output without relying on the model's (often unreliable) script knowledge.
+
+### All Five Converters
+
+rosetta ships with five built-in script converters:
+
+#### Plains Cree: SRO → Syllabics (`crk`)
+
+Standard Roman Orthography to Canadian Aboriginal Syllabics.
+
+```
+Input:  "tawâw"
+Output: "ᑕᐚᐤ"
+```
+
+Long vowels use macron/circumflex: ê, î, ô, â. The converter handles all SRO diacritics and maps them to the correct syllabic characters. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for the full Cree pipeline.
+
+#### Serbian: Latin → Cyrillic (`sr`)
+
+Deterministic Latin-to-Cyrillic conversion for Serbian.
+
+```
+Input:  "zdravo"
+Output: "здраво"
+```
+
+This handles the full Serbian alphabet mapping including digraphs (lj → љ, nj → њ, dž → џ).
+
+#### Klingon: Romanization → pIqaD (`tlh`)
+
+Marc Okrand's romanization system to pIqaD PUA characters.
+
+```
+Input:  "Qapla'"    (romanized Klingon)
+Output: [pIqaD PUA] (requires pIqaD font to render)
+```
+
+#### Sindarin: Latin → Tengwar (`x-elvish-s`)
+
+Tolkien's Sindarin mode Tengwar mapping.
+
+```
+Input:  "elen síla"  (Latin Sindarin)
+Output: [Tengwar PUA] (requires Tengwar font to render)
+```
+
+#### Kryptonian: Latin → Kryptonian (`x-kryptonian`)
+
+Fan-lexicon Kryptonian script mapping.
+
+```
+Input:  "Kal-El"
+Output: [Kryptonian PUA] (requires Kryptonian font to render)
+```
+
+### Triggering a Converter
+
+Set the `scripts` field in your language config. For built-in converters, this is auto-detected from the language code:
+
+```json
+{
+  "languages": {
+    "sr": { "scripts": "sr" },
+    "crk": {}
+  }
+}
+```
+
+Plains Cree (`crk`) auto-detects — you don't need to set `scripts` explicitly.
+
+---
+
+## Multi-Script Languages
+
+Some real languages use multiple active scripts:
+
+| Language | Scripts | rosetta Approach |
+|----------|---------|-----------------|
+| Serbian | Latin + Cyrillic | Script converter (`sr`) — translate in Latin, convert to Cyrillic |
+| Chinese | Simplified + Traditional | Separate locale codes (`zh` vs `zh-TW`) with distinct registers |
+
+For languages where both scripts serve the same audience (Serbian), use a script converter. For languages where the scripts serve different audiences (Chinese Simplified for mainland China, Traditional for Taiwan/HK), use separate locale codes.
+
+---
+
+## Orthography Notes
+
+Registers aren't just tone — they carry **orthographic instructions** that steer the LLM toward correct writing conventions.
+
+### Formal Address Forms
+
+rosetta's built-in registers include the culturally appropriate formal address for each language:
+
+| Language | Formal Form | Register Instruction |
+|----------|------------|---------------------|
+| German | Sie | `Use Sie-form for formal address` |
+| French | vous | `Use vous-form` |
+| Russian | вы | `Professional register with вы-form` |
+| Turkish | siz | `Professional register with siz-form` |
+| Korean | 합쇼체 | `Formal Korean (합쇼체)` |
+| Japanese | です/ます | `Polite professional register (です/ます form)` |
+| Polish | Pan/Pani | `Professional register with Pan/Pani form` |
+
+### Gender-Inclusive Writing
+
+Several registers include explicit gender-inclusive guidance:
+
+- **French**: `prefer inclusive forms (e.g., "Connecté·e" over "Connecté")`
+- **German**: `prefer gender-inclusive forms (e.g., Benutzer:innen)`
+- **Spanish**: `prefer gender-neutral alternatives (e.g., "usuario/a")`
+
+### RTL Script Requirements
+
+Arabic, Hebrew, Persian, and Urdu registers all note right-to-left requirements: `Ensure text reads naturally in RTL layout contexts.`
+
+### Overriding Any Register
+
+Every register is a config value — override it to match your project's voice:
+
+```json
+{
+  "languages": {
+    "fr": {
+      "register": "Casual French. Use tu-form. Conversational blog tone. Gender-neutral when possible."
+    },
+    "de": {
+      "register": "Informal German. Use du-form. Tech startup voice."
+    }
+  }
+}
+```
+
+See [Configuration](/docs/getting-started/configuration) for the full config reference.
+
+---
+
+## Adding a New Conlang
+
+### Step-by-step
+
+1. **Choose a BCP-47 private-use code**: Use the `x-` prefix (e.g., `x-dothraki`, `x-valyrian`).
+
+2. **Add to your config**:
+
+```json
+{
+  "languages": {
+    "x-dothraki": {
+      "register": "Dothraki language. Use David J. Peterson's vocabulary from the Living Language Dothraki textbook. Harsh, direct tone. No articles, no verb 'to be'."
+    }
+  }
+}
+```
+
+3. **(Optional) Add a script converter**: If your conlang uses a non-Latin display script, add a converter in `lib/scripts.js` and register it in `SCRIPT_CONVERTERS`.
+
+4. **Test**: Run `i18n-rosetta sync --dry` to preview translations without writing files.
+
+5. **Check the quality gate**: The [quality gate](/docs/concepts/quality-gate) may need tuning for your conlang — particularly the `requireNonLatin` check if your conlang uses PUA characters.
+
+:::note Conlang quality depends on LLM knowledge
+The LLM can only translate into a conlang it has seen in training data. Well-documented conlangs (Klingon, Sindarin, Dothraki) work well. Obscure or newly invented conlangs may produce inconsistent results. Use [coaching data](/docs/concepts/coaching-data) to improve quality.
+:::
+
+---
+
+## See Also
+
+- [Supported Languages](/docs/reference/supported-languages) — full language table with method availability
+- [Script Converters](/docs/concepts/script-converters) — technical details of the conversion pipeline
+- [Translation Methods](/docs/guides/translation-methods) — how each translation method works
+- [Configuration](/docs/getting-started/configuration) — config reference including language and register setup
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — the same infrastructure applied to real underserved languages
