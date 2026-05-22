@@ -7,37 +7,56 @@
  *   async function run(args, cwd) → exit code (0 or 1)
  *
  * This file handles ONLY:
- *   1. Argument parsing (zero-dependency)
+ *   1. Argument parsing (via Node.js built-in util.parseArgs)
  *   2. Command routing
  *   3. Per-command --help routing
  *   4. Process exit codes
  *   5. Top-level error handling
  */
 
-// -----------------------------------------------------------------
-// Parse CLI arguments (zero-dependency, handles --key value pairs)
-// -----------------------------------------------------------------
-function parseArgs(argv) {
-  const args = { _: [] };
-  for (let i = 2; i < argv.length; i++) {
-    const arg = argv[i];
-    if (arg.startsWith('--')) {
-      const key = arg.slice(2);
-      const next = argv[i + 1];
-      if (next && !next.startsWith('--')) {
-        args[key] = next;
-        i++;
-      } else {
-        args[key] = true;
-      }
-    } else {
-      args._.push(arg);
-    }
-  }
-  return args;
-}
+import { parseArgs } from 'node:util';
 
-const args = parseArgs(process.argv);
+// -----------------------------------------------------------------
+// Parse CLI arguments via util.parseArgs (Node 18.3+)
+//
+// strict: false allows unknown flags to pass through without errors,
+// since each command defines its own flags and the dispatcher doesn't
+// need to enumerate all possible flags.
+// -----------------------------------------------------------------
+const { values, positionals } = parseArgs({
+  args: process.argv.slice(2),
+  strict: false,
+  allowPositionals: true,
+  options: {
+    // --- Boolean flags (shared across commands) ---
+    dry:         { type: 'boolean' },
+    help:        { type: 'boolean', short: 'h' },
+    version:     { type: 'boolean', short: 'v' },
+    fallback:    { type: 'boolean' },
+    yes:         { type: 'boolean', short: 'y' },
+    'warn-only': { type: 'boolean' },
+    undo:        { type: 'boolean' },
+
+    // --- String flags (take a value) ---
+    config:        { type: 'string' },
+    dir:           { type: 'string' },
+    'content-dir': { type: 'string' },
+    source:        { type: 'string' },
+    model:         { type: 'string' },
+    method:        { type: 'string' },
+    format:        { type: 'string' },
+    'base-url':    { type: 'string' },
+    out:           { type: 'string' },
+    src:           { type: 'string' },
+    'min-length':  { type: 'string' },
+    'force-keys':  { type: 'string' },
+  },
+});
+
+// Build the args object in the shape all command modules expect:
+//   { _: ['command', 'subcommand', ...], flagName: value, ... }
+// This preserves backward compatibility with every command module.
+const args = { _: positionals, ...values };
 const command = args._[0] || 'help';
 const cwd = process.cwd();
 
@@ -45,13 +64,14 @@ const cwd = process.cwd();
 // --version: print version from package.json and exit
 // -----------------------------------------------------------------
 if (args.version) {
+  // URL is a global — no need to import node:url.
+  // Dynamic import of node:fs is consistent with the lazy-loading
+  // strategy used for command modules below.
   import('node:fs').then(fs => {
-    import('node:url').then(url => {
-      const pkgPath = new URL('../package.json', import.meta.url);
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-      console.log(`i18n-rosetta v${pkg.version}`);
-      process.exit(0);
-    });
+    const pkgPath = new URL('../package.json', import.meta.url);
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    console.log(`i18n-rosetta v${pkg.version}`);
+    process.exit(0);
   });
 } else
 

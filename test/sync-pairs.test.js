@@ -365,6 +365,77 @@ describe('sync-pairs: plugin config merges into pair', () => {
     const resolved = resolvePluginForPair(plugins, rawPairConfig);
     assert.equal(resolved.method, 'llm');
   });
+
+  it('plugin config overrides system defaults but not explicit pair settings', () => {
+    // This tests the _defaults tracking introduced in pairs.js:
+    // When resolvePairs fills a field from system defaults (e.g., model),
+    // a plugin should be able to override that default. But when the user
+    // explicitly sets the field, the plugin should not override it.
+
+    // Install a mock plugin
+    const pluginDir = path.join(tempDir, '.rosetta', 'methods', 'fr-premium-v2');
+    fs.mkdirSync(pluginDir, { recursive: true });
+    fs.writeFileSync(path.join(pluginDir, 'method.json'), JSON.stringify({
+      name: 'fr-premium-v2',
+      type: 'llm-coached',
+      version: '2.0.0',
+      locales: ['fr'],
+      config: {
+        model: 'anthropic/claude-3.5-sonnet',
+        register: 'Premium formal French.',
+        batchSize: 10,
+      },
+    }));
+
+    const plugins = loadPlugins(tempDir);
+
+    // Case A: pair WITHOUT explicit model → plugin model wins over system default
+    const configA = {
+      inputLocale: 'en',
+      model: 'openai/gpt-4o-mini',  // system default
+      batchSize: 30,
+      resolvedLanguages: {
+        // No explicit model on the language entry — will get system default
+        fr: { name: 'French' },
+      },
+      pairs: {
+        'en:fr': { methodPlugin: 'fr-premium-v2' },
+      },
+    };
+
+    const pairsA = resolvePairs(configA);
+    const frPairA = pairsA.get('en:fr');
+    // Verify the _defaults set is tracking model as a default
+    assert.ok(frPairA._defaults.has('model'), 'model should be tracked as a default');
+    const resolvedA = resolvePluginForPair(plugins, frPairA);
+    assert.equal(resolvedA.model, 'anthropic/claude-3.5-sonnet',
+      'Plugin model should override system default');
+    assert.equal(resolvedA.register, 'Premium formal French.',
+      'Plugin register should override system default');
+    assert.equal(resolvedA.batchSize, 10,
+      'Plugin batchSize should override system default');
+
+    // Case B: pair WITH explicit model → pair model wins over plugin
+    const configB = {
+      inputLocale: 'en',
+      model: 'openai/gpt-4o-mini',
+      batchSize: 30,
+      resolvedLanguages: {
+        fr: { name: 'French', model: 'google/gemini-2.0-flash' },
+      },
+      pairs: {
+        'en:fr': { methodPlugin: 'fr-premium-v2' },
+      },
+    };
+
+    const pairsB = resolvePairs(configB);
+    const frPairB = pairsB.get('en:fr');
+    // model should NOT be in _defaults since user set it explicitly
+    assert.ok(!frPairB._defaults.has('model'), 'model should NOT be a default');
+    const resolvedB = resolvePluginForPair(plugins, frPairB);
+    assert.equal(resolvedB.model, 'google/gemini-2.0-flash',
+      'Explicit pair model should win over plugin model');
+  });
 });
 
 // =================================================================

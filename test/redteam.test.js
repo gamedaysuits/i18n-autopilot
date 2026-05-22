@@ -18,6 +18,7 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseArgs as nodeParseArgs } from 'node:util';
 
 import { flattenKeys, setNestedValue } from '../lib/flatten.js';
 import { diffLocale, diffLabel } from '../lib/diff.js';
@@ -559,27 +560,40 @@ describe('RED TEAM: registers integrity', () => {
 
 // =================================================================
 // 10. CLI arg parser — Edge cases
+//
+// These tests validate the util.parseArgs-based parser from cli.js.
+// We replicate the same parseArgs configuration here to test it
+// in isolation without spawning a child process.
 // =================================================================
 describe('RED TEAM: CLI arg parsing edge cases', () => {
-  // Re-implement parseArgs locally since it's not exported
+  // Mirror the parser configuration from bin/cli.js
+
   function parseArgs(argv) {
-    const args = { _: [] };
-    for (let i = 2; i < argv.length; i++) {
-      const arg = argv[i];
-      if (arg.startsWith('--')) {
-        const key = arg.slice(2);
-        const next = argv[i + 1];
-        if (next && !next.startsWith('--')) {
-          args[key] = next;
-          i++;
-        } else {
-          args[key] = true;
-        }
-      } else {
-        args._.push(arg);
-      }
-    }
-    return args;
+    const { values, positionals } = nodeParseArgs({
+      args: argv.slice(2),
+      strict: false,
+      allowPositionals: true,
+      options: {
+        dry:         { type: 'boolean' },
+        help:        { type: 'boolean', short: 'h' },
+        version:     { type: 'boolean', short: 'v' },
+        fallback:    { type: 'boolean' },
+        yes:         { type: 'boolean', short: 'y' },
+        'warn-only': { type: 'boolean' },
+        undo:        { type: 'boolean' },
+        verbose:     { type: 'boolean' },
+        config:      { type: 'string' },
+        dir:         { type: 'string' },
+        source:      { type: 'string' },
+        model:       { type: 'string' },
+        method:      { type: 'string' },
+        format:      { type: 'string' },
+        out:         { type: 'string' },
+        src:         { type: 'string' },
+        'force-keys':{ type: 'string' },
+      },
+    });
+    return { _: positionals, ...values };
   }
 
   it('handles --flag at end of argv (boolean)', () => {
@@ -608,6 +622,17 @@ describe('RED TEAM: CLI arg parsing edge cases', () => {
   it('defaults to empty positionals', () => {
     const args = parseArgs(['node', 'cli.js']);
     assert.deepEqual(args._, []);
+  });
+
+  it('handles subcommand positionals (plugin install)', () => {
+    const args = parseArgs(['node', 'cli.js', 'plugin', 'install', './dir/']);
+    assert.deepEqual(args._, ['plugin', 'install', './dir/']);
+  });
+
+  it('handles --force-keys with comma-separated values', () => {
+    const args = parseArgs(['node', 'cli.js', 'sync', '--force-keys', 'a.title,a.subtitle']);
+    assert.equal(args['force-keys'], 'a.title,a.subtitle');
+    assert.deepEqual(args._, ['sync']);
   });
 });
 
