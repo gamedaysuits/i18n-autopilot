@@ -323,7 +323,8 @@ function ArenaSection() {
       <div className="container text--center">
         <p className={styles.arenaEyebrow}>THE ARENA</p>
         <Heading as="h2" className={styles.arenaTitle}>
-          Think you have the best method for translating{' '}
+          Think you have the best method<br />
+          for translating{' '}
           <span className={clsx(styles.arenaPair, srcVisible && styles.arenaPairVisible)}>
             {SOURCE_LANGS[srcIndex]}
           </span>
