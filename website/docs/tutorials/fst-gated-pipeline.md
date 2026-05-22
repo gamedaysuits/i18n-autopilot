@@ -587,8 +587,8 @@ This cookbook demonstrates one pipeline architecture. You can adapt it for any l
 
 | Variation | What Changes |
 |-----------|-------------|
-| **Different FST** | Swap the binary path. Any HFST or Foma analyzer works. |
-| **No FST available** | Remove the validation stage. Use coached LLM only. |
+| **Different FST** | Swap the binary path. You can download precompiled FSTs (like `.hfstol` or `lttoolbox` binaries) for over 100 languages from the [GiellaLT GitHub](https://github.com/giellalt) or [Apertium GitHub](https://github.com/apertium). |
+| **No FST available** | Remove the FST execution stage and use [UniMorph flat paradigm files](https://huggingface.co/datasets/unimorph/universal_morphologies) from Hugging Face to perform static database lookup validation of inflected forms. |
 | **Multiple LLMs** | Chain models: a fast model for initial draft, a reasoning model for corrections. |
 | **Human-in-the-loop** | Add a queue stage that holds uncertain translations for expert review before returning. |
 | **Fine-tuned model** | Replace the OpenRouter call with a local model (Ollama, vLLM, etc.). |

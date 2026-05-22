@@ -63,6 +63,7 @@ const sidebars = {
       type: 'category',
       label: 'Guides',
       items: [
+        'guides/data-sovereignty',
         'guides/ci-cd',
         'guides/content-translation',
         'guides/conlangs-scripts-orthography',

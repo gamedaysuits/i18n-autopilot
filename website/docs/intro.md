@@ -49,24 +49,24 @@ The translation method is **configurable per language pair**. Mix Google Transla
 
 French gets Google Translate (fast, cheap). Japanese gets a premium LLM (nuanced). Plains Cree gets a coached plugin with grammar rules, dictionaries, and morphological validation. Same `sync` command. Same quality gate. Same CLI.
 
-### Prove it, then use it
+### Prove it
 
 Think your method can translate English to Spanish? Turkish to Azerbaijani? English to Cree?
 
 **Prove it.** The companion [eval harness](/docs/eval/harness) benchmarks any translation method with reproducible, fingerprinted scoring. The [leaderboard](/leaderboard) tracks every submission.
 
-**Then use it.** The eval harness and the production CLI share the same plugin interface. A method that scores well in the harness deploys to your website with one config change. No rewriting, no porting.
+The eval harness and the production CLI share the same plugin interface. A method that scores well in the harness can be used in production — if the community whose language it serves gives consent. For Indigenous and low-resource languages, that consent matters. See [Data Sovereignty](/docs/guides/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
 cd gds-mt-eval-harness
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 
-# Deploy it (in your project)
+# Use it locally
 npx i18n-rosetta sync
 ```
 
-Same plugin. Plug and test, plug and play.
+Same plugin. Plug and test.
 
 ### The full toolkit
 
@@ -130,6 +130,7 @@ This is an open invitation. If you work with a low-resource language — as a re
 - [Hugo Multilingual Site](/docs/tutorials/hugo-multilingual-site) — Markdown content translation
 
 **Going deeper:**
+- [Data Sovereignty](/docs/guides/data-sovereignty) — OCAP, CARE, and Māori Data Sovereignty principles
 - [Support a Low-Resource Language](/docs/guides/low-resource-languages) — The challenge that started it all
 - [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Build a decomposition pipeline
 - [MT Evaluation](/docs/eval/) — How the harness and leaderboard work

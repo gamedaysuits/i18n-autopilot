@@ -5,7 +5,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'i18n-rosetta',
-  tagline: 'Translate your locale files with one command',
+  tagline: 'Think you can solve it? Prove it.',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -161,8 +161,8 @@ const config = {
             title: 'Learn',
             items: [
               {
-                label: 'Build a Plugin',
-                to: '/docs/tutorials/build-a-plugin',
+                label: 'Build a Pipeline',
+                to: '/docs/tutorials/fst-gated-pipeline',
               },
               {
                 label: 'Translate 30 Languages',

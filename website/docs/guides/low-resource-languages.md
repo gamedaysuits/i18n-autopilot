@@ -64,6 +64,15 @@ This is why the rosetta leaderboard tracks **FST Acceptance Rate** as a metric. 
 - [crk-db](https://github.com/UAlbertaALTLab/crk-db) — Plains Cree lexical database
 - [21st Century Tools for Indigenous Languages](https://21c.tools/) — the broader project context
 
+### Global FST & Morphological Registries
+
+Plains Cree is not the only language with high-quality FST infrastructure. If you want to develop translation pipelines for other low-resource or morphologically complex languages, you can tap into these established global hubs:
+
+* **[GiellaLT / Giellatekno](https://giellalt.github.io/) (UiT The Arctic University of Norway):** The largest repository of open-source FST morphological analyzers and generators, covering over 100 languages. Focus areas include Sámi languages (`sme`, `smj`, `sma`, etc.), Uralic languages (Komi, Erzya, Udmurt, etc.), and other minority/indigenous languages. They host public processed text corpora (`corpus-xxx`) in their [GitHub Organization](https://github.com/giellalt/).
+* **[The Apertium Project](https://www.apertium.org/):** An open-source rule-based machine translation platform. Apertium maintains highly optimized FST morphological analyzers (using `lttoolbox` and `hfst`) and bilingual dictionaries for dozens of languages, including a large suite of Turkic languages (Kazakh, Tatar, Kyrgyz, etc.) and minority European languages. All resources are public on [Apertium's GitHub](https://github.com/apertium).
+* **[UniMorph (Universal Morphology)](https://unimorph.github.io/):** A collaborative project providing standardized morphological paradigms for over 150 languages. The dataset is hosted on Hugging Face at [unimorph/universal_morphologies](https://huggingface.co/datasets/unimorph/universal_morphologies). If a compiled FST binary is unavailable for a language, UniMorph tables can be used as a static database lookup gate.
+* **[National Research Council Canada (NRC)](https://nrc-digital-repository.canada.ca/):** Offers tools for Canadian Indigenous languages, including the **Uqailaut** Inuktitut FST morphological analyzer and the massive **Nunavut Hansard Parallel Corpus** (1.3M aligned English-Inuktitut sentence pairs).
+
 ### The EdTeKLA Corpus
 
 The [EdTeKLA research group](https://spaces.facsci.ualberta.ca/edtekla/) (also at UAlberta) has assembled a Plains Cree language corpus from educational materials, audio transcriptions, and community sources. The rosetta evaluation dataset [EDTeKLA Dev v1](/docs/eval/datasets) is derived from this work, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

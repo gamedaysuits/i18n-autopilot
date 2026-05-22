@@ -4,19 +4,65 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
+import { useState, useEffect } from 'react';
 
 import leaderboardData from '../data/leaderboard.json';
 import styles from './index.module.css';
 
+/**
+ * Rotating language names for the hero tagline.
+ * Each entry has the target language name and the
+ * translation of "Prove it" in that language.
+ */
+const ROTATING_LANGUAGES = [
+  { name: 'Plains Cree',  proveIt: 'kiskêyihta' },
+  { name: 'Quechua',      proveIt: 'rikuchiy' },
+  { name: 'Inuktitut',    proveIt: 'takujaksaq' },
+  { name: 'Ojibwe',       proveIt: 'waabanda' },
+  { name: 'Navajo',       proveIt: "bik'ehgo" },
+  { name: 'Welsh',        proveIt: 'profa fe' },
+  { name: 'Basque',       proveIt: 'frogatu' },
+  { name: 'Yoruba',       proveIt: 'fi hàn' },
+  { name: 'Māori',        proveIt: 'whakaaturia' },
+  { name: 'Turkish',      proveIt: 'kanıtla' },
+];
+
 function HeroBanner() {
-  const {siteConfig} = useDocusaurusContext();
+  const [langIndex, setLangIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        setLangIndex((prev) => (prev + 1) % ROTATING_LANGUAGES.length);
+        setIsVisible(true);
+      }, 400);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentLang = ROTATING_LANGUAGES[langIndex];
+
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
+        <p className={styles.heroEyebrow}>i18n-rosetta</p>
         <Heading as="h1" className={styles.heroTitle}>
-          {siteConfig.title}
+          Think your machine can translate to{' '}
+          <span className={clsx(styles.heroRotating, isVisible && styles.heroRotatingVisible)}>
+            {currentLang.name}
+          </span>
+          ?
         </Heading>
-        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+        <p className={styles.heroTagline}>
+          <strong>Prove it.</strong>
+        </p>
+        <p className={styles.heroSubtitle}>
+          7,000+ languages. ~130 have machine translation. The rest are an unsolved
+          problem — and an open invitation. rosetta gives you the harness, the
+          leaderboard, and the infrastructure to try.
+        </p>
         <div className={styles.heroCode}>
           <CodeBlock language="bash">
             npx i18n-rosetta sync
@@ -30,8 +76,8 @@ function HeroBanner() {
           </Link>
           <Link
             className={clsx('button button--lg', styles.buttonOutline)}
-            to="/docs/tutorials/build-a-plugin">
-            Build a Plugin
+            to="/leaderboard">
+            View Leaderboard 🏆
           </Link>
         </div>
       </div>
@@ -40,8 +86,7 @@ function HeroBanner() {
 }
 
 /**
- * Feature cards — each links to a relevant docs page.
- * These are the six core differentiators for rosetta.
+ * Feature cards — six core differentiators.
  */
 const features = [
   {
@@ -75,10 +120,10 @@ const features = [
     link: '/docs/concepts/architecture',
   },
   {
-    icon: '🔤',
-    title: 'Conlang & Script Output',
-    description: 'Deterministic script converters ship built-in: Cree Syllabics, Serbian Cyrillic, Klingon pIqaD, Sindarin Tengwar, Kryptonian.',
-    link: '/docs/reference/plugin-spec',
+    icon: '🔬',
+    title: 'Built-in Evaluation',
+    description: 'Score any method against standardized benchmarks. chrF++, exact match, FST acceptance — all fingerprinted and reproducible.',
+    link: '/docs/eval/',
   },
 ];
 
@@ -179,6 +224,53 @@ function StatsBar() {
   );
 }
 
+/**
+ * "The Arena" — the centerpiece competitive section.
+ * This is where the prizefighter energy lives.
+ */
+function ArenaSection() {
+  return (
+    <section className={styles.arena}>
+      <div className="container text--center">
+        <p className={styles.arenaEyebrow}>THE ARENA</p>
+        <Heading as="h2" className={styles.arenaTitle}>
+          Prove your method. Claim the score.
+        </Heading>
+        <p className={styles.arenaDescription}>
+          The evaluation harness benchmarks any translation method with fingerprinted,
+          reproducible scoring. The leaderboard tracks every submission. Build a coached
+          LLM pipeline, an FST-gated validator, a fine-tuned model, an evolutionary
+          algorithm — whatever produces JSON, we'll score it.
+        </p>
+        <div className={styles.arenaCards}>
+          <div className={styles.arenaCard}>
+            <div className={styles.arenaCardIcon}>🧪</div>
+            <Heading as="h3">Plug and Test</Heading>
+            <p>Run your method against standardized benchmarks. chrF++, exact match, FST acceptance — all computed by the same harness.</p>
+            <Link to="/docs/eval/harness" className={styles.arenaLink}>Eval Harness →</Link>
+          </div>
+          <div className={styles.arenaCard}>
+            <div className={styles.arenaCardIcon}>🏆</div>
+            <Heading as="h3">Claim Your Score</Heading>
+            <p>Every submission is fingerprinted to a Git commit and scored against the same dataset. Open a PR to submit. The leaderboard is open to everyone.</p>
+            <Link to="/leaderboard" className={styles.arenaLink}>Leaderboard →</Link>
+          </div>
+          <div className={styles.arenaCard}>
+            <div className={styles.arenaCardIcon}>🤝</div>
+            <Heading as="h3">Respect the Data</Heading>
+            <p>Indigenous languages belong to their communities. rosetta supports OCAP, CARE, and Māori Data Sovereignty principles. Methods serve communities — not the other way around.</p>
+            <Link to="/docs/guides/data-sovereignty" className={styles.arenaLink}>Data Sovereignty →</Link>
+          </div>
+        </div>
+        <p className={styles.arenaCallout}>
+          This is an unsolved problem that everyone in the world can contribute to.<br/>
+          <strong>Build a method. Score it. Give it back.</strong>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 const useCases = [
   {
     title: 'SaaS Internationalization',
@@ -187,10 +279,10 @@ const useCases = [
     linkText: 'Translate 30 Languages →',
   },
   {
-    title: 'Plugin Development',
-    description: 'Build, benchmark, and distribute custom translation methods for any language pair.',
-    link: '/docs/tutorials/build-a-plugin',
-    linkText: 'Build a Plugin →',
+    title: 'Build a Custom Pipeline',
+    description: 'Chain LLMs with FST validators, dictionaries, and post-processors. Package it as a plugin. Prove it on the leaderboard.',
+    link: '/docs/tutorials/fst-gated-pipeline',
+    linkText: 'FST Pipeline Cookbook →',
   },
   {
     title: 'Language Preservation',
@@ -267,11 +359,12 @@ function LeaderboardWidget() {
                 🏆 Method Leaderboard
               </Heading>
               <p className={styles.leaderboardWidgetSubtitle}>
-                Top translation methods ranked by chrF++ score
+                Top translation methods ranked by chrF++ score.
+                Think you can beat them? <Link to="/docs/eval/harness">Run the harness</Link>.
               </p>
             </div>
             <Link to="/leaderboard" className="button button--primary button--sm">
-              View Full Leaderboard →
+              Full Leaderboard →
             </Link>
           </div>
           <div className={styles.leaderboardWidgetTable}>
@@ -310,13 +403,14 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} — Translate your locale files`}
-      description="Translate your locale files with one command. Multi-format, incremental, quality-gated, content-aware.">
+      title={`${siteConfig.title} — Think you can solve it? Prove it.`}
+      description="An i18n framework with a built-in evaluation harness and leaderboard for machine translation methods. 7,000+ languages. ~130 have MT. The rest are an unsolved problem.">
       <HeroBanner />
       <main>
         <StatsBar />
         <FeaturesSection />
         <QuickExample />
+        <ArenaSection />
         <UseCasesSection />
         <LeaderboardWidget />
         <ComparisonTeaser />
