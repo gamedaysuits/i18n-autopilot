@@ -10,9 +10,25 @@
   <!--
     Sveltia CMS — drop-in replacement for Decap CMS.
     Supports direct GitHub PAT login: no OAuth proxy, no Cloudflare,
-    no external services. Just paste a Fine-grained Personal Access Token.
+    no external services. Just paste a Classic PAT with repo scope.
     Same config.yml format as Decap CMS.
   -->
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+  <script>
+    // Force scroll-to-top on CMS page navigation.
+    // Sveltia CMS uses hash-based routing, so we listen for hashchange.
+    window.addEventListener('hashchange', () => {
+      window.scrollTo(0, 0);
+    });
+    // Also catch initial load and any dynamic content swaps
+    // via a MutationObserver on the main content area.
+    const observer = new MutationObserver(() => {
+      window.scrollTo(0, 0);
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      const target = document.querySelector('#nc-root') || document.body;
+      observer.observe(target, { childList: true, subtree: false });
+    });
+  </script>
 </body>
 </html>
