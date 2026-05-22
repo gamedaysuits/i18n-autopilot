@@ -270,43 +270,53 @@ function ComparisonTeaser() {
 /* ------------------------------------------------------------------ */
 
 /**
- * Rotating language pairs for the Arena headline.
- * Each shows a real translation challenge — source→target.
- * Speed: 1.6s per pair, 250ms fade.
+ * Two independent language lists, cycling in opposite directions
+ * at different speeds. The desync creates a combinatorial feel —
+ * every refresh shows a different pairing.
+ *
+ * Source: cycles forward  every 2.1s (slower, steady)
+ * Target: cycles backward every 1.4s (faster, restless)
  */
-const ROTATING_PAIRS = [
-  { src: 'English',    tgt: 'Plains Cree' },
-  { src: 'Spanish',    tgt: 'Quechua' },
-  { src: 'English',    tgt: 'Inuktitut' },
-  { src: 'Turkish',    tgt: 'Azerbaijani' },
-  { src: 'English',    tgt: 'Navajo' },
-  { src: 'French',     tgt: 'Wolof' },
-  { src: 'English',    tgt: 'Māori' },
-  { src: 'Russian',    tgt: 'Sakha' },
-  { src: 'English',    tgt: 'Yoruba' },
-  { src: 'Portuguese', tgt: 'Guarani' },
-  { src: 'English',    tgt: 'Welsh' },
-  { src: 'Mandarin',   tgt: 'Cantonese' },
-  { src: 'English',    tgt: 'Ojibwe' },
-  { src: 'Japanese',   tgt: 'Ainu' },
+const SOURCE_LANGS = [
+  'English', 'Spanish', 'French', 'Turkish', 'Russian',
+  'Portuguese', 'Mandarin', 'Japanese', 'Arabic', 'German',
+];
+
+const TARGET_LANGS = [
+  'Plains Cree', 'Quechua', 'Inuktitut', 'Navajo', 'Wolof',
+  'Māori', 'Sakha', 'Yoruba', 'Guarani', 'Welsh',
+  'Ojibwe', 'Ainu', 'Azerbaijani', 'Cantonese', 'Basque',
 ];
 
 function ArenaSection() {
-  const [pairIndex, setPairIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [srcIndex, setSrcIndex] = useState(0);
+  const [tgtIndex, setTgtIndex] = useState(0);
+  const [srcVisible, setSrcVisible] = useState(true);
+  const [tgtVisible, setTgtVisible] = useState(true);
 
+  // Source cycles forward, slower
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsVisible(false);
+      setSrcVisible(false);
       setTimeout(() => {
-        setPairIndex((prev) => (prev + 1) % ROTATING_PAIRS.length);
-        setIsVisible(true);
-      }, 250);
-    }, 1600);
+        setSrcIndex((prev) => (prev + 1) % SOURCE_LANGS.length);
+        setSrcVisible(true);
+      }, 200);
+    }, 2100);
     return () => clearInterval(interval);
   }, []);
 
-  const pair = ROTATING_PAIRS[pairIndex];
+  // Target cycles backward, faster
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTgtVisible(false);
+      setTimeout(() => {
+        setTgtIndex((prev) => (prev - 1 + TARGET_LANGS.length) % TARGET_LANGS.length);
+        setTgtVisible(true);
+      }, 200);
+    }, 1400);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className={styles.arena}>
@@ -314,12 +324,12 @@ function ArenaSection() {
         <p className={styles.arenaEyebrow}>THE ARENA</p>
         <Heading as="h2" className={styles.arenaTitle}>
           Think you have the best method for translating{' '}
-          <span className={clsx(styles.arenaPair, isVisible && styles.arenaPairVisible)}>
-            {pair.src}
+          <span className={clsx(styles.arenaPair, srcVisible && styles.arenaPairVisible)}>
+            {SOURCE_LANGS[srcIndex]}
           </span>
           {' → '}
-          <span className={clsx(styles.arenaPair, styles.arenaPairTarget, isVisible && styles.arenaPairVisible)}>
-            {pair.tgt}
+          <span className={clsx(styles.arenaPair, styles.arenaPairTarget, tgtVisible && styles.arenaPairVisible)}>
+            {TARGET_LANGS[tgtIndex]}
           </span>
           ?
         </Heading>
