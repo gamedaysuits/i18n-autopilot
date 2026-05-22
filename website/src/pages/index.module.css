@@ -22,6 +22,8 @@
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.25s ease, transform 0.25s ease;
+  min-width: 130px;
+  text-align: center;
 }
 
 .arenaPairVisible {
@@ -29,9 +31,10 @@
   transform: translateY(0);
 }
 
-/* Source language: white. Target language: cyan. */
+/* Source language: white. Target language: cyan + wider box. */
 .arenaPairTarget {
   color: #00E5E6;
+  min-width: 150px;
 }
 
 .heroSubtitle {
