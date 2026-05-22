@@ -1,26 +1,26 @@
 # -----------------------------------------------------------------
-# Decap CMS Configuration for i18n-rosetta Docs
+# Sveltia CMS Configuration for i18n-rosetta Docs
 # -----------------------------------------------------------------
-# Auth:   GitHub PKCE (no server-side proxy needed)
-# Host:   Vercel (i18n-rosetta.com)
+# Auth:   GitHub Fine-grained Personal Access Token (PAT)
+#         No OAuth proxy, no external services required.
+# Host:   GitHub Pages (i18n-rosetta.com)
 # Repo:   gamedaysuits/i18n-rosetta
 # Branch: main
 #
-# Setup:  Create a GitHub OAuth App at
-#         https://github.com/settings/developers
-#         - Homepage URL:  https://i18n-rosetta.com
-#         - Callback URL:  https://i18n-rosetta.com/admin/
-#         Then paste the Client ID below.
+# Login:  Go to /admin → click "Sign in with GitHub" →
+#         paste a Fine-grained PAT with Contents read/write
+#         scope for gamedaysuits/i18n-rosetta.
+#
+# Create a PAT at:
+#   https://github.com/settings/tokens?type=beta
+#   Repository access: gamedaysuits/i18n-rosetta
+#   Permissions: Contents → Read and write
 # -----------------------------------------------------------------
 
 backend:
   name: github
   repo: gamedaysuits/i18n-rosetta
   branch: main
-  # PKCE auth — no server proxy required
-  auth_type: pkce
-  # TODO: Replace with your GitHub OAuth App Client ID
-  app_id: Ov23liQWU9J9SbbK57ub
 
 # Where uploaded images go (relative to the repo root)
 media_folder: "website/static/img/uploads"
@@ -47,7 +47,7 @@ collections:
     folder: "website/docs"
     create: false
     extension: "md"
-    filter: { field: "title" }  # only files with frontmatter
+    filter: { field: "title" }
     fields:
       - { name: "sidebar_position", label: "Sidebar Position", widget: "number", required: false }
       - { name: "title", label: "Title", widget: "string" }
