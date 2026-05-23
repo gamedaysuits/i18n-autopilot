@@ -4,6 +4,9 @@
 [![CI](https://github.com/gamedaysuits/i18n-rosetta/actions/workflows/ci.yml/badge.svg)](https://github.com/gamedaysuits/i18n-rosetta/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
+🌐 **README translations** — *translated by rosetta, of course:*
+[Français](docs/README.fr.md) · [Deutsch](docs/README.de.md) · [Español](docs/README.es.md) · [Português](docs/README.pt.md) · [Nederlands](docs/README.nl.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [简体中文](docs/README.zh.md) · [ไทย](docs/README.th.md) · [Tiếng Việt](docs/README.vi.md) · [Filipino](docs/README.fil.md) · [العربية](docs/README.ar.md)
+
 Translate your locale files with one command:
 
 ```bash
@@ -37,9 +40,20 @@ Rosetta needs a translation backend. Pick one:
 | Provider | Key | Best for |
 |----------|-----|----------|
 | **OpenRouter** (recommended) | `OPENROUTER_API_KEY` | Content-heavy projects, Markdown, 200+ models |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs (130+ languages) |
+| **OpenAI** | `OPENAI_API_KEY` | Direct GPT-4o access |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Direct Claude access |
+| **Gemini** | `GEMINI_API_KEY` | Free tier available |
+| **DeepL** | `DEEPL_API_KEY` | European languages, glossary support |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 130+ languages, high volume |
 
-**OpenRouter** (free tier available): Sign up at [openrouter.ai](https://openrouter.ai), then:
+**Fastest start** (free): Sign up at [aistudio.google.com](https://aistudio.google.com/apikey) for a free Gemini key:
+
+```bash
+export GEMINI_API_KEY=AI...
+npx i18n-rosetta sync --method gemini
+```
+
+**OpenRouter** (200+ models): Sign up at [openrouter.ai](https://openrouter.ai), then:
 
 ```bash
 export OPENROUTER_API_KEY=sk-or-v1-...
@@ -58,8 +72,11 @@ npx i18n-rosetta sync --method google-translate
 That's it. For more control, create a config file:
 
 ```bash
-npx i18n-rosetta init
+npx i18n-rosetta init                        # guided wizard — walks you through registers, methods, and content
+npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific languages and default registers
 ```
+
+Each language comes with **register presets** — pre-built tone/formality instructions tuned to its linguistic system (vouvoiement for French, Siezen for German, です/ます for Japanese, 해요체 for Korean). The init wizard lets you browse and pick presets, or pass `--yes` to accept the defaults.
 
 ### Non-English Source
 
@@ -111,20 +128,51 @@ The companion [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harn
 
 ### Choose Your Method
 
-| Method | Key | What It Does | Best For |
-|--------|-----|-------------|----------|
-| `llm` (default) | `OPENROUTER_API_KEY` | LLM translation via OpenRouter | General purpose, content-heavy projects |
-| `llm-coached` | `OPENROUTER_API_KEY` | LLM + grammar rules & dictionaries | Low-resource languages, specialized domains |
-| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 | High-volume key-value pairs (130+ languages) |
-| `api` | *(per provider)* | Remote translation API | IP-protected or community-hosted models |
+Rosetta supports 10 translation methods. Each language pair can use a different method.
 
-**Smart method detection**: If only `GOOGLE_TRANSLATE_API_KEY` is set (no OpenRouter key), rosetta auto-switches to Google Translate. You can also force a method via CLI:
+**LLM providers** — best for quality, Markdown-aware, coaching-compatible:
+
+| Method | Key | What It Does |
+|--------|-----|-------------|
+| `llm` (default) | `OPENROUTER_API_KEY` | LLM via OpenRouter — 200+ models, auto-routing |
+| `llm-coached` | `OPENROUTER_API_KEY` | LLM + grammar rules, dictionaries, style notes |
+| `openai` | `OPENAI_API_KEY` | Direct OpenAI API (gpt-4o, gpt-4o-mini) |
+| `anthropic` | `ANTHROPIC_API_KEY` | Direct Anthropic API (Claude Sonnet, Haiku, Opus) |
+| `gemini` | `GEMINI_API_KEY` | Direct Google Gemini API (Flash, Pro) — free tier available |
+
+**Traditional MT** — best for speed, cost, and high-volume key-value pairs:
+
+| Method | Key | What It Does |
+|--------|-----|-------------|
+| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ languages) |
+| `deepl` | `DEEPL_API_KEY` | DeepL API with glossary support (30+ languages) |
+| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ languages) |
+| `libretranslate` | *(self-hosted)* | Self-hosted LibreTranslate (AGPL, free) |
+
+**Infrastructure** — for custom or community-hosted endpoints:
+
+| Method | Key | What It Does |
+|--------|-----|-------------|
+| `api` | *(per provider)* | Thin HTTP client for any REST endpoint |
 
 ```bash
-i18n-rosetta sync --method google-translate
+# Force a specific method for one run
+i18n-rosetta sync --method deepl
+
+# Or configure per pair
 ```
 
-> **Note**: Google Translate handles key-value pairs well but cannot safely translate Markdown content (it has no awareness of code blocks, shortcodes, or interpolation variables). For content-heavy projects, LLM methods are recommended — they explicitly shield structured elements during translation.
+```json
+{
+  "pairs": {
+    "en:fr": { "method": "deepl" },
+    "en:ja": { "method": "openai", "model": "gpt-4o" },
+    "en:crk": { "methodPlugin": "crk-coached-v1" }
+  }
+}
+```
+
+> **Note**: Traditional MT methods (Google Translate, DeepL, Microsoft Translator, LibreTranslate) handle key-value pairs well but cannot safely translate Markdown content. For content-heavy projects, LLM methods are recommended — they explicitly shield code blocks, shortcodes, and interpolation variables.
 
 ## Plugins
 
@@ -168,7 +216,7 @@ Create `i18n-rosetta.config.json` or run `i18n-rosetta init`:
   "version": 3,
   "inputLocale": "en",
   "localesDir": "./locales",
-  "model": "openai/gpt-4o-mini",
+  "model": "google/gemini-3.5-flash",
   "pairs": {
     "en:fr": { "qualityTier": "high" },
     "en:ja": { "method": "google-translate" }
@@ -182,17 +230,18 @@ Create `i18n-rosetta.config.json` or run `i18n-rosetta init`:
 | `localesDir` | `"./locales"` | Path to locale files |
 | `contentDir` | `null` | Hugo content directory (enables Markdown translation) |
 | `format` | `"auto"` | File format: `json`, `toml`, `yaml`, or `auto` |
-| `model` | `"openai/gpt-4o-mini"` | Default OpenRouter model |
+| `model` | `"google/gemini-3.5-flash"` | Default OpenRouter model |
 | `defaultMethod` | `"llm"` | Default translation method (overridden by `--method` flag) |
 | `batchSize` | `30` | Keys per translation batch |
 | `pairs` | `{}` | Per-pair method, model, and quality overrides |
 
-**Per-language overrides**: Languages that need special handling can override model, batch size, and retry budget:
+**Per-language overrides**: Each language has a [Language Card](docs/planning/LANGUAGE_CARD_SPEC.md) with preset registers tuned to its formality system. Use preset keys as shorthand, or write custom register text:
 
 ```json
 {
   "languages": {
-    "fr": "Formal academic French. Use vous-form.",
+    "fr": "casual-tu",
+    "ko": "formal-hapsyo",
     "crk": {
       "name": "Plains Cree",
       "register": "SRO syllabics with grammatical precision.",
@@ -203,10 +252,11 @@ Create `i18n-rosetta.config.json` or run `i18n-rosetta init`:
     }
   }
 }
+```
 
 **Zero-config mode**: No config file? Rosetta auto-detects locale files, format, and target languages from your project.
 
-Language values can be a string (register shorthand) or an object (full control). Pair-level overrides in `pairs` take priority over language-level settings.
+Language values can be a preset key (e.g., `"casual-tu"`), custom register text, or an object (full control). Pair-level overrides in `pairs` take priority over language-level settings. Run `npx i18n-rosetta init` to browse available presets for each language.
 
 Framework setup guides: [docs/INTEGRATION_GUIDES.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/INTEGRATION_GUIDES.md)
 

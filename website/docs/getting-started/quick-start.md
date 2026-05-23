@@ -27,15 +27,30 @@ Create a source locale file. Rosetta supports JSON, TOML, and YAML:
 
 ## 2. Set Your API Key
 
+Pick a provider and set the key:
+
 ```bash
+# Option A: OpenRouter (200+ models, recommended)
 export OPENROUTER_API_KEY=sk-or-v1-...
+
+# Option B: Gemini (free tier — zero cost to start)
+export GEMINI_API_KEY=AI...
 ```
+
+Get a free Gemini key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Get an OpenRouter key at [openrouter.ai](https://openrouter.ai).
 
 ## 3. Run Sync
 
 ```bash
 npx i18n-rosetta sync
 ```
+
+:::tip Using Gemini?
+If you chose Option B (Gemini), add `--method gemini`:
+```bash
+npx i18n-rosetta sync --method gemini
+```
+:::
 
 Rosetta will:
 1. Auto-detect `locales/en.json` as the source
@@ -87,19 +102,29 @@ npx i18n-rosetta sync
 For more control, generate a config file:
 
 ```bash
-npx i18n-rosetta init
+npx i18n-rosetta init                         # guided wizard
+npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-Or create one manually:
+The guided wizard walks you through each language's **register presets** — pre-built tone/formality instructions tuned to its linguistic system. French has T-V presets (vouvoiement vs tutoiement), Korean has speech levels (해요체 vs 합쇼체 vs 해체), Japanese has keigo options (です/ます vs 丁寧語).
+
+Or create a config manually with preset keys:
 
 ```json title="i18n-rosetta.config.json"
 {
   "version": 3,
   "inputLocale": "en",
   "localesDir": "./locales",
-  "model": "openai/gpt-4o-mini"
+  "languages": {
+    "fr": "casual-tu",
+    "ko": "polite-haeyo",
+    "ja": "polite"
+  },
+  "model": "google/gemini-2.5-flash"
 }
 ```
+
+Run `npx i18n-rosetta init` to browse available presets for each language.
 
 ## Optional: Watch Mode
 
