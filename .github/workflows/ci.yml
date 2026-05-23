@@ -25,3 +25,16 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      # Coverage reporting — runs on Node 22 only to avoid duplicating work.
+      # Uses the built-in --experimental-test-coverage flag (stable since Node 22).
+      - name: Run tests with coverage
+        if: matrix.node-version == 22
+        run: node --test --experimental-test-coverage test/*.test.js
+
+  # NOTE: crk-translate/ is a separate git repo (gitignored from this repo).
+  # Its Python tests (sentence checker, tag encoder) live in that repo's
+  # own CI at github.com/gamedaysuits/crk-translate.
+  # Similarly, gds-mt-eval-harness/ is nested inside crk-translate/ with
+  # its own repo at github.com/gamedaysuits/gds-mt-eval-harness.
+
