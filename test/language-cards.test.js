@@ -578,39 +578,14 @@ describe('INVARIANT: all accessors handle every card code', () => {
 // removal of the genderGuidance wiring in any of the pipeline files.
 // --------------------------------------------------------------------------
 
-describe('INVARIANT: harness prompt mirrors production prompt structure', () => {
-  it('harness imports getGenderGuidance from registers.js', async () => {
-    const harness = fs.readFileSync(
-      path.join(import.meta.dirname, '..', 'test', 'benchmark', 'run-benchmark.js'),
-      'utf-8'
-    );
-    assert.ok(
-      harness.includes('getGenderGuidance'),
-      'Harness must import getGenderGuidance to mirror production'
-    );
-  });
-
-  it('harness delegates to production buildSystemMessage', async () => {
-    const harness = fs.readFileSync(
-      path.join(import.meta.dirname, '..', 'test', 'benchmark', 'run-benchmark.js'),
-      'utf-8'
-    );
-    // The harness should import and call the production buildSystemMessage
-    // rather than building its own prompt (which would drift from production).
-    assert.ok(
-      harness.includes("import { buildSystemMessage }"),
-      'Harness must import buildSystemMessage from production llm.js'
-    );
-    assert.ok(
-      harness.includes('buildSystemMessage('),
-      'Harness must call buildSystemMessage() to build register prompts'
-    );
-    // genderGuidance must be included in the langConfig passed to buildSystemMessage
-    assert.ok(
-      harness.includes('genderGuidance'),
-      'Harness must include genderGuidance in langConfig for buildSystemMessage'
-    );
-  });
+describe('INVARIANT: production prompt pipeline genderGuidance wiring', () => {
+  // NOTE: Tests that verified the JS benchmark harness (run-benchmark.js)
+  // have been removed — that harness is deprecated. Prompt parity is now
+  // enforced by the Python eval harness's RosettaPromptProvider, which
+  // reads language cards directly and has its own parity test.
+  //
+  // The tests below verify the PRODUCTION pipeline still wires
+  // genderGuidance correctly from card → pairs.js → llm.js.
 
   it('production llm.js uses genderGuidance field', async () => {
     const llm = fs.readFileSync(
