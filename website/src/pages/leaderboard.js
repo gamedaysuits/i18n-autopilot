@@ -31,8 +31,12 @@ const DATASETS = [
  * Convert a pair code like "en>crk" to a display string "EN → CRK".
  */
 function formatPair(pair) {
-  const [src, tgt] = pair.split(">");
-  return `${src.toUpperCase()} → ${tgt.toUpperCase()}`;
+  if (!pair) return "?";
+  // Handle both raw ("en>crk") and pre-formatted ("en → crk") formats
+  const sep = pair.includes(">") ? ">" : " → ";
+  const [src, tgt] = pair.split(sep);
+  if (!tgt) return pair.toUpperCase();
+  return `${src.trim().toUpperCase()} → ${tgt.trim().toUpperCase()}`;
 }
 
 /**
@@ -317,7 +321,7 @@ export default function LeaderboardPage() {
           method: row.condition?.includes("+") ? `fst-gate-${row.condition}` : `prompt-${row.condition}`,
           model: row.model_slug,
           condition: row.condition,
-          pair: row.language_pair?.replace(">", " → ") || "?",
+          pair: row.language_pair || "?",
           dataset: row.dataset_id,
           metrics: {
             chrF: row.chrf_plus_plus,
