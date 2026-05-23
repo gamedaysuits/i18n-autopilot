@@ -141,7 +141,7 @@ endpoint returns it.
   "description": "Formally-tuned French with terminology enforcement",
   "locales": ["fr"],
   "config": {
-    "model": "openai/gpt-4o-mini",
+    "model": "google/gemini-3.5-flash",
     "register": "formal",
     "batchSize": 30
   },
@@ -234,6 +234,85 @@ rosetta sync                                # uses llm-coached with bundled data
 
 ---
 
+## Language Card Architecture
+
+Every language rosetta supports is defined by a **Language Card** — a JSON file
+in `lib/data/language-cards/<code>.json` loaded at startup by `lib/registers.js`.
+
+```
+lib/data/language-cards/
+├── fr.json        # French — T-V distinction (vous/tu)
+├── ko.json        # Korean — speech levels (해요체/합쇼체/해체)
+├── ja.json        # Japanese — keigo (丁寧語/尊敬語/謙譲語)
+├── th.json        # Thai — particles & pronouns (ครับ/ค่ะ)
+├── hi.json        # Hindi — T-V + code-switching (Hinglish)
+├── crk.json       # Plains Cree — register levels + SRO/syllabics
+└── x-pirate.json  # Conlangs use x- prefix
+```
+
+### What's in a Card
+
+| Field | Purpose |
+|-------|---------|
+| `formality.system` | The formality system name (T-V, speech-levels, keigo, particles, etc.) |
+| `formality.default` | Default preset key for software UI |
+| `registers` | Named presets with label, description, and LLM prompt text |
+| `gender` | Grammatical gender rules and inclusive writing guidance |
+| `methodSupport` | Which APIs support this language + DeepL formality flag |
+| `scriptConverter` | Reference to deterministic script converter (scripts.js) |
+| `aliases` | Alternative locale codes (e.g., `no` → `nb`, `iw` → `he`) |
+
+### Accessor API
+
+`lib/registers.js` exposes a structured API. All language data flows through
+these functions — no direct card access outside this module:
+
+```
+getLanguageCard(code)       → full card with alias resolution
+getRegister(code, preset)   → register prompt text (preset key or custom passthrough)
+getRegisterPresets(code)    → preset list for the init wizard
+getFormality(code, preset)  → structured formality metadata for method integration
+getGenderGuidance(code)     → language-specific inclusive writing guidance
+getMethodSupport(code)      → which APIs support this language
+getAllLanguageCodes()        → all codes with language cards
+resolveCode(code)           → alias + base-locale resolution
+```
+
+The legacy `DEFAULT_REGISTERS` export is a `Proxy` that dynamically builds the
+old `{ name, register, dir?, scripts? }` shape from card data. This preserves
+backward compatibility while all consumers migrate to the structured API.
+
+### How Cards Connect to the Rest
+
+```
+Language Card (.json)
+       │
+       ├── registers.js (accessor layer)
+       │     ├── config.js        → resolves preset keys to prompt text
+       │     ├── pairs.js         → adds formalitySystem, genderGuidance, dir, scripts
+       │     ├── init.js          → guided preset picker in the setup wizard
+       │     └── status.js        → structured register display
+       │
+       ├── pairs.js → llm.js     → buildSystemMessage() injects genderGuidance into prompt
+       │
+       ├── deepl.js              → reads card directly for deeplFormality on presets
+       │
+       ├── run-benchmark.js      → mirrors production prompt (register + gender guidance)
+       │
+       └── schemas/language-card.schema.json (validation)
+```
+
+**Note on DeepL:** `lib/methods/deepl.js` calls `getLanguageCard()` and reads
+`card.registers[preset].deeplFormality` directly rather than going through a
+dedicated accessor. This is by design — the DeepL formality mapping is tightly
+coupled to the preset, so direct card access is cleaner than adding another
+accessor for a single consumer.
+
+**Adding a new language**: See `docs/planning/LANGUAGE_CARD_SPEC.md` for the
+full research and contribution process.
+
+---
+
 ## Design Principles
 
 1. **No circular dependencies.** The bridges are one-way. The harness exports
@@ -252,3 +331,8 @@ rosetta sync                                # uses llm-coached with bundled data
    - Harness → develop and validate translation methods
    - Rosetta Translate → host and meter premium translations
    - Rosetta → translate locale files using whatever method is configured
+
+6. **Language metadata is data, not code.** Register presets, formality systems,
+   and method support are defined in JSON cards — not hardcoded in switch
+   statements. Contributors can add a language without touching any JS.
+

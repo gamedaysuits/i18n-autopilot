@@ -60,7 +60,7 @@ describe('sync-pairs: config → pair graph resolution', () => {
   it('simple languages array generates default LLM pairs', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },
@@ -85,7 +85,7 @@ describe('sync-pairs: config → pair graph resolution', () => {
   it('pairs override replaces method for specific languages', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },
@@ -113,7 +113,7 @@ describe('sync-pairs: config → pair graph resolution', () => {
   it('pairs can add languages not in the languages array', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },
@@ -142,7 +142,7 @@ describe('sync-pairs: config → pair graph resolution', () => {
   it('pair override preserves existing language data', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },
@@ -164,7 +164,7 @@ describe('sync-pairs: config → pair graph resolution', () => {
   it('legacy arrow pair keys in config are accepted and normalized', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {},
       pairs: {
@@ -296,7 +296,7 @@ describe('sync-pairs: plugin config merges into pair', () => {
       version: '1.0.0',
       locales: ['de'],
       config: {
-        model: 'openai/gpt-4o-mini',
+        model: 'google/gemini-3.5-flash',
         register: 'Standard German',
       },
     }));
@@ -338,7 +338,7 @@ describe('sync-pairs: plugin config merges into pair', () => {
       source: 'en',
       target: 'fr',
       method: 'llm',  // Default from resolvePairs — should NOT override plugin
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       methodPlugin: 'fr-coached-v1',
     };
 
@@ -348,7 +348,7 @@ describe('sync-pairs: plugin config merges into pair', () => {
     assert.equal(resolved.method, 'llm-coached',
       'Plugin type should override the default llm method from resolvePairs');
     // But pair-level model wins over plugin model (that is still gap-fill)
-    assert.equal(resolved.model, 'openai/gpt-4o-mini',
+    assert.equal(resolved.model, 'google/gemini-3.5-flash',
       'Pair-level model should still win over plugin model');
   });
 
@@ -392,7 +392,7 @@ describe('sync-pairs: plugin config merges into pair', () => {
     // Case A: pair WITHOUT explicit model → plugin model wins over system default
     const configA = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',  // system default
+      model: 'google/gemini-3.5-flash',  // system default
       batchSize: 30,
       resolvedLanguages: {
         // No explicit model on the language entry — will get system default
@@ -418,7 +418,7 @@ describe('sync-pairs: plugin config merges into pair', () => {
     // Case B: pair WITH explicit model → pair model wins over plugin
     const configB = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', model: 'google/gemini-2.0-flash' },
@@ -533,7 +533,7 @@ describe('sync-pairs: full pipeline config → method → cost estimate', () => 
     // Step 1: Build pair graph from config
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },
@@ -560,7 +560,7 @@ describe('sync-pairs: full pipeline config → method → cost estimate', () => 
   it('end-to-end: LLM method returns live pricing or unknown', async () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal.' },

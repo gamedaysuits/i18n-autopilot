@@ -1,0 +1,45 @@
+{
+  "code": "hu",
+  "name": "Hungarian",
+  "nativeName": "Magyar",
+  "iso639_1": "hu",
+  "iso639_3": "hun",
+  "bcp47": "hu",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Hungarian has a T-V distinction: Ön (formal, third-person construction) vs te (informal). Professional software uses Ön-form. Hungarian also has 'maga' (slightly less formal than Ön, but more distant than te), though it's rarely used in software.",
+    "default": "formal-on"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Hungarian has no grammatical gender. Third-person pronoun 'ő' is gender-neutral."
+  },
+  "registers": {
+    "formal-on": {
+      "label": "Ön (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Hungarian. Use Ön-form (Önözés) for second-person address. Professional register for software interfaces."
+    },
+    "informal-te": {
+      "label": "Te (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Hungarian. Use te-form (Tegezés). Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

@@ -5,7 +5,7 @@ title: Supported Languages
 
 # Supported Languages
 
-rosetta ships with built-in register presets for 40+ languages. Any language your LLM knows can be added with a single config line — these are the ones with curated, production-ready registers.
+rosetta ships with **Language Cards** — structured reference files for 42+ languages. Each card contains register presets, formality system metadata, method support flags, and script information. Any language your LLM knows can be added with a single config line — these are the ones with curated, production-ready registers.
 
 ---
 
@@ -39,7 +39,7 @@ These are the most commonly requested locales for web and mobile applications, l
 | 🇨🇳 | Chinese (Simplified) | `zh` | ✅ | ✅ | ✅ | — | 简体中文. |
 | 🇮🇹 | Italian | `it` | ✅ | ✅ | ✅ | — | Lei-form. |
 | 🇧🇷 | Portuguese (BR) | `pt` | ✅ | ✅ | ✅ | — | Brazilian Portuguese. |
-| 🇰🇷 | Korean | `ko` | ✅ | ✅ | ✅ | — | 합쇼체 formal register. |
+| 🇰🇷 | Korean | `ko` | ✅ | ✅ | ✅ | — | 해요체 polite register. |
 
 ## Major World Languages
 
@@ -58,7 +58,7 @@ These are the most commonly requested locales for web and mobile applications, l
 | 🇮🇩 | Indonesian | `id` | ✅ | ✅ | ✅ | — | |
 | 🇲🇾 | Malay | `ms` | ✅ | ✅ | ✅ | — | |
 | 🇳🇱 | Dutch | `nl` | ✅ | ✅ | ✅ | — | U-form. |
-| 🇳🇴 | Norwegian | `no` | ✅ | ✅ | ✅ | — | Bokmål. |
+| 🇳🇴 | Norwegian | `nb` | ✅ | ✅ | ✅ | — | Bokmål. |
 | 🇵🇱 | Polish | `pl` | ✅ | ✅ | ✅ | — | Pan/Pani form. |
 | 🇵🇹 | Portuguese (EU) | `pt-PT` | ✅ | ✅ | ✅ | — | European Portuguese. |
 | 🇷🇴 | Romanian | `ro` | ✅ | ✅ | ✅ | — | |
@@ -154,6 +154,50 @@ rosetta can translate to **any language your LLM knows** — the table above jus
 ```
 
 The LLM will translate using its training knowledge of the language. Setting a `register` gives you control over tone, formality, and orthographic conventions. See [Configuration](/docs/getting-started/configuration) for details.
+
+---
+
+## Language Cards
+
+Each built-in language has a **Language Card** — a JSON file in `lib/data/language-cards/` containing:
+
+| Field | What It Contains |
+|-------|------------------|
+| **Formality system** | T-V distinction, speech levels, keigo, particles, etc. |
+| **Register presets** | Named presets specific to the language's character |
+| **Method support** | Which translation APIs support this language |
+| **Gender guidance** | Grammatical gender rules and inclusive writing tips |
+| **Script/direction** | ISO 15924 script code and RTL/LTR |
+| **Eval datasets** | Which benchmarks cover this language |
+
+### Using Preset Keys
+
+Instead of writing full register text, you can use a preset key name:
+
+```json
+{
+  "languages": {
+    "fr": "casual-tu",
+    "ko": "formal-hapsyo",
+    "ja": "polite"
+  }
+}
+```
+
+Rosetta resolves the key to the full register prompt. Run `npx i18n-rosetta init` to see available presets for each language.
+
+### Example Presets
+
+| Language | Presets | Default |
+|----------|---------|--------|
+| French | `formal-vous`, `casual-tu` | `formal-vous` |
+| Korean | `polite-haeyo`, `formal-hapsyo`, `casual-hae` | `polite-haeyo` |
+| Japanese | `polite`, `formal-keigo`, `casual` | `polite` |
+| German | `formal-Sie`, `casual-du` | `formal-Sie` |
+| Thai | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
+| Spanish | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
+
+See [Contributing a Language Card](https://github.com/nicholasgriffintn/i18n-rosetta/blob/main/docs/planning/LANGUAGE_CARD_SPEC.md) for how to add or improve presets.
 
 ---
 

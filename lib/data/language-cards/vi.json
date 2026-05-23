@@ -1,0 +1,47 @@
+{
+  "code": "vi",
+  "name": "Vietnamese",
+  "nativeName": "Tiếng Việt",
+  "iso639_1": "vi",
+  "iso639_3": "vie",
+  "bcp47": "vi",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "pronoun-system",
+    "description": "Vietnamese formality is expressed almost entirely through pronoun choice. There is no verb conjugation for formality. The pronoun system encodes age, gender, and social relationship: anh/chị (older brother/sister, common polite), em (younger person), bạn (friend/peer, neutral), quý vị (distinguished, very formal), tôi (I, neutral formal). Software UI typically uses bạn (neutral, peer-like) for second person, which is friendly without being presumptuous.",
+    "default": "neutral-ban"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Vietnamese pronouns encode perceived age and gender relative to the speaker (anh = older male, chị = older female). Software UI should use bạn (gender-neutral peer) to avoid assumptions about user age and gender."
+  },
+  "registers": {
+    "neutral-ban": {
+      "label": "Bạn (Neutral)",
+      "description": "Standard for software UI. Uses bạn (neutral peer) for second person. Friendly and appropriate for most digital products.",
+      "prompt": "Professional Vietnamese. Use bạn for second person (neutral, peer-level — appropriate for software UI). Use tôi for first person when needed. Clear, modern Vietnamese appropriate for digital interfaces. Avoid overly formal constructions.",
+      "deeplFormality": "default"
+    },
+    "formal-quyvi": {
+      "label": "Quý vị (Formal)",
+      "description": "For government, banking, legal, or contexts addressing a general public audience with respect.",
+      "prompt": "Formal Vietnamese. Use quý vị for second-person plural/respectful address, quý khách for customer-facing contexts. Elevated register appropriate for government, banking, and official communications.",
+      "deeplFormality": "prefer_more"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Previous default had no pronoun guidance. Added explicit bạn/quý vị pronoun choice which is critical for appropriate Vietnamese translation."
+}

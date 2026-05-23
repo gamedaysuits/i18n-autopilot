@@ -1,0 +1,45 @@
+{
+  "code": "ro",
+  "name": "Romanian",
+  "nativeName": "Română",
+  "iso639_1": "ro",
+  "iso639_3": "ron",
+  "bcp47": "ro",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Romanian has a T-V distinction: dumneavoastră (formal, literally 'your lordship') vs tu (informal). Professional software typically uses dumneavoastră. Some modern consumer software uses the intermediate 'voi' (you plural) or directly 'tu'.",
+    "default": "formal-dvs"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Romanian has grammatical gender (masculine, feminine, neuter). When gender is unknown, masculine plural is the conventional default."
+  },
+  "registers": {
+    "formal-dvs": {
+      "label": "Dumneavoastră (Formal)",
+      "description": "Standard for professional software, enterprise, and institutional contexts.",
+      "prompt": "Formal Romanian. Use dumneavoastră for second-person address. Professional register for software interfaces."
+    },
+    "informal-tu": {
+      "label": "Tu (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Romanian. Use tu-form. Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

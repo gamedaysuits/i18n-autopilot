@@ -59,7 +59,7 @@ const VALID_MANIFEST = {
   locales: ['fr'],
   description: 'Test method for French',
   config: {
-    model: 'openai/gpt-4o-mini',
+    model: 'google/gemini-3.5-flash',
     register: 'Formal French',
     batchSize: 25,
   },
@@ -242,7 +242,7 @@ describe('validateManifest', () => {
           exact_match_rate: 0.42,
           corpus_chrf: 72.3,
           corpus_bleu: 45.1,
-          model: 'openai/gpt-4o-mini',
+          model: 'google/gemini-3.5-flash',
           harness_version: '1.0.0',
         },
       },
@@ -534,7 +534,7 @@ describe('resolvePluginForPair', () => {
 
   it('returns unmodified pair when no methodPlugin is set', () => {
     const plugins = new Map();
-    const pairConfig = { method: 'llm', model: 'openai/gpt-4o-mini' };
+    const pairConfig = { method: 'llm', model: 'google/gemini-3.5-flash' };
     const result = resolvePluginForPair(plugins, pairConfig);
     assert.deepEqual(result, pairConfig);
   });

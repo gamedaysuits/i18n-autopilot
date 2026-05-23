@@ -1,0 +1,45 @@
+{
+  "code": "bn",
+  "name": "Bengali",
+  "nativeName": "বাংলা",
+  "iso639_1": "bn",
+  "iso639_3": "ben",
+  "bcp47": "bn",
+  "script": "Beng",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Bengali has a three-tier pronoun system: আপনি (apni, formal/respectful), তুমি (tumi, familiar), and তুই (tui, intimate/condescending). Software UI uses আপনি. Bengali also distinguishes between শুদ্ধ ভাষা (shuddho bhasha, standard/literary) and চলিত ভাষা (cholito bhasha, colloquial). Modern software uses cholito bhasha.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Bengali pronouns are gender-neutral. Third-person pronouns (সে/তিনি) do not distinguish gender."
+  },
+  "registers": {
+    "professional": {
+      "label": "চলিত (Professional)",
+      "description": "Standard for software UI. Colloquial standard (চলিত ভাষা) with আপনি address.",
+      "prompt": "Professional Bengali (চলিত ভাষা/cholito bhasha). Use আপনি (apni) for respectful second-person address. Modern colloquial standard — not literary/sadhu bhasha. Clear, accessible vocabulary appropriate for software interfaces."
+    },
+    "formal-shuddho": {
+      "label": "শুদ্ধ (Formal/Literary)",
+      "description": "For government, academic, or literary contexts using standard literary Bengali.",
+      "prompt": "Formal literary Bengali (শুদ্ধ ভাষা/shuddho bhasha). Elevated register with literary verb forms. For government, academic, and formal institutional contexts."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

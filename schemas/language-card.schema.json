@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://i18n-rosetta.com/schemas/language-card.schema.json",
+  "title": "i18n-rosetta Language Card",
+  "description": "Complete reference for a single language's translation configuration, including metadata, formality system, register presets, method support, and eval dataset links.",
+  "type": "object",
+  "required": ["code", "name", "bcp47", "script", "dir", "registers"],
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Locale code used as the key in rosetta config. Usually ISO 639-1 (e.g., 'fr') or BCP 47 with region (e.g., 'pt-PT'). For conlangs, use 'x-' prefix.",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z]{2,4})?$|^x-[a-z-]+$|^tlh$"
+    },
+    "name": {
+      "type": "string",
+      "description": "English display name of the language.",
+      "minLength": 1
+    },
+    "nativeName": {
+      "type": ["string", "null"],
+      "description": "Name of the language in its own script. Null for conlangs without established endonyms."
+    },
+    "iso639_1": {
+      "type": ["string", "null"],
+      "description": "ISO 639-1 two-letter code. Null if no ISO 639-1 code exists (e.g., conlangs, some indigenous languages).",
+      "pattern": "^[a-z]{2}$"
+    },
+    "iso639_3": {
+      "type": ["string", "null"],
+      "description": "ISO 639-3 three-letter code. Null for conlangs.",
+      "pattern": "^[a-z]{3}$"
+    },
+    "bcp47": {
+      "type": "string",
+      "description": "BCP 47 language tag. The canonical identifier used by web standards.",
+      "minLength": 2
+    },
+    "script": {
+      "type": "string",
+      "description": "ISO 15924 script code (e.g., 'Latn', 'Arab', 'Kore', 'Jpan'). For conlangs using PUA, use the source script code.",
+      "pattern": "^[A-Z][a-z]{3}$"
+    },
+    "dir": {
+      "type": "string",
+      "description": "Text directionality.",
+      "enum": ["ltr", "rtl"]
+    },
+    "formality": {
+      "type": ["object", "null"],
+      "description": "Structured description of the language's formality system. Null for languages with no formal/informal distinction relevant to translation.",
+      "properties": {
+        "system": {
+          "type": "string",
+          "description": "Category of formality system. Examples: 'T-V' (French, German), 'speech-levels' (Korean), 'keigo' (Japanese), 'particles-and-pronouns' (Thai), 'pronoun-system' (Vietnamese), 'register-levels' (Arabic), 'none'."
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable explanation of how formality works in this language, written for a developer who doesn't speak it."
+        },
+        "default": {
+          "type": "string",
+          "description": "The register preset key to use by default. Must match a key in the registers object."
+        }
+      },
+      "required": ["system", "description", "default"]
+    },
+    "gender": {
+      "type": ["object", "null"],
+      "description": "Grammatical gender information. Null for languages with no gender considerations.",
+      "properties": {
+        "grammatical": {
+          "type": "boolean",
+          "description": "Whether the language has grammatical gender (e.g., French, German, Arabic) vs. no grammatical gender (e.g., Finnish, Korean, Turkish)."
+        },
+        "inclusiveGuidance": {
+          "type": ["string", "null"],
+          "description": "Guidance for gender-inclusive language. Injected into all register prompts. Null if not applicable."
+        }
+      },
+      "required": ["grammatical"]
+    },
+    "registers": {
+      "type": "object",
+      "description": "Named register presets specific to this language's formality system. Keys are preset identifiers (e.g., 'formal-vous', 'polite-haeyo'). Every language must have at least one preset.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "description", "prompt"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Short display label shown in the CLI wizard and status output."
+          },
+          "description": {
+            "type": "string",
+            "description": "One-sentence explanation of when to use this preset."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "The actual register instruction injected into the LLM system prompt. This is the text that steers translation tone."
+          },
+          "deeplFormality": {
+            "type": "string",
+            "enum": ["prefer_more", "prefer_less", "default"],
+            "description": "DeepL API formality value for this preset. Only relevant when methodSupport.deeplFormality is true. 'prefer_more' for formal, 'prefer_less' for casual, 'default' for neutral."
+          }
+        }
+      }
+    },
+    "aliases": {
+      "type": "array",
+      "description": "Alternative locale codes that should resolve to this language card (e.g., 'no' for 'nb', 'iw' for 'he').",
+      "items": { "type": "string" }
+    },
+    "methodSupport": {
+      "type": "object",
+      "description": "Which translation APIs/methods support this language.",
+      "properties": {
+        "googleTranslate": { "type": "boolean" },
+        "deepl": { "type": "boolean" },
+        "deeplFormality": {
+          "type": "boolean",
+          "description": "Whether DeepL supports the formality parameter for this language. When true, the DeepL method sends prefer_more/prefer_less based on the active register preset."
+        },
+        "microsoftTranslator": { "type": "boolean" },
+        "libreTranslate": { "type": "boolean" },
+        "llm": { "type": "boolean" }
+      }
+    },
+    "scriptConverter": {
+      "type": ["string", "null"],
+      "description": "Key in SCRIPT_CONVERTERS registry (from scripts.js) if this language has a deterministic script conversion step. Null if not applicable."
+    },
+    "evalDatasets": {
+      "type": "array",
+      "description": "IDs of evaluation datasets that cover this language (e.g., 'flores-plus-devtest').",
+      "items": { "type": "string" }
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Free-form notes for developers and contributors."
+    }
+  }
+}

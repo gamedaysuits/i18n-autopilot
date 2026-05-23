@@ -42,6 +42,7 @@ const { values, positionals } = parseArgs({
     dir:           { type: 'string' },
     'content-dir': { type: 'string' },
     source:        { type: 'string' },
+    langs:         { type: 'string' },
     model:         { type: 'string' },
     method:        { type: 'string' },
     format:        { type: 'string' },

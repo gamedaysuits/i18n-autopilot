@@ -1,0 +1,43 @@
+{
+  "code": "tlh",
+  "name": "Klingon",
+  "nativeName": "tlhIngan Hol",
+  "iso639_1": null,
+  "iso639_3": "tlh",
+  "bcp47": "tlh",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Klingon has a deliberately harsh register by design (created by linguist Marc Okrand for Star Trek). There is no polite/formal distinction — Klingons don't do polite. The language has OVS word order and case-sensitive romanization (D ≠ d, Q ≠ q, S ≠ s, I ≠ i).",
+    "default": "standard"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": null
+  },
+  "registers": {
+    "standard": {
+      "label": "Standard Klingon",
+      "description": "Direct, imperative Klingon following Marc Okrand's canon vocabulary.",
+      "prompt": "Standard Klingon (tlhIngan Hol). Use only vocabulary from Marc Okrand's canonical sources (The Klingon Dictionary, Klingon for the Galactic Traveler, etc.). Case-sensitive romanization is critical: D (retroflex), Q (uvular), S (retroflex), I (vowel) are distinct phonemes. OVS word order. Direct, imperative tone — Klingon does not have a polite register."
+    },
+    "warrior": {
+      "label": "Warrior Register",
+      "description": "Aggressive, commanding tone with military vocabulary. For gaming and themed applications.",
+      "prompt": "Warrior-register Klingon. Aggressive, commanding tone. Prefer military and battle metaphors. Short, imperative sentences. batlh (honor) and may' (battle) vocabulary."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": "tlh",
+  "evalDatasets": [],
+  "notes": "Klingon pIqaD script requires a PUA-compatible font (U+F8D0–F8FF). The script converter transforms romanized Klingon to pIqaD."
+}

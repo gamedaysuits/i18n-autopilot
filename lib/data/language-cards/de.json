@@ -1,0 +1,47 @@
+{
+  "code": "de",
+  "name": "German",
+  "nativeName": "Deutsch",
+  "iso639_1": "de",
+  "iso639_3": "deu",
+  "bcp47": "de",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "German has a clear T-V distinction: 'Sie' (formal, always capitalized) vs 'du' (informal). Professional software almost universally uses Sie-form. Consumer tech and social platforms increasingly use du-form ('duzen'). German also has active gender-inclusive writing conventions using the Genderstern (*), colon (:), or Binnen-I.",
+    "default": "formal-Sie"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "German has three grammatical genders (masculine, feminine, neuter). For gender-inclusive language, use the Doppelpunkt (colon) notation: 'Benutzer:innen' (users), 'Mitarbeiter:innen' (employees). The colon is the most widely accepted form in corporate and public communication. Alternatives: Genderstern 'Benutzer*innen' (more progressive), slash 'Benutzer/innen' (older style)."
+  },
+  "registers": {
+    "formal-Sie": {
+      "label": "Siezen (Formal)",
+      "description": "Standard for professional software, enterprise, B2B, corporate, and institutional contexts.",
+      "prompt": "Formal German. Use Sie-form (Siezen) consistently — always capitalized. Professional register. Avoid anglicisms where good German equivalents exist.",
+      "deeplFormality": "prefer_more"
+    },
+    "casual-du": {
+      "label": "Duzen (Casual)",
+      "description": "For consumer apps, startups, gaming, social media, and products with a casual brand voice.",
+      "prompt": "Casual German. Use du-form (Duzen). Warm, approachable tone for consumer products. Anglicisms acceptable when they're part of standard tech vocabulary (e.g., 'App', 'Download').",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

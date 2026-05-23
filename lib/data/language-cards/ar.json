@@ -1,0 +1,45 @@
+{
+  "code": "ar",
+  "name": "Arabic",
+  "nativeName": "العربية",
+  "iso639_1": "ar",
+  "iso639_3": "ara",
+  "bcp47": "ar",
+  "script": "Arab",
+  "dir": "rtl",
+  "formality": {
+    "system": "register-levels",
+    "description": "Arabic formality operates through register choice (MSA vs colloquial) and pronoun/verb forms. Modern Standard Arabic (فصحى) is the written standard across all Arabic-speaking regions. Colloquial dialects vary widely by region but are not typically used in software UI. Within MSA, formality is expressed through vocabulary choice and sentence structure rather than a T-V pronoun distinction.",
+    "default": "msa-professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Arabic has grammatical gender on nouns, verbs, and adjectives. When addressing users of unknown gender, use masculine plural as the conventional default, or restructure sentences to avoid gendered forms where natural."
+  },
+  "registers": {
+    "msa-professional": {
+      "label": "فصحى Professional (MSA)",
+      "description": "Standard for software UI, websites, and business. Modern Standard Arabic with clear, professional vocabulary.",
+      "prompt": "Modern Standard Arabic (فصحى). Professional register suitable for software interfaces, websites, and business communication. Use clear, accessible vocabulary — avoid overly literary or archaic phrasing."
+    },
+    "msa-formal": {
+      "label": "فصحى Formal (MSA)",
+      "description": "For government, legal, academic, or official contexts requiring elevated register.",
+      "prompt": "Formal Modern Standard Arabic (فصحى). Elevated register for government, legal, and academic contexts. Use precise terminology and complex sentence structures appropriate for official documentation."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Arabic dialects (Egyptian, Levantine, Gulf, Maghrebi) are significantly different from MSA but don't have separate ISO 639-1 codes. Dialect-specific translation would require custom register prompts."
+}

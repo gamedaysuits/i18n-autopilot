@@ -1,0 +1,35 @@
+{
+  "code": "x-yoda",
+  "name": "Yoda-speak",
+  "nativeName": "Yoda-speak",
+  "iso639_1": null,
+  "iso639_3": null,
+  "bcp47": "x-yoda",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "none",
+    "description": "Constructed language or stylistic variant — no formality system. Tone is defined entirely by the register preset.",
+    "default": "standard"
+  },
+  "gender": null,
+  "registers": {
+    "standard": {
+      "label": "Standard Yoda",
+      "description": "OSV word order with Yoda's characteristic syntax inversion.",
+      "prompt": "Yoda-speak. Rearrange English sentences into Yoda's characteristic OSV (Object-Subject-Verb) word order. 'The file was saved' becomes 'Saved, the file was.' Keep meaning clear despite syntax inversion. Add characteristic Yoda expressions ('hmm', 'yes') sparingly. Short UI labels may not need inversion if it would be incomprehensible."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [],
+  "notes": "Register-only conlang — English with Yoda's OSV syntax transformation."
+}

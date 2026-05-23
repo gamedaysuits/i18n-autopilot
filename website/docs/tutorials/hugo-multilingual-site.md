@@ -68,7 +68,7 @@ Rosetta needs two things configured: the locale file path (for JSON strings) and
   "inputLocale": "en",
   "localesDir": "./i18n",
   "contentDir": "./content",
-  "model": "openai/gpt-4o-mini",
+  "model": "google/gemini-3.5-flash",
   "pairs": {
     "en:fr": { "method": "llm" },
     "en:ja": { "method": "llm", "model": "openai/gpt-4o" }

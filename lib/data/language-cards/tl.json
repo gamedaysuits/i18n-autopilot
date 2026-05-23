@@ -1,0 +1,52 @@
+{
+  "code": "tl",
+  "name": "Filipino (Taglish)",
+  "nativeName": "Filipino",
+  "iso639_1": "tl",
+  "iso639_3": "tgl",
+  "bcp47": "tl",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-and-code-switching",
+    "description": "Filipino formality is expressed through pronoun choice (po/ho for respect, ikaw/ka for familiar), verb forms, and the degree of English code-switching (Taglish). Software and tech communication in the Philippines routinely uses Taglish — Filipino structure with English technical terms. Pure Filipino (without English) reads as overly formal or academic for most digital contexts.",
+    "default": "taglish-professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Filipino has no grammatical gender. Pronouns (siya) are gender-neutral."
+  },
+  "registers": {
+    "taglish-professional": {
+      "label": "Taglish (Professional)",
+      "description": "Standard for apps, websites, and tech products in the Philippines. Filipino sentence structure with English for technical and UI terms.",
+      "prompt": "Filipino with natural Taglish code-switching. Use Filipino sentence structure but keep technical terms, UI labels, and industry-standard vocabulary in English. This matches how Filipino professionals actually read and write digital content. Use po/ho particles for polite address when contextually appropriate."
+    },
+    "taglish-casual": {
+      "label": "Taglish (Casual)",
+      "description": "For social media, chat apps, and youth-oriented products.",
+      "prompt": "Casual Taglish. More English mixing, conversational tone, relaxed grammar. For social media, messaging, and apps targeting younger demographics. Drop po/ho formality particles."
+    },
+    "formal-filipino": {
+      "label": "Pormal na Filipino",
+      "description": "Pure Filipino with minimal English. For government, educational, or cultural contexts.",
+      "prompt": "Formal Filipino (Pormal na Filipino). Minimize English loanwords — use Filipino equivalents where they exist. Appropriate for government, educational, and cultural institutions. Use po/ho consistently for respectful address."
+    }
+  },
+  "aliases": [
+    "fil"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Google Translate uses 'tl' (Tagalog) rather than 'fil' (Filipino). The distinction is political — Filipino is the national language standardized from Tagalog. For translation purposes, they are functionally identical."
+}

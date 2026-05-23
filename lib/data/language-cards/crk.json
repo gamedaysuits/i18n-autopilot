@@ -1,0 +1,40 @@
+{
+  "code": "crk",
+  "name": "Plains Cree",
+  "nativeName": "nêhiyawêwin",
+  "iso639_1": null,
+  "iso639_3": "crk",
+  "bcp47": "crk",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Plains Cree does not have a European-style T-V distinction. Formality is expressed through the use of respectful particles and verb forms. The language has a complex polysynthetic morphology — a single word can encode what requires an entire sentence in English. SRO (Standard Roman Orthography) is the working script; Syllabics (ᓀᐦᐃᔭᐍᐏᐣ) is the display script.",
+    "default": "standard"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Cree has no grammatical gender. The animacy distinction (animate/inanimate noun classes) is the primary noun categorization, not gender."
+  },
+  "registers": {
+    "standard": {
+      "label": "Standard (SRO)",
+      "description": "Standard Plains Cree in SRO orthography. Clear, accessible language appropriate for educational and community software.",
+      "prompt": "Standard Plains Cree (nêhiyawêwin) in SRO (Standard Roman Orthography). Use established vocabulary from published Cree dictionaries. When no standard term exists for a technical concept, keep the English term rather than inventing neologisms. Syllabics conversion is handled as a post-processing step."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": "crk",
+  "evalDatasets": [
+    "edtekla-dev-v1"
+  ],
+  "notes": "Low-resource language under active development. Translation quality requires llm-coached method with Cree-specific coaching data. See OCAP principles documentation for community engagement guidelines."
+}

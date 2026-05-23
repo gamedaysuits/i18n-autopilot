@@ -1,0 +1,23 @@
+{
+  "flores-plus-devtest": {
+    "name": "FLORES+ Devtest",
+    "description": "Multi-domain evaluation set from the FLORES+ project. 1012 sentences covering news, health, travel, and technology domains.",
+    "source": "https://github.com/openlanguagedata/flores",
+    "fixturesDir": "test/benchmark/fixtures",
+    "fixturesPattern": "flores-devtest.{code}.json",
+    "languages": [
+      "ar", "bg", "bn", "cs", "da", "de", "el", "en", "es", "es-MX",
+      "fa", "fi", "fr", "fr-CA", "he", "hi", "hu", "id", "it", "ja",
+      "ko", "ms", "nl", "no", "pl", "pt", "pt-PT", "ro", "ru", "sk",
+      "sv", "sw", "th", "tl", "tr", "uk", "ur", "vi", "zh", "zh-TW"
+    ]
+  },
+  "edtekla-dev-v1": {
+    "name": "EDTeKLA Development v1",
+    "description": "Educational technology corpus for Plains Cree (nêhiyawêwin). Domain-specific evaluation for indigenous language translation.",
+    "source": "internal",
+    "fixturesDir": "test/benchmark/fixtures",
+    "fixturesPattern": "edtekla-dev-v1.{code}.json",
+    "languages": ["crk"]
+  }
+}

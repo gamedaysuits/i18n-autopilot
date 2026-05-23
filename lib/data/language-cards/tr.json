@@ -1,0 +1,45 @@
+{
+  "code": "tr",
+  "name": "Turkish",
+  "nativeName": "Türkçe",
+  "iso639_1": "tr",
+  "iso639_3": "tur",
+  "bcp47": "tr",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Turkish has a T-V distinction: siz (formal/plural) vs sen (informal/singular). Professional software uses siz-form. Turkish is agglutinative, so formality also appears in verb suffixes (-siniz vs -sin).",
+    "default": "formal-siz"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Turkish has no grammatical gender. The third-person pronoun 'o' is gender-neutral."
+  },
+  "registers": {
+    "formal-siz": {
+      "label": "Siz (Formal)",
+      "description": "Standard for professional software, enterprise, and institutional contexts.",
+      "prompt": "Formal Turkish. Use siz-form consistently. Professional register appropriate for software interfaces and business communication. Clear, precise vocabulary. Avoid colloquialisms."
+    },
+    "informal-sen": {
+      "label": "Sen (Informal)",
+      "description": "For consumer apps, social media, gaming, and youth-oriented products.",
+      "prompt": "Informal Turkish. Use sen-form. Warm, conversational tone for consumer products and social platforms. Colloquial expressions acceptable."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

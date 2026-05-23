@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i18n-rosetta — Every Language. Every Method.</title>
+
+  <!-- Font preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@700&family=Noto+Sans+Canadian+Aboriginal:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================================================================== */
+    /*  DESIGN TOKENS — Obsidian theme                                    */
+    /* ================================================================== */
+    :root {
+      --bg: #000000;
+      --tile-bg: #16161E;
+      --violet: #6C5CE7;
+      --blue: #7B8CF5;
+      --cyan: #00E5E6;
+      --text: #E4E4F0;
+      --subtle: rgba(162, 155, 254, 0.6);
+      --red: #FF4757;
+      --amber: #FFA502;
+      --green: #2ECC71;
+
+      /* Glow variants */
+      --glow-violet: #8B7BF2;
+      --glow-blue: #94A3FF;
+      --glow-cyan: #00FFFF;
+
+      /* Typography */
+      --font-latin: 'Inter', system-ui, sans-serif;
+      --font-jp: 'Noto Sans JP', 'Inter', sans-serif;
+      --font-cree: 'Noto Sans Canadian Aboriginal', 'Inter', sans-serif;
+    }
+
+    /* ================================================================== */
+    /*  RESET & BASE                                                      */
+    /* ================================================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      overflow: hidden;
+      font-family: var(--font-latin);
+      /* Let the body fill the viewport — the video frame scales inside it */
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ================================================================== */
+    /*  VIDEO FRAME — 1080×1920 design resolution, scaled to fit viewport */
+    /*  For Playwright capture: set viewport to 1080×1920 and the scale   */
+    /*  factor becomes 1 automatically.                                   */
+    /* ================================================================== */
+    .video-frame {
+      width: 1080px;
+      height: 1920px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      /* Scale down to fit whichever viewport dimension is the constraint */
+      transform-origin: center center;
+      /* The JS below will calculate and apply the correct scale factor */
+    }
+
+    /* ================================================================== */
+    /*  SCENE LAYERS — each scene is position:absolute, full frame        */
+    /* ================================================================== */
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ================================================================== */
+    /*  DEPARTURE BOARD TILE                                              */
+    /* ================================================================== */
+    .tile {
+      width: 100px;
+      height: 100px;
+      border-radius: 14px;
+      background: var(--tile-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(108, 92, 231, 0.15);
+    }
+
+    .tile__char {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--violet);
+      user-select: none;
+      line-height: 1;
+      text-align: center;
+      min-width: 50px;
+    }
+
+    /* Flip animation for individual characters */
+    .tile__char.flipping {
+      animation: tile-flip 0.1s ease-in-out;
+    }
+
+    @keyframes tile-flip {
+      0%   { transform: scaleY(1);  opacity: 1; }
+      50%  { transform: scaleY(0);  opacity: 0.2; }
+      100% { transform: scaleY(1);  opacity: 1; }
+    }
+
+    /* Color classes for tile characters */
+    .tile--violet .tile__char { color: var(--violet); }
+    .tile--blue .tile__char   { color: var(--blue); }
+    .tile--cyan .tile__char   { color: var(--cyan); }
+
+    /* Error state tiles */
+    .tile--error {
+      border-color: rgba(255, 71, 87, 0.4);
+    }
+    .tile--error .tile__char {
+      color: var(--red);
+    }
+    .tile--amber .tile__char {
+      color: var(--amber);
+    }
+
+    /* Success state tiles */
+    .tile--success {
+      border-color: rgba(46, 204, 113, 0.3);
+    }
+    .tile--success .tile__char {
+      color: var(--green);
+    }
+    .tile--success::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 16px;
+      background: var(--green);
+      opacity: 0.08;
+      filter: blur(8px);
+      z-index: 0;
+    }
+
+    /* ================================================================== */
+    /*  SCENE 1 — HOOK                                                    */
+    /* ================================================================== */
+    #scene1 {
+      gap: 40px;
+    }
+
+    #scene1 .hero-tile {
+      width: 160px;
+      height: 160px;
+      border-radius: 22px;
+      border: 1.5px solid rgba(108, 92, 231, 0.3);
+    }
+
+    #scene1 .hero-tile .tile__char {
+      font-size: 72px;
+    }
+
+    .hook-text {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      letter-spacing: -0.02em;
+    }
+
+    .hook-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hook-text .highlight {
+      color: var(--cyan);
+    }
+
+    /* ================================================================== */
+    /*  SCENE 2 & 3 — BOARD GRID                                         */
+    /* ================================================================== */
+    .board-container {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-template-rows: repeat(6, 100px);
+      gap: 16px;
+      transform: scale(0.3);
+      opacity: 0;
+      transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.8s ease;
+    }
+
+    .board-grid.revealed {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .overlay-text {
+      position: absolute;
+      bottom: 340px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      letter-spacing: -0.01em;
+      z-index: 10;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+
+    .overlay-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .overlay-text .em-red {
+      color: var(--red);
+    }
+
+    .overlay-text .em-green {
+      color: var(--green);
+    }
+
+    /* ================================================================== */
+    /*  SCENE 4 — TERMINAL                                                */
+    /* ================================================================== */
+    .terminal-block {
+      position: absolute;
+      top: 320px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(22, 22, 30, 0.95);
+      border: 1px solid rgba(108, 92, 231, 0.3);
+      border-radius: 16px;
+      padding: 32px 40px;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .terminal-block.visible {
+      opacity: 1;
+    }
+
+    .terminal-text {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--green);
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    .terminal-text .prompt {
+      color: var(--subtle);
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 32px;
+      background: var(--green);
+      vertical-align: text-bottom;
+      animation: cursor-blink 0.6s step-end infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* ================================================================== */
+    /*  SCENE 5 — LOGO CLOSE                                              */
+    /* ================================================================== */
+    #scene5 {
+      gap: 18px;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* Logo bars — adapted from logo-animation.html */
+    .bar {
+      width: 280px;
+      height: 72px;
+      border-radius: 18px;
+      background: var(--tile-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    .bar--top { border: 1.5px solid rgba(108, 92, 231, 0.3); }
+    .bar--mid { border: 1.5px solid rgba(123, 140, 245, 0.3); }
+    .bar--bot { border: 1.5px solid rgba(0, 229, 230, 0.3); }
+
+    /* Glow halo behind each bar */
+    .bar::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 22px;
+      opacity: 0;
+      filter: blur(16px);
+      z-index: -1;
+      transition: opacity 0.6s ease;
+    }
+
+    .bar--top::before { background: var(--glow-violet); }
+    .bar--mid::before { background: var(--glow-blue); }
+    .bar--bot::before { background: var(--glow-cyan); }
+
+    .bar.locked::before {
+      opacity: 0.5;
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    .bar--top.locked { border-color: rgba(108, 92, 231, 0.7); }
+    .bar--mid.locked { border-color: rgba(123, 140, 245, 0.7); }
+    .bar--bot.locked { border-color: rgba(0, 229, 230, 0.7); }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 0.65; }
+    }
+
+    .bar__char {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      user-select: none;
+      min-width: 40px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .bar--top .bar__char { color: var(--violet); font-family: var(--font-latin); }
+    .bar--mid .bar__char { color: var(--blue);   font-family: var(--font-jp); }
+    .bar--bot .bar__char { color: var(--cyan);   font-family: var(--font-cree); }
+
+    .bar__char.flipping {
+      animation: char-flip 0.12s ease-in-out;
+    }
+
+    @keyframes char-flip {
+      0%   { transform: scaleY(1);  opacity: 1; }
+      50%  { transform: scaleY(0);  opacity: 0.3; }
+      100% { transform: scaleY(1);  opacity: 1; }
+    }
+
+    /* Wordmark + CTA */
+    .wordmark {
+      margin-top: 32px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      text-align: center;
+    }
+
+    .wordmark.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .wordmark__name {
+      font-family: var(--font-latin);
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .wordmark__url {
+      font-family: var(--font-latin);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--subtle);
+      margin-top: 16px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ================================================================== */
+    /*  AMBIENT PARTICLES (background visual depth)                       */
+    /* ================================================================== */
+    .particles {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--violet);
+      opacity: 0;
+      animation: particle-drift 8s ease-in-out infinite;
+    }
+
+    @keyframes particle-drift {
+      0%   { opacity: 0;    transform: translateY(0) scale(0.5); }
+      20%  { opacity: 0.15; }
+      80%  { opacity: 0.15; }
+      100% { opacity: 0;    transform: translateY(-200px) scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="video-frame" id="videoFrame">
+
+  <!-- Ambient floating particles for depth -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ============================================================== -->
+  <!-- SCENE 1: HOOK — Single tile flipping + stats text              -->
+  <!-- ============================================================== -->
+  <div class="scene" id="scene1">
+    <div class="tile hero-tile tile--violet" id="heroTile">
+      <span class="tile__char" id="heroChar">A</span>
+    </div>
+    <div class="hook-text" id="hookText1">7,000+ languages exist</div>
+    <div class="hook-text" id="hookText2">Your app speaks… <span class="highlight">2?</span></div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SCENE 2/3/4: BOARD — Grid + overlays + terminal                -->
+  <!-- ============================================================== -->
+  <div class="scene" id="sceneboard">
+    <div class="board-container">
+      <div class="board-grid" id="boardGrid"></div>
+    </div>
+
+    <!-- Problem overlay text -->
+    <div class="overlay-text" id="problemText">
+      <span class="em-red">Most tools break here</span>
+    </div>
+
+    <!-- Solution overlay text -->
+    <div class="overlay-text" id="solutionText">
+      <span class="em-green">Every language. Every method.</span>
+    </div>
+
+    <!-- Terminal command block -->
+    <div class="terminal-block" id="terminalBlock">
+      <div class="terminal-text">
+        <span class="prompt">$ </span><span id="terminalCmd"></span><span class="terminal-cursor" id="termCursor"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SCENE 5: CLOSE — Logo animation + CTA                         -->
+  <!-- ============================================================== -->
+  <div class="scene" id="scene5">
+    <div class="logo-container" id="logoContainer">
+      <div class="bar bar--top" id="barTop">
+        <span class="bar__char" id="charTop">R</span>
+      </div>
+      <div class="bar bar--mid" id="barMid">
+        <span class="bar__char" id="charMid">ロ</span>
+      </div>
+      <div class="bar bar--bot" id="barBot">
+        <span class="bar__char" id="charBot">ᕈ</span>
+      </div>
+      <div class="wordmark" id="wordmark">
+        <div class="wordmark__name">i18n-rosetta</div>
+        <div class="wordmark__url">npmjs.com/package/i18n-rosetta</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/**
+ * ====================================================================
+ * i18n-rosetta Marketing Video — Animation Orchestrator
+ * ====================================================================
+ *
+ * TIMELINE (28 seconds total):
+ *
+ *   0.0s –  0.5s  : Page load, font settling
+ *   0.5s –  3.0s  : SCENE 1 — HOOK
+ *     0.5s         :   Hero tile appears
+ *     0.5s – 2.0s  :   Hero tile flips through characters (A → あ → ᐊ → 文 → Я → ᕈ)
+ *     2.0s         :   Text 1 fades in: "7,000+ languages exist"
+ *     2.6s         :   Text 1 fades out, Text 2 fades in: "Your app speaks… 2?"
+ *
+ *   3.0s –  8.0s  : SCENE 2 — SCALE
+ *     3.0s         :   Scene 1 fades out, Scene Board fades in
+ *     3.2s         :   Board grid scales up from 0.3 → 1.0 (camera pull-back reveal)
+ *     3.2s – 8.0s  :   All 24 tiles cycle independently at staggered speeds
+ *
+ *   8.0s – 13.0s  : SCENE 3 — PROBLEM
+ *     8.0s – 10.5s :   Tiles accelerate cycling speed
+ *     8.5s – 12.0s :   Tiles progressively turn red/amber with error symbols
+ *    10.5s         :   "Most tools break here" overlay fades in
+ *
+ *  13.0s – 22.0s  : SCENE 4 — SOLUTION
+ *    13.0s         :   Problem text fades out
+ *    13.2s         :   Terminal block fades in
+ *    13.4s – 15.8s :   "npx i18n-rosetta sync" types out character by character
+ *    16.0s – 19.0s :   Green wave sweeps across board (top-left → bottom-right)
+ *    19.5s         :   Terminal fades out
+ *    19.5s         :   "Every language. Every method." fades in
+ *    21.0s         :   Solution text fades out
+ *
+ *  22.0s – 28.0s  : SCENE 5 — CLOSE
+ *    22.0s         :   Board scene fades out, Scene 5 fades in
+ *    22.3s         :   Bar 1 (violet R) drops in
+ *    22.6s         :   Bar 2 (blue ロ) slides in
+ *    22.9s         :   Bar 3 (cyan ᕈ) rises in
+ *    23.2s – 24.6s :   Characters cycle then lock
+ *    24.8s – 25.4s :   Glow halos pulse on
+ *    25.6s         :   Wordmark + URL fade in
+ *    26.0s – 28.0s :   Hold — logo at rest with glowing halos
+ *
+ * ====================================================================
+ */
+
+// ====================================================================
+// CHARACTER POOLS — diverse scripts for tile cycling
+// ====================================================================
+const SCRIPT_CHARS = [
+  // Latin
+  'A', 'B', 'R', 'K', 'M', 'W', 'Z',
+  // Cyrillic
+  'Я', 'Д', 'Ж', 'Ф', 'Ш', 'Щ',
+  // Greek
+  'Ω', 'Σ', 'Δ', 'Θ', 'Ψ', 'Λ',
+  // Japanese hiragana/katakana
+  'あ', 'ロ', 'カ', 'き', 'ナ', 'サ',
+  // Japanese kanji
+  '文', '語', '翻', '訳', '世', '界',
+  // Korean
+  '가', '한', '글', '나',
+  // Thai
+  'ก', 'ข', 'ค', 'ง',
+  // Devanagari
+  'अ', 'ब', 'क', 'म',
+  // Cree syllabics
+  'ᐊ', 'ᑕ', 'ᒥ', 'ᓀ', 'ᕈ', 'ᐃ',
+  // Georgian
+  'ა', 'ბ', 'გ',
+  // Armenian
+  'Ա', 'Բ', 'Գ',
+  // Arabic-like presentation
+  'ع', 'ق', 'م',
+];
+
+// Error symbols shown when tiles "break"
+const ERROR_CHARS = ['?', '✕', '!', '⚠', '×', '—'];
+
+// ====================================================================
+// DOM REFERENCES
+// ====================================================================
+const videoFrame    = document.getElementById('videoFrame');
+const scene1        = document.getElementById('scene1');
+const sceneboard    = document.getElementById('sceneboard');
+const scene5        = document.getElementById('scene5');
+const heroTile      = document.getElementById('heroTile');
+const heroChar      = document.getElementById('heroChar');
+const hookText1     = document.getElementById('hookText1');
+const hookText2     = document.getElementById('hookText2');
+const boardGrid     = document.getElementById('boardGrid');
+const problemText   = document.getElementById('problemText');
+const solutionText  = document.getElementById('solutionText');
+const terminalBlock = document.getElementById('terminalBlock');
+const terminalCmd   = document.getElementById('terminalCmd');
+const termCursor    = document.getElementById('termCursor');
+
+// Scene 5 logo elements
+const barTop   = document.getElementById('barTop');
+const barMid   = document.getElementById('barMid');
+const barBot   = document.getElementById('barBot');
+const charTop  = document.getElementById('charTop');
+const charMid  = document.getElementById('charMid');
+const charBot  = document.getElementById('charBot');
+const wordmark = document.getElementById('wordmark');
+
+// ====================================================================
+// UTILITY FUNCTIONS
+// ====================================================================
+
+/** Returns a random element from an array */
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/** Returns a random character color class */
+function pickColorClass() {
+  return pick(['tile--violet', 'tile--blue', 'tile--cyan']);
+}
+
+/** Schedules a function call at a specific time offset from animation start */
+function at(baseTime, offsetMs, fn) {
+  setTimeout(fn, baseTime + offsetMs);
+}
+
+/** Flip-animate a character element to a new character */
+function flipChar(charEl, newChar) {
+  charEl.classList.add('flipping');
+  setTimeout(() => {
+    charEl.textContent = newChar;
+    charEl.classList.remove('flipping');
+  }, 50);
+}
+
+// ====================================================================
+// GENERATE AMBIENT PARTICLES
+// ====================================================================
+function generateParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['var(--violet)', 'var(--blue)', 'var(--cyan)'];
+
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 1080 + 'px';
+    particle.style.top = (300 + Math.random() * 1400) + 'px';
+    particle.style.background = pick(colors);
+    particle.style.animationDelay = (Math.random() * 8) + 's';
+    particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+    particle.style.width = (2 + Math.random() * 3) + 'px';
+    particle.style.height = particle.style.width;
+    container.appendChild(particle);
+  }
+}
+
+// ====================================================================
+// BUILD THE BOARD GRID — 4 columns × 6 rows = 24 tiles
+// ====================================================================
+const tiles = [];        // Array of { el, charEl, row, col } objects
+let tileIntervals = [];  // Cycling intervals for board tiles
+
+function buildBoard() {
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 4; col++) {
+      const tile = document.createElement('div');
+      const colorClass = pickColorClass();
+      tile.className = `tile ${colorClass}`;
+      tile.dataset.row = row;
+      tile.dataset.col = col;
+
+      const charSpan = document.createElement('span');
+      charSpan.className = 'tile__char';
+      charSpan.textContent = pick(SCRIPT_CHARS);
+      tile.appendChild(charSpan);
+
+      boardGrid.appendChild(tile);
+      tiles.push({
+        el: tile,
+        charEl: charSpan,
+        row: row,
+        col: col,
+        colorClass: colorClass,
+        isError: false,
+        isSuccess: false
+      });
+    }
+  }
+}
+
+/** Start cycling a specific tile at a given interval */
+function startTileCycling(tileObj, intervalMs) {
+  // Don't cycle tiles that are in error or success state
+  if (tileObj.isError || tileObj.isSuccess) return null;
+
+  const id = setInterval(() => {
+    if (tileObj.isError || tileObj.isSuccess) {
+      clearInterval(id);
+      return;
+    }
+    flipChar(tileObj.charEl, pick(SCRIPT_CHARS));
+  }, intervalMs);
+
+  return id;
+}
+
+/** Start all tiles cycling with staggered random intervals */
+function startBoardCycling(baseInterval) {
+  stopBoardCycling();
+  tiles.forEach((t, i) => {
+    // Each tile gets a slightly different speed for organic feel
+    const jitter = 0.7 + Math.random() * 0.6;
+    const interval = baseInterval * jitter;
+    // Stagger start times so they don't all flip in sync
+    const delay = i * 40 + Math.random() * 100;
+    setTimeout(() => {
+      const id = startTileCycling(t, interval);
+      if (id) tileIntervals.push(id);
+    }, delay);
+  });
+}
+
+/** Stop all tile cycling */
+function stopBoardCycling() {
+  tileIntervals.forEach(id => clearInterval(id));
+  tileIntervals = [];
+}
+
+// ====================================================================
+// SCENE 1 — HOOK
+// ====================================================================
+const HOOK_SEQUENCE = [
+  { char: 'A',  delay: 250 },
+  { char: 'あ', delay: 250 },
+  { char: 'ᐊ',  delay: 250 },
+  { char: '文', delay: 250 },
+  { char: 'Я',  delay: 250 },
+  { char: 'ᕈ',  delay: 300 },
+];
+
+function runScene1(startTime) {
+  scene1.classList.add('active');
+
+  // Hero tile appears with a subtle scale-in
+  heroTile.style.transform = 'scale(0.6)';
+  heroTile.style.opacity = '0';
+  heroTile.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease';
+
+  at(startTime, 0, () => {
+    heroTile.style.transform = 'scale(1)';
+    heroTile.style.opacity = '1';
+  });
+
+  // Flip through hook characters
+  let flipDelay = 300;
+  HOOK_SEQUENCE.forEach((item, i) => {
+    at(startTime, flipDelay, () => {
+      flipChar(heroChar, item.char);
+    });
+    flipDelay += item.delay;
+  });
+
+  // Text 1 fades in: "7,000+ languages exist"
+  at(startTime, 1500, () => {
+    hookText1.classList.add('visible');
+  });
+
+  // Text 1 fades out, Text 2 fades in: "Your app speaks… 2?"
+  at(startTime, 2200, () => {
+    hookText1.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    hookText1.style.opacity = '0';
+    hookText1.style.transform = 'translateY(-10px)';
+  });
+
+  at(startTime, 2500, () => {
+    hookText2.classList.add('visible');
+  });
+}
+
+// ====================================================================
+// SCENE 2 — SCALE (board reveal)
+// ====================================================================
+function runScene2(startTime) {
+  // Crossfade: scene 1 out, board scene in
+  at(startTime, 0, () => {
+    scene1.classList.remove('active');
+    sceneboard.classList.add('active');
+  });
+
+  // Board scales up — the "camera pull-back" effect
+  at(startTime, 200, () => {
+    boardGrid.classList.add('revealed');
+  });
+
+  // Start tile cycling at moderate speed
+  at(startTime, 400, () => {
+    startBoardCycling(350);
+  });
+}
+
+// ====================================================================
+// SCENE 3 — PROBLEM (tiles go red)
+// ====================================================================
+function runScene3(startTime) {
+  // Accelerate the cycling — tiles flip faster to feel overwhelming
+  at(startTime, 0, () => {
+    stopBoardCycling();
+    startBoardCycling(180);
+  });
+
+  // Progressively turn tiles red/amber
+  // Select ~60% of tiles to become errors, staggered over 3 seconds
+  const errorTiles = tiles
+    .slice()
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 15);
+
+  errorTiles.forEach((t, i) => {
+    const delay = 500 + i * 200 + Math.random() * 150;
+
+    at(startTime, delay, () => {
+      t.isError = true;
+
+      // Remove old color class, add error state
+      t.el.classList.remove('tile--violet', 'tile--blue', 'tile--cyan');
+      const isAmber = Math.random() < 0.3;
+      t.el.classList.add(isAmber ? 'tile--amber' : 'tile--error');
+      if (!isAmber) t.el.classList.add('tile--error');
+
+      // Flip to an error character
+      flipChar(t.charEl, pick(ERROR_CHARS));
+
+      // Subtle shake on error
+      t.el.style.animation = 'none';
+      t.el.offsetHeight; // force reflow
+      t.el.style.animation = '';
+    });
+  });
+
+  // "Most tools break here" overlay
+  at(startTime, 2500, () => {
+    problemText.classList.add('visible');
+  });
+}
+
+// ====================================================================
+// SCENE 4 — SOLUTION (terminal + green wave)
+// ====================================================================
+const COMMAND_TEXT = 'npx i18n-rosetta sync';
+
+function runScene4(startTime) {
+  // Fade out problem text
+  at(startTime, 0, () => {
+    problemText.classList.remove('visible');
+  });
+
+  // Stop cycling — board is frozen in its broken state
+  at(startTime, 200, () => {
+    stopBoardCycling();
+  });
+
+  // Terminal block appears
+  at(startTime, 200, () => {
+    terminalBlock.classList.add('visible');
+  });
+
+  // Type out the command with realistic variable cadence
+  let typingDelay = 400;
+  const charDelays = [];
+
+  // Build per-character delays with realistic variation
+  for (let i = 0; i < COMMAND_TEXT.length; i++) {
+    const ch = COMMAND_TEXT[i];
+    let delay;
+
+    if (ch === ' ') {
+      // Slightly longer pause at spaces
+      delay = 80 + Math.random() * 60;
+    } else if (ch === '-') {
+      // Brief pause before hyphens
+      delay = 70 + Math.random() * 40;
+    } else {
+      // Normal character — variable cadence
+      delay = 45 + Math.random() * 50;
+    }
+
+    charDelays.push(delay);
+  }
+
+  // Actually type each character
+  let totalTypeTime = 0;
+  COMMAND_TEXT.split('').forEach((ch, i) => {
+    totalTypeTime += charDelays[i];
+    at(startTime, typingDelay + totalTypeTime, () => {
+      terminalCmd.textContent += ch;
+    });
+  });
+
+  // After typing completes, brief pause then GREEN WAVE
+  const waveStartOffset = typingDelay + totalTypeTime + 600;
+
+  at(startTime, waveStartOffset, () => {
+    // Hide cursor after command is "entered"
+    termCursor.style.display = 'none';
+
+    // Green wave: sweep from top-left to bottom-right
+    // Each tile's delay is proportional to its (row + col) distance
+    const maxDist = 5 + 3; // max row + max col
+    const waveDuration = 3000; // total wave time in ms
+
+    tiles.forEach(t => {
+      const dist = t.row + t.col;
+      const tileDelay = (dist / maxDist) * waveDuration;
+
+      setTimeout(() => {
+        t.isError = false;
+        t.isSuccess = true;
+
+        // Remove error classes
+        t.el.classList.remove('tile--error', 'tile--amber');
+
+        // Add success state
+        t.el.classList.add('tile--success');
+
+        // Flip to checkmark
+        flipChar(t.charEl, '✓');
+      }, tileDelay);
+    });
+  });
+
+  // Fade out terminal after wave
+  at(startTime, waveStartOffset + 3500, () => {
+    terminalBlock.classList.remove('visible');
+  });
+
+  // Solution text: "Every language. Every method."
+  at(startTime, waveStartOffset + 3500, () => {
+    solutionText.classList.add('visible');
+  });
+
+  // Solution text fades out before scene transition
+  at(startTime, waveStartOffset + 5000, () => {
+    solutionText.classList.remove('visible');
+  });
+}
+
+// ====================================================================
+// SCENE 5 — LOGO CLOSE
+// ====================================================================
+
+// Character cycle lists (from logo-animation.html)
+const CYCLE_CHARS_TOP = [
+  { char: 'A',  font: "'Inter', sans-serif" },
+  { char: 'Я',  font: "'Inter', sans-serif" },
+  { char: 'Ω',  font: "'Inter', sans-serif" },
+  { char: 'ℜ',  font: "'Inter', sans-serif" },
+  { char: 'R',  font: "'Inter', sans-serif" },
+];
+
+const CYCLE_CHARS_MID = [
+  { char: 'あ', font: "'Noto Sans JP', sans-serif" },
+  { char: '文', font: "'Noto Sans JP', sans-serif" },
+  { char: '가', font: "'Inter', sans-serif" },
+  { char: 'ロ', font: "'Noto Sans JP', sans-serif" },
+];
+
+const CYCLE_CHARS_BOT = [
+  { char: 'ᐊ', font: "'Noto Sans Canadian Aboriginal', sans-serif" },
+  { char: 'ᑕ', font: "'Noto Sans Canadian Aboriginal', sans-serif" },
+  { char: 'ᒥ', font: "'Noto Sans Canadian Aboriginal', sans-serif" },
+  { char: 'ᓀ', font: "'Noto Sans Canadian Aboriginal', sans-serif" },
+  { char: 'ᕈ', font: "'Noto Sans Canadian Aboriginal', sans-serif" },
+];
+
+/** Animate a bar's entrance */
+function dropInBar(bar, direction, delay) {
+  const transforms = {
+    top:    'translateY(-60px)',
+    right:  'translateX(80px)',
+    bottom: 'translateY(60px)',
+  };
+  bar.style.transform = transforms[direction];
+  bar.style.opacity = '0';
+
+  setTimeout(() => {
+    bar.style.transition = 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease';
+    bar.style.transform = 'translateY(0) translateX(0)';
+    bar.style.opacity = '1';
+  }, delay);
+}
+
+/** Cycle through characters for logo bars */
+function cycleBarChars(charEl, charList, startDelay, onComplete) {
+  let index = 0;
+  const baseInterval = 180;
+  const acceleration = 0.85;
+
+  function step() {
+    if (index >= charList.length) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    const entry = charList[index];
+    const interval = baseInterval * Math.pow(acceleration, index);
+
+    charEl.classList.add('flipping');
+    setTimeout(() => {
+      charEl.textContent = entry.char;
+      charEl.style.fontFamily = entry.font;
+      charEl.classList.remove('flipping');
+    }, 60);
+
+    index++;
+    setTimeout(step, Math.max(interval, 80));
+  }
+
+  setTimeout(step, startDelay);
+}
+
+function runScene5(startTime) {
+  // Crossfade: board out, logo in
+  at(startTime, 0, () => {
+    sceneboard.classList.remove('active');
+    scene5.classList.add('active');
+  });
+
+  // Bars drop in sequentially
+  at(startTime, 300, () => {
+    dropInBar(barTop, 'top', 0);
+    dropInBar(barMid, 'right', 300);
+    dropInBar(barBot, 'bottom', 600);
+  });
+
+  // Character cycling begins after all bars are visible
+  const cycleStart = 1200;
+
+  let locked = 0;
+  function checkAllLocked() {
+    locked++;
+    if (locked === 3) {
+      // Glow halos pulse on
+      setTimeout(() => barTop.classList.add('locked'), 100);
+      setTimeout(() => barMid.classList.add('locked'), 250);
+      setTimeout(() => barBot.classList.add('locked'), 400);
+
+      // Wordmark + URL fade in
+      setTimeout(() => wordmark.classList.add('visible'), 800);
+    }
+  }
+
+  at(startTime, cycleStart, () => {
+    cycleBarChars(charTop, CYCLE_CHARS_TOP, 0,   checkAllLocked);
+    cycleBarChars(charMid, CYCLE_CHARS_MID, 100, checkAllLocked);
+    cycleBarChars(charBot, CYCLE_CHARS_BOT, 200, checkAllLocked);
+  });
+}
+
+// ====================================================================
+// MASTER TIMELINE — orchestrates all scenes
+// ====================================================================
+function runVideo() {
+  // Scene timings (in milliseconds from animation start)
+  const T_SCENE1 = 0;       // 0.0s — Hook
+  const T_SCENE2 = 3000;    // 3.0s — Scale
+  const T_SCENE3 = 8000;    // 8.0s — Problem
+  const T_SCENE4 = 13000;   // 13.0s — Solution
+  const T_SCENE5 = 22000;   // 22.0s — Close
+
+  runScene1(T_SCENE1);
+  runScene2(T_SCENE2);
+  runScene3(T_SCENE3);
+  runScene4(T_SCENE4);
+  runScene5(T_SCENE5);
+}
+
+// ====================================================================
+// INITIALIZATION
+// ====================================================================
+generateParticles();
+buildBoard();
+
+// ====================================================================
+// VIEWPORT SCALING — fit 1080×1920 design frame into any browser window
+// ====================================================================
+function scaleToFit() {
+  const frame = document.getElementById('videoFrame');
+  const designW = 1080;
+  const designH = 1920;
+  const viewW = window.innerWidth;
+  const viewH = window.innerHeight;
+
+  // Pick the smaller scale factor so the entire frame fits on screen
+  const scale = Math.min(viewW / designW, viewH / designH);
+  frame.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', scaleToFit);
+
+// Start the animation 500ms after page load (allows fonts to settle)
+window.addEventListener('load', () => {
+  scaleToFit();
+  setTimeout(runVideo, 500);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "code": "hi",
+  "name": "Hindi",
+  "nativeName": "हिन्दी",
+  "iso639_1": "hi",
+  "iso639_3": "hin",
+  "bcp47": "hi",
+  "script": "Deva",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Hindi has a three-tier pronoun system: आप (āp, formal/respectful), तुम (tum, familiar), and तू (tū, intimate/condescending). Software UI uses आप universally. Hindi also has a code-mixing dimension: modern Indian tech communication naturally mixes Hindi with English (Hinglish). Pure शुद्ध हिन्दी (shuddh Hindi, 'pure Hindi') without English loanwords reads as formal/literary and is unusual in tech contexts.",
+    "default": "professional-hinglish"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Hindi verbs and adjectives agree in gender. When addressing users of unknown gender, prefer restructuring sentences to avoid gender agreement where possible (e.g., using infinitive or passive constructions). When agreement is unavoidable, use masculine as the socially conventional unmarked form, but note this is a pragmatic default, not an endorsement — style guides vary."
+  },
+  "registers": {
+    "professional-hinglish": {
+      "label": "प्रोफेशनल (Professional Hinglish)",
+      "description": "Standard for software UI and tech products in India. Hindi structure with English for technical and UI terms.",
+      "prompt": "Professional Hindi with natural Hindi-English code-mixing (Hinglish). Use Hindi sentence structure but keep technical terms, UI labels, and industry-standard vocabulary in English — this matches how Indian professionals actually use digital products. Use आप (āp) for second person. Devanagari script for Hindi words, Latin for English terms."
+    },
+    "shuddh-formal": {
+      "label": "शुद्ध हिन्दी (Pure Hindi, Formal)",
+      "description": "For government, academic, or cultural contexts where pure Hindi without English loanwords is preferred.",
+      "prompt": "Formal शुद्ध हिन्दी (pure Hindi). Minimize English loanwords — use Hindi equivalents where they exist (e.g., 'संगणक' for computer, 'जालस्थल' for website). Formal आप-form. Appropriate for government, educational, and cultural institutions."
+    },
+    "casual-hinglish": {
+      "label": "कैज़ुअल (Casual Hinglish)",
+      "description": "For social media, gaming, and youth-oriented products. Heavy code-mixing.",
+      "prompt": "Casual Hinglish. Heavy Hindi-English code-mixing with conversational tone. Use तुम (tum) for second person. Colloquial expressions and internet-influenced language acceptable. For social media, gaming, and youth-oriented apps."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Previous default ('Minimize English loanwords') was incorrect for modern Indian tech context. Changed to Hinglish professional as default, which matches actual usage patterns."
+}

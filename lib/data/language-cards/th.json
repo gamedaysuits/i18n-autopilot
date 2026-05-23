@@ -1,0 +1,50 @@
+{
+  "code": "th",
+  "name": "Thai",
+  "nativeName": "ภาษาไทย",
+  "iso639_1": "th",
+  "iso639_3": "tha",
+  "bcp47": "th",
+  "script": "Thai",
+  "dir": "ltr",
+  "formality": {
+    "system": "particles-and-pronouns",
+    "description": "Thai formality is expressed through politeness particles appended to sentences and pronoun choice. The particles ครับ (khrap, male speaker) and ค่ะ/คะ (kha, female speaker) indicate politeness but are gendered to the speaker, not the listener. Software UI conventionally omits these particles entirely to maintain gender neutrality. Formality is also expressed through pronoun choice: ผม (phom, formal male I), ดิฉัน (dichan, formal female I), เรา (rao, we/neutral I), คุณ (khun, you/neutral).",
+    "default": "neutral-professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Thai politeness particles ครับ (male) and ค่ะ/คะ (female) are gendered to the speaker. Software UI should omit particles entirely — this is standard practice and does not read as rude. Use เรา (we/neutral) rather than gendered first-person pronouns. Use คุณ (khun) for second person."
+  },
+  "registers": {
+    "neutral-professional": {
+      "label": "เป็นทางการ (Professional, no particles)",
+      "description": "Standard for software UI. Omits gendered particles. Clean and neutral.",
+      "prompt": "Professional Thai. Use คุณ (khun) for second person, เรา (rao) for first person when needed. Clear, concise phrasing appropriate for digital interfaces."
+    },
+    "polite-male": {
+      "label": "สุภาพ ครับ (Polite, male voice)",
+      "description": "For chatbots, virtual assistants, or personas with a male-presenting voice.",
+      "prompt": "Polite Thai with ครับ (khrap) particle. For contexts where a male-presenting voice is appropriate — chatbots, customer service with male persona, conversational UI. Use ผม (phom) for first person."
+    },
+    "polite-female": {
+      "label": "สุภาพ ค่ะ (Polite, female voice)",
+      "description": "For chatbots, virtual assistants, or personas with a female-presenting voice.",
+      "prompt": "Polite Thai with ค่ะ/คะ (kha) particles. For contexts where a female-presenting voice is appropriate — chatbots, customer service with female persona, conversational UI. Use ดิฉัน (dichan) for first person."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Previous default included gendered particles which was problematic. Changed to particle-free professional register as the default."
+}

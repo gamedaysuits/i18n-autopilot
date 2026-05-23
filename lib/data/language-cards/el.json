@@ -1,0 +1,45 @@
+{
+  "code": "el",
+  "name": "Greek",
+  "nativeName": "Ελληνικά",
+  "iso639_1": "el",
+  "iso639_3": "ell",
+  "bcp47": "el",
+  "script": "Grek",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Modern Greek has a T-V distinction: εσείς (eseis, formal/plural) vs εσύ (esi, informal/singular). Professional software uses εσείς. Greek uses Δημοτική (Dimotiki, demotic/modern standard) — Καθαρεύουσα (Katharevousa, purist) is archaic.",
+    "default": "formal"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Greek has three grammatical genders (masculine, feminine, neuter). When gender is unknown, masculine plural is the conventional default."
+  },
+  "registers": {
+    "formal": {
+      "label": "Εσείς (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Modern Greek (Δημοτική). Use εσείς for second-person address. Professional register. Modern standard Greek — not Καθαρεύουσα."
+    },
+    "informal": {
+      "label": "Εσύ (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Modern Greek. Use εσύ-form. Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

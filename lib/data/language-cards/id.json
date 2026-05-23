@@ -1,0 +1,40 @@
+{
+  "code": "id",
+  "name": "Indonesian",
+  "nativeName": "Bahasa Indonesia",
+  "iso639_1": "id",
+  "iso639_3": "ind",
+  "bcp47": "id",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Indonesian does not have a T-V pronoun distinction in the European sense. 'Anda' (formal you) vs 'kamu' (informal you) exists but software UI generally uses 'Anda' or avoids direct address entirely using passive constructions. Formality is expressed through vocabulary choice and use of formal prefixes/suffixes.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Indonesian has no grammatical gender. Pronouns are gender-neutral."
+  },
+  "registers": {
+    "professional": {
+      "label": "Profesional (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Indonesian (Bahasa Indonesia). Use Anda (capitalized) for second-person address, or prefer passive/impersonal constructions to avoid direct address. Clear, modern language appropriate for software interfaces."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Indonesian (Bahasa Indonesia) and Malay (Bahasa Melayu) are mutually intelligible but have distinct standard forms. See ms.json for Malay."
+}

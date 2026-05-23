@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./readme-locales",
+  "contentDir": "./readme-src",
+  "format": "json",
+  "model": "google/gemini-2.5-flash",
+  "batchSize": 30,
+  "promptContext": "You are translating the README for i18n-rosetta, an open-source developer tool (npm package) for translating locale files. This is a technical README on GitHub — maintain a professional, developer-facing tone. Preserve ALL markdown formatting, links, badges, code blocks, CLI commands, config keys, package names, and URLs exactly as-is. Only translate the prose, section headings, and table description cells. The project was born from translating a production website into Plains Cree (an Indigenous language), so treat references to Indigenous languages with cultural respect.",
+  "pairs": {
+    "en:fr":  { "method": "llm", "batchSize": 50 },
+    "en:de":  { "method": "llm", "batchSize": 50 },
+    "en:es":  { "method": "llm", "batchSize": 50 },
+    "en:pt":  { "method": "llm", "batchSize": 50 },
+    "en:nl":  { "method": "llm", "batchSize": 50 },
+    "en:ja":  { "method": "llm", "batchSize": 50 },
+    "en:ko":  { "method": "llm", "batchSize": 50 },
+    "en:zh":  { "method": "llm", "batchSize": 50 },
+    "en:th":  { "method": "llm", "batchSize": 50 },
+    "en:vi":  { "method": "llm", "batchSize": 50 },
+    "en:fil": { "method": "llm", "batchSize": 50 },
+    "en:ar":  { "method": "llm", "batchSize": 50 }
+  },
+  "languages": {
+    "fr": {
+      "name": "French",
+      "register": "Formal French technical documentation. Use vous-form (vouvoiement) consistently. Professional developer-facing register — clear, precise, no marketing fluff. Translate section headings but keep CLI commands and code untouched. 'Quality gate' → 'porte qualité', 'batching' → keep as 'batching' (established term)."
+    },
+    "de": {
+      "name": "German",
+      "register": "Formal German technical documentation. Use Sie-form (Siezen) consistently. Professional developer register — compound nouns are fine when natural (Übersetzungsmethode), but prefer clarity over academic density. Keep English technical terms where they're standard in German dev communities (z.B. 'Batching', 'Cache')."
+    },
+    "es": {
+      "name": "Spanish",
+      "register": "Neutral Latin American Spanish. Professional technical register using usted-form where applicable. Avoid region-specific slang. 'You' → 'usted' in formal instructions. Keep established English technical terms (e.g., 'cache', 'plugin', 'batch')."
+    },
+    "pt": {
+      "name": "Portuguese (Brazilian)",
+      "register": "Professional Brazilian Portuguese. Use você-form. Developer-facing technical register — clear and direct. Keep English technical terms where standard in Brazilian dev culture (e.g., 'plugin', 'cache', 'deploy'). 'Quality gate' → 'portão de qualidade' or keep English if more natural."
+    },
+    "nl": {
+      "name": "Dutch",
+      "register": "Formal Dutch technical documentation. Use u-form. Professional developer register. Dutch tech writing tends to borrow English terms freely — follow that convention. Keep code-related terms in English."
+    },
+    "ja": {
+      "name": "Japanese",
+      "register": "Polite Japanese (です/ます form). Technical documentation register — clear and structured. Use katakana for established foreign technical terms (バッチ, キャッシュ, プラグイン). Section headings should be concise. Avoid overly formal keigo — this is developer docs, not business correspondence."
+    },
+    "ko": {
+      "name": "Korean",
+      "register": "Polite Korean (해요체 / -ㅂ니다). Technical documentation register for developers. Use standard Korean technical vocabulary where it exists, but keep English terms in parentheses when helpful: 품질 게이트(Quality Gate). Be concise — Korean technical writing is direct."
+    },
+    "zh": {
+      "name": "Chinese (Simplified)",
+      "register": "Professional Simplified Chinese (简体中文). Technical documentation register — clear, modern, no classical flourishes. Use established Chinese technical terms (批处理, 缓存, 插件) but keep proper nouns in English (Rosetta, Hugo, OpenRouter). Developer-facing — assume the reader writes code."
+    },
+    "th": {
+      "name": "Thai",
+      "register": "Professional Thai technical documentation. Use คุณ (khun) for second-person. Polite but not overly formal — ครับ/ค่ะ particles are optional in written tech docs. Keep English technical terms with Thai explanations in parentheses where helpful."
+    },
+    "vi": {
+      "name": "Vietnamese",
+      "register": "Professional Vietnamese technical documentation. Use bạn for second-person. Clear, modern Vietnamese — avoid Sino-Vietnamese compounds when a simpler Vietnamese phrase exists. Keep English technical terms where standard in Vietnamese developer culture."
+    },
+    "fil": {
+      "name": "Filipino",
+      "register": "Professional Filipino with natural Taglish code-switching. Technical documentation register — use Filipino for prose but keep English for all technical terms, CLI commands, and code concepts. This is standard practice in Filipino developer communities. Use po/opo for politeness where natural."
+    },
+    "ar": {
+      "name": "Arabic",
+      "register": "Modern Standard Arabic (فصحى). Professional technical documentation register. Use masculine plural for general 'you'. Keep all code, commands, and technical terms in English (LTR within RTL text). Translate prose, headings, and table descriptions. Arabic readers of technical docs expect English terms to remain untranslated."
+    }
+  }
+}

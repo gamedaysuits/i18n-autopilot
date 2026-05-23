@@ -200,7 +200,7 @@ function buildTestPairs(languages, sourceLocale = 'en') {
       source: sourceLocale,
       target: code,
       method: 'llm',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       name: lang.name,
       register: lang.register,

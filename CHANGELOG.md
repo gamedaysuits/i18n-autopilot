@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.1] - 2026-05-22
+
+### Added
+- **Six new translation methods**: Direct API integrations for `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, and `gemini`. Zero external dependencies — all use Node.js built-in `fetch`.
+- **Coaching support for direct LLM providers**: `openai`, `anthropic`, and `gemini` methods now load coaching data from `.rosetta/coaching/<locale>.json`, injecting grammar rules into the system prompt and dictionary term overrides into per-batch user messages. Same coaching format as `llm-coached`.
+- **Programmatic API** (`index.js`): New package entry point re-exports all method classes, orchestrator, configuration, sync pipeline, quality gate, and coaching utilities. Enables `import { OpenAIMethod } from 'i18n-rosetta'`.
+- **Per-method onboarding**: `sync.js` now shows method-specific API key setup instructions with signup URLs when a key is missing (DeepL, Microsoft, LibreTranslate, OpenAI, Anthropic, Gemini).
+- **Runtime model validation**: Direct LLM providers now validate model strings before making API calls. Catches three categories of errors:
+  - OpenRouter-format strings (`google/gemini-3.5-flash`) used with direct providers — suggests `--method llm`
+  - Models from the wrong provider (`claude-*` on OpenAI) — suggests the correct `--method`
+  - Deprecated or misspelled model names — fetches the provider's live model list and suggests alternatives
+- **`DirectLLMMethod` base class** (`lib/methods/direct-llm.js`): Shared base class for OpenAI, Anthropic, and Gemini. Implements translate, coaching integration, retry loops, and model validation. Subclasses implement only provider-specific HTTP details (~130 lines each vs ~300 before).
+- **Model-aware quality tiers**: `getQualityTier()` now returns model-specific tiers: `gpt-4o-mini` → budget, `claude-opus` → premium, `gemini-pro` → premium, etc.
+- **56 new tests** (745 → 801): Direct provider unit tests, coaching integration tests with real temp files, MS Translator tests, LibreTranslate tests. Live API integration test (`test/live-provider-coaching.manual.js`) for manual verification.
+
+### Changed
+- **Default model names updated**: Anthropic default changed from `claude-3-5-sonnet-latest` (retired) to `claude-sonnet-4-6`. Gemini default changed from `gemini-1.5-flash` (deprecated) to `gemini-2.5-flash`.
+- **`package.json`**: Added `exports` and `main` fields pointing to `index.js`. Added `openai`, `anthropic`, `gemini`, `deepl` keywords.
+- **Error message standardization**: All providers now use consistent `[WARN] <Provider>: no API key — skipping.` format. Detailed setup help lives in `sync.js`, not in individual method files.
+- **DeepL coaching dedup**: DeepL now uses the shared `loadCoachingData` from `llm-coached.js` instead of a local duplicate implementation.
+
 ## [3.3.0] - 2026-05-22
 
 ### Added
@@ -18,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **CLI parser**: Migrated from hand-rolled `argv` loop to Node.js built-in `util.parseArgs` with `strict: false`. Preserves all existing flag behavior while gaining proper type validation for known options.
-- **Constants centralized**: `DEFAULT_MODEL` (`openai/gpt-4o-mini`) and `DEFAULT_BATCH_SIZE` (`30`) are now named exports from `config.js`. All consumers (`pairs.js`, `llm.js`, `llm-coached.js`, `translate.js`, `init.js`) import the constants instead of repeating inline literals. Changing the default model or batch size is now a single-line edit.
+- **Constants centralized**: `DEFAULT_MODEL` (`google/gemini-3.5-flash`) and `DEFAULT_BATCH_SIZE` (`30`) are now named exports from `config.js`. All consumers (`pairs.js`, `llm.js`, `llm-coached.js`, `translate.js`, `init.js`) import the constants instead of repeating inline literals. Changing the default model or batch size is now a single-line edit.
 - **Coached cascade dedup**: `LLMCoachedMethod` now delegates its retry cascade to `LLMMethod.runCascade()` instead of duplicating the full cascade logic. The coached method only provides its custom `batchFn` and label.
 - **CI stability**: Workflow matrix now uses `fail-fast: false` so a single flaky test doesn't cancel the entire matrix. Added `timeout-minutes: 5` as a safety net.
 

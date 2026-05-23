@@ -1,0 +1,40 @@
+{
+  "code": "sv",
+  "name": "Swedish",
+  "nativeName": "Svenska",
+  "iso639_1": "sv",
+  "iso639_3": "swe",
+  "bcp47": "sv",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Swedish historically had a complex formality system but underwent the 'du-reform' (du-reformen) in the 1960s–70s. Modern Swedish uses 'du' universally. 'Ni' as formal address is sometimes used in retail/service but is not standard in software.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Swedish has common and neuter genders (en/ett). The gender-neutral pronoun 'hen' is officially recognized and widely accepted."
+  },
+  "registers": {
+    "professional": {
+      "label": "Professionell (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Swedish. Use du-form (universal in modern Swedish). Clear, modern language."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

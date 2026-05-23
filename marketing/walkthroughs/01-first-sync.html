@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i18n-rosetta — First Sync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --card-bg: #16161E;
+      --violet: #6C5CE7;
+      --blue: #7B8CF5;
+      --cyan: #00E5E6;
+      --text: #E4E4F0;
+      --subtle: rgba(162, 155, 254, 0.6);
+      --green: #2ECC71;
+      --red: #FF4757;
+      --font: 'Inter', system-ui, sans-serif;
+      --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      overflow: hidden;
+      font-family: var(--font);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-frame {
+      width: 1080px;
+      height: 1920px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      transform-origin: center center;
+    }
+
+    /* ── Scenes ──────────────────────────────────────── */
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 60px 50px;
+    }
+    .scene.active { opacity: 1; }
+
+    /* ── Big text ─────────────────────────────────────── */
+    .big-text {
+      font-size: 72px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      text-align: center;
+      line-height: 1.15;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .big-text.visible { opacity: 1; transform: translateY(0); }
+    .big-text .accent { color: var(--cyan); }
+    .big-text .violet { color: var(--violet); }
+    .big-text .dim {
+      display: block;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--subtle);
+      margin-top: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Terminal ─────────────────────────────────────── */
+    .terminal {
+      width: 940px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid rgba(108, 92, 231, 0.15);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .terminal.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    .terminal__bar {
+      height: 42px;
+      background: rgba(10, 10, 14, 0.6);
+      border-bottom: 1px solid rgba(108, 92, 231, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 7px;
+    }
+    .terminal__dot { width: 11px; height: 11px; border-radius: 50%; }
+    .terminal__dot--r { background: #FF5F56; }
+    .terminal__dot--y { background: #FFBD2E; }
+    .terminal__dot--g { background: #27C93F; }
+
+    .terminal__body {
+      padding: 22px 26px;
+      min-height: 80px;
+    }
+
+    /* Terminal lines */
+    .tl {
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .tl.visible { opacity: 1; transform: translateY(0); }
+    .tl.dim-out { opacity: 0.3; transition: opacity 0.6s ease; }
+    .tl .p  { color: var(--subtle); }
+    .tl .c  { color: var(--green); }
+    .tl .d  { color: rgba(228, 228, 240, 0.3); }
+    .tl .g  { color: var(--green); }
+    .tl .v  { color: var(--violet); }
+    .tl .cy { color: var(--cyan); }
+    .tl .b  { color: var(--blue); }
+    .tl .w  { color: #FFA502; }
+    .tl .k  { color: var(--cyan); }
+    .tl .s  { color: var(--green); }
+    .tl .br { color: var(--subtle); }
+    .tl .a  { color: var(--cyan); }
+    .tl .ok { color: var(--green); font-weight: 700; }
+    .tl .h  { color: var(--text); font-weight: 700; }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 21px;
+      background: var(--green);
+      vertical-align: text-bottom;
+      animation: blink 0.55s step-end infinite;
+      margin-left: 1px;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Caption bar ─────────────────────────────────── */
+    .caption {
+      position: absolute;
+      bottom: 100px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 18px 50px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 100;
+    }
+    .caption.visible { opacity: 1; transform: translateY(0); }
+    .caption.fade-out { opacity: 0; transform: translateY(-10px); transition: opacity 0.4s ease, transform 0.4s ease; }
+
+    .caption__text {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+      /* Frosted glass background */
+      display: inline-block;
+      background: rgba(22, 22, 30, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(108, 92, 231, 0.15);
+      border-radius: 12px;
+      padding: 14px 28px;
+    }
+    .caption__text .hl { color: var(--cyan); font-weight: 700; }
+
+    /* ── File tree ────────────────────────────────────── */
+    .file-tree {
+      width: 500px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1px solid rgba(108, 92, 231, 0.12);
+      padding: 24px 28px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .file-tree.visible { opacity: 1; transform: translateY(0); }
+
+    .ft-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .ft-item {
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 2;
+      padding-left: 20px;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ft-item.visible { opacity: 1; transform: translateX(0); }
+    .ft-item .icon { font-size: 16px; opacity: 0.5; }
+    .ft-item .badge {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 6px;
+      margin-left: auto;
+    }
+    .ft-item .badge--keys {
+      background: rgba(108, 92, 231, 0.15);
+      color: var(--violet);
+    }
+    .ft-item .badge--empty {
+      background: rgba(255, 71, 87, 0.12);
+      color: var(--red);
+    }
+    .ft-item .badge--done {
+      background: rgba(46, 204, 113, 0.12);
+      color: var(--green);
+    }
+
+    /* ── JSON preview ────────────────────────────────── */
+    .json-preview {
+      width: 800px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1px solid rgba(108, 92, 231, 0.12);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .json-preview.visible { opacity: 1; transform: translateY(0); }
+
+    .json-preview__header {
+      height: 38px;
+      background: rgba(10, 10, 14, 0.5);
+      border-bottom: 1px solid rgba(108, 92, 231, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--subtle);
+    }
+
+    .json-preview__body {
+      padding: 20px 24px;
+    }
+    .json-preview .tl { font-size: 18px; }
+
+    /* ── Progress dots ───────────────────────────────── */
+    .progress {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    .progress__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(108, 92, 231, 0.2);
+      transition: background 0.4s ease;
+    }
+    .progress__dot.active { background: var(--violet); }
+    .progress__dot.done { background: var(--green); }
+  </style>
+</head>
+<body>
+
+<div class="video-frame" id="videoFrame">
+
+  <!-- Progress dots (7 scenes) -->
+  <div class="progress" id="progress">
+    <div class="progress__dot" id="pd1"></div>
+    <div class="progress__dot" id="pd2"></div>
+    <div class="progress__dot" id="pd3"></div>
+    <div class="progress__dot" id="pd4"></div>
+    <div class="progress__dot" id="pd5"></div>
+    <div class="progress__dot" id="pd6"></div>
+    <div class="progress__dot" id="pd7"></div>
+  </div>
+
+  <!-- Active caption bar (reused across scenes) -->
+  <div class="caption" id="caption">
+    <div class="caption__text" id="captionText"></div>
+  </div>
+
+  <!-- SCENE 1: Hook -->
+  <div class="scene" id="scene1">
+    <div class="big-text" id="hook1">200 keys.<br>Zero translations.</div>
+    <div class="big-text" id="hook2" style="margin-top: 60px; font-size: 40px; color: var(--subtle);">Sound familiar?</div>
+  </div>
+
+  <!-- SCENE 2: File tree — the problem -->
+  <div class="scene" id="scene2" style="justify-content: center; gap: 20px;">
+    <div class="file-tree" id="tree1">
+      <div class="ft-header">locales/</div>
+      <div class="ft-item" id="f1"><span class="icon">📄</span> en.json <span class="badge badge--keys">200 keys</span></div>
+      <div class="ft-item" id="f2"><span class="icon">📄</span> fr.json <span class="badge badge--empty">empty</span></div>
+      <div class="ft-item" id="f3"><span class="icon">📄</span> ja.json <span class="badge badge--empty">empty</span></div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: Init wizard -->
+  <div class="scene" id="scene3">
+    <div class="terminal" id="term3">
+      <div class="terminal__bar">
+        <div class="terminal__dot terminal__dot--r"></div>
+        <div class="terminal__dot terminal__dot--y"></div>
+        <div class="terminal__dot terminal__dot--g"></div>
+      </div>
+      <div class="terminal__body" id="term3body"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: API key -->
+  <div class="scene" id="scene4">
+    <div class="terminal" id="term4">
+      <div class="terminal__bar">
+        <div class="terminal__dot terminal__dot--r"></div>
+        <div class="terminal__dot terminal__dot--y"></div>
+        <div class="terminal__dot terminal__dot--g"></div>
+      </div>
+      <div class="terminal__body" id="term4body"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 5: Sync -->
+  <div class="scene" id="scene5">
+    <div class="terminal" id="term5">
+      <div class="terminal__bar">
+        <div class="terminal__dot terminal__dot--r"></div>
+        <div class="terminal__dot terminal__dot--y"></div>
+        <div class="terminal__dot terminal__dot--g"></div>
+      </div>
+      <div class="terminal__body" id="term5body"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 6: Result peek -->
+  <div class="scene" id="scene6" style="gap: 24px;">
+    <div class="file-tree" id="tree2">
+      <div class="ft-header">locales/</div>
+      <div class="ft-item" id="r1"><span class="icon">📄</span> en.json <span class="badge badge--keys">200 keys</span></div>
+      <div class="ft-item" id="r2"><span class="icon">📄</span> fr.json <span class="badge badge--done">200 keys ✓</span></div>
+      <div class="ft-item" id="r3"><span class="icon">📄</span> ja.json <span class="badge badge--done">200 keys ✓</span></div>
+    </div>
+    <div class="json-preview" id="jsonPreview">
+      <div class="json-preview__header">ja.json</div>
+      <div class="json-preview__body" id="jsonBody"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 7: Close -->
+  <div class="scene" id="scene7">
+    <div class="big-text" id="close1">One command.</div>
+    <div class="big-text" id="close2" style="margin-top: 16px; font-size: 52px;">Every language.</div>
+    <div class="big-text" id="close3" style="margin-top: 60px; font-size: 24px; font-weight: 500; color: var(--subtle); letter-spacing: 0;">npmjs.com/package/i18n-rosetta</div>
+  </div>
+
+</div>
+
+<script>
+/**
+ * VIDEO 1: "First Sync"
+ *
+ * Use case: 200 keys in en.json. Zero translations. Need French + Japanese.
+ *
+ * Matches actual CLI behavior from:
+ *   - lib/commands/init.js (interactive wizard)
+ *   - lib/sync.js (sync output format)
+ *   - lib/config.js (config structure)
+ *
+ * Timeline (~75s):
+ *   0.0s –  4.5s : Scene 1 — Hook
+ *   4.5s – 11.0s : Scene 2 — File tree (the problem)
+ *  11.0s – 27.0s : Scene 3 — Init wizard
+ *  27.0s – 32.0s : Scene 4 — API key
+ *  32.0s – 56.0s : Scene 5 — Sync
+ *  56.0s – 68.0s : Scene 6 — Result peek
+ *  68.0s – 75.0s : Scene 7 — Close
+ */
+
+// ── Utilities ──────────────────────────────────────────
+
+function showScene(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function setCaption(text) {
+  const el = document.getElementById('caption');
+  const textEl = document.getElementById('captionText');
+  // If already visible, fade out first then change text
+  if (el.classList.contains('visible')) {
+    el.classList.remove('visible');
+    el.classList.add('fade-out');
+    setTimeout(() => {
+      el.classList.remove('fade-out');
+      textEl.innerHTML = text;
+      el.classList.add('visible');
+    }, 400);
+  } else {
+    textEl.innerHTML = text;
+    el.classList.add('visible');
+  }
+}
+
+function hideCaption() {
+  const el = document.getElementById('caption');
+  el.classList.remove('visible');
+  el.classList.add('fade-out');
+  setTimeout(() => el.classList.remove('fade-out'), 400);
+}
+
+function setProgress(sceneNum) {
+  for (let i = 1; i <= 7; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.className = 'progress__dot';
+    if (i < sceneNum) dot.classList.add('done');
+    if (i === sceneNum) dot.classList.add('active');
+  }
+}
+
+function addLine(container, html, delay = 0) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = 'tl';
+      div.innerHTML = html;
+      container.appendChild(div);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          div.classList.add('visible');
+          resolve(div);
+        });
+      });
+    }, delay);
+  });
+}
+
+function typeInto(container, text, cssClass, base = 50) {
+  return new Promise(resolve => {
+    const span = document.createElement('span');
+    if (cssClass) span.className = cssClass;
+    container.appendChild(span);
+    let i = 0;
+    function tick() {
+      if (i >= text.length) { resolve(); return; }
+      span.textContent += text[i]; i++;
+      const ch = text[i - 1];
+      let d = base + Math.random() * 25;
+      if (ch === ' ') d += 30;
+      if (ch === '-') d += 12;
+      setTimeout(tick, d);
+    }
+    tick();
+  });
+}
+
+function typeAnswer(container, text, d = 65) {
+  return new Promise(resolve => {
+    const span = document.createElement('span');
+    span.className = 'a';
+    container.appendChild(span);
+    let i = 0;
+    function tick() {
+      if (i >= text.length) { resolve(); return; }
+      span.textContent += text[i]; i++;
+      setTimeout(tick, d + Math.random() * 35);
+    }
+    tick();
+  });
+}
+
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Scene 1: Hook ──────────────────────────────────────
+async function scene1() {
+  setProgress(1);
+  showScene('scene1');
+  await wait(400);
+  document.getElementById('hook1').classList.add('visible');
+  await wait(1800);
+  document.getElementById('hook2').classList.add('visible');
+  await wait(2500);
+}
+
+// ── Scene 2: File tree ─────────────────────────────────
+async function scene2() {
+  setProgress(2);
+  showScene('scene2');
+  setCaption('You need French and Japanese by next month.');
+  const tree = document.getElementById('tree1');
+  await wait(400);
+  tree.classList.add('visible');
+  await wait(400);
+  document.getElementById('f1').classList.add('visible');
+  await wait(500);
+  document.getElementById('f2').classList.add('visible');
+  await wait(400);
+  document.getElementById('f3').classList.add('visible');
+  // Hold — let the emptiness sink in
+  await wait(3500);
+}
+
+// ── Scene 3: Init wizard ───────────────────────────────
+async function scene3() {
+  setProgress(3);
+  showScene('scene3');
+  setCaption('The setup wizard builds your config.');
+  const term = document.getElementById('term3');
+  const body = document.getElementById('term3body');
+  await wait(200);
+  term.classList.add('visible');
+  await wait(500);
+
+  // Command line
+  const cmd = document.createElement('div');
+  cmd.className = 'tl visible';
+  cmd.innerHTML = '<span class="p">$ </span>';
+  body.appendChild(cmd);
+  const cur = document.createElement('span');
+  cur.className = 'cursor';
+  cmd.appendChild(cur);
+  await typeInto(cmd, 'npx i18n-rosetta init', 'c', 50);
+  cmd.appendChild(cur);
+  await wait(400);
+  cur.style.display = 'none';
+
+  // Wizard header (actual init.js output)
+  await wait(300);
+  await addLine(body, '', 0);
+  await addLine(body, '<span class="h">  i18n-rosetta — Project Setup</span>', 100);
+  await addLine(body, '<span class="d">  ────────────────────────────────────────────────</span>', 80);
+  await addLine(body, '', 50);
+
+  // Source locale
+  const q1 = await addLine(body, '  Source locale <span class="d">(en)</span>: ', 300);
+  await wait(600);
+  await typeAnswer(q1, 'en');
+  await wait(400);
+
+  // Target languages
+  await addLine(body, '', 100);
+  await addLine(body, '<span class="d">  Presets: european | asian | global</span>', 100);
+  const q2 = await addLine(body, '  Target languages: ', 300);
+  await wait(600);
+
+  setCaption('Presets expand to real language codes.');
+  await typeAnswer(q2, 'fr, ja');
+  await wait(500);
+
+  // Locales dir (accept default)
+  const q3 = await addLine(body, '  Locales directory <span class="d">(./locales)</span>: ', 300);
+  await wait(400);
+
+  // Model (accept default)
+  const q4 = await addLine(body, '  Translation model <span class="d">(openai/gpt-4o-mini)</span>: ', 250);
+  await wait(400);
+
+  // Config summary
+  await addLine(body, '', 80);
+  await addLine(body, '<span class="h">  Config Summary:</span>', 150);
+  await addLine(body, '<span class="d">  ──────────────────────────────────────</span>', 80);
+  await addLine(body, '    Source:   <span class="cy">en</span>', 100);
+  await addLine(body, '    Targets:  <span class="cy">fr, ja</span>', 100);
+  await addLine(body, '    Dir:      <span class="cy">./locales</span>', 100);
+  await addLine(body, '    Model:    <span class="cy">openai/gpt-4o-mini</span>', 100);
+  await addLine(body, '<span class="d">  ──────────────────────────────────────</span>', 80);
+
+  setCaption('Review and confirm.');
+
+  // Confirm
+  const q5 = await addLine(body, '  Write this config? <span class="d">(yes)</span>: ', 400);
+  await wait(700);
+  await typeAnswer(q5, 'yes');
+  await wait(400);
+
+  await addLine(body, '', 80);
+  await addLine(body, '<span class="g">  ✓ Created i18n-rosetta.config.json</span>', 200);
+
+  // Hold — let them read it
+  await wait(2500);
+}
+
+// ── Scene 4: API key ───────────────────────────────────
+async function scene4() {
+  setProgress(4);
+  showScene('scene4');
+  setCaption('Add your API key. Free tier available.');
+  const term = document.getElementById('term4');
+  const body = document.getElementById('term4body');
+  await wait(200);
+  term.classList.add('visible');
+  await wait(500);
+
+  const cmd = document.createElement('div');
+  cmd.className = 'tl visible';
+  cmd.innerHTML = '<span class="p">$ </span>';
+  body.appendChild(cmd);
+  const cur = document.createElement('span');
+  cur.className = 'cursor';
+  cmd.appendChild(cur);
+  await typeInto(cmd, 'export OPENROUTER_API_KEY=sk-or-v1-...', 'c', 40);
+  cmd.appendChild(cur);
+
+  // Hold
+  await wait(3000);
+}
+
+// ── Scene 5: Sync ──────────────────────────────────────
+async function scene5() {
+  setProgress(5);
+  showScene('scene5');
+  setCaption('One command. Rosetta handles the rest.');
+  const term = document.getElementById('term5');
+  const body = document.getElementById('term5body');
+  await wait(200);
+  term.classList.add('visible');
+  await wait(500);
+
+  // Command
+  const cmd = document.createElement('div');
+  cmd.className = 'tl visible';
+  cmd.innerHTML = '<span class="p">$ </span>';
+  body.appendChild(cmd);
+  const cur = document.createElement('span');
+  cur.className = 'cursor';
+  cmd.appendChild(cur);
+  await typeInto(cmd, 'npx i18n-rosetta sync', 'c', 50);
+  cmd.appendChild(cur);
+  await wait(400);
+  cur.style.display = 'none';
+
+  // Actual sync.js output (line 205-206)
+  await addLine(body, '<span class="d">[INFO] Source: en.json (200 keys)</span>', 400);
+  await addLine(body, '<span class="d">[INFO] Pairs: fr:llm, ja:llm</span>', 300);
+  await addLine(body, '', 200);
+
+  // French (sync.js lines 325, 335)
+  setCaption('Translating French — 200 keys.');
+  await addLine(body, '  <span class="b">[SYNC]</span> fr.json — <span class="d">200 missing</span>', 500);
+  await addLine(body, '     Translating to Français (llm)...', 400);
+  await wait(2000);
+  // Replace last line with [OK]
+  const frLines = body.querySelectorAll('.tl');
+  const frLast = frLines[frLines.length - 1];
+  frLast.innerHTML = '     Translating to Français (llm)... <span class="ok">[OK]</span>';
+
+  // Hold after French OK
+  await wait(1500);
+
+  // Japanese
+  setCaption('Translating Japanese — 200 keys.');
+  await addLine(body, '', 200);
+  await addLine(body, '  <span class="b">[SYNC]</span> ja.json — <span class="d">200 missing</span>', 400);
+  await addLine(body, '     Translating to 日本語 (llm)...', 400);
+  await wait(2200);
+  const jaLines = body.querySelectorAll('.tl');
+  const jaLast = jaLines[jaLines.length - 1];
+  jaLast.innerHTML = '     Translating to 日本語 (llm)... <span class="ok">[OK]</span>';
+
+  // Hold after Japanese OK
+  await wait(1500);
+
+  // Summary (sync.js line 488)
+  await addLine(body, '', 200);
+  await addLine(body, '<span class="g" style="font-weight:700;">[OK] Synced 400 keys total.</span>', 300);
+
+  setCaption('<span class="hl">400 keys</span> translated. Two languages. Done.');
+  // Hold — this is the payoff
+  await wait(3500);
+}
+
+// ── Scene 6: Result peek ───────────────────────────────
+async function scene6() {
+  setProgress(6);
+  showScene('scene6');
+  setCaption('Real translations. Not placeholders.');
+
+  const tree = document.getElementById('tree2');
+  await wait(400);
+  tree.classList.add('visible');
+  await wait(300);
+  document.getElementById('r1').classList.add('visible');
+  await wait(400);
+  document.getElementById('r2').classList.add('visible');
+  await wait(400);
+  document.getElementById('r3').classList.add('visible');
+  await wait(1500);
+
+  // Show a peek into ja.json
+  const preview = document.getElementById('jsonPreview');
+  const jsonBody = document.getElementById('jsonBody');
+  preview.classList.add('visible');
+  await wait(300);
+
+  const jsonLines = [
+    '<span class="br">{</span>',
+    '  <span class="k">"nav.home"</span>: <span class="s">"ホーム"</span>,',
+    '  <span class="k">"nav.about"</span>: <span class="s">"概要"</span>,',
+    '  <span class="k">"hero.title"</span>: <span class="s">"プロダクトをローンチしよう"</span>,',
+    '  <span class="k">"hero.subtitle"</span>: <span class="s">"開発者のための翻訳ツール"</span>,',
+    '  <span class="d">  ...</span>',
+    '<span class="br">}</span>',
+  ];
+
+  for (const line of jsonLines) {
+    await addLine(jsonBody, line, 180);
+  }
+
+  // Hold — let them read the translations
+  await wait(4000);
+}
+
+// ── Scene 7: Close ─────────────────────────────────────
+async function scene7() {
+  setProgress(7);
+  showScene('scene7');
+  hideCaption();
+  await wait(600);
+  document.getElementById('close1').classList.add('visible');
+  await wait(1200);
+  document.getElementById('close2').classList.add('visible');
+  await wait(2000);
+  document.getElementById('close3').classList.add('visible');
+  // Hold for final beat
+  await wait(3000);
+}
+
+// ── Master Timeline ────────────────────────────────────
+async function runVideo() {
+  await scene1();
+  await scene2();
+  await scene3();
+  await scene4();
+  await scene5();
+  await scene6();
+  await scene7();
+}
+
+// ── Viewport scaling ───────────────────────────────────
+function scaleToFit() {
+  const frame = document.getElementById('videoFrame');
+  const scale = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+  frame.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', scaleToFit);
+window.addEventListener('load', () => { scaleToFit(); setTimeout(runVideo, 500); });
+</script>
+</body>
+</html>

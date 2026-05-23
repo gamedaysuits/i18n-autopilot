@@ -1,0 +1,35 @@
+{
+  "code": "x-kryptonian",
+  "name": "Kryptonian",
+  "nativeName": "Kryptonian",
+  "iso639_1": null,
+  "iso639_3": null,
+  "bcp47": "x-kryptonian",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "none",
+    "description": "Constructed language or stylistic variant — no formality system. Tone is defined entirely by the register preset.",
+    "default": "standard"
+  },
+  "gender": null,
+  "registers": {
+    "standard": {
+      "label": "Standard Kryptonian",
+      "description": "Formal, dignified Kryptonian voice inspired by Kal-El's heritage.",
+      "prompt": "Kryptonian register. Translate English into a dignified, slightly formal style inspired by Kryptonian culture from DC Comics. Use elevated vocabulary, declarative sentences, and references to concepts like hope, justice, and legacy where contextually appropriate. The text will be rendered in Kryptonian glyphs via font."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": "x-kryptonian",
+  "evalDatasets": [],
+  "notes": "Kryptonian 'script' is a 1:1 Latin cipher rendered via custom PUA font (U+E100–E119). The converter is font-based, not linguistic."
+}

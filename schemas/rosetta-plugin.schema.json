@@ -15,7 +15,7 @@
     },
     "type": {
       "type": "string",
-      "enum": ["llm", "llm-coached", "api", "google-translate"],
+      "enum": ["llm", "llm-coached", "api", "google-translate", "deepl", "microsoft-translator", "libretranslate", "openai", "anthropic", "gemini"],
       "description": "Rosetta method type. Determines which translation engine handles this plugin."
     },
     "version": {
@@ -48,7 +48,7 @@
       "properties": {
         "model": {
           "type": "string",
-          "description": "OpenRouter model identifier (e.g., 'openai/gpt-4o-mini')."
+          "description": "OpenRouter model identifier (e.g., 'google/gemini-3.5-flash')."
         },
         "register": {
           "type": "string",

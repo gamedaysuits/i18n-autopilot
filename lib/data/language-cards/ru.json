@@ -1,0 +1,47 @@
+{
+  "code": "ru",
+  "name": "Russian",
+  "nativeName": "Русский",
+  "iso639_1": "ru",
+  "iso639_3": "rus",
+  "bcp47": "ru",
+  "script": "Cyrl",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Russian has a clear T-V distinction: вы (vy, formal/plural) vs ты (ty, informal/singular). Professional software uses Вы-form (often capitalized for single addressee in writing). The formal register uses longer sentence constructions and avoids colloquialisms.",
+    "default": "formal-vy"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Russian has grammatical gender on nouns, adjectives, and past-tense verbs. There is no widely adopted gender-neutral writing convention. When gender is unknown, masculine is the conventional default. Where possible, restructure to avoid gendered forms."
+  },
+  "registers": {
+    "formal-vy": {
+      "label": "Вы (Formal)",
+      "description": "Standard for professional software, enterprise, and institutional contexts.",
+      "prompt": "Formal Russian. Use Вы-form (capitalized for single addressee). Professional register appropriate for software interfaces, enterprise, and business communication. Avoid colloquialisms and informal expressions.",
+      "deeplFormality": "prefer_more"
+    },
+    "informal-ty": {
+      "label": "Ты (Informal)",
+      "description": "For consumer apps, social media, gaming, and casual brand voices.",
+      "prompt": "Informal Russian. Use ты-form. Conversational, friendly tone for consumer products, social media, and gaming. Colloquial expressions acceptable when natural.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

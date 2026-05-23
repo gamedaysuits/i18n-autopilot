@@ -1,0 +1,53 @@
+{
+  "code": "ja",
+  "name": "Japanese",
+  "nativeName": "日本語",
+  "iso639_1": "ja",
+  "iso639_3": "jpn",
+  "bcp47": "ja",
+  "script": "Jpan",
+  "dir": "ltr",
+  "formality": {
+    "system": "keigo",
+    "description": "Japanese has a complex honorific system (keigo) with three layers: 丁寧語 (polite language), 尊敬語 (respectful language, elevates the listener), and 謙譲語 (humble language, lowers the speaker). Software UI typically uses です/ます (polite form) for body text, with plain form (する/だ) for short UI elements like button labels and navigation. Full keigo is reserved for customer service and formal business communication.",
+    "default": "polite"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Japanese has gendered first-person pronouns (僕 boku/俺 ore = masculine, あたし atashi = feminine). Use 私 (watashi) as the neutral default in UI text. Avoid gendered sentence-final particles (わ wa, ぞ zo) unless the product has a specific persona."
+  },
+  "registers": {
+    "polite": {
+      "label": "です/ます (Polite)",
+      "description": "Standard for software UI. Polite and natural. Button labels and short elements can use plain form.",
+      "prompt": "Polite Japanese (です/ます form) for body text and descriptions. For short UI elements like button labels, menu items, and navigation, plain form (する) is natural and preferred. Use appropriate kanji density — avoid overly literary kanji compounds that would require furigana. Use 私 (watashi) for first-person if needed. Neutral, professional tone.",
+      "deeplFormality": "prefer_more"
+    },
+    "formal-keigo": {
+      "label": "敬語 (Honorific Keigo)",
+      "description": "For customer service, formal business, government, or luxury brand interfaces.",
+      "prompt": "Formal Japanese with full keigo (敬語). Use 丁寧語 (polite language) as baseline, 尊敬語 (respectful) when referencing user actions, 謙譲語 (humble) when the system refers to its own actions. Appropriate for customer service portals, banking, government, and luxury brands.",
+      "deeplFormality": "prefer_more"
+    },
+    "casual": {
+      "label": "タメ口 (Casual)",
+      "description": "For gaming, social media, youth-oriented apps. Plain form throughout.",
+      "prompt": "Casual Japanese (タメ口). Plain form (だ/する) throughout. Natural conversational tone appropriate for gaming, social media, and apps targeting younger demographics. Light use of カタカナ for emphasis is acceptable.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Japanese uses three scripts simultaneously: kanji (漢字), hiragana (ひらがな), and katakana (カタカナ). The balance between them affects tone — more kanji reads as more formal, more hiragana reads as softer/simpler."
+}

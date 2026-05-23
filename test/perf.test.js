@@ -103,18 +103,18 @@ function generateLargeConfig() {
     version: 3,
     inputLocale: 'en',
     localesDir: '/tmp/fake-locales',
-    model: 'openai/gpt-4o-mini',
+    model: 'google/gemini-3.5-flash',
     defaultMethod: 'llm',
     batchSize: 30,
     languages,
     resolvedLanguages,
     pairs: {
       // 5 explicit pair overrides — tests the merge logic
-      'en:ja': { method: 'llm', model: 'openai/gpt-4o-mini', batchSize: 15 },
-      'en:zh': { method: 'llm', model: 'openai/gpt-4o-mini', batchSize: 15 },
-      'en:ko': { method: 'llm', model: 'openai/gpt-4o-mini', batchSize: 15 },
-      'en:ar': { method: 'llm', model: 'openai/gpt-4o-mini', batchSize: 20 },
-      'en:fa': { method: 'llm', model: 'openai/gpt-4o-mini', batchSize: 20 },
+      'en:ja': { method: 'llm', model: 'google/gemini-3.5-flash', batchSize: 15 },
+      'en:zh': { method: 'llm', model: 'google/gemini-3.5-flash', batchSize: 15 },
+      'en:ko': { method: 'llm', model: 'google/gemini-3.5-flash', batchSize: 15 },
+      'en:ar': { method: 'llm', model: 'google/gemini-3.5-flash', batchSize: 20 },
+      'en:fa': { method: 'llm', model: 'google/gemini-3.5-flash', batchSize: 20 },
     },
   };
 }
@@ -320,7 +320,7 @@ describe('perf — dry-run sync regression gate', () => {
         inputLocale: 'en',
         localesDir: './locales',
         languages: ['fr', 'de', 'ja'],
-        model: 'openai/gpt-4o-mini',
+        model: 'google/gemini-3.5-flash',
         batchSize: 30,
       };
       fs.writeFileSync(

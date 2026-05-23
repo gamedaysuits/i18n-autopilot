@@ -41,7 +41,7 @@ A method plugin is a single JSON file (`method.json`) with optional coaching dat
   "author": "Plugin Author",
 
   "config": {
-    "model": "openai/gpt-4o-mini",
+    "model": "google/gemini-3.5-flash",
     "register": "formal",
     "batchSize": 30,
     "temperature": 0.2
@@ -56,7 +56,7 @@ A method plugin is a single JSON file (`method.json`) with optional coaching dat
       "exact_match_rate": 0.42,
       "corpus_chrf": 72.3,
       "corpus_bleu": 45.1,
-      "model": "openai/gpt-4o-mini",
+      "model": "google/gemini-3.5-flash",
       "harness_version": "1.0.0"
     }
   },

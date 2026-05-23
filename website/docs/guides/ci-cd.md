@@ -68,6 +68,39 @@ If using the built-in Google Translate method instead of OpenRouter:
   run: npx i18n-rosetta sync
 ```
 
+## Direct LLM Providers
+
+If using `openai`, `anthropic`, or `gemini` methods directly:
+
+```yaml
+# OpenAI
+- name: Sync translations
+  env:
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  run: npx i18n-rosetta sync --method openai
+
+# Anthropic
+- name: Sync translations
+  env:
+    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  run: npx i18n-rosetta sync --method anthropic
+
+# Gemini (free tier available)
+- name: Sync translations
+  env:
+    GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  run: npx i18n-rosetta sync --method gemini
+```
+
+## DeepL
+
+```yaml
+- name: Sync translations
+  env:
+    DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+  run: npx i18n-rosetta sync --method deepl
+```
+
 ## Remote Translation API
 
 If using a remote translation endpoint (e.g., a hosted translation service):

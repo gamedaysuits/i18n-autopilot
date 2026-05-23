@@ -78,7 +78,7 @@ Tell rosetta to use `llm-coached` for French:
   "pairs": {
     "en:fr": {
       "method": "llm-coached",
-      "model": "openai/gpt-4o-mini"
+      "model": "google/gemini-3.5-flash"
     }
   },
   "languages": {
@@ -152,7 +152,7 @@ python harness.py eval \
   --source en \
   --target fr \
   --method llm-coached \
-  --model openai/gpt-4o-mini
+  --model google/gemini-3.5-flash
 ```
 
 The harness outputs:
@@ -217,7 +217,7 @@ The `status` output will show:
 ```
 en → fr
   Method:    french-formal-v1 (llm-coached)
-  Model:     openai/gpt-4o-mini
+  Model:     google/gemini-3.5-flash
   Quality:   high
   chrF++:    74.2
   BLEU:      46.8

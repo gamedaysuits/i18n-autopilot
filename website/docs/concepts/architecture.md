@@ -30,10 +30,16 @@ graph TB
 The open-source developer tool. Translates locale files using pluggable methods. Zero dependencies, config-optional, works out of the box.
 
 **Built-in methods:**
-- `llm` → OpenRouter / any LLM
+- `llm` → OpenRouter / any LLM (200+ models)
 - `llm-coached` → LLM + grammar/dictionary coaching
-- `google-translate` → Google Cloud Translation API
-- `api` → Thin pipe to any remote API
+- `openai` → Direct OpenAI API (GPT-4o, GPT-4o-mini)
+- `anthropic` → Direct Anthropic API (Claude Sonnet, Haiku, Opus)
+- `gemini` → Direct Google Gemini API (Flash, Pro — free tier available)
+- `google-translate` → Google Cloud Translation API v2
+- `deepl` → DeepL API with glossary support
+- `microsoft-translator` → Azure Cognitive Services Translator
+- `libretranslate` → Self-hosted LibreTranslate (AGPL, free)
+- `api` → Thin pipe to any remote REST endpoint
 
 ### Eval Harness (companion project)
 

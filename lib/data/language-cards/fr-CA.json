@@ -1,0 +1,45 @@
+{
+  "code": "fr-CA",
+  "name": "Canadian French",
+  "nativeName": "Français (Canada)",
+  "iso639_1": null,
+  "iso639_3": "fra",
+  "bcp47": "fr-CA",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Canadian French follows the same T-V system as France French but Québécois usage trends more toward tu-form in everyday contexts, including some software. The vocabulary differs significantly from France French (e.g., 'courriel' not 'e-mail', 'magasiner' not 'faire du shopping').",
+    "default": "professional-vous"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Quebec has been at the forefront of écriture inclusive in French. The Office québécois de la langue française promotes gender-inclusive writing. Doublet forms ('les utilisateurs et les utilisatrices') or truncated forms ('les utilisateur·rice·s') are both accepted."
+  },
+  "registers": {
+    "professional-vous": {
+      "label": "Vouvoiement (Professional)",
+      "description": "Standard for software targeting Quebec and Canadian French speakers.",
+      "prompt": "Professional Canadian French (Québécois). Use vous-form. Québécois vocabulary — use 'courriel' not 'e-mail', 'télécharger' not 'downloader'."
+    },
+    "casual-tu": {
+      "label": "Tutoiement (Casual)",
+      "description": "For consumer apps and casual Québécois contexts.",
+      "prompt": "Casual Canadian French. Use tu-form. Québécois vocabulary and tone. Natural conversational style."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Québécois French has significant vocabulary and idiomatic differences from France French."
+}

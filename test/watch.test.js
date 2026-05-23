@@ -81,7 +81,7 @@ function createWatchFixture() {
     inputLocale: 'en',
     localesDir: './locales',
     languages: ['fr'],
-    model: 'openai/gpt-4o-mini',
+    model: 'google/gemini-3.5-flash',
     batchSize: 30,
   };
   fs.writeFileSync(

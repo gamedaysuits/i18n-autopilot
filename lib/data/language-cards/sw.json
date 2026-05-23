@@ -1,0 +1,40 @@
+{
+  "code": "sw",
+  "name": "Swahili",
+  "nativeName": "Kiswahili",
+  "iso639_1": "sw",
+  "iso639_3": "swa",
+  "bcp47": "sw",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Swahili does not have a T-V pronoun distinction. 'Wewe' (you singular) is universal. Formality is expressed through vocabulary choice, use of honorifics (Bwana/Bibi), and register. The Swahili noun class system affects agreement patterns but does not encode formality.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Swahili uses a noun class system rather than grammatical gender. Pronouns do not distinguish gender."
+  },
+  "registers": {
+    "professional": {
+      "label": "Rasmi (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Swahili (Kiswahili sanifu). Modern standard Swahili appropriate for software interfaces and business communication. Clear, accessible vocabulary."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

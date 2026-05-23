@@ -1,0 +1,45 @@
+{
+  "code": "cs",
+  "name": "Czech",
+  "nativeName": "Čeština",
+  "iso639_1": "cs",
+  "iso639_3": "ces",
+  "bcp47": "cs",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Czech has a T-V distinction: vy (vykání, formal) vs ty (tykání, informal). Professional software uses vy-form.",
+    "default": "formal-vy"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Czech has grammatical gender affecting nouns, adjectives, and past-tense verbs. When gender is unknown, masculine is the conventional default. Slash notation (e.g., 'přihlášen/a') can be used where space permits."
+  },
+  "registers": {
+    "formal-vy": {
+      "label": "Vykání (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Czech. Use vykání (vy-form) consistently. Professional register for software interfaces."
+    },
+    "informal-ty": {
+      "label": "Tykání (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Czech. Use tykání (ty-form). Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

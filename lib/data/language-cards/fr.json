@@ -1,0 +1,47 @@
+{
+  "code": "fr",
+  "name": "French",
+  "nativeName": "Français",
+  "iso639_1": "fr",
+  "iso639_3": "fra",
+  "bcp47": "fr",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "French has a T-V distinction: 'tu' (informal, singular) vs 'vous' (formal or plural). Software UI overwhelmingly uses vous-form for professional contexts. Tu-form is common in consumer/social apps targeting younger demographics. Écriture inclusive (gender-inclusive writing) uses mid-point or raised period notation (e.g., connecté·e).",
+    "default": "formal-vous"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "French has grammatical gender on nouns, adjectives, and past participles. When the user's gender is unknown, prefer écriture inclusive with the interpunct/middle dot (e.g., \"Connecté·e\" not \"Connecté(e)\" or \"Connectée\"). For plurals, use the inclusive form (e.g., \"Utilisateur·rice·s\") where readability permits."
+  },
+  "registers": {
+    "formal-vous": {
+      "label": "Vouvoiement (Formal)",
+      "description": "Standard for professional software, B2B, corporate, and institutional contexts.",
+      "prompt": "Formal French. Use vous-form (vouvoiement) consistently. Professional, academic register. Avoid colloquialisms.",
+      "deeplFormality": "prefer_more"
+    },
+    "casual-tu": {
+      "label": "Tutoiement (Casual)",
+      "description": "For consumer apps, social media, gaming, and startups targeting a casual audience.",
+      "prompt": "Casual French. Use tu-form (tutoiement). Warm, conversational tone appropriate for consumer apps and social platforms. Contractions and informal expressions are acceptable.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

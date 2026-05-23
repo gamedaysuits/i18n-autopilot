@@ -21,7 +21,7 @@ npx i18n-rosetta init
   "contentDir": null,
   "translatableFields": null,
   "format": "auto",
-  "model": "openai/gpt-4o-mini",
+  "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
   "batchSize": 30,
   "fallbackPrefix": "[EN] ",
@@ -60,8 +60,8 @@ The `typegen` config block is recognized and preserved by the config loader, but
 | `contentDir` | `string` | `null` | Hugo content directory. Enables Markdown body translation. |
 | `translatableFields` | `string[]` | `null` | Override default translatable frontmatter fields for content translation. `null` uses built-in defaults (`title`, `description`, `summary`). |
 | `format` | `string` | `"auto"` | File format: `json`, `toml`, `yaml`, or `auto` (detect from extension). |
-| `model` | `string` | `"openai/gpt-4o-mini"` | Default OpenRouter model for LLM methods. |
-| `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `api`. Overridden by `--method` CLI flag. |
+| `model` | `string` | `"google/gemini-3.5-flash"` | Default model for LLM methods. Format depends on method: OpenRouter uses `provider/model` (e.g., `google/gemini-3.5-flash`); direct providers use bare names (e.g., `gpt-4o`, `gemini-2.5-flash`). |
+| `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Overridden by `--method` CLI flag. |
 | `batchSize` | `number` | `30` | Keys per translation batch. Higher = fewer API calls, but larger prompts. |
 | `fallbackPrefix` | `string` | `"[EN] "` | Prefix added to untranslated fallback values. Used by `audit` to detect incomplete translations. |
 | `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Environment variable name for the API key. Override for custom env var names. |
@@ -102,7 +102,7 @@ Each source→target pair can be independently configured:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `method` | `string` | Translation method: `llm`, `llm-coached`, `google-translate`, `api` |
+| `method` | `string` | Translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` |
 | `methodPlugin` | `string` | Name of an installed plugin (from `.rosetta/methods/`) |
 | `model` | `string` | Override the default model for this pair |
 | `endpoint` | `string` | Remote API endpoint URL. Required when `method` is `api`. |
@@ -124,14 +124,19 @@ Each language gets its default register from the built-in register table. Langua
 
 ### Object with register strings
 
+The value can be a **preset key** from the language's card, or custom register text:
+
 ```json
 {
   "languages": {
-    "fr": "Formal academic French. Use vous-form.",
-    "de": "Standard German. Use Sie-form."
+    "fr": "casual-tu",
+    "ko": "formal-hapsyo",
+    "ja": "Custom: Polite Japanese for a gaming app."
   }
 }
 ```
+
+Rosetta checks if the string matches a preset key in the language card. If it does, the full register prompt from the card is used. If not, the string is used as-is. See [Supported Languages](/docs/reference/supported-languages#language-cards) for available presets.
 
 ### Object with full config
 
@@ -157,7 +162,7 @@ You can mix shorthand and full objects in the same block.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `register` | `string` | Style/tone instructions injected into every LLM prompt for this locale |
+| `register` | `string` | Style/tone instructions. Can be a **preset key** (e.g., `casual-tu`, `formal-hapsyo`) or custom text. See [Language Cards](/docs/reference/supported-languages#language-cards). |
 | `name` | `string` | Human-readable language name (for status display) |
 | `model` | `string` | Override the default model |
 | `batchSize` | `number` | Override the default batch size |
@@ -205,6 +210,83 @@ src/utils/constants.js
 
 ---
 
+## Programmatic API
+
+For build scripts and custom integrations, import directly from the package:
+
+```javascript
+import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
+
+// Use a method class directly
+const gemini = new GeminiMethod();
+const result = await gemini.translate(
+  ['greeting', 'farewell'],
+  { greeting: 'Hello', farewell: 'Goodbye' },
+  { target: 'fr', name: 'French', register: 'formal', model: 'gemini-2.5-flash' },
+  { cwd: process.cwd() }
+);
+// result = { greeting: 'Bonjour', farewell: 'Au revoir' }
+```
+
+### Available Exports
+
+| Export | What It Does |
+|--------|-------------|
+| `TranslationMethod` | Base class for all methods |
+| `LLMMethod` | Base class for LLM methods (OpenRouter) |
+| `DirectLLMMethod` | Base class for direct LLM providers (OpenAI, Anthropic, Gemini) |
+| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | Direct LLM provider classes |
+| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | Traditional MT classes |
+| `GoogleTranslateMethod` | Google Cloud Translation |
+| `LLMCoachedMethod` | Coached LLM (OpenRouter + coaching data) |
+| `APIMethod` | Remote API client |
+| `runSync`, `runContentSync` | Full sync pipeline |
+| `resolveConfig`, `resolvePairs` | Config resolution |
+| `validateTranslations` | Quality gate |
+| `loadCoachingData`, `findDictionaryMatches` | Coaching utilities |
+
+### Custom Provider Extension
+
+Extend `DirectLLMMethod` to add a new LLM provider in ~40 lines:
+
+```javascript
+import { DirectLLMMethod } from 'i18n-rosetta';
+
+class MistralMethod extends DirectLLMMethod {
+  constructor(options) {
+    super(options);
+    this.name = 'mistral';
+  }
+  _getApiKeyEnvVar()     { return 'MISTRAL_API_KEY'; }
+  _getApiKeyOptionsKey() { return 'mistralApiKey'; }
+  _getDefaultModel()     { return 'mistral-large-latest'; }
+  _getProviderLabel()    { return 'Mistral'; }
+
+  _buildApiRequest({ prompt, systemMessage, apiKey, model, temperature }) {
+    return {
+      url: 'https://api.mistral.ai/v1/chat/completions',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: {
+        model,
+        messages: [
+          ...(systemMessage ? [{ role: 'system', content: systemMessage }] : []),
+          { role: 'user', content: prompt },
+        ],
+        temperature,
+      },
+    };
+  }
+
+  _extractResponseText(json) {
+    return json.choices?.[0]?.message?.content;
+  }
+}
+```
+
+You get translate, coaching, retry loops, model validation, and quality tiers for free. Only the HTTP request shape is provider-specific.
+
+---
+
 ## See Also
 
 - [CLI Reference](/docs/reference/cli) — all commands and flags
@@ -213,3 +295,4 @@ src/utils/constants.js
 - [Architecture](/docs/concepts/architecture) — how the pieces connect
 - [Supported Languages](/docs/reference/supported-languages) — built-in language support
 - [How Sync Works](/docs/concepts/how-sync-works) — the translation pipeline
+

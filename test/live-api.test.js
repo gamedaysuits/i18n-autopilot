@@ -77,7 +77,7 @@ const FRENCH_PAIR = {
   name: 'French',
   register: 'Professional register. Use vous (formal) for user-facing text.',
   method: 'llm',
-  model: 'openai/gpt-4o-mini',
+  model: 'google/gemini-3.5-flash',
   batchSize: 30,
 };
 
@@ -87,7 +87,7 @@ const JAPANESE_PAIR = {
   name: 'Japanese',
   register: 'Professional register. Use です/ます form.',
   method: 'llm',
-  model: 'openai/gpt-4o-mini',
+  model: 'google/gemini-3.5-flash',
   batchSize: 30,
 };
 

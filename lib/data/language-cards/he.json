@@ -1,0 +1,47 @@
+{
+  "code": "he",
+  "name": "Hebrew",
+  "nativeName": "עברית",
+  "iso639_1": "he",
+  "iso639_3": "heb",
+  "bcp47": "he",
+  "script": "Hebr",
+  "dir": "rtl",
+  "formality": {
+    "system": "register-levels",
+    "description": "Modern Hebrew does not have a T-V pronoun distinction — אתה (ata, masculine) / את (at, feminine) are used regardless of formality. Formality is expressed through vocabulary, sentence structure, and avoidance of slang. Hebrew verbs conjugate for gender in second and third person.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Hebrew has grammatical gender on verbs, adjectives, and pronouns — there is no gender-neutral second person. For UI text addressing unknown users, prefer infinitive or imperative constructions that avoid gendered verb forms. Some modern Hebrew uses slash notation (e.g., 'מחובר/ת'). The slash form is increasingly accepted in digital contexts."
+  },
+  "registers": {
+    "professional": {
+      "label": "מקצועי (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Modern Hebrew. RTL layout. Clear, modern vocabulary."
+    },
+    "formal": {
+      "label": "רשמי (Formal)",
+      "description": "For government, legal, and official contexts.",
+      "prompt": "Formal Hebrew. Elevated register for government, legal, and official communications. Precise vocabulary, complex sentence structures."
+    }
+  },
+  "aliases": [
+    "iw"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "The deprecated ISO 639-1 code 'iw' is registered as an alias. Java and older systems still use 'iw'."
+}

@@ -1,0 +1,50 @@
+{
+  "code": "ko",
+  "name": "Korean",
+  "nativeName": "한국어",
+  "iso639_1": "ko",
+  "iso639_3": "kor",
+  "bcp47": "ko",
+  "script": "Kore",
+  "dir": "ltr",
+  "formality": {
+    "system": "speech-levels",
+    "description": "Korean has seven speech levels (존댓말 jondaenmal = polite / 반말 banmal = casual). The three relevant to software are: 합쇼체 (hapsyo-che, highest formality — news anchors, military, government), 해요체 (haeyo-che, polite — standard for most software UI, natural and respectful), and 해체 (hae-che, casual — social media, gaming). Most Korean software uses 해요체.",
+    "default": "polite-haeyo"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": null
+  },
+  "registers": {
+    "polite-haeyo": {
+      "label": "해요체 (Polite)",
+      "description": "Standard for software UI, websites, and professional communication. Natural and respectful without being stiff.",
+      "prompt": "Polite Korean (해요체). Standard register for software UI and professional communication. Natural and respectful without being stiff or overly deferential. Sentence endings use -요 forms. This is what users expect from apps, websites, and most digital products."
+    },
+    "formal-hapsyo": {
+      "label": "합쇼체 (Formal)",
+      "description": "For government, legal, corporate reports, or official announcements. Very formal.",
+      "prompt": "Formal Korean (합쇼체). Highest politeness level with -ㅂ니다/-습니다 endings. For government portals, legal text, corporate reports, and official announcements. This register is intentionally stiff and authoritative."
+    },
+    "casual-hae": {
+      "label": "해체 (Casual)",
+      "description": "For social media, chat apps, gaming, and youth-oriented products.",
+      "prompt": "Casual Korean (해체/반말). Plain form without politeness markers. For social media, messaging apps, gaming, and products targeting younger demographics. Natural conversational tone."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "The previous default (합쇼체) was too formal for software UI. Changed to 해요체, which is the actual industry standard for Korean digital products."
+}

@@ -69,12 +69,12 @@ Keys are grouped into batches (default: 30 keys/batch for LLM, 128 for Google Tr
 
 Each batch is sent to the configured translation method:
 
-- **`llm`**: Structured prompt to OpenRouter with register instructions
+- **`llm`**: Structured prompt to OpenRouter with register and gender guidance instructions
 - **`llm-coached`**: Same, but with grammar rules, dictionary, and style notes injected
 - **`google-translate`**: Google Cloud Translation API v2 batch request
 - **`api`**: HTTP POST to a remote endpoint
 
-The system message (register, rules) is identical across batches for a given locale, enabling **prompt caching** — providers like Anthropic and Google cache repeated system messages, reducing token costs.
+The system message (register, gender guidance, rules) is identical across batches for a given locale, enabling **prompt caching** — providers like Anthropic and Google cache repeated system messages, reducing token costs.
 
 ### 6. Quality Gate
 

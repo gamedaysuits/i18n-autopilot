@@ -1,0 +1,43 @@
+{
+  "code": "sr",
+  "name": "Serbian",
+  "nativeName": "Српски",
+  "iso639_1": "sr",
+  "iso639_3": "srp",
+  "bcp47": "sr",
+  "script": "Cyrl",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Serbian has a T-V distinction: Ви (Vi, formal/plural) vs ти (ti, informal/singular). Professional software uses Ви-form. Serbian is written in both Cyrillic (official) and Latin scripts — rosetta translates to Latin script and offers a deterministic Cyrillic converter.",
+    "default": "formal-vi"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Serbian has grammatical gender. When gender is unknown, masculine is the conventional default."
+  },
+  "registers": {
+    "formal-vi": {
+      "label": "Ви (Formal)",
+      "description": "Standard for professional software. Output in Latin script, optionally converted to Cyrillic.",
+      "prompt": "Formal Serbian. Use Ви-form for second-person address. Professional register. Translate in Latin script — Cyrillic conversion is handled automatically by the script converter if enabled."
+    },
+    "informal-ti": {
+      "label": "Ти (Informal)",
+      "description": "For consumer apps and casual contexts.",
+      "prompt": "Informal Serbian. Use ти-form. Conversational tone. Translate in Latin script."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": "sr",
+  "evalDatasets": [],
+  "notes": "Serbian uses both Latin and Cyrillic scripts interchangeably. The translation pipeline works in Latin, then the deterministic Latin→Cyrillic converter (scripts.js) can produce the Cyrillic variant."
+}

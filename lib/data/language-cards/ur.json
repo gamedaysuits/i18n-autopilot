@@ -1,0 +1,45 @@
+{
+  "code": "ur",
+  "name": "Urdu",
+  "nativeName": "اردو",
+  "iso639_1": "ur",
+  "iso639_3": "urd",
+  "bcp47": "ur",
+  "script": "Arab",
+  "dir": "rtl",
+  "formality": {
+    "system": "T-V",
+    "description": "Urdu has a three-tier pronoun system similar to Hindi: آپ (āp, formal/respectful), تم (tum, familiar), and تو (tū, intimate/condescending). Software UI uses آپ consistently. Urdu uses Nastaliq script (a calligraphic style of Arabic script), though Naskh is acceptable for digital contexts.",
+    "default": "formal-aap"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Urdu verbs and adjectives agree in gender. When gender is unknown, masculine is the conventional default."
+  },
+  "registers": {
+    "formal-aap": {
+      "label": "آپ (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Urdu. Use آپ (āp) for second-person address. Professional register. RTL layout. Modern standard Urdu appropriate for software interfaces."
+    },
+    "informal-tum": {
+      "label": "تم (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Urdu. Use تم (tum) form. Conversational tone for consumer products. RTL layout."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Urdu and Hindi are mutually intelligible in spoken form but use different scripts (Urdu: Nastaliq/Arabic, Hindi: Devanagari) and draw from different literary traditions (Urdu: Persian/Arabic, Hindi: Sanskrit)."
+}

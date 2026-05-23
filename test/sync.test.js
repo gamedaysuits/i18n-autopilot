@@ -221,7 +221,7 @@ describe('resolveConfig', () => {
   it('uses defaults when no config file exists', () => {
     const config = resolveConfig({}, '/tmp/nonexistent');
     assert.equal(config.inputLocale, 'en');
-    assert.equal(config.model, 'openai/gpt-4o-mini');
+    assert.equal(config.model, 'google/gemini-3.5-flash');
     assert.equal(config.batchSize, 30);
     assert.equal(config.fallbackPrefix, '[EN] ');
   });

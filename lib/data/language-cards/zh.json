@@ -1,0 +1,53 @@
+{
+  "code": "zh",
+  "name": "Chinese (Simplified)",
+  "nativeName": "简体中文",
+  "iso639_1": "zh",
+  "iso639_3": "zho",
+  "bcp47": "zh-Hans",
+  "script": "Hans",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Chinese does not have a T-V pronoun distinction — 你 (nǐ) is standard for 'you' and 您 (nín) is the respectful form but rarely used in software UI. Formality in Chinese is expressed through vocabulary choice, sentence structure complexity, and the use of four-character idioms (成语 chéngyǔ). Software UI uses clear, modern Mandarin with no classical Chinese phrasing.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Spoken Chinese pronouns are gender-neutral (tā). Written Chinese distinguishes 他 (he), 她 (she), 它 (it), but gender-neutral 他 is conventionally used for unknown gender. In UI text, prefer restructuring to avoid third-person pronouns entirely."
+  },
+  "registers": {
+    "professional": {
+      "label": "专业 (Professional)",
+      "description": "Standard for software UI, websites, and business communication in mainland China.",
+      "prompt": "Professional Simplified Chinese (简体中文). Clear, modern Mandarin appropriate for software interfaces and business communication. Use 你 (not 您) for second person — 您 is overly deferential for most UI contexts. Avoid classical Chinese phrasing and four-character idioms unless they're commonly understood. Keep sentences concise."
+    },
+    "formal": {
+      "label": "正式 (Formal)",
+      "description": "For government, enterprise, legal, or official contexts where elevated language is expected.",
+      "prompt": "Formal Simplified Chinese. Use 您 for respectful second-person address. Elevated register appropriate for government portals, legal text, and enterprise communication. Precise vocabulary, longer sentence structures acceptable."
+    },
+    "casual": {
+      "label": "轻松 (Casual)",
+      "description": "For consumer apps, social media, gaming, and youth-oriented products.",
+      "prompt": "Casual Simplified Chinese. Conversational, friendly tone for consumer products. Short sentences, modern internet-influenced vocabulary acceptable. Emoji-adjacent language style."
+    }
+  },
+  "aliases": [
+    "zh-CN",
+    "zh-Hans"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "This is Simplified Chinese (used in mainland China, Singapore). See zh-TW.json for Traditional Chinese (Taiwan, Hong Kong)."
+}

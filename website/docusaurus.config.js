@@ -6,7 +6,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'i18n-rosetta',
   tagline: 'Think you can solve it? Prove it.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   future: {
     v4: true,
@@ -106,10 +106,12 @@ const config = {
 
       navbar: {
         title: 'i18n-rosetta',
-        // logo: {
-        //   alt: 'i18n-rosetta',
-        //   src: 'img/logo.svg',
-        // },
+        logo: {
+          alt: 'i18n-rosetta logo — three bars with R, ロ, and ᕈ characters',
+          src: 'img/logo.svg',
+          width: 32,
+          height: 30,
+        },
         items: [
           {
             type: 'docSidebar',
@@ -120,6 +122,10 @@ const config = {
           {to: '/blog', label: 'Blog', position: 'left'},
           {to: '/docs/eval', label: 'Eval', position: 'left'},
           {to: '/leaderboard', label: 'Leaderboard', position: 'left'},
+          {
+            type: 'localeDropdown',
+            position: 'right',
+          },
           {
             type: 'docsVersionDropdown',
             position: 'right',

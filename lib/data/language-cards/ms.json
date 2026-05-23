@@ -1,0 +1,40 @@
+{
+  "code": "ms",
+  "name": "Malay",
+  "nativeName": "Bahasa Melayu",
+  "iso639_1": "ms",
+  "iso639_3": "msa",
+  "bcp47": "ms",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Malay formality is similar to Indonesian — 'Anda' (formal you) is used in writing, while spoken Malay uses 'awak' or 'kamu'. Software UI uses 'Anda'. Malaysian Malay has more English loanwords than Indonesian.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Malay has no grammatical gender."
+  },
+  "registers": {
+    "professional": {
+      "label": "Profesional (Professional)",
+      "description": "Standard for software UI targeting Malaysia, Brunei, and Singapore Malay-speakers.",
+      "prompt": "Professional Malay (Bahasa Melayu). Use Anda for second-person address. Malaysian standard — English loanwords for tech terms are natural and expected. Clear, modern language."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

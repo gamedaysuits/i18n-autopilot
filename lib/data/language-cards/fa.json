@@ -1,0 +1,45 @@
+{
+  "code": "fa",
+  "name": "Persian",
+  "nativeName": "فارسی",
+  "iso639_1": "fa",
+  "iso639_3": "fas",
+  "bcp47": "fa",
+  "script": "Arab",
+  "dir": "rtl",
+  "formality": {
+    "system": "T-V",
+    "description": "Persian has a T-V distinction: شما (shomā, formal/plural) vs تو (to, informal/singular). Professional software uses شما-form. Persian also uses elaborate courtesy phrases (تعارف ta'ārof) in formal contexts, which are generally omitted in software UI.",
+    "default": "formal-shoma"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Persian has no grammatical gender. Third-person pronouns (او) are gender-neutral."
+  },
+  "registers": {
+    "formal-shoma": {
+      "label": "شما (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Persian. Use شما (shomā) for second-person address. Professional register. RTL layout. Modern standard Farsi — avoid excessive تعارف (courtesy phrases). Clear, direct phrasing for software interfaces."
+    },
+    "informal-to": {
+      "label": "تو (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Persian. Use تو (to) form. Conversational tone for consumer products. RTL layout."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Persian uses Arabic script (modified) but is not Arabic. The script code 'Arab' is correct per ISO 15924."
+}

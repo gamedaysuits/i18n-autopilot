@@ -39,11 +39,40 @@ Rosetta handles rate limits internally with exponential backoff. If you consiste
    ```json
    { "batchSize": 15 }
    ```
-2. **Use a model with higher rate limits** (e.g., `openai/gpt-4o-mini` has generous limits)
+2. **Use a model with higher rate limits** (e.g., `google/gemini-3.5-flash` has generous limits)
 3. **Use a cheaper/faster method** for high-volume pairs — Google Translate has no rate limits:
    ```json
    { "pairs": { "en:it": { "method": "google-translate" } } }
    ```
+
+### Model Not Found / 404 Errors
+
+Direct LLM providers (`openai`, `anthropic`, `gemini`) validate your model string on first use. If you see a warning:
+
+**"looks like an OpenRouter path"** — You're using an OpenRouter-format model (`google/gemini-3.5-flash`) with a direct provider. Direct providers use bare model names:
+
+```diff
+- { "method": "gemini", "model": "google/gemini-3.5-flash" }
++ { "method": "gemini", "model": "gemini-2.5-flash" }
+```
+
+Or switch to the `llm` method to use OpenRouter:
+```json
+{ "method": "llm", "model": "google/gemini-3.5-flash" }
+```
+
+**"is an Anthropic/OpenAI/Gemini model"** — You're sending a model to the wrong provider:
+
+```diff
+- { "method": "gemini", "model": "claude-sonnet-4-6" }
++ { "method": "anthropic", "model": "claude-sonnet-4-6" }
+```
+
+**"not found in available models"** — The model may be deprecated or misspelled. Rosetta fetches the provider's live model list and suggests alternatives. Check the provider's docs for current model names.
+
+:::tip Model deprecation happens
+Providers retire model names regularly. If translations suddenly fail after a provider update, check the `[WARN]` output — it will show you current alternatives.
+:::
 
 ## Translation Quality
 

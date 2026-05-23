@@ -1,11 +1,13 @@
 {
   "name": "i18n-rosetta",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Research-grade translation engine for i18n projects. Pluggable methods, per-pair quality tiers, and deterministic script converters. Supports JSON (next-intl, i18next), TOML, and YAML (Hugo).",
   "type": "module",
   "bin": {
     "i18n-rosetta": "bin/cli.js"
   },
+  "exports": "./index.js",
+  "main": "index.js",
   "scripts": {
     "test": "node --test test/*.test.js",
     "test:unit": "node --test test/sync.test.js",
@@ -40,6 +42,10 @@
     "internationalization",
     "translation",
     "openrouter",
+    "openai",
+    "anthropic",
+    "gemini",
+    "deepl",
     "localization",
     "l10n",
     "auto-translate",
@@ -59,6 +65,7 @@
     "node": ">=20.11.0"
   },
   "files": [
+    "index.js",
     "bin/",
     "lib/",
     "schemas/",

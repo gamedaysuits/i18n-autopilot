@@ -1,0 +1,35 @@
+{
+  "code": "x-shakespeare",
+  "name": "Shakespearean English",
+  "nativeName": "Shakespearean English",
+  "iso639_1": null,
+  "iso639_3": null,
+  "bcp47": "x-shakespeare",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "none",
+    "description": "Constructed language or stylistic variant — no formality system. Tone is defined entirely by the register preset.",
+    "default": "standard"
+  },
+  "gender": null,
+  "registers": {
+    "standard": {
+      "label": "Standard Shakespearean",
+      "description": "Early Modern English with thee/thou forms and period-appropriate vocabulary.",
+      "prompt": "Shakespearean English. Use Early Modern English conventions: thee/thou for second person, -eth/-est verb endings (e.g., 'thou hast', 'it doth'), period-appropriate vocabulary. Maintain comprehensibility — the user should understand the meaning even if the style is archaic. UI labels can be shorter; descriptions get the full treatment."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [],
+  "notes": "Register-only conlang — English with Early Modern English style transformation."
+}

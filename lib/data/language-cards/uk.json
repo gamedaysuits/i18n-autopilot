@@ -1,0 +1,45 @@
+{
+  "code": "uk",
+  "name": "Ukrainian",
+  "nativeName": "Українська",
+  "iso639_1": "uk",
+  "iso639_3": "ukr",
+  "bcp47": "uk",
+  "script": "Cyrl",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Ukrainian has a T-V distinction: Ви (vy, formal/plural) vs ти (ty, informal/singular). Professional software uses Ви-form (capitalized for single addressee). Similar to Russian but with distinct vocabulary and grammar.",
+    "default": "formal-vy"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Ukrainian has grammatical gender. When gender is unknown, masculine is the conventional default. Where possible, restructure to use gender-neutral constructions."
+  },
+  "registers": {
+    "formal-vy": {
+      "label": "Ви (Formal)",
+      "description": "Standard for professional software, enterprise, and institutional contexts.",
+      "prompt": "Formal Ukrainian. Use Ви-form (capitalized for single addressee). Professional register appropriate for software interfaces and business communication. Avoid Russian loanwords — use Ukrainian equivalents."
+    },
+    "informal-ty": {
+      "label": "Ти (Informal)",
+      "description": "For consumer apps, social media, gaming, and casual brand voices.",
+      "prompt": "Informal Ukrainian. Use ти-form. Conversational tone for consumer products. Avoid Russian loanwords — use Ukrainian equivalents."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Ukrainian and Russian are distinct languages. Both registers explicitly note avoiding Russian loanwords in favor of Ukrainian equivalents — this is both linguistically correct and culturally important."
+}

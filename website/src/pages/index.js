@@ -6,7 +6,6 @@ import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
 import { useState, useEffect } from 'react';
 
-import leaderboardData from '../data/leaderboard.json';
 import homepage from '../data/homepage.json';
 import styles from './index.module.css';
 
@@ -329,12 +328,41 @@ function formatPair(pair) {
   return `${src.toUpperCase()} → ${tgt.toUpperCase()}`;
 }
 
-function LeaderboardWidget() {
-  const sorted = [...leaderboardData.entries]
-    .sort((a, b) => b.metrics.chrF - a.metrics.chrF)
-    .slice(0, 5);
+// Supabase config — same as leaderboard page (read-only anon key, RLS-protected)
+const SUPABASE_URL = "https://sjdomynysdljkbemupqa.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_bV6CFNFnzxhQI0wlBx2J0A_5Vm5gFBp";
 
-  if (sorted.length === 0) return null;
+function LeaderboardWidget() {
+  const [entries, setEntries] = useState([]);
+
+  // Fetch top 5 from Supabase on mount
+  useEffect(() => {
+    async function fetchTop() {
+      try {
+        const resp = await fetch(
+          `${SUPABASE_URL}/rest/v1/run_cards?select=model_slug,condition,chrf_plus_plus,exact_match_rate,language_pair&order=chrf_plus_plus.desc.nullslast&limit=5`,
+          {
+            headers: {
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+          }
+        );
+        if (!resp.ok) return;
+        const data = await resp.json();
+        setEntries(data.map((row) => ({
+          method: `prompt-${row.condition}`,
+          model: row.model_slug,
+          pair: row.language_pair || "en>crk",
+          chrF: row.chrf_plus_plus,
+          exactMatch: row.exact_match_rate,
+        })));
+      } catch { /* silent — widget is non-critical */ }
+    }
+    fetchTop();
+  }, []);
+
+  if (entries.length === 0) return null;
 
   const lw = homepage.leaderboard_widget;
 
@@ -369,14 +397,14 @@ function LeaderboardWidget() {
                 </tr>
               </thead>
               <tbody>
-                {sorted.map((entry, idx) => (
+                {entries.map((entry, idx) => (
                   <tr key={idx}>
                     <td className={styles.leaderboardRank}>{idx + 1}</td>
                     <td className={styles.leaderboardMethod}>{entry.method}</td>
                     <td className={styles.leaderboardModel}>{entry.model}</td>
                     <td>{formatPair(entry.pair)}</td>
-                    <td className={styles.leaderboardScore}>{entry.metrics.chrF}</td>
-                    <td className={styles.leaderboardScore}>{entry.metrics.exactMatch}%</td>
+                    <td className={styles.leaderboardScore}>{entry.chrF}</td>
+                    <td className={styles.leaderboardScore}>{entry.exactMatch}%</td>
                   </tr>
                 ))}
               </tbody>

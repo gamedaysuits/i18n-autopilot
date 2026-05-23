@@ -142,7 +142,7 @@ describe('integration: translateBatch v3 pipeline', () => {
       translateBatch(
         ['hero.title', 'hero.subtitle'],
         { 'hero.title': 'Welcome', 'hero.subtitle': 'Get started' },
-        { method: 'llm', model: 'openai/gpt-4o-mini', name: 'French', register: 'Formal' },
+        { method: 'llm', model: 'google/gemini-3.5-flash', name: 'French', register: 'Formal' },
         { apiKey: 'test-key-123' },
       ),
     );
@@ -155,7 +155,7 @@ describe('integration: translateBatch v3 pipeline', () => {
     assert.equal(calls.length, 1);
     assert.ok(calls[0].url.includes('openrouter.ai'));
     assert.ok(calls[0].options.headers['Authorization'].includes('test-key-123'));
-    assert.equal(calls[0].body.model, 'openai/gpt-4o-mini');
+    assert.equal(calls[0].body.model, 'google/gemini-3.5-flash');
   });
 
   it('routes through LLMCoachedMethod for method "llm-coached"', async () => {
@@ -169,7 +169,7 @@ describe('integration: translateBatch v3 pipeline', () => {
         { 'nav.home': 'Home' },
         {
           method: 'llm-coached',
-          model: 'openai/gpt-4o-mini',
+          model: 'google/gemini-3.5-flash',
           name: 'French',
           register: 'Formal',
           target: 'fr',
@@ -516,7 +516,7 @@ describe('integration: plugin-to-method pipeline', () => {
       version: '1.0.0',
       locales: ['de'],
       config: {
-        model: 'openai/gpt-4o-mini',
+        model: 'google/gemini-3.5-flash',
         register: 'Standard German',
       },
     }));

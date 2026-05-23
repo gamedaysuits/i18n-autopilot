@@ -1,0 +1,53 @@
+{
+  "code": "es",
+  "name": "Spanish",
+  "nativeName": "Español",
+  "iso639_1": "es",
+  "iso639_3": "spa",
+  "bcp47": "es",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Spanish has a complex T-V system that varies by region. 'Tú' (informal) vs 'usted' (formal) is universal, but Latin American Spanish also uses 'vos' (rioplatense, Central American). The default code 'es' targets neutral Latin American Spanish — formal enough for professional contexts but avoiding distinctly Peninsular vocabulary (e.g., 'ordenador' → 'computadora'). Regional variants (es-MX, es-AR) can override.",
+    "default": "neutral-latam"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Spanish has grammatical gender. For inclusive language, avoid gendered defaults where possible: prefer role-neutral terms (e.g., 'persona usuaria' or 'quien usa' over 'usuario/a'). The 'x' and 'e' inclusive endings (e.g., 'usuarie', 'todxs') remain controversial — use them only if the product explicitly targets progressive audiences."
+  },
+  "registers": {
+    "neutral-latam": {
+      "label": "Neutro (Latin American)",
+      "description": "Standard for international Spanish-language products. Neutral Latin American vocabulary, avoids region-specific slang.",
+      "prompt": "Neutral Latin American Spanish. Professional register using usted-form for direct address. Avoid Peninsular-specific vocabulary (use 'computadora' not 'ordenador', 'celular' not 'móvil').",
+      "deeplFormality": "default"
+    },
+    "formal-usted": {
+      "label": "Formal (Usted)",
+      "description": "For government, legal, banking, and enterprise software across all regions.",
+      "prompt": "Formal Spanish. Strict usted-form. Elevated register appropriate for legal, government, financial, and enterprise contexts. Precise vocabulary, no colloquialisms.",
+      "deeplFormality": "prefer_more"
+    },
+    "informal-tu": {
+      "label": "Informal (Tú)",
+      "description": "For consumer apps, gaming, social media with a warm, direct tone.",
+      "prompt": "Informal Spanish. Use tú-form. Warm, conversational tone for consumer products. Neutral Latin American vocabulary. Colloquial expressions acceptable when natural.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "The base 'es' code targets neutral Latin American Spanish. See es-MX.json for Mexico-specific variant."
+}

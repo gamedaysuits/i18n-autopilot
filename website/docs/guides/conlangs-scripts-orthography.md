@@ -189,11 +189,13 @@ rosetta's built-in registers include the culturally appropriate formal address f
 
 ### Gender-Inclusive Writing
 
-Several registers include explicit gender-inclusive guidance:
+Each language card has a `gender.inclusiveGuidance` field with language-specific advice. This is injected into the LLM translation prompt separately from the register preset, so it applies consistently regardless of which formality preset the user chooses:
 
-- **French**: `prefer inclusive forms (e.g., "Connecté·e" over "Connecté")`
-- **German**: `prefer gender-inclusive forms (e.g., Benutzer:innen)`
-- **Spanish**: `prefer gender-neutral alternatives (e.g., "usuario/a")`
+- **French**: Écriture inclusive with interpunct notation (e.g., "Connecté·e")
+- **German**: Doppelpunkt notation (e.g., "Benutzer:innen")
+- **Spanish**: Gender-neutral restructuring preferred; slash notation (e.g., "usuario/a") as fallback
+
+For languages without specific guidance in their card (e.g., Korean, conlangs), the system falls back to a generic rule: *"prefer gender-neutral forms or the most inclusive option available."*
 
 ### RTL Script Requirements
 

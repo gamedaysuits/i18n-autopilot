@@ -1,0 +1,55 @@
+{
+  "code": "pt",
+  "name": "Portuguese (Brazilian)",
+  "nativeName": "Português (Brasil)",
+  "iso639_1": "pt",
+  "iso639_3": "por",
+  "bcp47": "pt-BR",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Brazilian Portuguese has a simplified T-V system compared to European Portuguese. 'Você' is the standard second-person pronoun for nearly all contexts — both formal and informal. 'Tu' is used in some regions (Rio Grande do Sul, parts of the North) but is not standard in most Brazilian writing. 'O senhor/A senhora' is reserved for very formal or elderly address. Software UI uses 'você' universally.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Portuguese has grammatical gender. For inclusive language, prefer gender-neutral restructuring where possible. The 'x' or 'e' endings (e.g., 'conectade', 'usuárix') are used in progressive contexts but are not standard. Slash notation (e.g., 'Conectado/a') is the safest inclusive approach for professional software."
+  },
+  "registers": {
+    "professional": {
+      "label": "Profissional (Você)",
+      "description": "Standard for software UI, websites, and business communication in Brazil.",
+      "prompt": "Professional Brazilian Portuguese. Use você-form for second person. Clear, modern language appropriate for software interfaces and business communication. Avoid overly formal constructions.",
+      "deeplFormality": "default"
+    },
+    "formal": {
+      "label": "Formal (O senhor/A senhora)",
+      "description": "For banking, legal, government, or contexts addressing older demographics.",
+      "prompt": "Formal Brazilian Portuguese. Use 'o senhor' / 'a senhora' for respectful address. Elevated register for banking, legal, and government contexts. Precise vocabulary.",
+      "deeplFormality": "prefer_more"
+    },
+    "casual": {
+      "label": "Casual (Coloquial)",
+      "description": "For consumer apps, social media, and youth-oriented products.",
+      "prompt": "Casual Brazilian Portuguese. Conversational você-form. Warm, friendly tone with colloquial expressions where natural. For consumer apps, social media, and casual brand voices.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [
+    "pt-BR"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "This is Brazilian Portuguese — the default for the base 'pt' code. See pt-PT.json for European Portuguese, which has significant vocabulary and grammar differences."
+}

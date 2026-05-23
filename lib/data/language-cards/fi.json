@@ -1,0 +1,40 @@
+{
+  "code": "fi",
+  "name": "Finnish",
+  "nativeName": "Suomi",
+  "iso639_1": "fi",
+  "iso639_3": "fin",
+  "bcp47": "fi",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "none",
+    "description": "Finnish has no meaningful T-V distinction in modern usage. 'Sinä' (you, singular) is universal. The archaic 'Te' (formal you) is essentially never used in software or modern communication. Formality is expressed through vocabulary and tone, not pronouns.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Finnish has no grammatical gender. The third-person pronoun 'hän' is gender-neutral."
+  },
+  "registers": {
+    "professional": {
+      "label": "Ammattimainen (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Finnish. Clear, modern language appropriate for software interfaces. Finnish has no formal/informal pronoun distinction — sinä is universal. Avoid overly colloquial expressions."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Finnish is agglutinative with extensive morphology. UI strings tend to be longer than English equivalents."
+}

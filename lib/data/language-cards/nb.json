@@ -1,0 +1,42 @@
+{
+  "code": "nb",
+  "name": "Norwegian Bokmål",
+  "nativeName": "Norsk bokmål",
+  "iso639_1": "nb",
+  "iso639_3": "nob",
+  "bcp47": "nb",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Norwegian Bokmål historically had a T-V distinction (De/du) but modern usage has almost completely abandoned 'De' (formal). Software universally uses 'du'. Formality in Norwegian is expressed through vocabulary and tone rather than pronoun choice.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Bokmål has three grammatical genders (masculine, feminine, neuter). For inclusive language referring to people, Norwegian increasingly uses gender-neutral constructions. The pronoun 'hen' is gaining acceptance as a gender-neutral third-person singular alternative to 'han/hun'."
+  },
+  "registers": {
+    "professional": {
+      "label": "Profesjonell (Professional)",
+      "description": "Standard for software UI and business communication. Modern, clear Bokmål.",
+      "prompt": "Professional Norwegian Bokmål. Use du-form (De-form is archaic). Modern, clear language appropriate for software interfaces. Bokmål orthography — not Nynorsk."
+    }
+  },
+  "aliases": [
+    "no"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "This fixes the nb/no mismatch. The 'no' code is registered as an alias pointing here. The Nordic preset now correctly uses 'nb'. Norway also has Nynorsk (code 'nn') which is a separate written standard — not yet supported as a language card."
+}

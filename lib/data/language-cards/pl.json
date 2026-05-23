@@ -1,0 +1,47 @@
+{
+  "code": "pl",
+  "name": "Polish",
+  "nativeName": "Polski",
+  "iso639_1": "pl",
+  "iso639_3": "pol",
+  "bcp47": "pl",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Polish has a T-V distinction using Pan/Pani (Sir/Madam, formal) vs ty (informal). The formal forms are third-person constructions: 'Czy Pan chce...' (Does Sir want...) rather than a pronoun switch. Professional software uses Pan/Pani form, which inherently references gender. Some modern Polish software avoids this by using infinitive constructions or impersonal forms.",
+    "default": "formal-pan"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Polish has grammatical gender and the formal address (Pan/Pani) is inherently gendered. For gender-neutral UI, prefer impersonal constructions (e.g., 'Proszę wybrać...' — 'Please choose...') or infinitive forms that avoid the Pan/Pani choice. The slash form 'Pan/Pani' can be used when direct address is necessary."
+  },
+  "registers": {
+    "formal-pan": {
+      "label": "Pan/Pani (Formal)",
+      "description": "Standard for professional software, enterprise, and institutional contexts.",
+      "prompt": "Formal Polish. Use Pan/Pani form for direct address. Professional register appropriate for software interfaces.",
+      "deeplFormality": "prefer_more"
+    },
+    "informal-ty": {
+      "label": "Ty (Informal)",
+      "description": "For consumer apps, social media, gaming, and youth-oriented products.",
+      "prompt": "Informal Polish. Use ty-form. Conversational, friendly tone for consumer products and social platforms. Colloquial expressions acceptable.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Polish formal address (Pan/Pani) is unique in that it's inherently gendered. This creates a practical challenge for UI text addressing unknown users."
+}

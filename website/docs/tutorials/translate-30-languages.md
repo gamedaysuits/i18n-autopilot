@@ -30,7 +30,7 @@ Not all 30 languages need the same approach. Group them by available method qual
   "inputLocale": "en",
   "localesDir": "./locales",
   "defaultMethod": "google-translate",
-  "model": "openai/gpt-4o-mini",
+  "model": "google/gemini-3.5-flash",
   "languages": {
     "ja": { "name": "Japanese", "register": "Polite/formal" },
     "ko": { "name": "Korean", "register": "Formal" },

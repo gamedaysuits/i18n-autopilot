@@ -1,0 +1,45 @@
+{
+  "code": "sk",
+  "name": "Slovak",
+  "nativeName": "Slovenčina",
+  "iso639_1": "sk",
+  "iso639_3": "slk",
+  "bcp47": "sk",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Slovak has a T-V distinction: vy (vykanie, formal) vs ty (tykanie, informal). Very similar to Czech. Professional software uses vy-form.",
+    "default": "formal-vy"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Slovak has grammatical gender. When gender is unknown, masculine is the conventional default."
+  },
+  "registers": {
+    "formal-vy": {
+      "label": "Vykanie (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Slovak. Use vykanie (vy-form) consistently. Professional register for software interfaces."
+    },
+    "informal-ty": {
+      "label": "Tykanie (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Slovak. Use tykanie (ty-form). Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

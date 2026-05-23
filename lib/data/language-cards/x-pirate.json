@@ -1,0 +1,40 @@
+{
+  "code": "x-pirate",
+  "name": "Pirate English",
+  "nativeName": "Pirate English",
+  "iso639_1": null,
+  "iso639_3": null,
+  "bcp47": "x-pirate",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "none",
+    "description": "Constructed language or stylistic variant — no formality system. Tone is defined entirely by the register preset.",
+    "default": "standard"
+  },
+  "gender": null,
+  "registers": {
+    "standard": {
+      "label": "Standard Pirate",
+      "description": "Classic pirate English with nautical metaphors and Arr vocabulary.",
+      "prompt": "Pirate English. Translate into stereotypical pirate dialect with nautical vocabulary, 'ye' for 'you', 'me' for 'my', 'Arr' interjections, and seafaring metaphors. Keep UI meaning clear — the joke should enhance, not obscure, the interface. Error messages should still be understandable."
+    },
+    "full-send": {
+      "label": "Full Send Pirate",
+      "description": "Maximum pirate. Every sentence gets the full treatment. For themed apps and Talk Like a Pirate Day.",
+      "prompt": "Maximum pirate English. Every response gets the full treatment — nautical slang, sea shanty rhythm, treasure metaphors, weather references. 'Loading' becomes 'Haulin' anchor', 'Error' becomes 'Blimey!'. Fun trumps clarity."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [],
+  "notes": "Register-only conlang — English with pirate style transformation. No script conversion needed."
+}

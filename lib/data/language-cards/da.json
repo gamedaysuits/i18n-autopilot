@@ -1,0 +1,40 @@
+{
+  "code": "da",
+  "name": "Danish",
+  "nativeName": "Dansk",
+  "iso639_1": "da",
+  "iso639_3": "dan",
+  "bcp47": "da",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Danish historically had a T-V distinction (De/du) but modern usage has almost entirely abandoned 'De' (formal). Software universally uses 'du'. Similar situation to Swedish and Norwegian.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Danish has common and neuter genders (en/et). For people, gender-neutral language is increasingly preferred."
+  },
+  "registers": {
+    "professional": {
+      "label": "Professionel (Professional)",
+      "description": "Standard for software UI and business communication.",
+      "prompt": "Professional Danish. Use du-form (De-form is archaic). Clear, modern language appropriate for software interfaces."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

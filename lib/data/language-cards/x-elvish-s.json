@@ -1,0 +1,38 @@
+{
+  "code": "x-elvish-s",
+  "name": "Sindarin (Tolkien Elvish)",
+  "nativeName": "Sindarin",
+  "iso639_1": null,
+  "iso639_3": null,
+  "bcp47": "x-elvish-s",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Sindarin is J.R.R. Tolkien's Elvish language. It has a formal/informal distinction through verb mutation and pronoun choice, but the corpus is small enough that only a general register is practical for translation. Sindarin uses Latin script for working translation; Tengwar script is available via converter.",
+    "default": "standard"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": null
+  },
+  "registers": {
+    "standard": {
+      "label": "Standard Sindarin",
+      "description": "General Sindarin following published Tolkien sources and Neo-Sindarin conventions.",
+      "prompt": "Sindarin (Tolkien Elvish). Use vocabulary from published Tolkien sources (The Lord of the Rings, The Silmarillion, History of Middle-earth). For technical terms not in Tolkien's corpus, use established Neo-Sindarin coinages from peer-reviewed fan scholarship. Translate in Latin script — Tengwar conversion is handled by the script converter."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": false,
+    "deepl": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": "x-elvish-s",
+  "evalDatasets": [],
+  "notes": "Tengwar script requires a CSUR-compatible font (PUA U+E000–E07F). Mode of Beleriand is used for the deterministic converter."
+}

@@ -1,0 +1,47 @@
+{
+  "code": "nl",
+  "name": "Dutch",
+  "nativeName": "Nederlands",
+  "iso639_1": "nl",
+  "iso639_3": "nld",
+  "bcp47": "nl",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Dutch has a T-V distinction: u (formal) vs je/jij (informal). Modern Dutch software increasingly uses je-form, but enterprise and government software still uses u-form. The choice is less rigid than in German or French.",
+    "default": "formal-u"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Dutch has common and neuter grammatical genders (de/het). For referring to people, the gender-neutral pronoun 'die' or 'hen/hun' is increasingly used. For UI text, prefer gender-neutral role descriptions where possible."
+  },
+  "registers": {
+    "formal-u": {
+      "label": "U (Formal)",
+      "description": "Standard for professional software, enterprise, government, and institutional contexts.",
+      "prompt": "Formal Dutch. Use u-form consistently. Professional register for software interfaces, enterprise, and business communication.",
+      "deeplFormality": "prefer_more"
+    },
+    "informal-je": {
+      "label": "Je (Informal)",
+      "description": "For consumer apps, social media, startups, and casual contexts. Increasingly common in modern Dutch software.",
+      "prompt": "Informal Dutch. Use je-form. Warm, approachable tone for consumer products. This is the modern default for most Dutch consumer-facing software.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

@@ -1,0 +1,41 @@
+{
+  "code": "pt-PT",
+  "name": "Portuguese (European)",
+  "nativeName": "Português (Portugal)",
+  "iso639_1": null,
+  "iso639_3": "por",
+  "bcp47": "pt-PT",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "European Portuguese has a more complex T-V system than Brazilian. 'Tu' (informal), 'você' (semi-formal, though considered impolite in some regions), 'o senhor/a senhora' (formal). Portuguese software for Portugal typically uses tu-form or impersonal constructions. 'Você' is less common in Portugal than in Brazil.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Same rules as Brazilian Portuguese for gender-inclusive writing."
+  },
+  "registers": {
+    "professional": {
+      "label": "Profissional (Professional)",
+      "description": "Standard for software UI targeting Portugal and European Portuguese speakers.",
+      "prompt": "Professional European Portuguese. Use tu-form or impersonal constructions (both are standard in Portuguese software for Portugal). European vocabulary — use 'ecrã' not 'tela', 'telemóvel' not 'celular'. Clear, modern language.",
+      "deeplFormality": "default"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "European Portuguese has significant vocabulary and grammar differences from Brazilian Portuguese. This is not just a spelling variant."
+}

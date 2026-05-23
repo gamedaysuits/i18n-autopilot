@@ -1,0 +1,45 @@
+{
+  "code": "es-MX",
+  "name": "Mexican Spanish",
+  "nativeName": "Español (México)",
+  "iso639_1": null,
+  "iso639_3": "spa",
+  "bcp47": "es-MX",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Mexican Spanish uses tú (informal) and usted (formal). Vos is not used in Mexico. The tone is generally warmer and more direct than neutral Latin American Spanish. Mexico-specific vocabulary differs from other Latin American countries.",
+    "default": "professional-tu"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Same rules as base Spanish. The 'x' and 'e' inclusive endings are used in Mexican progressive contexts but not yet standard."
+  },
+  "registers": {
+    "professional-tu": {
+      "label": "Tú (Professional, warm)",
+      "description": "Standard for Mexican software and apps. Tú-form with professional vocabulary but warm, approachable tone.",
+      "prompt": "Mexican Spanish. Use tú-form — warm, direct tone that is standard for Mexican apps and websites. Mexico-specific vocabulary where it differs from other Latin American varieties. Professional but approachable."
+    },
+    "formal-usted": {
+      "label": "Usted (Formal)",
+      "description": "For government, banking, legal, and enterprise contexts in Mexico.",
+      "prompt": "Formal Mexican Spanish. Use usted-form. Elevated register for institutional contexts. Mexico-specific vocabulary."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Mexico has the largest Spanish-speaking population worldwide. Mexican Spanish default uses tú-form, which is warmer than the neutral Latin American 'es' default (usted)."
+}

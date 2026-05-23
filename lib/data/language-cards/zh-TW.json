@@ -1,0 +1,42 @@
+{
+  "code": "zh-TW",
+  "name": "Chinese (Traditional)",
+  "nativeName": "繁體中文",
+  "iso639_1": null,
+  "iso639_3": "zho",
+  "bcp47": "zh-Hant-TW",
+  "script": "Hant",
+  "dir": "ltr",
+  "formality": {
+    "system": "register-levels",
+    "description": "Traditional Chinese formality follows similar patterns to Simplified but with distinct vocabulary choices. Taiwan Mandarin uses 您 (nín) less frequently than mainland Mandarin. Software UI uses 你 universally. Taiwan-specific vocabulary differs from mainland (e.g., 軟體 vs 软件 for software).",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Same as Simplified Chinese — written forms distinguish 他/她/它 but spoken is gender-neutral."
+  },
+  "registers": {
+    "professional": {
+      "label": "專業 (Professional)",
+      "description": "Standard for software UI targeting Taiwan audience.",
+      "prompt": "Professional Traditional Chinese (繁體中文). Taiwan Mandarin vocabulary — use Taiwan-specific terms (e.g., 軟體 not 軟件, 網路 not 網絡, 資料 not 數據). Use 你 for second person. Clear, modern language."
+    }
+  },
+  "aliases": [
+    "zh-Hant"
+  ],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": "Traditional Chinese for Taiwan. Vocabulary differs significantly from mainland Simplified Chinese — this is not just a script conversion."
+}

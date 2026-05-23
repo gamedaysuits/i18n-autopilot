@@ -1,0 +1,45 @@
+{
+  "code": "bg",
+  "name": "Bulgarian",
+  "nativeName": "Български",
+  "iso639_1": "bg",
+  "iso639_3": "bul",
+  "bcp47": "bg",
+  "script": "Cyrl",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Bulgarian has a T-V distinction: Вие (Vie, formal/plural) vs ти (ti, informal/singular). Professional software uses Вие-form.",
+    "default": "formal-vie"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Bulgarian has grammatical gender. When gender is unknown, masculine is the conventional default."
+  },
+  "registers": {
+    "formal-vie": {
+      "label": "Вие (Formal)",
+      "description": "Standard for professional software and business communication.",
+      "prompt": "Formal Bulgarian. Use Вие-form for second-person address. Professional register for software interfaces."
+    },
+    "informal-ti": {
+      "label": "Ти (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Bulgarian. Use ти-form. Conversational tone for consumer products."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": false
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}

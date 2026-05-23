@@ -134,7 +134,7 @@ describe('resolvePairs — simple mode', () => {
   it('builds pairs from resolvedLanguages', () => {
     const config = {
       inputLocale: 'en',
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-3.5-flash',
       batchSize: 30,
       resolvedLanguages: {
         fr: { name: 'French', register: 'Formal French.' },

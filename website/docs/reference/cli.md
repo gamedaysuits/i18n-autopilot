@@ -48,8 +48,11 @@ Interactive setup wizard that creates `i18n-rosetta.config.json`. Guides through
 ```bash
 i18n-rosetta init                          # interactive wizard
 i18n-rosetta init --yes                    # skip wizard, use defaults
+i18n-rosetta init --yes --langs fr,de,ja   # quick setup with specific languages
 i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 ```
+
+**`--langs` option**: Comma-separated list of target language codes. Skips the language prompt and applies default register presets for each language. Combine with `--yes` for fully non-interactive setup.
 
 **Language presets**: When prompted for target languages, you can type preset names:
 - `european` → fr, de, es, it, pt, nl

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!--
+    i18n-rosetta — Favicon (32×32)
+    Simplified three-bar mark — at this size the characters are
+    barely legible, so we rely on the color progression as the
+    primary recognition cue.
+  -->
+  <rect fill="#16161E" x="2" y="2" width="28" height="7" rx="2.5"/>
+  <rect fill="#6C5CE7" x="6" y="3.5" width="2" height="4" rx="0.5" opacity="0.8"/>
+  <text x="16" y="7" text-anchor="middle" fill="#6C5CE7" font-family="Inter,sans-serif" font-weight="700" font-size="5.5">R</text>
+
+  <rect fill="#16161E" x="2" y="12" width="28" height="7" rx="2.5"/>
+  <text x="16" y="17" text-anchor="middle" fill="#7B8CF5" font-family="sans-serif" font-weight="700" font-size="5.5">ロ</text>
+
+  <rect fill="#16161E" x="2" y="22" width="28" height="7" rx="2.5"/>
+  <text x="16" y="27" text-anchor="middle" fill="#00E5E6" font-family="sans-serif" font-weight="700" font-size="5.5">ᕈ</text>
+</svg>

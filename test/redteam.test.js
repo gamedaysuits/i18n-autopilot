@@ -23,7 +23,7 @@ import { parseArgs as nodeParseArgs } from 'node:util';
 import { flattenKeys, setNestedValue } from '../lib/flatten.js';
 import { diffLocale, diffLabel } from '../lib/diff.js';
 import { resolveConfig, autoDetectLanguages, generateConfigTemplate } from '../lib/config.js';
-import { DEFAULT_REGISTERS } from '../lib/registers.js';
+import { DEFAULT_REGISTERS, getAllLanguageCodes, getLanguageCard } from '../lib/registers.js';
 import { buildPrompt, isUnsafeKey, inferKeyTypes } from '../lib/translate.js';
 import { loadApiKey, runSync } from '../lib/sync.js';
 
@@ -209,7 +209,7 @@ describe('RED TEAM: resolveConfig edge cases', () => {
     // Should not throw — should fall back to defaults
     const config = resolveConfig({}, tmpDir);
     assert.equal(config.inputLocale, 'en');
-    assert.equal(config.model, 'openai/gpt-4o-mini');
+    assert.equal(config.model, 'google/gemini-3.5-flash');
   });
 
   it('survives an empty config file', () => {
@@ -551,10 +551,13 @@ describe('RED TEAM: registers integrity', () => {
     assert.equal(codes.length, unique.size, 'Duplicate register codes found');
   });
 
-  it('register names are unique', () => {
-    const names = Object.values(DEFAULT_REGISTERS).map(r => r.name);
-    const unique = new Set(names);
-    assert.equal(names.length, unique.size, 'Duplicate register names found');
+  it('register names are unique (excluding aliases)', () => {
+    // WHY: Aliases (e.g., 'no' → 'nb', 'iw' → 'he') correctly share
+    // names with their primary card. We only check primary codes.
+    const primaryCodes = getAllLanguageCodes();
+    const primaryNames = primaryCodes.map(code => DEFAULT_REGISTERS[code]?.name).filter(Boolean);
+    const unique = new Set(primaryNames);
+    assert.equal(primaryNames.length, unique.size, 'Duplicate register names found among primary codes');
   });
 });
 
@@ -830,14 +833,17 @@ describe('RED TEAM: v1.3.0 register enhancements', () => {
       'Filipino register should mention Taglish code-switching');
   });
 
-  it('RTL registers mention script direction', () => {
+  it('RTL registers have dir=rtl metadata', () => {
+    // WHY: RTL direction is now stored as structured metadata in the
+    // language card's dir field, not baked into register prompt text.
+    // The register prompt focuses on linguistic guidance only.
     const rtlCodes = ['ar', 'fa', 'he', 'ur'];
     for (const code of rtlCodes) {
       const reg = DEFAULT_REGISTERS[code];
       assert.ok(reg, `${code} register should exist`);
       assert.ok(
-        reg.register.toLowerCase().includes('right-to-left') || reg.register.includes('RTL'),
-        `${code} register should mention RTL script direction`
+        reg.dir === 'rtl',
+        `${code} register should have dir=rtl (got dir=${reg.dir})`
       );
     }
   });
@@ -852,9 +858,9 @@ describe('RED TEAM: v1.3.0 register enhancements', () => {
     }
   });
 
-  it('contains 35+ language definitions after v1.3.0 expansion', () => {
+  it('contains 42+ language definitions after language card migration', () => {
     const count = Object.keys(DEFAULT_REGISTERS).length;
-    assert.ok(count >= 35, `Expected 35+ registers, got ${count}`);
+    assert.ok(count >= 42, `Expected 42+ registers, got ${count}`);
   });
 
   it('Japanese register mentions formality nuance', () => {
@@ -866,14 +872,21 @@ describe('RED TEAM: v1.3.0 register enhancements', () => {
     );
   });
 
-  it('gendered European registers include inclusivity guidance', () => {
+  it('gendered European languages have card-level inclusivity guidance', () => {
+    // Gender guidance moved from register presets to card.gender.inclusiveGuidance
+    // so it can be injected into buildSystemMessage() as a single source of truth.
+    // This test verifies the card-level guidance exists for all gendered European languages.
     const genderedCodes = ['fr', 'es', 'de', 'it', 'pt'];
     for (const code of genderedCodes) {
-      const reg = DEFAULT_REGISTERS[code];
-      assert.ok(reg, `${code} register should exist`);
+      const card = getLanguageCard(code);
+      assert.ok(card, `${code} language card should exist`);
       assert.ok(
-        reg.register.toLowerCase().includes('gender') || reg.register.toLowerCase().includes('inclusi'),
-        `${code} register should include gender/inclusivity guidance`
+        card.gender && card.gender.inclusiveGuidance,
+        `${code} card should have gender.inclusiveGuidance`
+      );
+      assert.ok(
+        card.gender.inclusiveGuidance.length > 20,
+        `${code} gender guidance should be substantive (not just a placeholder)`
       );
     }
   });

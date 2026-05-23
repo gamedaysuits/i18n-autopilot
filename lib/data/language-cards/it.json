@@ -1,0 +1,47 @@
+{
+  "code": "it",
+  "name": "Italian",
+  "nativeName": "Italiano",
+  "iso639_1": "it",
+  "iso639_3": "ita",
+  "bcp47": "it",
+  "script": "Latn",
+  "dir": "ltr",
+  "formality": {
+    "system": "T-V",
+    "description": "Italian has a T-V distinction: 'tu' (informal) vs 'Lei' (formal, third-person singular, always capitalized). 'Voi' (second-person plural used as formal singular) is archaic in most regions but still used in some southern dialects. Professional software uses Lei-form.",
+    "default": "formal-Lei"
+  },
+  "gender": {
+    "grammatical": true,
+    "inclusiveGuidance": "Italian has grammatical gender on nouns, adjectives, and past participles. The schwa (ə) for gender-neutral endings is used in progressive contexts but is not widely adopted in professional software. Prefer restructuring sentences to avoid gendered forms, or use both forms with slash (e.g., 'Connesso/a') when brevity is needed."
+  },
+  "registers": {
+    "formal-Lei": {
+      "label": "Lei (Formal)",
+      "description": "Standard for professional software, enterprise, B2B, and institutional contexts.",
+      "prompt": "Formal Italian. Use Lei-form consistently (always capitalized). Professional register. Avoid colloquialisms and regional expressions.",
+      "deeplFormality": "prefer_more"
+    },
+    "informal-tu": {
+      "label": "Tu (Informal)",
+      "description": "For consumer apps, social media, gaming, and casual brand voices.",
+      "prompt": "Informal Italian. Use tu-form. Warm, conversational tone appropriate for consumer products. Colloquial expressions acceptable when natural.",
+      "deeplFormality": "prefer_less"
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": true,
+    "microsoftTranslator": true,
+    "libreTranslate": true,
+    "llm": true,
+    "deeplFormality": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "notes": null
+}
