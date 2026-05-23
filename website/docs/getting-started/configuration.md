@@ -280,10 +280,24 @@ class MistralMethod extends DirectLLMMethod {
   _extractResponseText(json) {
     return json.choices?.[0]?.message?.content;
   }
+
+  // Optional but recommended: provider-specific setup help when translation fails
+  getSetupHelp() {
+    if (!process.env.MISTRAL_API_KEY) {
+      return [
+        '',
+        '  ┌─ Missing API Key ─────────────────────────────────────────────┐',
+        '  │ Mistral requires an API key from https://console.mistral.ai   │',
+        '  │ Run: export MISTRAL_API_KEY=...                               │',
+        '  └────────────────────────────────────────────────────────────────┘',
+      ];
+    }
+    return ['        API key is set but translation failed. Check your Mistral dashboard.'];
+  }
 }
 ```
 
-You get translate, coaching, retry loops, model validation, and quality tiers for free. Only the HTTP request shape is provider-specific.
+You get translate, coaching, retry loops, model validation, quality tiers, and setup help for free. Only the HTTP request shape is provider-specific. For non-LLM adapters that use raw `fetch()`, use the shared `fetchWithRetry()` helper from `lib/methods/fetch-with-retry.js` instead of writing your own retry loop.
 
 ---
 

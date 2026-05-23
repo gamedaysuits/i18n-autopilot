@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **Shared retry helper** (`lib/methods/fetch-with-retry.js`): Extracted the common HTTP retry loop (AbortController + timeout, retryable status detection, exponential backoff with jitter) from all 4 non-LLM adapters into a single shared `fetchWithRetry()` function. Previously, Google Translate, DeepL, Microsoft Translator, and LibreTranslate each had independent ~50-line copy-pasted retry loops — bug fixes in one copy wouldn't propagate. ~400 lines eliminated.
+- **Setup help extraction** (`getSetupHelp()` on `TranslationMethod`): Moved method-specific setup guidance (API key instructions, box-drawing panels) from a 125-line `if/else if` chain in `sync.js` into each method's own `getSetupHelp()` override. Adding a new translation method no longer requires editing the sync orchestrator. ~120 lines eliminated from sync.js.
+- **Architecture notes**: Added `ARCHITECTURE NOTES` block to the `sync.js` file header documenting the god-module risk (config + format + hash + translation + I/O + content sync all in one file) and the output adoption gap (`console.log/error` used directly instead of the output controller, breaking `--json` and `--quiet` for the sync pipeline).
+
+### Fixed
+- **DeepL glossary retry budget** (`deepl.js`): When a glossary-attached batch got HTTP 400 and fell back to no-glossary, the recursive call reset `startAttempt` to 0, allowing up to 2× MAX_RETRIES total network requests. Now correctly passes the current attempt count forward.
+- **`resolveRuntime` config mutation** (`sync.js`): The `resolveRuntime()` function was mutating the shared `config.pairs` map when merging CLI overrides (`--method`, `--model`). Fixed with a defensive clone.
+- **Content sync double-counting** (`sync.js`): Content-synced files were being double-counted in the final stats summary.
+
+### Added
+- **`fetchWithRetry` test suite** (`test/fetch-with-retry.test.js`): 25+ tests covering success paths, non-retryable error pass-through (400/401/403/404), retry exhaustion on 429/5xx, `startAttempt` budget sharing, network error retries, timeout (AbortError) handling, options pass-through, and mixed error sequences.
+
 ## [3.3.1] - 2026-05-22
 
 ### Added
@@ -23,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Default model names updated**: Anthropic default changed from `claude-3-5-sonnet-latest` (retired) to `claude-sonnet-4-6`. Gemini default changed from `gemini-1.5-flash` (deprecated) to `gemini-2.5-flash`.
 - **`package.json`**: Added `exports` and `main` fields pointing to `index.js`. Added `openai`, `anthropic`, `gemini`, `deepl` keywords.
-- **Error message standardization**: All providers now use consistent `[WARN] <Provider>: no API key — skipping.` format. Detailed setup help lives in `sync.js`, not in individual method files.
+- **Error message standardization**: All providers now use consistent `[WARN] <Provider>: no API key — skipping.` format. Detailed setup help is provided by each method's `getSetupHelp()` override (see `lib/methods/base.js`).
 - **DeepL coaching dedup**: DeepL now uses the shared `loadCoachingData` from `llm-coached.js` instead of a local duplicate implementation.
 
 ## [3.3.0] - 2026-05-22
