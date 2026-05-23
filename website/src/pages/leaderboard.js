@@ -105,10 +105,42 @@ const CONDITION_GROUPS = [
  * Trust level → display config.
  */
 const TRUST_META = {
-  self: { label: "Self-benchmarked", className: styles.trustSelf },
-  verified: { label: "GDS Verified", className: styles.trustVerified },
-  community: { label: "Community Validated", className: styles.trustCommunity },
+  "self-benchmarked": { label: "Self-benchmarked", className: styles.trustSelf },
+  "gds-verified": { label: "GDS Verified", className: styles.trustVerified },
+  "community-validated": { label: "Community Validated", className: styles.trustCommunity },
 };
+
+/**
+ * Tooltip descriptions for table columns and detail card fields.
+ * Shown on hover via the InfoTip component.
+ */
+const TOOLTIPS = {
+  chrF: "Character n-gram F-score (chrF++). Primary quality metric — correlates well with human judgement, especially for morphologically rich languages. Higher is better. Scale: 0–100.",
+  exactMatch: "Exact Match rate. Percentage of translations that exactly match the gold-standard reference. A strict metric — even minor whitespace differences count as a miss.",
+  fstAcceptance: "Finite-State Transducer acceptance rate. Percentage of outputs that are morphologically valid according to the language's FST grammar. Only applies when FST verification is enabled.",
+  trust: "Verification tier. Self-benchmarked = submitted via the CLI with authenticated identity. GDS Verified = independently reproduced by the project maintainers. Community Validated = confirmed by multiple independent submitters.",
+  author: "The authenticated user who submitted these results via mt-eval publish.",
+  condition: "The prompt strategy used. 'naive' = direct translation prompt. 'coached' = prompt with linguistic context. Custom conditions may include tool use or post-processing.",
+  method: "Description of the translation method. 'Harness-native' means a standard harness prompt with no custom method card attached.",
+  cost: "Total API cost in USD for this evaluation run, as reported by OpenRouter.",
+  duration: "Wall-clock time for the full run. May be low if cached translations were reused.",
+  fingerprint: "Deterministic hash of the run configuration. Two runs with the same fingerprint used identical model, prompt, temperature, and dataset settings.",
+  provenance: "Git commit and repo at the time of the run. Confirms the exact code version that produced these results.",
+  harnessVersion: "Version of the mt-eval harness that produced these results. Different versions may use different prompting strategies or scoring logic.",
+};
+
+/**
+ * Small info icon that shows a tooltip on hover.
+ * Pure CSS — no JS state needed.
+ */
+function InfoTip({ text }) {
+  if (!text) return null;
+  return (
+    <span className={styles.infoTip} data-tooltip={text} aria-label={text}>
+      ⓘ
+    </span>
+  );
+}
 
 /**
  * Sortable column definitions.
@@ -130,7 +162,7 @@ const SORT_COLUMNS = {
 
 /** Trust badge pill. */
 function TrustBadge({ trust }) {
-  const meta = TRUST_META[trust] || TRUST_META.self;
+  const meta = TRUST_META[trust] || TRUST_META["self-benchmarked"];
   return (
     <span className={`${styles.trustBadge} ${meta.className}`}>
       {meta.label}
@@ -162,7 +194,7 @@ function RowDetail({ entry }) {
 
       {/* Condition */}
       <div className={styles.detailField}>
-        <span className={styles.detailLabel}>Condition</span>
+        <span className={styles.detailLabel}>Condition <InfoTip text={TOOLTIPS.condition} /></span>
         <span className={styles.detailValue}>{entry.condition}</span>
       </div>
 
@@ -196,7 +228,7 @@ function RowDetail({ entry }) {
         </div>
       ) : (
         <div className={styles.detailField}>
-          <span className={styles.detailLabel}>Method</span>
+          <span className={styles.detailLabel}>Method <InfoTip text={TOOLTIPS.method} /></span>
           <span className={styles.detailValue}>Harness-native configuration</span>
         </div>
       )}
@@ -204,7 +236,7 @@ function RowDetail({ entry }) {
       {/* Cost — only shown when the entry includes cost data */}
       {entry.cost_usd != null && (
         <div className={styles.detailField}>
-          <span className={styles.detailLabel}>Cost</span>
+          <span className={styles.detailLabel}>Cost <InfoTip text={TOOLTIPS.cost} /></span>
           <span className={styles.detailValue}>
             {formatCost(entry.cost_usd)}
           </span>
@@ -214,7 +246,7 @@ function RowDetail({ entry }) {
       {/* Duration — only shown when elapsed_seconds is available */}
       {entry.elapsed_seconds != null && (
         <div className={styles.detailField}>
-          <span className={styles.detailLabel}>Duration</span>
+          <span className={styles.detailLabel}>Duration <InfoTip text={TOOLTIPS.duration} /></span>
           <span className={styles.detailValue}>
             {formatDuration(entry.elapsed_seconds)}
           </span>
@@ -239,33 +271,29 @@ function RowDetail({ entry }) {
         </>
       )}
 
-      {/* Fingerprint — includes hash for pipeline traceability */}
+      {/* Provenance — git repo + commit for traceability */}
       <div className={styles.detailField}>
-        <span className={styles.detailLabel}>Fingerprint Type</span>
+        <span className={styles.detailLabel}>Provenance <InfoTip text={TOOLTIPS.provenance} /></span>
         <span className={`${styles.detailValue} ${styles.mono}`}>
-          {entry.fingerprint.type}
+          {entry._runCard?.provenance?.repo || "N/A (harness-native)"}
         </span>
       </div>
-      <div className={styles.detailField}>
-        <span className={styles.detailLabel}>Repo</span>
-        <span className={`${styles.detailValue} ${styles.mono}`}>
-          {entry.fingerprint.repo}
-        </span>
-      </div>
-      <div className={styles.detailField}>
-        <span className={styles.detailLabel}>Commit</span>
-        <span className={`${styles.detailValue} ${styles.mono}`}>
-          {entry.fingerprint.commit}
-        </span>
-      </div>
-      {entry.fingerprint.hash && (
+      {entry._runCard?.provenance?.commit && (
         <div className={styles.detailField}>
-          <span className={styles.detailLabel}>Hash</span>
+          <span className={styles.detailLabel}>Commit</span>
           <span className={`${styles.detailValue} ${styles.mono}`}>
-            {entry.fingerprint.hash}
+            {entry._runCard.provenance.commit.slice(0, 12)}
+            {entry._runCard.provenance.dirty ? " (dirty)" : ""}
           </span>
         </div>
       )}
+      {/* Fingerprint hash — config identity */}
+      <div className={styles.detailField}>
+        <span className={styles.detailLabel}>Fingerprint <InfoTip text={TOOLTIPS.fingerprint} /></span>
+        <span className={`${styles.detailValue} ${styles.mono}`}>
+          {entry._runCard?.fingerprint?.hash?.slice(0, 16) || "—"}
+        </span>
+      </div>
 
       {/* Harness version */}
       <div className={styles.detailField}>
@@ -678,23 +706,23 @@ export default function LeaderboardPage() {
                         onClick={() => handleSort("chrF")}
                         id="col-chrf"
                       >
-                        chrF++
+                        chrF++ <InfoTip text={TOOLTIPS.chrF} />
                       </th>
                       <th
                         className={sortClass("exactMatch")}
                         onClick={() => handleSort("exactMatch")}
                         id="col-em"
                       >
-                        EM%
+                        EM% <InfoTip text={TOOLTIPS.exactMatch} />
                       </th>
                       <th
                         className={sortClass("fstAcceptance")}
                         onClick={() => handleSort("fstAcceptance")}
                         id="col-fst"
                       >
-                        FST%
+                        FST% <InfoTip text={TOOLTIPS.fstAcceptance} />
                       </th>
-                      <th>Trust</th>
+                      <th>Trust <InfoTip text={TOOLTIPS.trust} /></th>
                       <th
                         className={sortClass("author")}
                         onClick={() => handleSort("author")}

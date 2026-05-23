@@ -391,6 +391,75 @@
 }
 
 /* ---------------------------------------------------------------
+   Info Tip — hover tooltip (ⓘ icon)
+   Pure CSS implementation using data-tooltip attribute.
+   --------------------------------------------------------------- */
+.infoTip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 0.65rem;
+  color: var(--ifm-font-color-secondary);
+  opacity: 0.55;
+  cursor: help;
+  position: relative;
+  vertical-align: middle;
+  margin-left: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.infoTip:hover {
+  opacity: 1;
+  color: var(--ifm-color-primary);
+}
+
+.infoTip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1A1A2E;
+  color: #E4E4F0;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 320px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+}
+
+.infoTip:hover::after {
+  opacity: 1;
+}
+
+/* Keep tooltip on-screen for left-edge columns */
+.table th:first-child .infoTip::after,
+.table th:nth-child(2) .infoTip::after {
+  left: 0;
+  transform: translateX(0);
+}
+
+/* Keep tooltip on-screen for right-edge columns */
+.table th:last-child .infoTip::after,
+.table th:nth-last-child(2) .infoTip::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+}
+
+/* ---------------------------------------------------------------
    Trust Legend
    --------------------------------------------------------------- */
 .trustLegend {
