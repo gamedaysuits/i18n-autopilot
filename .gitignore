@@ -38,5 +38,8 @@ test/fixtures/_tmp_*
 test/benchmark/
 .rosetta/
 
+# Supabase local temp files (machine-generated, per-environment)
+supabase/.temp/
+
 # Co-located ecosystem projects (separate git repos, not part of rosetta)
 crk-translate/

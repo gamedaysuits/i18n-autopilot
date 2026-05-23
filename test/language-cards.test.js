@@ -573,9 +573,9 @@ describe('INVARIANT: all accessors handle every card code', () => {
 //
 // The benchmark harness buildRegisterPrompt must follow the same gender-
 // rule injection pattern as production buildSystemMessage in llm.js.
-// We can't import buildSystemMessage (it's not exported), so we test the
-// structural contract: both should use genderGuidance when present and
-// fall back to a generic rule when absent.
+// buildSystemMessage IS exported (llm.js:430), but we test the structural
+// contract here via file content matching to guard against accidental
+// removal of the genderGuidance wiring in any of the pipeline files.
 // --------------------------------------------------------------------------
 
 describe('INVARIANT: harness prompt mirrors production prompt structure', () => {
@@ -590,14 +590,25 @@ describe('INVARIANT: harness prompt mirrors production prompt structure', () => 
     );
   });
 
-  it('harness buildRegisterPrompt uses genderGuidance field', async () => {
+  it('harness delegates to production buildSystemMessage', async () => {
     const harness = fs.readFileSync(
       path.join(import.meta.dirname, '..', 'test', 'benchmark', 'run-benchmark.js'),
       'utf-8'
     );
+    // The harness should import and call the production buildSystemMessage
+    // rather than building its own prompt (which would drift from production).
     assert.ok(
-      harness.includes('langConfig.genderGuidance'),
-      'Harness buildRegisterPrompt must read langConfig.genderGuidance'
+      harness.includes("import { buildSystemMessage }"),
+      'Harness must import buildSystemMessage from production llm.js'
+    );
+    assert.ok(
+      harness.includes('buildSystemMessage('),
+      'Harness must call buildSystemMessage() to build register prompts'
+    );
+    // genderGuidance must be included in the langConfig passed to buildSystemMessage
+    assert.ok(
+      harness.includes('genderGuidance'),
+      'Harness must include genderGuidance in langConfig for buildSystemMessage'
     );
   });
 
