@@ -5,7 +5,7 @@ title: Supported Languages
 
 # Supported Languages
 
-rosetta ships with **Language Cards** — structured reference files for 42+ languages. Each card contains register presets, formality system metadata, method support flags, and script information. Any language your LLM knows can be added with a single config line — these are the ones with curated, production-ready registers.
+rosetta ships with **Language Cards** — structured configuration files for 50 languages. Each card contains register presets, formality system metadata, method support flags, typography rules, and script information. Any language your LLM knows can be added with a single config line — these are the ones with curated, production-ready registers.
 
 ---
 
@@ -73,6 +73,8 @@ These are the most commonly requested locales for web and mobile applications, l
 | 🇵🇰 | Urdu | `ur` | ✅ | ✅ | ✅ | — | RTL. آپ form. |
 | 🇻🇳 | Vietnamese | `vi` | ✅ | ✅ | ✅ | — | |
 | 🇹🇼 | Chinese (Traditional) | `zh-TW` | ✅ | ✅ | ✅ | — | 繁體中文. |
+| 🇬🇪 | Georgian | `ka` | ✅ | ✅ | — | — | ქართული. Kartvelian family. |
+| 🇳🇬 | Yoruba | `yo` | ✅ | ✅ | — | — | Èdè Yorùbá. Tonal (3 tones). |
 
 ## Regional Variants
 
@@ -90,6 +92,7 @@ These languages are not supported by commercial MT services. rosetta provides th
 | | Language | Code | Google | LLM | Coached | Script | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 Under development |
+| 🌄 | Quechua | `qu` | ✅ | ✅ | — | — | Runasimi. Evidential suffixes. |
 
 :::info Plains Cree is under active development
 The register, coaching infrastructure, script converter, and evaluation harness for Plains Cree are all functional, but the translation pipeline has **not yet been released**. We are working with language communities under [OCAP principles](/docs/guides/low-resource-languages) to ensure quality before release. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for the full story — and how you can contribute.
@@ -159,16 +162,53 @@ The LLM will translate using its training knowledge of the language. Setting a `
 
 ## Language Cards
 
-Each built-in language has a **Language Card** — a JSON file in `lib/data/language-cards/` containing:
+Each built-in language has a **Language Card** — structured JSON configuration split into two tiers for performance:
+
+### Two-Tier Architecture
+
+| Tier | Directory | Loaded | Purpose |
+|------|-----------|--------|--------|
+| **Runtime** | `lib/data/language-cards/` | Eagerly at `import` | Translation engine: registers, formality, rules, method support |
+| **Reference** | `lib/data/language-reference/` | Lazily on demand | Developer docs: linguistic challenges, encyclopedic data, NLP resources |
+
+The runtime tier stays small (~2 KB/card) so importing rosetta doesn't load megabytes of documentation data. The reference tier is available via `getLanguageReference(code)` for tools, the website, and the eval harness.
+
+### Runtime Card Fields
 
 | Field | What It Contains |
 |-------|------------------|
+| **`nativeName`** | Endonym — the language's name for itself, in its own script (e.g., ქართული, Runasimi) |
 | **Formality system** | T-V distinction, speech levels, keigo, particles, etc. |
-| **Register presets** | Named presets specific to the language's character |
+| **Register presets** | Named LLM prompt presets specific to the language's character |
 | **Method support** | Which translation APIs support this language |
 | **Gender guidance** | Grammatical gender rules and inclusive writing tips |
 | **Script/direction** | ISO 15924 script code and RTL/LTR |
+| **Rules** | Typography (quotes, spacing), capitalization, plural categories |
 | **Eval datasets** | Which benchmarks cover this language |
+| **`glottocode`** | Canonical Glottolog identifier for cross-referencing |
+| **`humanReviewed`** | Whether the card has been reviewed by a speaker |
+
+### Reference Card Fields
+
+| Field | What It Contains |
+|-------|------------------|
+| **Linguistic challenges** | MT-specific pitfalls (e.g., evidentiality, tonal diacritics, agglutination) |
+| **Encyclopedic** | Language family, classification, speaker count, regions |
+| **Resources** | NLP tools, parallel corpora, pre-trained models |
+
+### Scaffolding a New Language Card
+
+Use the generator to scaffold both tiers from authoritative data sources (IANA, CLDR, Glottolog):
+
+```bash
+# Preview what would be generated
+node scripts/generate-language-card.mjs sw --dry-run
+
+# Generate both runtime + reference cards
+node scripts/generate-language-card.mjs sw
+```
+
+The generator auto-populates metadata (codes, script, direction, plurals, quotes, method support, language family) and marks linguistic judgment fields as TODO for human curation.
 
 ### Using Preset Keys
 
@@ -197,7 +237,7 @@ Rosetta resolves the key to the full register prompt. Run `npx i18n-rosetta init
 | Thai | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
 | Spanish | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
 
-See [Contributing a Language Card](https://github.com/nicholasgriffintn/i18n-rosetta/blob/main/docs/planning/LANGUAGE_CARD_SPEC.md) for how to add or improve presets.
+See [Contributing a Language Card](https://github.com/nicholasgriffintn/i18n-rosetta/blob/main/docs/planning/LANGUAGE_CARD_SPEC.md) for the full spec, including field validation and PR checklist.
 
 ---
 

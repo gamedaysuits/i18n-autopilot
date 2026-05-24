@@ -235,7 +235,7 @@ Create `i18n-rosetta.config.json` or run `i18n-rosetta init`:
 | `batchSize` | `30` | Keys per translation batch |
 | `pairs` | `{}` | Per-pair method, model, and quality overrides |
 
-**Per-language overrides**: Each language has a [Language Card](docs/planning/LANGUAGE_CARD_SPEC.md) with preset registers tuned to its formality system. Use preset keys as shorthand, or write custom register text:
+**Per-language overrides**: Each language has a [Language Card](docs/planning/LANGUAGE_CARD_SPEC.md) — one of 50 curated cards containing register presets, formality systems, typography rules, and method support flags. Cards use a [two-tier architecture](website/docs/concepts/architecture.md) (runtime + reference) for performance at scale. Scaffold a new card with `node scripts/generate-language-card.mjs <code>`. Use preset keys as shorthand, or write custom register text:
 
 ```json
 {

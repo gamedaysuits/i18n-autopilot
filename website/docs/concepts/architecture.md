@@ -129,6 +129,27 @@ Plugin has `type: "llm-coached"` → rosetta uses user's own OpenRouter key. Coa
 
 User maintains their own grammar rules and dictionary in `.rosetta/coaching/fr.json`.
 
+## Language Cards
+
+Each language in rosetta is configured through a **Language Card** — a JSON file containing register presets, formality rules, method support flags, and typography conventions. Language cards are the per-language configuration that drives register-steered translation.
+
+```mermaid
+graph LR
+    subgraph Cards["Language Cards (lib/data/)"]
+        RT["Runtime Tier<br/>language-cards/*.json<br/>~2 KB each"]
+        RF["Reference Tier<br/>language-reference/*.json<br/>~3 KB each"]
+    end
+    RT -->|"Eager load at import"| R["i18n-rosetta<br/>translate()"]
+    RF -->|"Lazy load on demand"| W["Website / Harness<br/>getLanguageReference()"]
+```
+
+Cards are split into two tiers for performance at scale (targeting 700+ languages):
+
+- **Runtime tier** (`language-cards/`): Loaded eagerly — the fields the translation engine needs (registers, formality, method support, typography rules).
+- **Reference tier** (`language-reference/`): Loaded lazily — developer documentation (linguistic challenges, language family, NLP resources).
+
+Both tiers are generated from authoritative sources (IANA, CLDR, Glottolog) using `scripts/generate-language-card.mjs`, then human-curated for linguistic accuracy.
+
 ## Design Principles
 
 1. **No circular dependencies.** The bridges are one-way.
