@@ -1,0 +1,47 @@
+{
+  "code": "yo",
+  "name": "Yoruba",
+  "linguisticChallenges": {
+    "tonalDiacritics": "Yoruba has three lexical tones (high ´, mid unmarked, low `) and two tone-modifying processes (rising, falling). Tonal diacritics are essential for disambiguation — 'ọkọ' without diacritics could mean husband, hoe, vehicle, or spear. MT must always produce properly marked output even though informal digital Yoruba often omits them.",
+    "serialVerbConstructions": "Yoruba extensively uses serial verb constructions where multiple verbs share a subject without conjunctions (e.g., 'Mo mú ìwé wá' — I took book came = 'I brought a book'). MT from English single-verb constructions often fails to produce natural serial verb sequences.",
+    "ideophones": "Yoruba has a rich system of ideophones (sound-symbolic words describing sensory experiences) that don't translate literally. These are integral to natural expression, not optional embellishments. MT typically either omits them or produces awkward literal equivalents.",
+    "subDotDiacritics": "Yoruba uses sub-dot diacritics (ẹ, ọ, ṣ) that are distinct phonemes, not decorative marks. ẹ ≠ e, ọ ≠ o, ṣ ≠ s. MT systems sometimes drop or misplace these, producing words with different meanings.",
+    "pluralDeterminer": "Yoruba marks plurality with the determiner àwọn rather than noun morphology. English plural nouns must be mapped to àwọn + singular noun constructions. MT often incorrectly attempts morphological pluralization.",
+    "relativeClausePronoun": "Yoruba relative clauses use the particle tí, and complex sentence embedding follows different rules than English. Direct structural translation of English relative clauses often produces unnatural or ambiguous Yoruba."
+  },
+  "encyclopedic": {
+    "family": "Atlantic-Congo",
+    "classification": "Atlantic-Congo > Volta-Congo > Benue-Congo > Defoid > Yoruboid",
+    "demographics": {
+      "speakers": "~47 million (L1), ~2 million (L2)",
+      "regions": ["NG", "BJ", "TG"]
+    }
+  },
+  "resources": {
+    "corpora": [
+      {
+        "name": "NLLB-200 (yor_Latn)",
+        "type": "nmt",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M"
+      },
+      {
+        "name": "OPUS en-yo",
+        "type": "parallel",
+        "url": "https://opus.nlpl.eu/results/en&yo/corpus-result-table"
+      },
+      {
+        "name": "Masakhane NER Yoruba",
+        "type": "ner",
+        "url": "https://github.com/masakhane-io/masakhane-ner"
+      }
+    ],
+    "models": [
+      {
+        "name": "Helsinki-NLP/opus-mt-en-yo",
+        "type": "nmt",
+        "url": "https://huggingface.co/Helsinki-NLP/opus-mt-en-yo"
+      }
+    ],
+    "tools": []
+  }
+}

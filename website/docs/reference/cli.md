@@ -36,7 +36,10 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 --model <model>         Override translation model
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
---dry                   Preview changes without writing files
+--dry, --dry-run        Preview changes without writing files
+--concurrency <n>       Max parallel API calls for content translation (default: 12)
+--force-content         Re-translate all content files (clears content lock)
+--force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 ```
 
 ---
@@ -70,15 +73,19 @@ Translates missing, stale, and fallback keys across all locale files.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
-i18n-rosetta sync --dry                             # preview only
+i18n-rosetta sync --dry-run                         # preview only
 i18n-rosetta sync --force-keys "hero.title"         # force re-translate
 i18n-rosetta sync --force-keys "a.title,a.subtitle" # multiple keys
+i18n-rosetta sync --force-content                   # re-translate all Markdown/MDX
 i18n-rosetta sync --content-dir ./content           # include Hugo Markdown
 i18n-rosetta sync --method google-translate          # force Google Translate
+i18n-rosetta sync --concurrency 20                  # 20 parallel API calls
 i18n-rosetta sync --fallback                         # write [EN] prefixes on failure
 ```
 
 **Change detection**: rosetta stores SHA-256 hashes in `.i18n-rosetta.lock`. When source values change, the next sync automatically re-translates those keys. Commit the lock file so all developers share the baseline.
+
+**Parallelism**: Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool with configurable concurrency. Default is 12 parallel API calls. Override with `--concurrency` or the `concurrency` config field. JSON key translation runs sequentially per locale (fast enough that parallelism adds no benefit).
 
 ---
 

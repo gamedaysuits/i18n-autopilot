@@ -76,6 +76,7 @@
   ],
   "devDependencies": {
     "cldr-core": "^48.2.0",
-    "cldr-misc-full": "^48.2.0"
+    "cldr-misc-full": "^48.2.0",
+    "language-subtag-registry": "^0.4.2"
   }
 }

@@ -1,0 +1,56 @@
+{
+  "code": "sk",
+  "name": "Slovak",
+  "linguisticChallenges": {
+    "closeToCzech": "Slovak and Czech are closely related and partially mutually intelligible. MT models sometimes produce Czech words in Slovak output or vice versa. Key vocabulary differences exist — 'vlak' (SK, train) vs 'vlak' (CS, same but different compounds).",
+    "sevenCases": "Like Czech and Polish, Slovak has seven grammatical cases with complex declension patterns.",
+    "rhythmicRule": "Slovak has a unique 'rhythmic law' (rytmický zákon) where two consecutive long syllables are prohibited. This affects suffix forms and can trip up MT models that don't encode this phonological rule."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~5.2 million",
+      "regions": [
+        "Slovakia",
+        "Czech Republic",
+        "Serbia"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Slovak based on Central Slovak dialects. Western dialects are transitional toward Czech.",
+      "variants": []
+    },
+    "history": "Slovak was standardized in the 19th century by Ľudovít Štúr based on Central Slovak dialects, distinguishing it from the earlier Czech-based literary tradition.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Slovak_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Slovník slovenského jazyka",
+          "url": "https://slovnik.juls.savba.sk/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-SK corpora)",
+        "url": "https://opus.nlpl.eu/results/en&sk/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-sk"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (slk_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

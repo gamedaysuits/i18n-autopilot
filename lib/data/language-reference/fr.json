@@ -1,0 +1,86 @@
+{
+  "code": "fr",
+  "name": "French",
+  "linguisticChallenges": {
+    "ecritureInclusive": "Gender-inclusive French (écriture inclusive) is a live stylistic debate. The interpunct notation (connecté·e·s) is increasingly standard in corporate contexts but some MT models don't produce it. The Académie française opposes it. Style guidance must be clear in the register prompt — defaulting to masculine plural is safe but increasingly dated.",
+    "typographicConventions": "French typography requires a thin non-breaking space before double punctuation (: ; ? !). This is the single most common error in machine-translated French — straight 'Hello!' should become 'Bonjour !' with a thin-nbsp. Guillemets (« ») also take inner thin-nbsp: « Bonjour ». Most MT systems and even many human translators miss these spaces.",
+    "tvConsistency": "Mixing tu and vous within the same product is a glaring error. The choice must be consistent across all screens, notifications, error messages, and documentation. MT systems that translate strings independently often produce inconsistent T-V usage.",
+    "genderedAgreement": "Past participles and adjectives must agree with their subject's gender and number. 'Vous êtes connecté' (masculine) vs 'Vous êtes connectée' (feminine). When user gender is unknown, this forces a choice that has political implications. Infinitive constructions can sometimes avoid the issue: 'Pour se connecter...'",
+    "textExpansion": "French text is typically 15–20% longer than English, sometimes more. UI layouts must accommodate this expansion. Button labels, navigation items, and tooltips are especially vulnerable to overflow.",
+    "falseCognates": "French-English false cognates (faux amis) trip up MT regularly — 'actuellement' means 'currently' not 'actually', 'librairie' means 'bookstore' not 'library', 'éventuellement' means 'possibly' not 'eventually'."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~310 million (including L2)",
+      "regions": [
+        "France",
+        "Canada",
+        "Belgium",
+        "Switzerland",
+        "West Africa",
+        "North Africa",
+        "Caribbean"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard French based on Parisian dialect; significant regional variants in Quebec, Belgium, Switzerland, and West Africa",
+      "variants": [
+        "fr-CA",
+        "fr-BE",
+        "fr-CH"
+      ]
+    },
+    "history": "French was the dominant language of international diplomacy until the 20th century. It remains an official language of 29 countries and numerous international organizations. The Académie française has regulated the language since 1635.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/French_language",
+      "foundations": [
+        {
+          "name": "Académie française",
+          "url": "https://www.academie-francaise.fr/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Larousse (FR dictionary)",
+          "url": "https://www.larousse.fr/dictionnaires/francais"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy French model (fr_core_news_sm)",
+        "url": "https://spacy.io/models/fr",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-FR parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&fr/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-fr"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-fr"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (fra_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

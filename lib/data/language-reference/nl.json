@@ -1,0 +1,82 @@
+{
+  "code": "nl",
+  "name": "Dutch",
+  "linguisticChallenges": {
+    "deHetArticles": "Dutch has two definite articles: 'de' (common gender) and 'het' (neuter). There is no reliable rule for which nouns take which article — it must be memorized. MT models frequently assign the wrong article, and getting it wrong is one of the most conspicuous errors to Dutch readers. This is especially problematic for technical terms and loanwords.",
+    "separableVerbs": "Dutch has separable prefix verbs where the prefix detaches in main clauses — 'opslaan' (to save) → 'Sla het bestand op' (Save the file). The prefix moves to the end of the clause. MT systems sometimes fail to separate the prefix or place it incorrectly, producing ungrammatical sentences.",
+    "diminutives": "Dutch uses diminutive suffixes (-je, -tje, -etje, -pje, -ke) extremely productively — far more than any other Germanic language. They convey smallness, affection, or casualness. 'Momentje' (just a moment), 'drankje' (a drink). Using them in formal UI is inappropriate; MT sometimes over-produces them in casual register.",
+    "compoundSpelling": "Like German, Dutch forms compounds by concatenation — but the rules for connecting elements (linking 's', linking 'en', no connector) are complex and inconsistent. 'Koninginnedag' (Queen's Day) vs 'paardenbloem' (dandelion, lit. horse-flower) vs 'zonlicht' (sunlight). MT frequently gets the connectors wrong.",
+    "nlBeDivergence": "Dutch spoken in the Netherlands vs Belgium (Flemish/Vlaams) differs in vocabulary, pronunciation, and some grammar. 'Mobile phone' is 'mobiel' (NL) vs 'gsm' (BE), 'breakfast' is 'ontbijt' (both) but 'lunch' usage varies. Software typically targets Netherlands Dutch unless specifically for Belgium.",
+    "erConstruction": "Dutch uses 'er' as a multipurpose pronoun (existential, locative, prepositional, partitive) in ways that have no direct English equivalent. 'Er zijn drie bestanden' (There are three files), 'Ik heb er twee' (I have two of them). MT from English frequently omits necessary 'er' or inserts it incorrectly."
+  },
+  "encyclopedic": {
+    "family": "Germanic (Indo-European)",
+    "demographics": {
+      "speakers": "~30 million (including L2)",
+      "regions": [
+        "Netherlands",
+        "Belgium (Flanders)",
+        "Suriname",
+        "Curaçao",
+        "Aruba"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Netherlands Dutch (Netherlandic) and Belgian Dutch (Flemish/Vlaams) are the two main standard varieties. Mutually intelligible but differ in vocabulary and usage.",
+      "variants": [
+        "nl-BE"
+      ]
+    },
+    "history": "Dutch is the closest major relative of English, sharing a common ancestor in West Germanic. Standard Dutch was codified in the 17th century during the Dutch Golden Age. The Taalunie (Dutch Language Union) jointly regulates the language for the Netherlands, Belgium, and Suriname.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Dutch_language",
+      "foundations": [
+        {
+          "name": "Nederlandse Taalunie (Dutch Language Union)",
+          "url": "https://taalunie.org/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Van Dale (Dutch dictionary)",
+          "url": "https://www.vandale.nl/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Dutch model (nl_core_news_sm)",
+        "url": "https://spacy.io/models/nl",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-NL parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&nl/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-nl"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-nl"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (nld_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

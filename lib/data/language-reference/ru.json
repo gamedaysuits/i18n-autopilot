@@ -1,0 +1,75 @@
+{
+  "code": "ru",
+  "name": "Russian",
+  "linguisticChallenges": {
+    "aspectPairs": "Russian verbs come in imperfective/perfective aspect pairs (делать/сделать, читать/прочитать). Choosing the wrong aspect changes meaning subtly but significantly — 'Файл загружается' (imperfective, loading in progress) vs 'Файл загрузился' (perfective, loading completed). MT systems frequently select the wrong aspect, especially for UI state descriptions.",
+    "complexCaseSystem": "Russian has six grammatical cases (nominative, genitive, dative, accusative, instrumental, prepositional) that affect noun, adjective, and pronoun endings. Placeholder variables create particular challenges because the case of the interpolated noun depends on its syntactic role — '{file} удалён' (nominative) vs 'Нет {file}' (genitive).",
+    "vyCapitalization": "Formal Вы (capitalized) for single addressee vs lowercase вы (plural or generic). In software UI, Вы is conventional for formal register, but inconsistent capitalization between screens reads as sloppy. MT models are inconsistent about this capitalization.",
+    "verbsOfMotion": "Russian has a complex system of motion verbs with determined/indetermined pairs (идти/ходить, ехать/ездить) and numerous prefixed derivatives (выходить, входить, уходить, приходить...). Each prefix changes the meaning. MT frequently selects the wrong motion verb, especially for metaphorical uses.",
+    "genderedPastTense": "Russian past-tense verbs agree in gender with their subject — 'Вы подключились' (masculine) vs 'Вы подключились' (same spelling but different pronunciation) vs 'Вы подключилась' (feminine, informal ты). This creates the same unknown-gender problem as other gendered languages, but it appears in the verb rather than adjectives.",
+    "wordOrderFlexibility": "Russian word order is flexible (SVO is default but all permutations are grammatical) because case endings disambiguate meaning. Different orders carry different emphases. MT from English tends to produce rigid SVO, which sounds unnatural in contexts where Russian would front-load the topic."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~255 million (including L2)",
+      "regions": [
+        "Russia",
+        "Belarus",
+        "Kazakhstan",
+        "Kyrgyzstan",
+        "former Soviet states"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Russian based on Moscow dialect. Relatively uniform across the vast geographic range. Ukrainian and Belarusian are separate languages, not dialects.",
+      "variants": []
+    },
+    "history": "Russian became a standardized literary language in the 18th century under Peter the Great's modernization. The 1918 spelling reform simplified the orthography after the Russian Revolution. It is one of the six official UN languages.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Russian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Gramota.ru (Russian language portal)",
+          "url": "https://gramota.ru/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "pymorphy2 (Russian morphological analyzer)",
+        "url": "https://github.com/pymorphy2/pymorphy2",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-RU parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ru/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ru"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-ru"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (rus_Cyrl)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

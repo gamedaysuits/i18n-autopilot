@@ -1,0 +1,84 @@
+{
+  "code": "de",
+  "name": "German",
+  "linguisticChallenges": {
+    "compoundNouns": "German creates compound nouns by concatenating words without spaces — Datenschutzgrundverordnung (data protection basic regulation), Benutzeroberfläche (user interface). MT systems frequently insert spaces into compounds or fail to form them, producing grammatically incorrect output. These compounds also create challenges for text wrapping and responsive layouts.",
+    "nounCapitalization": "All German nouns are capitalized, not just proper nouns. Failing to capitalize nouns (e.g., 'benutzer' instead of 'Benutzer') is a conspicuous error. MT models trained on mixed-case data sometimes produce lowercase nouns, especially in lists or after certain punctuation.",
+    "genderedAddress": "The Genderstern (Benutzer*innen), Doppelpunkt (Benutzer:innen), and Binnen-I (BenutzerInnen) are all in active use for gender-inclusive writing. There is no consensus — the choice is a branding decision with cultural implications. MT models rarely produce any of these forms without explicit prompting.",
+    "tvConsistency": "German Sie/du distinction is absolute — mixing them is worse than in French because capitalized 'Sie' (formal you) vs lowercase 'sie' (she/they) creates genuine ambiguity. Every string in the product must use the same form consistently.",
+    "umlauts": "Umlauts (ä, ö, ü) and the Eszett (ß) are essential. Replacing them with ae, oe, ue, ss is acceptable only for legacy systems that can't handle Unicode. MT systems occasionally produce these substitutions, which reads as either archaic or system-constrained.",
+    "textExpansion": "German text is typically 20–30% longer than English — the longest expansion of any major European language. Compound nouns especially can create extremely long single words. UI layouts must be designed with this in mind from the start."
+  },
+  "encyclopedic": {
+    "family": "Germanic (Indo-European)",
+    "demographics": {
+      "speakers": "~130 million (including L2)",
+      "regions": [
+        "Germany",
+        "Austria",
+        "Switzerland",
+        "Luxembourg",
+        "Liechtenstein",
+        "South Tyrol"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard German (Hochdeutsch) with significant national variants in Austria (Österreichisches Deutsch) and Switzerland (Schweizer Hochdeutsch)",
+      "variants": [
+        "de-AT",
+        "de-CH"
+      ]
+    },
+    "history": "Standard German was largely codified through Luther's Bible translation (1534) and later standardized by Konrad Duden's dictionary (1880). The 1996 orthographic reform unified spelling across German-speaking countries.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/German_language",
+      "foundations": [
+        {
+          "name": "Duden (German language authority)",
+          "url": "https://www.duden.de/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "DWDS (Digital Dictionary of German Language)",
+          "url": "https://www.dwds.de/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy German model (de_core_news_sm)",
+        "url": "https://spacy.io/models/de",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-DE parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/de&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-de"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-de"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (deu_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

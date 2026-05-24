@@ -1,0 +1,81 @@
+{
+  "code": "it",
+  "name": "Italian",
+  "linguisticChallenges": {
+    "leiCapitalization": "The formal pronoun 'Lei' (you, formal) must be capitalized in writing to distinguish it from 'lei' (she). MT systems frequently produce lowercase 'lei' in formal contexts, which changes the meaning from formal address to third-person reference. This is one of the most common MT errors in Italian.",
+    "congiuntivoMood": "Italian has a productive subjunctive (congiuntivo) used after verbs of belief, doubt, wish, and in subordinate clauses. Its decline in spoken Italian leads MT models to under-produce it. In formal written text, missing congiuntivo ('Credo che *è' instead of 'Credo che sia') is a conspicuous grammatical error.",
+    "doubleConsonants": "Italian distinguishes single from double consonants in both pronunciation and meaning — 'pala' (shovel) vs 'palla' (ball), 'caro' (dear) vs 'carro' (cart). MT models sometimes drop or double consonants incorrectly, producing misspellings or meaning changes.",
+    "articlesWithProperNouns": "Italian uses definite articles before possessives ('il mio account'), days of the week ('il lunedì'), and in some regional usage, before first names ('la Maria' — Northern). MT must follow standard usage for each context.",
+    "elisionAndTruncation": "Italian requires elision (l'utente, not 'lo utente') and truncation (un amico, not 'uno amico') following specific phonological rules. MT systems occasionally fail to apply these, producing stilted output that no native speaker would write.",
+    "pronominalVerbs": "Italian pronominal verbs (farcela, cavarsela, andarsene) are semantically opaque and highly idiomatic. They combine a verb with multiple clitics and change meaning unpredictably. MT frequently translates them literally component-by-component, losing the intended meaning entirely."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~85 million (including L2)",
+      "regions": [
+        "Italy",
+        "Switzerland",
+        "San Marino",
+        "Vatican City"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Italian based on Tuscan/Florentine dialect, codified during the Renaissance. Regional dialects exist but are separate languages by linguistic criteria; they are not used in software.",
+      "variants": [
+        "it-CH"
+      ]
+    },
+    "history": "Modern Standard Italian is based on the literary Tuscan of Dante, Petrarch, and Boccaccio. It became the national language after Italian unification in 1861, though regional dialects remained dominant in daily speech well into the 20th century.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Italian_language",
+      "foundations": [
+        {
+          "name": "Accademia della Crusca",
+          "url": "https://accademiadellacrusca.it/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Treccani (Italian encyclopedia/dictionary)",
+          "url": "https://www.treccani.it/vocabolario/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Italian model (it_core_news_sm)",
+        "url": "https://spacy.io/models/it",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-IT parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&it/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-it"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-it"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ita_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

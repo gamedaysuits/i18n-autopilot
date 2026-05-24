@@ -41,5 +41,25 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Mexico has the largest Spanish-speaking population worldwide. Mexican Spanish default uses tú-form, which is warmer than the neutral Latin American 'es' default (usted)."
+  "notes": "Mexico has the largest Spanish-speaking population worldwide. Mexican Spanish default uses tú-form, which is warmer than the neutral Latin American 'es' default (usted).",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

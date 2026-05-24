@@ -38,5 +38,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Traditional Chinese for Taiwan. Vocabulary differs significantly from mainland Simplified Chinese — this is not just a script conversion."
+  "notes": "Traditional Chinese for Taiwan. Vocabulary differs significantly from mainland Simplified Chinese — this is not just a script conversion.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": false,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

@@ -5,16 +5,5 @@
   "gender": {
     "grammatical": false,
     "inclusiveGuidance": "Languages in this family utilize an animacy distinction (animate vs inanimate noun classes) rather than grammatical gender."
-  },
-  "encyclopedic": {
-    "family": "Algonquian",
-    "resources": {
-      "foundations": [
-        {
-          "name": "First Nations Information Governance Centre (OCAP Principles)",
-          "url": "https://fnigc.ca/ocap-training/"
-        }
-      ]
-    }
   }
 }

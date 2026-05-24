@@ -1,0 +1,47 @@
+{
+  "code": "qu",
+  "name": "Quechua",
+  "linguisticChallenges": {
+    "evidentiality": "Quechua grammatically encodes the source of information through evidential suffixes: -mi/-n (direct knowledge/assertion), -si/-s (hearsay/reported), -chá (inference/conjecture). English has no equivalent system — MT must choose the correct evidential for every statement, and the wrong choice can imply the speaker is lying or uncertain when they aren't.",
+    "agglutination": "Quechua is highly agglutinative — a single word can encode what English expresses in an entire clause. For example, 'wasiykiraqchismá' means approximately 'I wonder if it might still be your house'. MT must correctly stack suffixes in the right order.",
+    "inclusiveExclusiveWe": "Quechua distinguishes between inclusive 'we' (ñuqanchis — you and I) and exclusive 'we' (ñuqayku — us but not you). English 'we' is ambiguous, so MT must infer which form is appropriate from context — the wrong choice changes meaning significantly.",
+    "dialectalVariation": "Quechua varieties differ substantially — Cusco, Ayacucho, Ecuadorian Kichwa, and Bolivian Quechua are partially mutually unintelligible. MT training data mixes varieties, causing inconsistent output. This card targets Southern Quechua (Cusco-Collao).",
+    "limitedDigitalResources": "Quechua has very limited parallel corpora and digital text. MT models have sparse training data, leading to lower quality than well-resourced languages. Code-mixing with Spanish is extremely common in practice but undesirable in formal translation.",
+    "orthographyDebate": "Quechua has competing orthographic standards — the Academia Mayor uses a five-vowel system (a, e, i, o, u) while linguists prefer a three-vowel system (a, i, u) that better represents Quechua phonology. MT output may mix conventions."
+  },
+  "encyclopedic": {
+    "family": "Quechuan",
+    "classification": "Quechuan > Quechua II > Southern Quechua",
+    "demographics": {
+      "speakers": "~8-10 million (all varieties combined)",
+      "regions": ["PE", "BO", "EC", "CO", "AR"]
+    }
+  },
+  "resources": {
+    "corpora": [
+      {
+        "name": "NLLB-200 (que_Latn)",
+        "type": "nmt",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M"
+      },
+      {
+        "name": "OPUS en-qu",
+        "type": "parallel",
+        "url": "https://opus.nlpl.eu/results/en&qu/corpus-result-table"
+      },
+      {
+        "name": "AmericasNLP Shared Task Data",
+        "type": "parallel",
+        "url": "https://github.com/AmericasNLP/americasnlp2021"
+      }
+    ],
+    "models": [
+      {
+        "name": "Helsinki-NLP/opus-mt-en-qu",
+        "type": "nmt",
+        "url": "https://huggingface.co/Helsinki-NLP/opus-mt-en-qu"
+      }
+    ],
+    "tools": []
+  }
+}

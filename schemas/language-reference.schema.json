@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://i18n-rosetta.com/schemas/language-reference.schema.json",
+  "title": "i18n-rosetta Language Reference",
+  "description": "Reference-tier data for a language card. Contains developer-facing documentation not consumed at translation time: linguistic challenges, encyclopedic metadata, and NLP resource links. Loaded lazily by getLanguageReference() — not part of the eager runtime card load.",
+  "type": "object",
+  "required": [
+    "code",
+    "name"
+  ],
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Locale code matching the runtime card's code field. Used to associate this reference file with its runtime card.",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z]{2,4})?$|^x-[a-z-]+$|^tlh$|^(family|subfamily)-[a-z-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "English display name (must match runtime card).",
+      "minLength": 1
+    },
+    "linguisticChallenges": {
+      "type": ["object", "null"],
+      "description": "MT-relevant linguistic challenges for this language. Each key is a camelCase identifier, each value is a paragraph explaining the challenge, why MT systems struggle with it, and what correct output looks like. Written for developers who do not speak the language.",
+      "additionalProperties": { "type": "string" }
+    },
+    "encyclopedic": {
+      "type": ["object", "null"],
+      "description": "Encyclopedic metadata: language family, speaker demographics, dialect splits, history, and links to language authorities and dictionaries.",
+      "properties": {
+        "family": {
+          "type": "string",
+          "description": "Language family classification (e.g., 'Romance (Indo-European)', 'Uralic (Finnic)')."
+        },
+        "demographics": {
+          "type": "object",
+          "properties": {
+            "speakers": { "type": "string", "description": "Approximate speaker count (e.g., '~270 million')." },
+            "regions": {
+              "type": ["array", "string"],
+              "items": { "type": "string" },
+              "description": "Regions where the language is primarily spoken."
+            }
+          }
+        },
+        "dialects": {
+          "type": "object",
+          "properties": {
+            "split": { "type": "boolean", "description": "Whether there are distinct standard varieties that affect software localization (e.g., PT-BR vs PT-PT)." },
+            "classification": { "type": "string", "description": "Description of dialect landscape." },
+            "variants": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "BCP 47 codes for recognized variants (e.g., ['pt-PT', 'pt-BR'])."
+            }
+          }
+        },
+        "history": { "type": "string", "description": "Brief linguistic history relevant to software localization." },
+        "resources": {
+          "type": "object",
+          "description": "Links to language authorities, Wikipedia, and reference dictionaries.",
+          "properties": {
+            "wikipedia": { "type": "string", "format": "uri" },
+            "foundations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              }
+            },
+            "dictionaries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": ["object", "null"],
+      "description": "NLP and developer resources: FSTs, corpora, and pre-trained models relevant to this language.",
+      "properties": {
+        "fsts": {
+          "type": "array",
+          "description": "Finite-state transducers, morphological analyzers, and tokenizers.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "type": {
+                "type": "string",
+                "enum": ["morphological-analyzer", "spell-checker", "tokenizer", "transliterator"]
+              }
+            }
+          }
+        },
+        "corpora": {
+          "type": "array",
+          "description": "Parallel and monolingual corpora for training and evaluation.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "type": {
+                "type": "string",
+                "enum": ["parallel", "monolingual", "dictionary", "glossary"]
+              },
+              "pairs": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "models": {
+          "type": "array",
+          "description": "Pre-trained NLP/NMT models.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "type": {
+                "type": "string",
+                "enum": ["nmt", "llm", "tts", "asr", "ner"]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

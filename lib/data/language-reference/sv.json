@@ -1,0 +1,77 @@
+{
+  "code": "sv",
+  "name": "Swedish",
+  "linguisticChallenges": {
+    "enEttGender": "Swedish has two grammatical genders: common (en-words) and neuter (ett-words). Like Danish, wrong article choice is conspicuous — 'en dator' (a computer) vs 'ett program' (a program).",
+    "compoundNouns": "Swedish forms compounds by concatenation. 'Sjukhus' (hospital = sick + house), 'datorprogram' (computer program). Linking rules (-s-, -e-) must be correct.",
+    "duVsNi": "Swedish underwent a pronoun reform in the 1960s-70s where the informal 'du' largely replaced the formal 'ni'. Modern Swedish software uses 'du' universally — using 'ni' sounds old-fashioned or ironically formal.",
+    "scandinavianMixing": "MT models sometimes produce Norwegian or Danish words in Swedish output due to the high mutual intelligibility. 'Ikke' (NO/DA) instead of 'inte' (SV), for example."
+  },
+  "encyclopedic": {
+    "family": "Germanic (Indo-European)",
+    "demographics": {
+      "speakers": "~13 million (including L2)",
+      "regions": [
+        "Sweden",
+        "Finland"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Swedish (rikssvenska) based on Central Swedish dialects. Finland Swedish is a recognized variety with some vocabulary differences.",
+      "variants": [
+        "sv-FI"
+      ]
+    },
+    "history": "Swedish is an official language in both Sweden and Finland. The 'du-reform' of the late 1960s democratized address forms, making Swedish one of the most egalitarian European languages in terms of formality.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Swedish_language",
+      "foundations": [
+        {
+          "name": "Svenska Akademien (Swedish Academy)",
+          "url": "https://www.svenskaakademien.se/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "SAOL (Swedish Academy Dictionary)",
+          "url": "https://svenska.se/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Swedish model (sv_core_news_sm)",
+        "url": "https://spacy.io/models/sv",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-SV parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&sv/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-sv"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-sv"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (swe_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

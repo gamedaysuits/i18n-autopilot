@@ -1,0 +1,54 @@
+{
+  "code": "id",
+  "name": "Indonesian",
+  "linguisticChallenges": {
+    "noConjugation": "Indonesian has no verb conjugation, no tense markers, and no noun declension. Time is expressed through context and adverbs. MT from heavily inflected languages sometimes produces redundant temporal markers.",
+    "affixSystem": "Indonesian uses a complex prefix/suffix system (me-/ber-/pe-/ke-/-kan/-an/-i) to modify word meaning and grammatical role. The base word 'tulis' (write) → menulis (to write), penulis (writer), tulisan (writing), ditulis (was written).",
+    "indonesianVsMalay": "Indonesian and Malay are closely related but differ in vocabulary and some spelling conventions. MT must not mix them."
+  },
+  "encyclopedic": {
+    "family": "Austronesian (Malayo-Polynesian)",
+    "demographics": {
+      "speakers": "~270 million (including L2)",
+      "regions": [
+        "Indonesia"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Indonesian (Bahasa Indonesia) based on Riau Malay. Despite Indonesia's enormous linguistic diversity (700+ languages), Indonesian is relatively uniform.",
+      "variants": []
+    },
+    "history": "Indonesian was chosen as the national language at independence (1945) despite being the native language of only ~7% of the population, because of its role as a trade lingua franca and its perceived neutrality among ethnic groups.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Indonesian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "KBBI (official Indonesian dictionary)",
+          "url": "https://kbbi.kemdikbud.go.id/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-ID corpora)",
+        "url": "https://opus.nlpl.eu/results/en&id/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-id"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ind_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "code": "fa",
+  "name": "Persian",
+  "linguisticChallenges": {
+    "rtlWithArabicScript": "Persian uses a modified Arabic script (with 4 additional letters: پ چ ژ گ) and is RTL. Bidi handling challenges are identical to Arabic. MT must produce correct Persian characters, not Arabic equivalents.",
+    "ezafe": "Persian uses the ezafe construction (a short unstressed -e/-ye linking nouns to their modifiers) that is usually not written: 'کتاب ِ بزرگ' (ketāb-e bozorg, big book). MT must understand this implicit link even though it's invisible in text.",
+    "formalVsColloquial": "Written Persian (فارسی نوشتاری) differs significantly from spoken Persian (فارسی محاوره‌ای). Written uses 'است' (is), spoken uses '-ه'. MT should produce written register for software but spoken register for conversational UI.",
+    "persianVsArabicLoanwords": "Persian borrows extensively from Arabic but modifies pronunciation and sometimes meaning. MT models sometimes produce Arabic-style morphology instead of the Persianized forms.",
+    "zwnj": "Persian uses the Zero-Width Non-Joiner (ZWNJ, U+200C) extensively to prevent letters from connecting in compound words: 'می‌خواهم' (I want) — the می and خواهم should be visually separate but connected to the word. Missing ZWNJs make text look wrong."
+  },
+  "encyclopedic": {
+    "family": "Iranian (Indo-European)",
+    "demographics": {
+      "speakers": "~110 million (all varieties)",
+      "regions": [
+        "Iran",
+        "Afghanistan (Dari)",
+        "Tajikistan (Tajik)"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Western Persian (Farsi, Iran), Dari (Afghanistan), and Tajik (Tajikistan, Cyrillic script) are the three standard varieties. Farsi and Dari are mutually intelligible; Tajik uses Cyrillic.",
+      "variants": [
+        "fa-AF",
+        "tg"
+      ]
+    },
+    "history": "Persian is one of the oldest continuously spoken languages, with literary records dating to 500 BCE (Old Persian inscriptions at Persepolis). Modern Persian adopted the Arabic script after the Islamic conquest of the 7th century.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Persian_language",
+      "foundations": [
+        {
+          "name": "Academy of Persian Language and Literature",
+          "url": "https://apll.ir/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Dehkhoda Dictionary",
+          "url": "https://dehkhoda.ut.ac.ir/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "Hazm (Persian NLP toolkit)",
+        "url": "https://github.com/roshan-research/hazm",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-FA parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&fa/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-fa"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-fa"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (pes_Arab)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

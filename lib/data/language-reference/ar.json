@@ -1,0 +1,86 @@
+{
+  "code": "ar",
+  "name": "Arabic",
+  "linguisticChallenges": {
+    "msaDialectMixing": "MT models frequently produce output that mixes MSA with dialectal Arabic (especially Egyptian or Levantine). In a single paragraph, an MSA verb might appear alongside a colloquial conjunction. This is immediately visible to Arabic readers and reads as incoherent.",
+    "rootPatternMorphology": "Arabic words derive from three-consonant roots through vowel patterns (e.g., k-t-b → كتب wrote, كتاب book, مكتبة library, كاتب writer). MT must understand that morphologically related forms share semantic connections but have distinct meanings.",
+    "bidirectionalText": "RTL Arabic with embedded LTR content (variables, URLs, code, numbers) creates complex bidirectional text rendering. Placeholder insertion must respect Unicode bidi algorithm rules. Strings like '{count} ملفات' require careful handling to prevent visual reordering errors.",
+    "diacritics": "Written Arabic usually omits short vowel diacritics (tashkeel/حركات), creating ambiguity — 'كتب' could be 'wrote' (kataba), 'books' (kutub), or 'was written' (kutiba). MT must disambiguate from context without generating unnecessary diacritics in output (they look pedagogical or Qur'anic in UI text).",
+    "genderAgreement": "Verbs, adjectives, and demonstratives must agree in gender with their noun. Getting this wrong is one of the most common MT errors in Arabic — e.g., هذه الملف (feminine demonstrative + masculine noun) is immediately wrong.",
+    "dualNumber": "Arabic distinguishes singular, dual (exactly two), and plural. The dual form affects nouns, adjectives, verbs, and pronouns. This is reflected in the 6 plural categories (zero, one, two, few, many, other). ICU MessageFormat must account for all six.",
+    "complexPlurals": "Arabic broken plurals (جمع التكسير) change the internal vowel pattern of the word rather than adding a suffix. There is no predictable rule — each noun has its own plural form (كتاب → كتب, قلم → أقلام). MT systems sometimes apply regular plural suffixes instead of the correct broken plural."
+  },
+  "encyclopedic": {
+    "family": "Semitic (Afro-Asiatic)",
+    "demographics": {
+      "speakers": "~420 million (all varieties)",
+      "regions": [
+        "Middle East",
+        "North Africa",
+        "Horn of Africa"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Modern Standard Arabic (MSA) for written/formal use; regional vernaculars are mutually unintelligible between distant groups",
+      "variants": [
+        "arz",
+        "apc",
+        "acm",
+        "ary",
+        "ar-EG",
+        "ar-SA"
+      ]
+    },
+    "history": "Arabic spread with the Islamic conquests of the 7th-8th centuries. MSA is the standardized literary form based on Classical Arabic, used in media, education, and formal contexts across all Arabic-speaking countries. It is one of the six official UN languages.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Arabic",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Wiktionary Arabic",
+          "url": "https://en.wiktionary.org/wiki/Category:Arabic_language"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "CAMeL Tools (Arabic NLP toolkit)",
+        "url": "https://github.com/CAMeL-Lab/camel_tools",
+        "type": "morphological-analyzer"
+      },
+      {
+        "name": "Farasa (Arabic text processing)",
+        "url": "https://farasa.qcri.org/",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-AR parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/ar&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ar"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-ar"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (arb_Arab)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

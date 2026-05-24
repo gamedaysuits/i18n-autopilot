@@ -1,0 +1,42 @@
+{
+  "code": "ka",
+  "name": "Georgian",
+  "linguisticChallenges": {
+    "polypersonalVerbs": "Georgian verbs agree with both subject and object simultaneously (polypersonal agreement). A single verb form encodes who is doing what to whom, making it easy for MT to produce verbs with incorrect agreement markers.",
+    "ergativeAlignment": "Georgian uses ergative-absolutive case marking in the aorist tense series — the subject of a transitive verb takes ergative case while the object takes nominative. This switches to nominative-accusative in present tense, a split-ergativity pattern that confuses MT systems.",
+    "verbScreenes": "Georgian has a complex tense-aspect-mood system called 'screeves' (მწკრივი) with 11 distinct forms organized into 3 series. Each series triggers different case marking on arguments. MT systems often produce the wrong screeve.",
+    "noArticles": "Georgian has no definite or indefinite articles. Definiteness is expressed through context, word order, and demonstratives. MT from English tends to over-translate 'the' and 'a' into unnecessary demonstratives.",
+    "postpositions": "Georgian primarily uses postpositions rather than prepositions, and many spatial relationships are expressed through case suffixes rather than separate words. The system of 8 cases interacts with postpositions in ways MT frequently mishandles.",
+    "compoundWordsAndVerbPrefixes": "Georgian uses preverbs (verbal prefixes) that fundamentally change verb meaning and indicate direction of action. The prefix მო- (mo-) vs მი- (mi-) marks motion toward vs away from the speaker — a distinction English doesn't encode in verbs."
+  },
+  "encyclopedic": {
+    "family": "Kartvelian",
+    "classification": "Kartvelian > Georgian-Zan > Georgic",
+    "demographics": {
+      "speakers": "~3.7 million",
+      "regions": ["GE"]
+    }
+  },
+  "resources": {
+    "corpora": [
+      {
+        "name": "NLLB-200 (kat_Geor)",
+        "type": "nmt",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M"
+      },
+      {
+        "name": "OPUS en-ka",
+        "type": "parallel",
+        "url": "https://opus.nlpl.eu/results/en&ka/corpus-result-table"
+      }
+    ],
+    "models": [
+      {
+        "name": "Helsinki-NLP/opus-mt-en-ka",
+        "type": "nmt",
+        "url": "https://huggingface.co/Helsinki-NLP/opus-mt-en-ka"
+      }
+    ],
+    "tools": []
+  }
+}

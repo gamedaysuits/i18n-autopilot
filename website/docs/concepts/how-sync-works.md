@@ -108,6 +108,57 @@ The retry budget is capped by `maxRetries` (default: 3) to prevent runaway token
 
 Passing translations are written to the target locale file, preserving the original nesting structure. The lock file is updated with new SHA-256 hashes.
 
+## Content Translation (Phase 2)
+
+For Docusaurus and Hugo projects, `sync` runs a second phase after JSON key translation. This phase translates Markdown and MDX files (docs, blog posts, tutorials) using the same methods and quality gate.
+
+### How it works
+
+1. Rosetta discovers all source content files (`.md`, `.mdx`) by walking the content/docs directory
+2. For each file × locale pair, it checks a separate content lock file (`.i18n-rosetta-content.lock`) for SHA-256 hash changes
+3. Changed or missing files are collected into a flat work-item pool
+4. The pool is processed with **parallel concurrency** (default: 12 simultaneous API calls)
+
+```
+Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
+
+    [1/79] (1%)  docs/concepts/security.md → ja [RE-TRANSLATE] (~3328s left)
+    [2/79] (3%)  docs/concepts/security.md → th [RE-TRANSLATE] (~1821s left)
+    ...
+    [79/79] (100%) blog/v3-2-quality.md → de [OK]
+
+  [OK] Created 79 content file(s), 341 unchanged
+```
+
+### Flat-pool parallelism
+
+Unlike Phase 1 (JSON keys, sequential per locale), Phase 2 processes all file×locale combinations as a flat list. This means different files and different locales are translated simultaneously:
+
+- `docs/configuration.md → fr` and `docs/cli.md → ja` run at the same time
+- A 420-translation corpus completes in ~11 minutes at concurrency 12
+- Incremental manifest writes every 10 completions prevent lost progress if the process is killed
+
+Control parallelism with `--concurrency` or the `concurrency` config field:
+
+```bash
+# Faster (more parallel calls, higher API load)
+npx i18n-rosetta sync --concurrency 20
+
+# Slower (gentler on rate limits)
+npx i18n-rosetta sync --concurrency 4
+```
+
+### Content protection
+
+During translation, rosetta shields non-translatable content:
+
+- **Code blocks** (fenced and indented) are replaced with placeholders
+- **Frontmatter** fields not in the `translatableFields` list are preserved as-is
+- **Links**, image paths, and HTML tags are protected
+- **Shortcodes** and interpolation variables (e.g., `{count}`, `{{.Params.title}}`) are shielded
+
+After translation, all placeholders are restored and validated. If any are missing or corrupt, the translation is rejected and retried.
+
 ## Partial Success
 
 One failed batch doesn't block the rest. If 9 out of 10 batches succeed, those 9 are written. The failed batch is logged, and you can re-run `sync` to retry.
@@ -117,7 +168,7 @@ One failed batch doesn't block the rest. If 9 out of 10 batches succeed, those 9
 Preview what would change without writing any files:
 
 ```bash
-npx i18n-rosetta sync --dry
+npx i18n-rosetta sync --dry-run
 ```
 
 ## Force Re-translate

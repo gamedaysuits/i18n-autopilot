@@ -1,0 +1,65 @@
+{
+  "code": "yo",
+  "name": "Yoruba",
+  "nativeName": "Èdè Yorùbá",
+  "iso639_1": "yo",
+  "iso639_3": "yor",
+  "bcp47": "yo-Latn-NG",
+  "script": "Latn",
+  "dir": "ltr",
+  "glottocode": "yoru1245",
+  "formality": {
+    "system": "register-levels",
+    "description": "Yoruba expresses formality through vocabulary, greetings, and pronoun usage rather than a strict T-V system. The pronoun ẹ (second person plural/respectful) is used for elders and authority figures, while ìwọ/o is informal. Formality is also marked through extensive greeting protocols and honorific titles (e.g., using profession or kinship titles). Software UI typically uses the respectful ẹ-form.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Yoruba has no grammatical gender. Third-person pronouns (ó/oun) are gender-neutral. No special inclusive conventions are needed."
+  },
+  "registers": {
+    "professional": {
+      "label": "Ọ̀rọ̀ ìṣòwò (Professional)",
+      "description": "Standard for software UI, websites, and business communication.",
+      "prompt": "Professional Yoruba. Use ẹ-form for second-person address (respectful/plural). Standard Yoruba with proper tonal diacritics on all vowels. Avoid dialectal forms — use the standard literary Yoruba based on Ọ̀yọ́ dialect. All tonal marks must be present for clarity."
+    },
+    "casual": {
+      "label": "Èdè àìṣòtítọ́ (Casual)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Casual Yoruba. Use ìwọ/o for second-person address. Conversational tone, modern vocabulary. Tonal diacritics should still be present for disambiguation. Natural conversational Yoruba for digital contexts."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "deeplFormality": false,
+    "microsoftTranslator": true,
+    "libreTranslate": false,
+    "llm": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "rules": {
+    "typography": {
+      "quoteStart": "\u201c",
+      "quoteEnd": "\u201d",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  },
+  "humanReviewed": null,
+  "notes": "Yoruba is a tonal language with three tones (high, mid, low). Proper diacritics are critical for disambiguation — e.g., 'ọkọ' can mean 'husband', 'hoe', 'vehicle', or 'spear' depending on tone. Many informal digital texts omit diacritics, but MT output should always include them. Yoruba pluralization uses àwọn (a determiner) rather than noun morphology."
+}

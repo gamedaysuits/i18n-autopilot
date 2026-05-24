@@ -1,0 +1,66 @@
+{
+  "code": "ka",
+  "name": "Georgian",
+  "nativeName": "ქართული",
+  "iso639_1": "ka",
+  "iso639_3": "kat",
+  "bcp47": "ka-Geor-GE",
+  "script": "Geor",
+  "dir": "ltr",
+  "glottocode": "nucl1302",
+  "formality": {
+    "system": "T-V",
+    "description": "Georgian has a T-V distinction: შენ (shen, informal/singular 'you') vs თქვენ (tkven, formal/plural 'you'). Software UI typically uses თქვენ-form for professional contexts. The distinction is similar to French tu/vous. Georgian also marks politeness through verb morphology and vocabulary choice.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Georgian has no grammatical gender. Third-person pronouns (ის/ისინი) are gender-neutral. No special inclusive conventions are needed."
+  },
+  "registers": {
+    "professional": {
+      "label": "პროფესიონალური (Professional)",
+      "description": "Standard for software UI, websites, and business communication.",
+      "prompt": "Professional Georgian. Use თქვენ (tkven) for second-person address. Clear, modern language appropriate for software interfaces. Avoid overly literary or archaic phrasing. Georgian verbs are polypersonal — ensure subject and object agreement is correct."
+    },
+    "informal": {
+      "label": "არაფორმალური (Informal)",
+      "description": "For consumer apps, social media, and casual contexts.",
+      "prompt": "Informal Georgian. Use შენ (shen) for second-person address. Conversational, friendly tone for consumer apps. Modern vocabulary acceptable."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "deeplFormality": false,
+    "microsoftTranslator": true,
+    "libreTranslate": false,
+    "llm": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "rules": {
+    "typography": {
+      "quoteStart": "„",
+      "quoteEnd": "\"",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  },
+  "humanReviewed": null,
+  "notes": "Georgian uses the Mkhedruli script, which has no uppercase/lowercase distinction in modern usage. The Asomtavruli (uppercase) and Nuskhuri (lowercase) scripts are historical/ecclesiastical. Georgian is the only Kartvelian language with significant digital resources."
+}

@@ -46,5 +46,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Previous default included gendered particles which was problematic. Changed to particle-free professional register as the default."
+  "notes": "Previous default included gendered particles which was problematic. Changed to particle-free professional register as the default.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": false,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

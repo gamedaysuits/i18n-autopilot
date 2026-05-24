@@ -1,0 +1,58 @@
+{
+  "code": "sw",
+  "name": "Swahili",
+  "linguisticChallenges": {
+    "nounClassSystem": "Swahili has 15-18 noun classes (similar to grammatical gender but far more complex). Each class takes different prefixes on nouns, adjectives, verbs, and demonstratives. MT must maintain agreement across all these elements.",
+    "agglutination": "Swahili verbs encode subject, tense, object, and other information in prefixes and suffixes: 'nitakupenda' = ni-ta-ku-penda (I-will-you-love). MT must correctly sequence these morphemes.",
+    "loanwordLayers": "Swahili has substantial Arabic and English loanword layers. Technical terms often come from English — the balance between native Swahili and English terms varies by register."
+  },
+  "encyclopedic": {
+    "family": "Bantu (Niger-Congo)",
+    "demographics": {
+      "speakers": "~200 million (mostly L2)",
+      "regions": [
+        "Tanzania",
+        "Kenya",
+        "Uganda",
+        "DR Congo",
+        "East Africa"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Swahili based on the Zanzibar (Unguja) dialect. Used as a lingua franca across East Africa.",
+      "variants": []
+    },
+    "history": "Swahili is the most widely spoken Bantu language and serves as a lingua franca across East Africa. It was adopted by the African Union as an official language in 2004.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Swahili_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "TUKI Kamusi (Swahili dictionary)",
+          "url": "https://kamusi.org/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-SW corpora)",
+        "url": "https://opus.nlpl.eu/results/en&sw/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-sw"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (swh_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

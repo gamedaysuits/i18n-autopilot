@@ -41,5 +41,24 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Urdu and Hindi are mutually intelligible in spoken form but use different scripts (Urdu: Nastaliq/Arabic, Hindi: Devanagari) and draw from different literary traditions (Urdu: Persian/Arabic, Hindi: Sanskrit)."
+  "notes": "Urdu and Hindi are mutually intelligible in spoken form but use different scripts (Urdu: Nastaliq/Arabic, Hindi: Devanagari) and draw from different literary traditions (Urdu: Persian/Arabic, Hindi: Sanskrit).",
+  "rules": {
+    "typography": {
+      "quoteStart": "”",
+      "quoteEnd": "“",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

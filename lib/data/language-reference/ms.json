@@ -1,0 +1,59 @@
+{
+  "code": "ms",
+  "name": "Malay",
+  "linguisticChallenges": {
+    "malayVsIndonesian": "Malay and Indonesian are closely related but differ in vocabulary — 'kereta' (MY, car) vs 'mobil' (ID, car), 'telefon bimbit' (MY, mobile) vs 'telepon genggam' (ID, mobile). MT must target the correct variety.",
+    "noConjugation": "Like Indonesian, Malay has no verb conjugation or grammatical gender. This simplifies some aspects of translation but means context carries more weight.",
+    "affixSystem": "Malay shares the same affix system as Indonesian but some prefix forms differ in usage and productivity."
+  },
+  "encyclopedic": {
+    "family": "Austronesian (Malayo-Polynesian)",
+    "demographics": {
+      "speakers": "~33 million (native)",
+      "regions": [
+        "Malaysia",
+        "Singapore",
+        "Brunei"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Malay (Bahasa Melayu) based on the Johor-Riau dialect. Identical to Indonesian at the structural level but divergent in vocabulary.",
+      "variants": [
+        "ms-SG",
+        "ms-BN"
+      ]
+    },
+    "history": "Malay has been a lingua franca of maritime Southeast Asia for centuries. It became the national language of Malaysia (as Bahasa Melayu/Bahasa Malaysia) at independence in 1957.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Malay_language",
+      "foundations": [
+        {
+          "name": "Dewan Bahasa dan Pustaka (Institute of Language and Literature)",
+          "url": "https://www.dbp.gov.my/"
+        }
+      ],
+      "dictionaries": []
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-MS corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ms/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ms"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (zsm_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

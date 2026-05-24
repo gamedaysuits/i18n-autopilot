@@ -1,0 +1,79 @@
+{
+  "code": "tr",
+  "name": "Turkish",
+  "linguisticChallenges": {
+    "agglutination": "Turkish is heavily agglutinative — a single word can contain the root, tense, mood, person, negation, and question markers: 'yapabilecekmiydik' (were we going to be able to do). MT systems struggle with complex agglutinated forms and sometimes break words at incorrect morpheme boundaries.",
+    "vowelHarmony": "Turkish has strict vowel harmony — suffixes change their vowels to match the preceding syllable (front/back, rounded/unrounded). Breaking vowel harmony ('geliyorlar' is correct, not 'geliyorler') is immediately noticeable and marks output as non-native.",
+    "softeningAndBufferConsonants": "Consonant mutations (k→ğ, t→d, p→b, ç→c) and buffer consonants (y, n, s) apply when adding suffixes to stems. Getting these wrong produces misspellings — 'kitabı' (his book) not 'kitapı'. MT models frequently miss these mutations.",
+    "definiteAccusative": "Turkish marks definite direct objects with the accusative suffix -(y)ı/-(y)i: 'Dosyayı sil' (delete THE file) vs 'Dosya sil' (delete A file). English doesn't distinguish these, so MT from English often omits the accusative when it's required.",
+    "noGrammaticalGender": "Turkish has no grammatical gender at all — 'o' means he/she/it. This is an advantage for gender-neutral UI, but translating FROM Turkish to gendered languages requires context-based gender inference.",
+    "wordOrderSOV": "Turkish is SOV with the verb at the end. Variables in translation strings must account for this — English '{user} deleted {file}' → '{user} {file} dosyasını sildi'. The verb always comes last."
+  },
+  "encyclopedic": {
+    "family": "Turkic (disputed: Altaic hypothesis)",
+    "demographics": {
+      "speakers": "~88 million",
+      "regions": [
+        "Turkey",
+        "Cyprus",
+        "Germany",
+        "Bulgaria"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Turkish based on Istanbul dialect. Relatively uniform; Azerbaijani and Turkmen are separate languages.",
+      "variants": []
+    },
+    "history": "Modern Turkish was reformed by Atatürk in 1928 when the Arabic script was replaced with a modified Latin alphabet. The Turkish Language Association (TDK) was founded in 1932 to purify the language of Arabic and Persian loanwords.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Turkish_language",
+      "foundations": [
+        {
+          "name": "Türk Dil Kurumu (TDK)",
+          "url": "https://www.tdk.gov.tr/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "TDK Sözlük",
+          "url": "https://sozluk.gov.tr/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "Zemberek (Turkish NLP)",
+        "url": "https://github.com/ahmetaa/zemberek-nlp",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-TR parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&tr/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-tr"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-tr"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (tur_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

@@ -38,5 +38,24 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "This fixes the nb/no mismatch. The 'no' code is registered as an alias pointing here. The Nordic preset now correctly uses 'nb'. Norway also has Nynorsk (code 'nn') which is a separate written standard — not yet supported as a language card."
+  "notes": "This fixes the nb/no mismatch. The 'no' code is registered as an alias pointing here. The Nordic preset now correctly uses 'nb'. Norway also has Nynorsk (code 'nn') which is a separate written standard — not yet supported as a language card.",
+  "rules": {
+    "typography": {
+      "quoteStart": "«",
+      "quoteEnd": "»",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

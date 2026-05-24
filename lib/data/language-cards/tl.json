@@ -48,5 +48,22 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Google Translate uses 'tl' (Tagalog) rather than 'fil' (Filipino). The distinction is political — Filipino is the national language standardized from Tagalog. For translation purposes, they are functionally identical."
+  "notes": "Google Translate uses 'tl' (Tagalog) rather than 'fil' (Filipino). The distinction is political — Filipino is the national language standardized from Tagalog. For translation purposes, they are functionally identical.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

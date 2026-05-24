@@ -1,0 +1,15 @@
+{
+  "code": "family-algonquian",
+  "name": "Algonquian Family",
+  "encyclopedic": {
+    "family": "Algonquian",
+    "resources": {
+      "foundations": [
+        {
+          "name": "First Nations Information Governance Centre (OCAP Principles)",
+          "url": "https://fnigc.ca/ocap-training/"
+        }
+      ]
+    }
+  }
+}

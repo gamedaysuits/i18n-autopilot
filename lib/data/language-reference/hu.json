@@ -1,0 +1,75 @@
+{
+  "code": "hu",
+  "name": "Hungarian",
+  "linguisticChallenges": {
+    "agglutination": "Hungarian is heavily agglutinative with 18 grammatical cases. A single noun can accumulate case suffix, possessive suffix, and plural marker: 'házaimban' (in my houses). MT must correctly sequence and combine these suffixes.",
+    "definiteConjugation": "Hungarian has two complete verb conjugation paradigms — definite and indefinite — based on whether the direct object is definite. 'Látom a fájlt' (I see THE file, definite) vs 'Látok egy fájlt' (I see A file, indefinite). Choosing the wrong conjugation is a glaring error. MT systems frequently confuse these.",
+    "vowelHarmony": "Like Turkish, Hungarian has strict vowel harmony (front/back). Suffixes change vowels to match their stem — '-ban/-ben' (in), '-nak/-nek' (for). Breaking vowel harmony is immediately wrong.",
+    "nameOrderReversed": "Hungarian uses Eastern name order (family name first): 'Kovács János' not 'János Kovács'. This affects placeholder strings — '{firstName} {lastName}' must be reversed. MT from English often preserves Western name order.",
+    "postpositions": "Hungarian uses postpositions instead of prepositions — 'az asztal alatt' (the table under = under the table). Variable positioning in strings must account for this.",
+    "noGrammaticalGender": "Like Turkish and Finnish, Hungarian has no grammatical gender — 'ő' is gender-neutral he/she. This simplifies inclusive writing but complicates translation to gendered languages."
+  },
+  "encyclopedic": {
+    "family": "Uralic (Ugric)",
+    "demographics": {
+      "speakers": "~13 million",
+      "regions": [
+        "Hungary",
+        "Romania",
+        "Slovakia",
+        "Serbia",
+        "Ukraine"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Hungarian based on the central (Budapest) dialect. Dialects differ slightly in vocabulary and pronunciation but are mutually intelligible.",
+      "variants": []
+    },
+    "history": "Hungarian is a Uralic language, unrelated to its Slavic and Germanic neighbors. The closest relatives are the Ob-Ugric languages (Khanty and Mansi) spoken in western Siberia. Written records date to 1055 CE.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Hungarian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Magyar Értelmező Kéziszótár",
+          "url": "https://www.szotar.net/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "Magyarlánc (Hungarian NLP chain)",
+        "url": "https://github.com/ppke-nlpg/magyarlanc",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-HU parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&hu/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-hu"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-hu"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (hun_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

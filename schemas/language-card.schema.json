@@ -147,68 +147,6 @@
       "type": ["string", "null"],
       "description": "Free-form notes for developers and contributors."
     },
-    "encyclopedic": {
-      "type": ["object", "null"],
-      "description": "Encyclopedic metadata for regional context, demographics, history, and active community projects.",
-      "properties": {
-        "family": { "type": "string" },
-        "dialects": {
-          "type": "object",
-          "properties": {
-            "split": { "type": "boolean" },
-            "classification": { "type": "string" },
-            "variants": {
-              "type": "array",
-              "items": { "type": "string" }
-            }
-          }
-        },
-        "demographics": {
-          "type": "object",
-          "properties": {
-            "speakers": { "type": "string" },
-            "regions": {
-              "type": ["array", "string"],
-              "items": { "type": "string" }
-            }
-          }
-        },
-        "history": { "type": "string" },
-        "resources": {
-          "type": "object",
-          "properties": {
-            "wikipedia": { "type": "string", "format": "uri" },
-            "foundations": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "required": ["name"],
-                "properties": {
-                  "name": { "type": "string" },
-                  "url": { "type": "string", "format": "uri" }
-                }
-              }
-            },
-            "dictionaries": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "required": ["name"],
-                "properties": {
-                  "name": { "type": "string" },
-                  "url": { "type": "string", "format": "uri" }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "linguisticChallenges": {
-      "type": ["object", "null"],
-      "description": "Linguistic challenges, developer tips, and grammatical context for translating to this language.",
-      "additionalProperties": { "type": "string" }
-    },
     "rules": {
       "type": ["object", "null"],
       "description": "Executable rules and constraints for typography, plurals, casing, and variables used in validation.",
@@ -283,68 +221,7 @@
       "type": ["string", "null"],
       "description": "Glottolog identifier for cross-referencing with the Glottolog language database (https://glottolog.org).",
       "pattern": "^[a-z]{4}[0-9]{4}$"
-    },
-    "resources": {
-      "type": ["object", "null"],
-      "description": "NLP and developer resources for this language — FSTs, corpora, pre-trained models.",
-      "properties": {
-        "fsts": {
-          "type": "array",
-          "description": "Finite-state transducers and morphological analyzers.",
-          "items": {
-            "type": "object",
-            "required": ["name"],
-            "properties": {
-              "name": { "type": "string" },
-              "url": { "type": "string", "format": "uri" },
-              "type": {
-                "type": "string",
-                "enum": ["morphological-analyzer", "spell-checker", "tokenizer", "transliterator"],
-                "description": "Type of FST resource."
-              }
-            }
-          }
-        },
-        "corpora": {
-          "type": "array",
-          "description": "Parallel and monolingual corpora for training and evaluation.",
-          "items": {
-            "type": "object",
-            "required": ["name"],
-            "properties": {
-              "name": { "type": "string" },
-              "url": { "type": "string", "format": "uri" },
-              "type": {
-                "type": "string",
-                "enum": ["parallel", "monolingual", "dictionary", "glossary"],
-                "description": "Type of corpus."
-              },
-              "pairs": {
-                "type": "array",
-                "description": "Language pairs available (for parallel corpora).",
-                "items": { "type": "string" }
-              }
-            }
-          }
-        },
-        "models": {
-          "type": "array",
-          "description": "Pre-trained models relevant to this language.",
-          "items": {
-            "type": "object",
-            "required": ["name"],
-            "properties": {
-              "name": { "type": "string" },
-              "url": { "type": "string", "format": "uri" },
-              "type": {
-                "type": "string",
-                "enum": ["nmt", "llm", "tts", "asr", "ner"],
-                "description": "Type of model."
-              }
-            }
-          }
-        }
-      }
     }
-  }
+  },
+  "_comment": "NOTE: linguisticChallenges, encyclopedic, and resources fields are in the reference tier (schemas/language-reference.schema.json, lib/data/language-reference/). They are loaded lazily via getLanguageReference() and are NOT part of the runtime card."
 }

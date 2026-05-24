@@ -1,0 +1,60 @@
+{
+  "code": "qu",
+  "name": "Quechua",
+  "nativeName": "Runasimi",
+  "iso639_1": "qu",
+  "iso639_3": "que",
+  "bcp47": "qu-Latn-PE",
+  "script": "Latn",
+  "dir": "ltr",
+  "glottocode": null,
+  "formality": {
+    "system": "none",
+    "description": "Quechua does not have a grammaticalized T-V distinction. There is a single second-person pronoun (qam). Formality and respect are expressed through vocabulary choice, use of honorific suffixes (e.g., -lla for softening), and cultural context rather than pronoun alternation. Software UI uses standard, clear Quechua.",
+    "default": "professional"
+  },
+  "gender": {
+    "grammatical": false,
+    "inclusiveGuidance": "Quechua has no grammatical gender. Third-person pronouns (pay) are gender-neutral. No special inclusive conventions are needed."
+  },
+  "registers": {
+    "professional": {
+      "label": "Allin Runasimi (Professional)",
+      "description": "Standard for software UI and institutional communication. Based on Southern Quechua (Cusco-Collao variety).",
+      "prompt": "Professional Quechua (Runasimi), Southern/Cusco-Collao variety. Clear, accessible language suitable for software interfaces. Use the standardized orthography with the five-vowel system (a, e, i, o, u). Include appropriate evidential suffixes — use -mi/-n for direct knowledge, -si/-s for reported information. Prefer pan-Quechua vocabulary where possible over highly local dialectal terms."
+    }
+  },
+  "aliases": [],
+  "methodSupport": {
+    "googleTranslate": true,
+    "deepl": false,
+    "deeplFormality": false,
+    "microsoftTranslator": false,
+    "libreTranslate": false,
+    "llm": true
+  },
+  "scriptConverter": null,
+  "evalDatasets": [
+    "flores-plus-devtest"
+  ],
+  "rules": {
+    "typography": {
+      "quoteStart": "\u201c",
+      "quoteEnd": "\u201d",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  },
+  "humanReviewed": null,
+  "notes": "Quechua is a macrolanguage (ISO 639-3 'que') comprising a family of related languages. This card represents Southern Quechua (Cusco-Collao variety), the most widely spoken and digitally resourced variety. Other major varieties include Ayacucho Quechua (quy), Ecuadorian Kichwa (qug), and Bolivian Quechua (quh). An orthography debate exists between three-vowel (a, i, u) and five-vowel (a, e, i, o, u) systems — this card uses the five-vowel system commonly used in Peru."
+}

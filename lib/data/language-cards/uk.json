@@ -41,5 +41,26 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Ukrainian and Russian are distinct languages. Both registers explicitly note avoiding Russian loanwords in favor of Ukrainian equivalents — this is both linguistically correct and culturally important."
+  "notes": "Ukrainian and Russian are distinct languages. Both registers explicitly note avoiding Russian loanwords in favor of Ukrainian equivalents — this is both linguistically correct and culturally important.",
+  "rules": {
+    "typography": {
+      "quoteStart": "«",
+      "quoteEnd": "»",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "few",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

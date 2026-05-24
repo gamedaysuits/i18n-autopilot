@@ -36,5 +36,17 @@
   },
   "scriptConverter": null,
   "evalDatasets": [],
-  "notes": "Register-only conlang — English with pirate style transformation. No script conversion needed."
+  "notes": "Register-only conlang — English with pirate style transformation. No script conversion needed.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {}
+  }
 }

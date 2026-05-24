@@ -4,25 +4,40 @@
 
 ## Overview
 
-Every language rosetta supports is defined by a **Language Card** — a JSON file in
-`lib/data/language-cards/<code>.json` that contains all metadata the system needs
-to translate to that language: formality system, register presets, script info,
-method support, and eval dataset links.
+Every language rosetta supports is defined by a **Language Card** — a pair of JSON
+files that contain all metadata the system needs to translate to that language.
+
+The card system uses a **two-tier architecture** for memory efficiency:
+
+| Tier | Directory | Loaded | Purpose |
+|---|---|---|---|
+| **Runtime** | `lib/data/language-cards/` | Eagerly at `import` | Translation config: formality, registers, method support, rules |
+| **Reference** | `lib/data/language-reference/` | Lazily on demand | Developer docs: linguistic challenges, encyclopedic data, NLP resources |
+
+**Why two tiers?** At 700 languages, eagerly loading enriched cards would consume
+~3.5 MB on every `import`. The split keeps eager load to ~1.4 MB while still
+providing full reference data via `getLanguageReference()`.
 
 ## File Structure
 
 ```
-lib/data/language-cards/
-├── ar.json        # Arabic
-├── de.json        # German
-├── fr.json        # French
-├── ja.json        # Japanese
-├── ko.json        # Korean
-├── ...            # One file per language
-└── x-pirate.json  # Conlangs use x- prefix
+lib/data/
+├── language-cards/               # RUNTIME TIER (~2 KB avg per card)
+│   ├── ar.json                   # Translation config only
+│   ├── de.json
+│   ├── fr.json
+│   ├── ...
+│   └── x-pirate.json             # Conlangs use x- prefix
+│
+└── language-reference/           # REFERENCE TIER (~3 KB avg per card)
+    ├── ar.json                   # linguisticChallenges, encyclopedic, resources
+    ├── de.json
+    ├── fr.json
+    └── ...
 ```
 
-Each file follows the schema at `schemas/language-card.schema.json`.
+Runtime cards follow `schemas/language-card.schema.json`.
+Reference cards follow `schemas/language-reference.schema.json`.
 
 ---
 
@@ -51,7 +66,7 @@ For the language you're adding, determine:
 4. **Are there gendered constructions?** (And what's the inclusive convention?)
 5. **Are there script considerations?** (Multiple scripts, direction, converters?)
 
-### Step 2: Write the Language Card
+### Step 2: Write the Runtime Card
 
 Create `lib/data/language-cards/<code>.json`:
 
@@ -65,9 +80,10 @@ Create `lib/data/language-cards/<code>.json`:
   "bcp47": "xx",
   "script": "Latn",
   "dir": "ltr",
+  "glottocode": "lang1234",
   "formality": {
     "system": "T-V",
-    "description": "Human-readable explanation of the formality system for a developer who doesn't speak this language.",
+    "description": "Human-readable explanation for a developer who doesn't speak this language.",
     "default": "preset-key-for-software-ui"
   },
   "gender": {
@@ -93,9 +109,55 @@ Create `lib/data/language-cards/<code>.json`:
   },
   "scriptConverter": null,
   "evalDatasets": [],
+  "rules": {
+    "typography": {
+      "quoteStart": "\u201c",
+      "quoteEnd": "\u201d",
+      "usesSpaces": true
+    },
+    "plurals": {
+      "categories": ["one", "other"]
+    },
+    "capitalization": {
+      "hasCase": true
+    }
+  },
+  "humanReviewed": null,
   "notes": null
 }
 ```
+
+### Step 2b: Write the Reference Card
+
+Create `lib/data/language-reference/<code>.json`:
+
+```json
+{
+  "code": "xx",
+  "name": "Language Name",
+  "linguisticChallenges": {
+    "challengeId": "Description of the challenge for MT systems."
+  },
+  "encyclopedic": {
+    "family": "Language Family",
+    "demographics": {
+      "speakers": "~N million",
+      "regions": ["Region1", "Region2"]
+    }
+  },
+  "resources": {
+    "corpora": [
+      { "name": "OPUS en-xx", "type": "parallel" }
+    ],
+    "models": [
+      { "name": "NLLB-200 (xxx_Latn)", "type": "nmt" }
+    ]
+  }
+}
+```
+
+Reference files are optional for initial cards but strongly encouraged. The
+`scripts/split-cards-to-tiers.mjs` script can help split existing monolith cards.
 
 ### Step 3: Validate Against Schema
 
@@ -244,13 +306,24 @@ Register aliases in the `aliases` array of the primary card.
 
 When submitting a new language card:
 
+### Runtime card (`lib/data/language-cards/<code>.json`)
 - [ ] File named `<code>.json` in `lib/data/language-cards/`
 - [ ] Passes schema validation (`schemas/language-card.schema.json`)
 - [ ] Formality system researched and documented
 - [ ] At least one register preset with language-specific prompt
 - [ ] Default preset identified and referenced in `formality.default`
 - [ ] Method support verified against each API's language list
+- [ ] `rules` populated (typography quotes, plural categories, capitalization)
+- [ ] `glottocode` set (look up at https://glottolog.org)
 - [ ] Eval datasets linked if available
 - [ ] Gender guidance included if language has grammatical gender
 - [ ] Aliases registered if applicable
+
+### Reference card (`lib/data/language-reference/<code>.json`) — optional but encouraged
+- [ ] `linguisticChallenges` with 3–6 MT-relevant challenges
+- [ ] `encyclopedic` with family, demographics, dialect splits
+- [ ] `resources` with corpora, models, and NLP tools
+
+### Validation
 - [ ] Full test suite passes (`node --test test/*.test.js`)
+- [ ] Reference tests pass (`node --test test/language-reference.test.js`)

@@ -49,5 +49,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "This is Simplified Chinese (used in mainland China, Singapore). See zh-TW.json for Traditional Chinese (Taiwan, Hong Kong)."
+  "notes": "This is Simplified Chinese (used in mainland China, Singapore). See zh-TW.json for Traditional Chinese (Taiwan, Hong Kong).",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": false,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

@@ -8,6 +8,9 @@ import Heading from '@theme/Heading';
 import { useState, useEffect } from 'react';
 
 import styles from './index.module.css';
+import WordFlipper from '../components/WordFlipper';
+import { loadLanguages } from '../utils/languageLoader';
+import { convertScript, hasScriptConverter } from '../../../lib/scripts';
 
 /* ------------------------------------------------------------------ */
 /*  Hero — leads with the i18n framework, not the research angle      */
@@ -16,13 +19,50 @@ import styles from './index.module.css';
 /* ------------------------------------------------------------------ */
 
 function HeroBanner() {
+  const [languages, setLanguages] = useState([]);
+  const [flipperWords, setFlipperWords] = useState([]);
+  const [currentWord, setCurrentWord] = useState('5');
+
+  useEffect(() => {
+    const data = loadLanguages();
+    setLanguages(data);
+    const dynamicWords = [
+      '5',
+      '17',
+      '210',
+      String(data.length),
+      ...[...data]
+        .map(lang => {
+          const native = lang.nativeName || lang.name;
+          if (hasScriptConverter(lang.code)) {
+            return convertScript(native, lang.code).converted;
+          }
+          return native;
+        })
+        .filter(name => name)
+        .sort(() => 0.5 - Math.random())
+    ];
+    setFlipperWords(dynamicWords);
+  }, []);
+
+  const wordsToUse = flipperWords.length > 0 ? flipperWords : ['5', '17', '210', '47'];
+  const isNumber = /^\d+$/.test(currentWord);
+  const suffix = isNumber ? ' languages' : '';
+
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className={styles.heroTitle}>
-          <Translate id="homepage.hero.titleLine1" description="Hero title line 1">Fully customizable</Translate>
+          Build your entire website in{' '}
+          <WordFlipper
+            words={wordsToUse}
+            onChange={(word) => setCurrentWord(word)}
+            className={styles.heroFlipper}
+            wordClassName={styles.heroFlipperWord}
+          />
+          {suffix}
           <br />
-          <Translate id="homepage.hero.titleLine2" description="Hero title line 2">internationalization</Translate>
+          with one command, or with infinite customization
         </Heading>
         <p className={styles.heroSubtitle}>
           <Translate id="homepage.hero.subtitle" description="Hero subtitle explaining the product">
@@ -44,6 +84,11 @@ function HeroBanner() {
             className={clsx('button button--lg', styles.buttonOutline)}
             to="/docs/guides/translation-methods">
             <Translate id="homepage.hero.ctaSecondary" description="Secondary call-to-action button">See Methods</Translate>
+          </Link>
+          <Link
+            className={clsx('button button--lg', styles.buttonLanguages)}
+            to="/languages">
+            {languages.length > 0 ? languages.length : '47'} languages supported
           </Link>
         </div>
       </div>
@@ -381,33 +426,45 @@ const arenaCardData = [
 ];
 
 function ArenaSection() {
-  const [srcIndex, setSrcIndex] = useState(0);
-  const [tgtIndex, setTgtIndex] = useState(0);
-  const [srcVisible, setSrcVisible] = useState(true);
-  const [tgtVisible, setTgtVisible] = useState(true);
+  const [sources, setSources] = useState([
+    'English', 'Spanish', 'French', 'Turkish', 'Russian',
+    'Portuguese', 'Mandarin', 'Japanese', 'Arabic', 'German',
+  ]);
+  const [targets, setTargets] = useState([
+    'Plains Cree', 'Quechua', 'Inuktitut', 'Navajo', 'Wolof',
+    'Māori', 'Sakha', 'Yoruba', 'Guarani', 'Welsh',
+    'Ojibwe', 'Ainu', 'Azerbaijani', 'Cantonese', 'Basque',
+  ]);
 
-  // Source cycles forward, slower
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSrcVisible(false);
-      setTimeout(() => {
-        setSrcIndex((prev) => (prev + 1) % SOURCE_LANGS.length);
-        setSrcVisible(true);
-      }, 200);
-    }, 2100);
-    return () => clearInterval(interval);
-  }, []);
+    const data = loadLanguages();
+    if (data.length > 0) {
+      // Sources: choose major world languages from data (use nativeName || name, convert if needed)
+      const majorLangs = data
+        .filter(lang => !lang.code.startsWith('x-') && lang.code !== 'crk')
+        .map(lang => {
+          const native = lang.nativeName || lang.name;
+          if (hasScriptConverter(lang.code)) {
+            return convertScript(native, lang.code).converted;
+          }
+          return native;
+        })
+        .sort(() => 0.5 - Math.random());
+      
+      // Targets: choose all languages from data (use nativeName || name, convert if needed)
+      const allLangs = data
+        .map(lang => {
+          const native = lang.nativeName || lang.name;
+          if (hasScriptConverter(lang.code)) {
+            return convertScript(native, lang.code).converted;
+          }
+          return native;
+        })
+        .sort(() => 0.5 - Math.random());
 
-  // Target cycles backward, faster
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTgtVisible(false);
-      setTimeout(() => {
-        setTgtIndex((prev) => (prev - 1 + TARGET_LANGS.length) % TARGET_LANGS.length);
-        setTgtVisible(true);
-      }, 200);
-    }, 1400);
-    return () => clearInterval(interval);
+      setSources(majorLangs);
+      setTargets(allLangs);
+    }
   }, []);
 
   return (
@@ -421,13 +478,18 @@ function ArenaSection() {
           <br />
           <Translate id="homepage.arena.titleLine2" description="Arena title line 2">for translating</Translate>
           {' '}
-          <span className={clsx(styles.arenaPair, srcVisible && styles.arenaPairVisible)}>
-            {SOURCE_LANGS[srcIndex]}
-          </span>
+          <WordFlipper
+            words={sources}
+            interval={2100}
+            className={styles.arenaFlipperContainer}
+          />
           {' → '}
-          <span className={clsx(styles.arenaPair, styles.arenaPairTarget, tgtVisible && styles.arenaPairVisible)}>
-            {TARGET_LANGS[tgtIndex]}
-          </span>
+          <WordFlipper
+            words={targets}
+            interval={1400}
+            className={styles.arenaFlipperContainerTarget}
+            wordClassName={styles.arenaFlipperWordTarget}
+          />
           ?
         </Heading>
         <p className={styles.arenaTagline}>

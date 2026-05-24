@@ -39,5 +39,25 @@
   },
   "scriptConverter": "sr",
   "evalDatasets": [],
-  "notes": "Serbian uses both Latin and Cyrillic scripts interchangeably. The translation pipeline works in Latin, then the deterministic Latin→Cyrillic converter (scripts.js) can produce the Cyrillic variant."
+  "notes": "Serbian uses both Latin and Cyrillic scripts interchangeably. The translation pipeline works in Latin, then the deterministic Latin→Cyrillic converter (scripts.js) can produce the Cyrillic variant.",
+  "rules": {
+    "typography": {
+      "quoteStart": "„",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "few",
+        "other"
+      ]
+    }
+  }
 }

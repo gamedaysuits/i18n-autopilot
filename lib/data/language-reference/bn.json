@@ -1,0 +1,79 @@
+{
+  "code": "bn",
+  "name": "Bengali",
+  "linguisticChallenges": {
+    "scriptComplexity": "Bengali script (বাংলা) uses conjunct consonants where multiple consonants merge into single glyphs. Incorrect rendering or font issues can make text illegible. MT output must produce valid Unicode sequences that render correctly across platforms.",
+    "formalPronounSystem": "Bengali has three register levels via pronouns: তুই (tui, very intimate/rude), তুমি (tumi, familiar), আপনি (apni, formal). Software UI must use আপনি consistently. Using তুই in a professional context is offensive.",
+    "verbInflection": "Bengali verbs inflect for tense, person, and formality level, creating complex paradigms. The same verb has different forms for আপনি vs তুমি vs তুই address levels, and MT must maintain consistency.",
+    "postpositions": "Like Hindi, Bengali uses postpositions. Variable-containing strings must account for postpositional placement after nouns.",
+    "banglaVsBangladeshi": "Standard Bengali (based on the Nadia dialect) is used in both West Bengal (India) and Bangladesh, but vocabulary and usage differ — particularly for technical terms. Software typically targets the larger Bangladeshi audience unless specifically for India."
+  },
+  "encyclopedic": {
+    "family": "Indo-Aryan (Indo-European)",
+    "demographics": {
+      "speakers": "~270 million",
+      "regions": [
+        "Bangladesh",
+        "India (West Bengal, Tripura)"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard Bengali (চলিত ভাষা) based on Nadia dialect. Regional variation between Bangladesh and West Bengal in vocabulary and some pronunciation.",
+      "variants": [
+        "bn-BD",
+        "bn-IN"
+      ]
+    },
+    "history": "Bengali is the 7th most spoken language in the world. It was central to the Language Movement of 1952 in East Pakistan (now Bangladesh), which is commemorated as International Mother Language Day by UNESCO.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Bengali_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Bangla Academy Dictionary",
+          "url": "https://www.banglaacademy.gov.bd/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "IndicNLP Library (includes Bengali)",
+        "url": "https://github.com/anoopkunchukuttan/indic_nlp_library",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-BN parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/bn&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-bn"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-bn"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ben_Beng)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      },
+      {
+        "name": "IndicTrans2 (AI4Bharat)",
+        "url": "https://github.com/AI4Bharat/IndicTrans2",
+        "type": "nmt"
+      }
+    ]
+  }
+}

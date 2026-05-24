@@ -39,5 +39,17 @@
   },
   "scriptConverter": "tlh",
   "evalDatasets": [],
-  "notes": "Klingon pIqaD script requires a PUA-compatible font (U+F8D0–F8FF). The script converter transforms romanized Klingon to pIqaD."
+  "notes": "Klingon pIqaD script requires a PUA-compatible font (U+F8D0–F8FF). The script converter transforms romanized Klingon to pIqaD.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {}
+  }
 }

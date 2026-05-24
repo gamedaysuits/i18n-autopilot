@@ -49,5 +49,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Japanese uses three scripts simultaneously: kanji (漢字), hiragana (ひらがな), and katakana (カタカナ). The balance between them affects tone — more kanji reads as more formal, more hiragana reads as softer/simpler."
+  "notes": "Japanese uses three scripts simultaneously: kanji (漢字), hiragana (ひらがな), and katakana (カタカナ). The balance between them affects tone — more kanji reads as more formal, more hiragana reads as softer/simpler.",
+  "rules": {
+    "typography": {
+      "quoteStart": "「",
+      "quoteEnd": "」",
+      "usesSpaces": false,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

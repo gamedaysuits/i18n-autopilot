@@ -1,0 +1,76 @@
+{
+  "code": "da",
+  "name": "Danish",
+  "linguisticChallenges": {
+    "enEtGender": "Danish has two grammatical genders: common (en-words) and neuter (et-words). Choosing the wrong article is conspicuous — 'en fil' (a file, common) vs 'et program' (a program, neuter).",
+    "compoundNouns": "Like German and Dutch, Danish forms compound nouns by concatenation: 'speciallægepraksisplanlægningsstabiliseringsperiode' is a valid (if extreme) word. Linking '-s-' and '-e-' rules are complex.",
+    "stød": "Danish has stød (glottal constriction) that distinguishes otherwise identical words. While invisible in writing, it affects how native speakers perceive written text and can influence MT pronunciation models.",
+    "scandinavianMutualIntelligibility": "Danish, Swedish, and Norwegian (Bokmål) are mutually intelligible to varying degrees. MT models sometimes produce Scandinavian mixing — using Norwegian vocabulary in Danish output or vice versa."
+  },
+  "encyclopedic": {
+    "family": "Germanic (Indo-European)",
+    "demographics": {
+      "speakers": "~6 million",
+      "regions": [
+        "Denmark",
+        "Greenland",
+        "Faroe Islands"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Danish (rigsdansk) based on the Copenhagen dialect. Regional dialects exist but are declining.",
+      "variants": []
+    },
+    "history": "Danish was historically the prestige language of Scandinavia and was the written language of Norway until the 19th century. Modern Norwegian Bokmål is essentially Norwegianized Danish.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Danish_language",
+      "foundations": [
+        {
+          "name": "Dansk Sprognævn (Danish Language Council)",
+          "url": "https://dsn.dk/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Den Danske Ordbog",
+          "url": "https://ordnet.dk/ddo"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Danish model (da_core_news_sm)",
+        "url": "https://spacy.io/models/da",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-DA parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/da&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-da"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-da"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (dan_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

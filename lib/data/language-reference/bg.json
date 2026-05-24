@@ -1,0 +1,69 @@
+{
+  "code": "bg",
+  "name": "Bulgarian",
+  "linguisticChallenges": {
+    "definiteSuffix": "Bulgarian marks definiteness with a suffix (-ът/-ат, -та, -то, -те) attached to the first nominal element. This is unique among Slavic languages. MT must correctly place the definite article suffix rather than producing a separate article word.",
+    "noCaseSystem": "Bulgarian is the only major Slavic language that has lost its case system (except for pronouns). This simplifies some aspects but means word order carries more semantic weight than in Russian or Polish.",
+    "cliticDoubling": "Bulgarian uses clitic pronoun doubling where both a clitic and full pronoun appear: 'На мен ми хареса' (To me, it-to-me pleased = I liked it). MT from English often produces only one or the other, sounding unnatural.",
+    "renarration": "Bulgarian has a unique renarrative mood (преизказно наклонение) used for hearsay or unwitnessed events. There is no equivalent in English or most other languages, making it a distinctive translation challenge."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~8 million",
+      "regions": [
+        "Bulgaria"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Bulgarian based on eastern dialects. Western dialects are transitional toward Macedonian.",
+      "variants": []
+    },
+    "history": "Bulgarian is the oldest documented Slavic language. The Cyrillic alphabet was developed in the First Bulgarian Empire in the 9th century and later spread to Russia, Serbia, and other Slavic peoples.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Bulgarian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Rechnik.info (Bulgarian dictionary)",
+          "url": "https://rechnik.info/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy (no dedicated Bulgarian model; use multilingual)",
+        "url": "https://spacy.io/models",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-BG parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/bg&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-bg"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-bg"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (bul_Cyrl)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

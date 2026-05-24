@@ -1,0 +1,55 @@
+{
+  "code": "tl",
+  "name": "Filipino (Taglish)",
+  "linguisticChallenges": {
+    "taglish": "Filipino (Tagalog) in modern tech contexts heavily code-switches with English (Taglish). The balance varies by formality — pure Filipino reads as government/academic, heavy English reads as pretentious. Software UI typically uses moderate Taglish.",
+    "focusSystem": "Tagalog has a focus/voice system where verb affixes indicate the semantic role of the topic (actor, object, location, etc.). This is fundamentally different from active/passive voice in European languages and is notoriously difficult for MT.",
+    "affixComplexity": "Tagalog uses extensive affixation (prefixes, infixes, suffixes) to derive words. The same root can produce dozens of derived forms through different affix combinations."
+  },
+  "encyclopedic": {
+    "family": "Austronesian (Malayo-Polynesian)",
+    "demographics": {
+      "speakers": "~82 million (Filipino/Tagalog)",
+      "regions": [
+        "Philippines",
+        "United States"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Filipino is the standardized form of Tagalog. Other Philippine languages (Cebuano, Ilocano, Hiligaynon) are separate languages, not dialects.",
+      "variants": []
+    },
+    "history": "Filipino (based on Tagalog) was established as the national language in 1937 and became an official language alongside English in 1987. The Philippines is one of the most English-proficient countries in Asia.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Filipino_language",
+      "foundations": [
+        {
+          "name": "Komisyon sa Wikang Filipino (Commission on the Filipino Language)",
+          "url": "https://kwf.gov.ph/"
+        }
+      ],
+      "dictionaries": []
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-TL corpora)",
+        "url": "https://opus.nlpl.eu/results/en&tl/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-tl"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (tgl_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

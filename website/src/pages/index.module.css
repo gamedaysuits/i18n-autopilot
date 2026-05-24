@@ -516,3 +516,51 @@
 .arenaCallout strong {
   color: var(--ifm-color-primary);
 }
+
+/* Flipper and dynamic languages button styling */
+.heroFlipper {
+  perspective: 600px;
+}
+
+.heroFlipperWord {
+  font-weight: 900;
+  background: linear-gradient(90deg, #A29BFE 0%, #00E5E6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.buttonLanguages {
+  background: linear-gradient(135deg, rgba(162, 155, 254, 0.1), rgba(0, 229, 230, 0.1));
+  border: 1px solid rgba(162, 155, 254, 0.35);
+  color: #ffffff;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.buttonLanguages:hover {
+  background: linear-gradient(135deg, rgba(162, 155, 254, 0.2), rgba(0, 229, 230, 0.2));
+  border-color: #00E5E6;
+  box-shadow: 0 0 15px rgba(0, 229, 230, 0.25);
+  color: #ffffff;
+  transform: translateY(-1px);
+  text-decoration: none !important;
+}
+
+/* Arena WordFlipper styles */
+.arenaFlipperContainer {
+  perspective: 600px;
+  min-width: 140px;
+}
+
+.arenaFlipperContainerTarget {
+  perspective: 600px;
+  min-width: 160px;
+}
+
+.arenaFlipperWordTarget {
+  color: #00E5E6 !important;
+}
+
+

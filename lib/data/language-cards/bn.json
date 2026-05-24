@@ -41,5 +41,24 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": null
+  "notes": null,
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

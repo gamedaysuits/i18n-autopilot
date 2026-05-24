@@ -1,0 +1,71 @@
+{
+  "code": "th",
+  "name": "Thai",
+  "linguisticChallenges": {
+    "wordSegmentation": "Thai has no spaces between words — spaces only appear between sentences or clauses. Word boundaries are ambiguous and require dictionary-based or statistical segmentation. This makes placeholder insertion in translation strings particularly challenging, as the system must determine where word boundaries fall around variables.",
+    "tones": "Thai has five tones (mid, low, falling, high, rising) that distinguish meaning. While tones don't directly affect written translation, MT systems trained primarily on text may produce output with incorrect tonal marker placement when diacritics are needed, and homophone confusion between tonal minimal pairs is common.",
+    "classifiers": "Thai uses classifiers (ลักษณนาม) between numbers and nouns, similar to Chinese. Using the wrong classifier (e.g., ตัว for animals vs คน for people vs เครื่อง for machines) sounds immediately wrong. The generic classifier อัน is acceptable for unfamiliar nouns.",
+    "genderedParticles": "The politeness particles ครับ (male) and ค่ะ/คะ (female) are gendered to the speaker. Software UI should omit them entirely — this is the industry standard and does not read as impolite. MT systems often insert them, which forces an assumption about the user's gender.",
+    "royalVocabulary": "Thai has a completely separate royal vocabulary (ราชาศัพท์) used when referring to the monarchy. Using royal terms in non-royal contexts is a serious social error, and using common terms in royal contexts is equally problematic. MT must never produce royal vocabulary in standard UI text.",
+    "serialVerbs": "Thai uses serial verb constructions where multiple verbs chain together without conjunctions. English compound sentences often translate to serial verb chains, and MT systems sometimes over-conjoin them with 'และ' (and), producing stilted output."
+  },
+  "encyclopedic": {
+    "family": "Kra-Dai (Tai)",
+    "demographics": {
+      "speakers": "~60 million",
+      "regions": [
+        "Thailand"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Thai based on Central Thai (Bangkok dialect); regional dialects (Isan, Northern, Southern) exist but are not used in software",
+      "variants": []
+    },
+    "history": "Thai script was created in 1283 by King Ramkhamhaeng, adapted from the Khmer script. It is an abugida where consonant-vowel combinations are written as single units, with vowels appearing before, after, above, or below their consonant.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Thai_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Royal Institute Dictionary (พจนานุกรมฉบับราชบัณฑิตยสถาน)",
+          "url": "https://dictionary.orst.go.th/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "PyThaiNLP (Thai NLP in Python)",
+        "url": "https://github.com/PyThaiNLP/pythainlp",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-TH parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&th/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-th"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-th"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (tha_Thai)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

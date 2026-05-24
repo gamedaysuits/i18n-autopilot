@@ -51,5 +51,25 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "This is Brazilian Portuguese — the default for the base 'pt' code. See pt-PT.json for European Portuguese, which has significant vocabulary and grammar differences."
+  "notes": "This is Brazilian Portuguese — the default for the base 'pt' code. See pt-PT.json for European Portuguese, which has significant vocabulary and grammar differences.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

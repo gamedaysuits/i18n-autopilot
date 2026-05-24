@@ -1,0 +1,73 @@
+{
+  "code": "el",
+  "name": "Greek",
+  "linguisticChallenges": {
+    "polytonic": "Modern Greek uses a monotonic accentuation system (single accent mark), but some scholarly and religious texts use polytonic. MT should always produce monotonic unless specifically instructed otherwise.",
+    "caseSystem": "Greek has four grammatical cases (nominative, genitive, accusative, vocative) that affect articles, nouns, and adjectives. Less complex than Slavic languages but still creates placeholder challenges.",
+    "formalAddress": "Greek uses εσείς (eseis, formal/plural) vs εσύ (esy, informal). The formal εσείς is standard in software UI.",
+    "greeklish": "Greeks sometimes write in Latin characters (Greeklish) informally. MT should never produce Greeklish — output must always be in Greek script."
+  },
+  "encyclopedic": {
+    "family": "Hellenic (Indo-European)",
+    "demographics": {
+      "speakers": "~13 million",
+      "regions": [
+        "Greece",
+        "Cyprus",
+        "diaspora"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Modern Greek (Νέα Ελληνικά) based on Demotic Greek. The katharevousa/demotic language question was resolved in favor of Demotic in 1976.",
+      "variants": [
+        "el-CY"
+      ]
+    },
+    "history": "Greek has the longest documented history of any Indo-European language, with records spanning 3,400 years. Modern Greek descends from Koine Greek, the lingua franca of the Hellenistic period.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Greek_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Lexigram (Greek dictionary)",
+          "url": "https://www.lexigram.gr/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Greek model (el_core_news_sm)",
+        "url": "https://spacy.io/models/el",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-EL parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/el&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-el"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-el"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ell_Grek)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

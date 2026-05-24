@@ -1,0 +1,75 @@
+{
+  "code": "ko",
+  "name": "Korean",
+  "linguisticChallenges": {
+    "speechLevelConsistency": "Korean speech levels (존댓말 vs 반말) must be consistent throughout a passage. Mixing 해요체 endings with 합쇼체 endings in the same screen is immediately noticeable and reads as incoherent. MT systems frequently mix levels within a single response.",
+    "sovWordOrder": "Korean is strictly SOV (Subject-Object-Verb). Variables and placeholders in translation strings must account for this — English '{name} uploaded {file}' becomes '{name}님이 {file}을(를) 업로드했습니다' with the verb at the end and particles attached to nouns.",
+    "agglutinativeParticles": "Grammatical particles (은/는, 이/가, 을/를) attach directly to nouns and vary based on whether the preceding syllable ends in a consonant. Placeholder variables create challenges because the correct particle depends on the runtime value — use 이(가) or 을(를) notation to cover both cases.",
+    "honorificVocabulary": "Korean has entirely different words for some concepts depending on formality — 밥 (bap, rice/meal, casual) vs 식사 (siksa, meal, formal), 이름 (ireum, name) vs 성함 (seongham, name, honorific). Using the wrong register word is more jarring than using the wrong speech level.",
+    "spacingRules": "Korean has specific word-spacing (띄어쓰기) conventions that differ from English. Particles attach to the preceding noun without a space, but compound words follow complex spacing rules that native speakers themselves often debate.",
+    "dualNumberSystems": "Korean uses two number systems: native Korean (하나, 둘, 셋) for counting and age, and Sino-Korean (일, 이, 삼) for dates, phone numbers, and large quantities. Using the wrong system sounds unnatural."
+  },
+  "encyclopedic": {
+    "family": "Koreanic (language isolate)",
+    "demographics": {
+      "speakers": "~80 million",
+      "regions": [
+        "South Korea",
+        "North Korea"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard Korean (표준어) based on Seoul dialect; North Korean standard (문화어) differs in vocabulary and some pronunciation",
+      "variants": [
+        "ko-KR",
+        "ko-KP"
+      ]
+    },
+    "history": "Hangul was created in 1443 by King Sejong as a systematic phonetic alphabet. Its logical design (consonant shapes mirror tongue position) makes it one of the most scientifically designed writing systems.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Korean_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "National Institute of Korean Language (국립국어원)",
+          "url": "https://www.korean.go.kr"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "KoNLPy (Korean NLP in Python)",
+        "url": "https://konlpy.org/",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-KO parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ko/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ko"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-ko"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (kor_Hang)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

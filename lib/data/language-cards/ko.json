@@ -46,5 +46,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "The previous default (합쇼체) was too formal for software UI. Changed to 해요체, which is the actual industry standard for Korean digital products."
+  "notes": "The previous default (합쇼체) was too formal for software UI. Changed to 해요체, which is the actual industry standard for Korean digital products.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": false,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

@@ -1,0 +1,80 @@
+{
+  "code": "pt",
+  "name": "Portuguese (Brazilian)",
+  "linguisticChallenges": {
+    "brPtDivergence": "Brazilian and European Portuguese differ substantially in vocabulary, grammar, and spelling. 'Phone' is 'celular' (BR) vs 'telemóvel' (PT), 'bus' is 'ônibus' (BR) vs 'autocarro' (PT). The gerund/infinitive split is grammatical — BR uses 'estou fazendo' (gerund) while PT uses 'estou a fazer' (infinitive). MT must clearly target one variant.",
+    "voceVsTu": "Brazilian Portuguese pronouns are complicated — 'você' is standard everywhere but verb conjugation patterns differ by region. Some regions use 'tu' with 'você' verb forms (tu vai instead of tu vais). For software, standard 'você' with its correct conjugation (3rd person singular) is the safe choice.",
+    "personalInfinitive": "Portuguese has a personal (inflected) infinitive unique among Romance languages — 'para nós fazermos' (for us to do). This allows compact subordinate clauses but creates translation complexity. MT from English often misses opportunities to use it naturally, producing heavier subjunctive constructions instead.",
+    "gerundVsInfinitive": "This is the single most visible difference between BR and PT. 'Downloading...' → 'Baixando...' (BR, gerund) vs 'A transferir...' (PT, infinitive + preposition). Using the wrong form immediately flags the wrong regional variant.",
+    "accentuation": "Portuguese diacritics (á, â, ã, é, ê, í, ó, ô, õ, ú, ç) are mandatory and meaning-distinguishing. The 1990 Orthographic Agreement simplified some rules but remains controversial in Portugal. MT systems occasionally drop accents or use the pre-agreement spelling.",
+    "cliticPlacement": "Portuguese has complex clitic pronoun placement rules (proclisis, enclisis, mesoclisis). Brazilian Portuguese strongly prefers proclisis ('me diga' — tell me) while European Portuguese prefers enclisis ('diga-me'). MT systems sometimes produce mesoclisis ('dir-me-á') which sounds archaic even in European Portuguese."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~260 million",
+      "regions": [
+        "Brazil",
+        "Portugal",
+        "Angola",
+        "Mozambique",
+        "Cape Verde",
+        "East Timor",
+        "Macau"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Brazilian Portuguese and European Portuguese are the two major standards. African varieties (Angola, Mozambique) generally follow European Portuguese. The 1990 Orthographic Agreement attempted partial unification.",
+      "variants": [
+        "pt-PT",
+        "pt-AO"
+      ]
+    },
+    "history": "Portuguese spread globally during the Age of Exploration (15th-16th centuries). Brazil, with 215+ million people, accounts for over 80% of all Portuguese speakers, making Brazilian Portuguese the de facto global standard for digital products.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Portuguese_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Dicio (Brazilian Portuguese dictionary)",
+          "url": "https://www.dicio.com.br/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Portuguese model (pt_core_news_sm)",
+        "url": "https://spacy.io/models/pt",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-PT parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&pt/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-pt"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-pt"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (por_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

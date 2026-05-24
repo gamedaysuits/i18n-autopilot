@@ -1,0 +1,71 @@
+{
+  "code": "ja",
+  "name": "Japanese",
+  "linguisticChallenges": {
+    "scriptMixing": "Japanese uses three scripts simultaneously (kanji, hiragana, katakana). The balance affects register — more kanji reads as formal/literary, more hiragana as softer/childlike, and katakana for foreign loanwords and emphasis. MT systems frequently get the kanji density wrong for the target register.",
+    "honorificVerbEndings": "Verb endings encode the entire politeness level. A single wrong ending (e.g., する instead of します) immediately shifts the register. MT must be consistent throughout a passage — mixing です/ます with plain form in the same paragraph is a visible error.",
+    "counters": "Japanese uses specific counter suffixes (助数詞) for different noun categories — 枚 (flat objects), 本 (cylindrical), 匹 (small animals), 台 (machines/vehicles). Using the generic counter 個 for everything sounds unnatural. MT frequently falls back to 個 instead of the correct counter.",
+    "subjectOmission": "Japanese regularly omits subjects and objects when contextually obvious. Over-specifying them (common in literal MT from English) sounds robotic and unnatural. Good translation means knowing what to leave unsaid.",
+    "sentenceFinalParticles": "Particles like ね (seeking agreement), よ (asserting), わ (softening, gendered) change nuance. Avoid gendered particles (わ, ぞ) in neutral UI text. MT systems sometimes insert them inappropriately.",
+    "katakanaLoanwords": "Technical terms are often written in katakana (e.g., サーバー server, ダウンロード download). Using kanji equivalents for these reads as overly formal or archaic. Conversely, writing common Japanese words in katakana implies emphasis or irony."
+  },
+  "encyclopedic": {
+    "family": "Japonic",
+    "demographics": {
+      "speakers": "~125 million",
+      "regions": [
+        "Japan"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Japanese (標準語) based on Tokyo dialect; regional dialects exist but are not used in software",
+      "variants": []
+    },
+    "history": "Modern Standard Japanese was codified during the Meiji era. The writing system combines Chinese-origin kanji with two indigenous syllabaries (hiragana and katakana), creating unique challenges for NLP and text processing.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Japanese_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Jisho.org (JP-EN dictionary)",
+          "url": "https://jisho.org"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "MeCab (morphological analyzer/tokenizer)",
+        "url": "https://taku910.github.io/mecab/",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-JA parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ja/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ja"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-ja"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (jpn_Jpan)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "code": "zh",
+  "name": "Chinese (Simplified)",
+  "linguisticChallenges": {
+    "tokenization": "Chinese has no spaces between words, making tokenization non-trivial. Word boundaries are ambiguous even for native speakers — '下雨天留客天留我不留' can be segmented multiple ways with different meanings. This affects how MT systems handle compound terms and placeholder insertion.",
+    "measureWords": "Chinese requires measure words (量词/classifiers) between numbers and nouns — 一个人 (one + generic + person), 一条路 (one + long-thin + road), 一把椅子 (one + graspable + chair). Using the generic 个 for everything sounds uneducated. MT systems frequently default to 个.",
+    "simplifiedTraditionalConfusion": "Models sometimes produce Traditional characters (繁體字) when Simplified (简体字) is requested, or vice versa. Single-character substitutions can slip through — e.g., 裡 (Traditional) vs 里 (Simplified). This is especially common with technical terms and proper nouns.",
+    "registerVocabulary": "Formality is expressed through vocabulary choice, not grammar. 你 (nǐ, casual you) vs 您 (nín, respectful you) is the main pronoun distinction. Four-character idioms (成语) convey erudition but can be opaque — use them sparingly in UI text. '请' (please) at sentence start marks formal register.",
+    "aspectMarkers": "Chinese expresses time through aspect markers (了 completion, 过 experience, 着 ongoing), not verb tense. Translating English past/present/future tense literally produces awkward Chinese. MT often inserts unnecessary temporal markers.",
+    "fullwidthPunctuation": "Chinese uses full-width punctuation (，。！？) rather than half-width (,.!?). Mixing half-width and full-width punctuation in the same text is a common MT error that is immediately visible to readers."
+  },
+  "encyclopedic": {
+    "family": "Sino-Tibetan",
+    "demographics": {
+      "speakers": "~1.1 billion (all varieties of Chinese)",
+      "regions": [
+        "China",
+        "Singapore",
+        "Malaysia"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Mandarin (Standard Chinese/普通话) based on Beijing dialect; mutually unintelligible dialect groups exist (Wu, Cantonese, Min, etc.) but share the writing system",
+      "variants": [
+        "zh-TW",
+        "zh-HK",
+        "zh-SG"
+      ]
+    },
+    "history": "Simplified Chinese characters were promulgated by the PRC government in the 1950s-60s to increase literacy. The traditional characters remain in use in Taiwan, Hong Kong, and Macau. Both systems share the same grammar and vocabulary.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Chinese_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "MDBG Chinese Dictionary",
+          "url": "https://www.mdbg.net/chinese/dictionary"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "jieba (Chinese text segmentation)",
+        "url": "https://github.com/fxsjy/jieba",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-ZH parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&zh/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-zh"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-zh"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (zho_Hans)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

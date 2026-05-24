@@ -1,0 +1,63 @@
+{
+  "code": "ro",
+  "name": "Romanian",
+  "linguisticChallenges": {
+    "definiteSuffix": "Romanian marks definiteness with a suffix (-ul/-le, -a, -lui) attached to the noun, similar to Bulgarian. MT must produce suffixed articles, not separate words.",
+    "caseSystem": "Romanian retains a case system (unique among Romance languages) with nominative-accusative and genitive-dative distinctions.",
+    "diacritics": "Romanian uses ș, ț, â, î, ă. Missing diacritics change meaning — 'tara' vs 'țara' (country). Old cedilla forms (ş, ţ) vs comma-below forms (ș, ț) create font/encoding issues."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~26 million",
+      "regions": [
+        "Romania",
+        "Moldova"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard Romanian based on Wallachian dialect. Moldovan is politically distinct but linguistically identical.",
+      "variants": [
+        "mo"
+      ]
+    },
+    "history": "Romanian is the only Romance language in Eastern Europe, surrounded by Slavic and Hungarian languages. It retained Latin grammar structure despite heavy Slavic vocabulary influence.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Romanian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "DEX Online (Romanian dictionary)",
+          "url": "https://dexonline.ro/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Romanian model (ro_core_news_sm)",
+        "url": "https://spacy.io/models/ro",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (EN-RO corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ro/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ro"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ron_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

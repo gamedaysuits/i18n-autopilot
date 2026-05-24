@@ -31,37 +31,14 @@
   "evalDatasets": [
     "edtekla-dev-v1"
   ],
-  "encyclopedic": {
-    "dialects": {
-      "split": true,
-      "classification": "Plains Cree (y-dialect)",
-      "variants": ["crk", "cwd", "csw"]
+  "notes": "Low-resource language under active development. Translation quality requires llm-coached method with Cree-specific coaching data. See OCAP principles documentation for community engagement guidelines.",
+  "rules": {
+    "typography": {
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
     },
-    "demographics": {
-      "speakers": "Approx. 20,000 active speakers",
-      "regions": ["Saskatchewan", "Alberta", "Manitoba"]
-    },
-    "history": "Plains Cree is the most widely spoken Algonquian language in Canada. Historically, it functioned as a regional trade lingua franca across the Canadian plains.",
-    "resources": {
-      "wikipedia": "https://en.wikipedia.org/wiki/Plains_Cree",
-      "foundations": [
-        {
-          "name": "University of Alberta ALTLab",
-          "url": "https://altlab.artsrn.ualberta.ca/"
-        }
-      ],
-      "dictionaries": [
-        {
-          "name": "itwêwina (Plains Cree Dictionary)",
-          "url": "https://itwewina.altlab.app/"
-        }
-      ]
-    }
-  },
-  "linguisticChallenges": {
-    "polysynthesis": "Cree is highly polysynthetic. A single verb can incorporate subject/object pronouns, instrumentals, locations, and actions. Translate phrases conceptually rather than word-for-word.",
-    "animacy": "Verb conjugation changes completely based on whether the subject/object nouns are animate or inanimate. Ensure grammatical agreement.",
-    "neologisms": "Avoid literal translations of modern software concepts. Maintain English loanwords for modern UI elements when no community-accepted Cree term exists."
-  },
-  "notes": "Low-resource language under active development. Translation quality requires llm-coached method with Cree-specific coaching data. See OCAP principles documentation for community engagement guidelines."
+    "capitalization": {},
+    "plurals": {}
+  }
 }

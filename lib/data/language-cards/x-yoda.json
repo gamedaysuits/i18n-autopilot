@@ -31,5 +31,17 @@
   },
   "scriptConverter": null,
   "evalDatasets": [],
-  "notes": "Register-only conlang — English with Yoda's OSV syntax transformation."
+  "notes": "Register-only conlang — English with Yoda's OSV syntax transformation.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {}
+  }
 }

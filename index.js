@@ -11,8 +11,9 @@
  *     DeepL, MicrosoftTranslator, LibreTranslate, OpenAI, Anthropic, Gemini
  *   - Orchestrator: getMethod, translateBatch, translateRawContent
  *   - Configuration: resolveConfig, generateConfigTemplate, resolvePairs
- *   - Language cards: getLanguageCard, getRegister, getRegisterPresets,
- *     getFormality, getGenderGuidance, getAllLanguageCodes, resolveCode
+ *   - Language cards: getLanguageCard, getLanguageReference, getRegister,
+ *     getRegisterPresets, getFormality, getGenderGuidance, getAllLanguageCodes,
+ *     resolveCode
  *   - Sync: runSync, runContentSync
  *   - Quality: validateTranslations
  *   - Utilities: loadApiKey, getEnvOrFileVar
@@ -51,6 +52,7 @@ export { resolvePairs } from './lib/pairs.js';
 // ── Language cards & registers ─────────────────────────────────────
 export {
   getLanguageCard,
+  getLanguageReference,
   getRegister,
   getRegisterPresets,
   getFormality,

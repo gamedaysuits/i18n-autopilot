@@ -34,5 +34,17 @@
   },
   "scriptConverter": "x-elvish-s",
   "evalDatasets": [],
-  "notes": "Tengwar script requires a CSUR-compatible font (PUA U+E000–E07F). Mode of Beleriand is used for the deterministic converter."
+  "notes": "Tengwar script requires a CSUR-compatible font (PUA U+E000–E07F). Mode of Beleriand is used for the deterministic converter.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {}
+  }
 }

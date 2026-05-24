@@ -41,5 +41,24 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Persian uses Arabic script (modified) but is not Arabic. The script code 'Arab' is correct per ISO 15924."
+  "notes": "Persian uses Arabic script (modified) but is not Arabic. The script code 'Arab' is correct per ISO 15924.",
+  "rules": {
+    "typography": {
+      "quoteStart": "«",
+      "quoteEnd": "»",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

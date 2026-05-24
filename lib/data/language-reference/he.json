@@ -1,0 +1,76 @@
+{
+  "code": "he",
+  "name": "Hebrew",
+  "linguisticChallenges": {
+    "bidirectionalText": "Hebrew is RTL like Arabic, creating the same bidi challenges with embedded LTR content (variables, URLs, numbers, code). Placeholder strings like '{count} קבצות' require careful bidi handling to prevent visual reordering.",
+    "genderedVerbs": "Hebrew verbs conjugate for gender in second and third person — there is no gender-neutral 'you did'. 'עשית' (you did, masculine) vs 'עשית' (you did, feminine — same consonants but different pronunciation). For written UI, this is a real challenge. The slash form (עשית/עשית) or infinitive constructions ('לעשות') are common workarounds.",
+    "rootPatternMorphology": "Like Arabic, Hebrew uses root-pattern morphology where three-consonant roots generate word families through vowel patterns. K-T-B → כתב (wrote), כתיבה (writing), מכתב (letter), כתובת (address).",
+    "definiteness": "Hebrew marks definiteness with the prefix ה- (ha-). When a noun is definite, its adjective must also take the definite prefix: 'הקובץ הגדול' (the big file) not 'הקובץ גדול'. MT sometimes misses adjective definiteness agreement.",
+    "nikkud": "Hebrew vowels (nikkud/ניקוד) are usually omitted in modern text, creating ambiguity — 'דבר' could be 'davar' (thing), 'diber' (spoke), or 'dever' (plague). MT must disambiguate from context without producing unnecessary nikkud (which looks pedagogical in modern text).",
+    "dualNumber": "Hebrew has a dual number (-ayim suffix) used primarily for paired body parts and time units: 'שעתיים' (two hours), 'עיניים' (two eyes). This is less productive than Arabic's dual but must be handled correctly."
+  },
+  "encyclopedic": {
+    "family": "Semitic (Afro-Asiatic)",
+    "demographics": {
+      "speakers": "~9 million (native), ~5 million L2",
+      "regions": [
+        "Israel"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Modern Hebrew (Ivrit) is remarkably uniform due to its revival as a spoken language in the 20th century. No significant dialectal variation in software contexts.",
+      "variants": []
+    },
+    "history": "Hebrew was revived as a spoken language in the late 19th century by Eliezer Ben-Yehuda after centuries of use primarily as a liturgical and literary language. It is the only successfully revived dead language in history.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Hebrew_language",
+      "foundations": [
+        {
+          "name": "Academy of the Hebrew Language (האקדמיה ללשון העברית)",
+          "url": "https://hebrew-academy.org.il/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Morfix (Hebrew-English dictionary)",
+          "url": "https://www.morfix.co.il/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "YAP (Yet Another Parser for Hebrew)",
+        "url": "https://github.com/OnlpLab/yap",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-HE parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&he/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-he"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-he"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (heb_Hebr)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

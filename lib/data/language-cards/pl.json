@@ -43,5 +43,26 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Polish formal address (Pan/Pani) is unique in that it's inherently gendered. This creates a practical challenge for UI text addressing unknown users."
+  "notes": "Polish formal address (Pan/Pani) is unique in that it's inherently gendered. This creates a practical challenge for UI text addressing unknown users.",
+  "rules": {
+    "typography": {
+      "quoteStart": "„",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "few",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

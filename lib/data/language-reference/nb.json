@@ -1,0 +1,76 @@
+{
+  "code": "nb",
+  "name": "Norwegian Bokmål",
+  "linguisticChallenges": {
+    "bokmålVsNynorsk": "Norway has two official written standards: Bokmål (based on Dano-Norwegian) and Nynorsk (based on rural dialects). MT must target the correct one — they are different enough that mixing them is immediately noticeable. 'nb' targets Bokmål.",
+    "threeGenders": "Norwegian Bokmål can use either two genders (common/neuter like Danish) or three genders (masculine/feminine/neuter). The three-gender system is more colloquial and increasingly common. MT should be consistent about which system it uses.",
+    "compoundNouns": "Like other Scandinavian languages, Norwegian forms compounds by concatenation with linking elements.",
+    "scandinavianMixing": "MT models have particular difficulty distinguishing Norwegian from Danish due to their extreme similarity in written form. Vocabulary differences (e.g., 'snakke' NO vs 'tale' DA for 'speak') must be correct."
+  },
+  "encyclopedic": {
+    "family": "Germanic (Indo-European)",
+    "demographics": {
+      "speakers": "~5.3 million",
+      "regions": [
+        "Norway"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Bokmål and Nynorsk are both official written standards. Bokmål is used by ~85-90% of the population. Spoken dialects vary enormously and have high social prestige.",
+      "variants": [
+        "nn"
+      ]
+    },
+    "history": "Bokmål evolved from Dano-Norwegian, the written language used during Norway's union with Denmark (1380–1814). Nynorsk was created by Ivar Aasen in the 19th century as a 'purer' Norwegian based on rural dialects.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Norwegian_language",
+      "foundations": [
+        {
+          "name": "Språkrådet (Language Council of Norway)",
+          "url": "https://www.sprakradet.no/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Bokmålsordboka",
+          "url": "https://ordbokene.no/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "spaCy Norwegian model (nb_core_news_sm)",
+        "url": "https://spacy.io/models/nb",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-NO parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&no/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-nb"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-nb"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (nob_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

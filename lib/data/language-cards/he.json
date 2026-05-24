@@ -43,5 +43,25 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "The deprecated ISO 639-1 code 'iw' is registered as an alias. Java and older systems still use 'iw'."
+  "notes": "The deprecated ISO 639-1 code 'iw' is registered as an alias. Java and older systems still use 'iw'.",
+  "rules": {
+    "typography": {
+      "quoteStart": "”",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "two",
+        "other"
+      ]
+    }
+  }
 }

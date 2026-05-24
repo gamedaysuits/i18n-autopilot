@@ -1,0 +1,55 @@
+{
+  "code": "es-MX",
+  "name": "Mexican Spanish",
+  "linguisticChallenges": {
+    "mexicanVocabulary": "Mexican Spanish has distinct vocabulary from both Peninsular and neutral Latin American Spanish — 'computadora' (computer), 'platicar' (to chat, vs 'hablar/conversar'), 'chido' (cool, casual). MT must produce Mexican-specific terms, not generic LatAm or Peninsular vocabulary.",
+    "nahuatlLoanwords": "Mexican Spanish includes Nahuatl-origin words not found in other varieties — 'chocolate', 'tomate', 'aguacate' (avocado) are universal, but 'chamaco' (kid), 'mitote' (commotion) are specifically Mexican.",
+    "ustedUsage": "Mexico uses 'usted' more broadly than many other Latin American countries — it can indicate respect rather than social distance. The tú/usted threshold is different from Argentine or Chilean Spanish."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~130 million",
+      "regions": [
+        "Mexico",
+        "United States"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Mexican Spanish is relatively uniform in its standard form. Regional differences exist (norteño, costeño, yucateco) but are not relevant for software.",
+      "variants": []
+    },
+    "history": "Mexico has the largest Spanish-speaking population in the world. Mexican Spanish has been influenced by Nahuatl and other indigenous languages, creating unique vocabulary and expressions.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Mexican_Spanish",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Diccionario del Español de México",
+          "url": "https://dem.colmex.mx/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-ES corpora)",
+        "url": "https://opus.nlpl.eu/results/en&es/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-es"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (spa_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

@@ -46,5 +46,24 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Previous default ('Minimize English loanwords') was incorrect for modern Indian tech context. Changed to Hinglish professional as default, which matches actual usage patterns."
+  "notes": "Previous default ('Minimize English loanwords') was incorrect for modern Indian tech context. Changed to Hinglish professional as default, which matches actual usage patterns.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "other"
+      ]
+    }
+  }
 }

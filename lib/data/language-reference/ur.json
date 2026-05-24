@@ -1,0 +1,61 @@
+{
+  "code": "ur",
+  "name": "Urdu",
+  "linguisticChallenges": {
+    "nastaliqScript": "Urdu uses the Nastaliq calligraphic style of the Perso-Arabic script, which is more complex to render than Naskh (used for Arabic). Many digital fonts default to Naskh, producing readable but aesthetically wrong Urdu.",
+    "hindiUrduContinuum": "Urdu and Hindi are mutually intelligible in spoken form but use different scripts and draw vocabulary from different sources (Persian/Arabic for Urdu vs Sanskrit for Hindi). MT models sometimes produce Hindi-influenced vocabulary.",
+    "rtlWithMixedScript": "Like Arabic and Persian, Urdu faces bidi challenges with embedded LTR content."
+  },
+  "encyclopedic": {
+    "family": "Indo-Aryan (Indo-European)",
+    "demographics": {
+      "speakers": "~230 million (including L2)",
+      "regions": [
+        "Pakistan",
+        "India"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Urdu based on the Khariboli dialect (same base as Hindi). Register differences come from vocabulary source (Persian/Arabic vs Sanskrit).",
+      "variants": []
+    },
+    "history": "Urdu developed as a literary register of Hindustani during the Mughal period, drawing heavily on Persian and Arabic vocabulary. It became the national language of Pakistan at independence in 1947.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Urdu",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Urdu Lughat (Urdu dictionary)",
+          "url": "https://urdulughat.info/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "IndicNLP Library (includes Urdu)",
+        "url": "https://github.com/anoopkunchukuttan/indic_nlp_library",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (EN-UR corpora)",
+        "url": "https://opus.nlpl.eu/results/en&ur/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-ur"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (urd_Arab)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

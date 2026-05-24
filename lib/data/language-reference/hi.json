@@ -1,0 +1,89 @@
+{
+  "code": "hi",
+  "name": "Hindi",
+  "linguisticChallenges": {
+    "codeSwitchingCalibration": "The biggest Hindi translation challenge is calibrating the Hindi-English mix. Pure Hindi (शुद्ध हिन्दी) sounds overly formal or government-like in tech contexts. Too much English sounds like the translator gave up. The right balance varies by audience — urban tech users expect more English, while government/education contexts expect more Hindi.",
+    "genderAgreement": "Hindi verbs, adjectives, and postpositions agree in gender. The default masculine can create awkward output when the subject is feminine or unknown. Restructuring sentences to use infinitive/passive constructions avoids the problem but can sound stilted.",
+    "postpositions": "Hindi uses postpositions (में in, पर on, से from) instead of prepositions. These attach after the noun, which affects variable/placeholder positioning — English 'in {city}' becomes '{city} में'. MT systems sometimes place postpositions before the noun by calquing English structure.",
+    "devanagariConjuncts": "Devanagari script uses conjunct consonants (संयुक्त अक्षर) where consonant clusters merge visually (e.g., क + र = क्र). Some MT outputs produce incorrect conjuncts or fail to form them, creating misspelled text that may render differently across fonts.",
+    "sovWordOrder": "Hindi is SOV (Subject-Object-Verb) with relatively free word order. Literal SVO translation from English sounds unnatural. Variables in strings must account for Hindi word order — 'You have {count} messages' → 'आपके पास {count} संदेश हैं'.",
+    "hindiUrduContinuum": "Hindi and Urdu are mutually intelligible in spoken form but use different scripts (Devanagari vs Nastaliq) and draw vocabulary from different sources (Sanskrit vs Persian/Arabic). MT models sometimes produce Urdu-influenced vocabulary in Hindi output, especially for formal/literary registers."
+  },
+  "encyclopedic": {
+    "family": "Indo-Aryan (Indo-European)",
+    "demographics": {
+      "speakers": "~600 million (including second-language speakers)",
+      "regions": [
+        "India",
+        "Fiji",
+        "Mauritius",
+        "Nepal"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard Hindi (Modern Standard Hindi) based on Khariboli dialect; regional variants include Braj, Awadhi, Bhojpuri",
+      "variants": [
+        "hi-Latn"
+      ]
+    },
+    "history": "Hindi was standardized during the 19th century and adopted as one of India's two official languages (alongside English) in 1950. The Hindi Belt in northern India is the language's heartland, but Hindi serves as a lingua franca across much of India.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Hindi",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Shabdkosh (Hindi-English dictionary)",
+          "url": "https://www.shabdkosh.com"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "IndicNLP Library",
+        "url": "https://github.com/anoopkunchukuttan/indic_nlp_library",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-HI parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&hi/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-hi"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-hi"
+        ]
+      },
+      {
+        "name": "Samanantar (Indian language parallel corpus)",
+        "url": "https://indicnlp.ai4bharat.org/samanantar/",
+        "type": "parallel",
+        "pairs": [
+          "en-hi"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (hin_Deva)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      },
+      {
+        "name": "IndicTrans2 (AI4Bharat)",
+        "url": "https://github.com/AI4Bharat/IndicTrans2",
+        "type": "nmt"
+      }
+    ]
+  }
+}

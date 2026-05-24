@@ -1,0 +1,74 @@
+{
+  "code": "vi",
+  "name": "Vietnamese",
+  "linguisticChallenges": {
+    "pronounSystemComplexity": "Vietnamese has dozens of pronouns encoding age, gender, and social relationship relative to the speaker. Using the wrong pronoun (e.g., anh for an older person when they're younger) is a social error. Software UI should use bạn (gender-neutral peer) to sidestep this entirely, but MT systems often produce more specific pronouns calqued from English 'you'.",
+    "tonalDiacritics": "Vietnamese uses six tones marked by diacritics (à á ả ã ạ + unmarked). Missing or incorrect diacritics change meaning — 'ma' means ghost, 'má' means mother, 'mã' means horse, 'mạ' means rice seedling. MT systems must produce correct diacritics or the output is wrong, not merely informal.",
+    "classifierSystem": "Vietnamese uses classifiers (loại từ) between numbers and nouns — con (animals), cái (inanimate objects), chiếc (single items of a pair), quyển (books). Omitting classifiers is grammatically wrong, and using the wrong one sounds uneducated.",
+    "sinoVietnameseVsNative": "Vietnamese vocabulary has a Sino-Vietnamese layer (from Chinese) and a native layer. Sino-Vietnamese words are more formal (e.g., 'hỏa hoạn' vs 'cháy' for fire). MT must calibrate between these layers based on register, similar to the Latin/Germanic split in English.",
+    "noMorphologicalInflection": "Vietnamese has no verb conjugation, no noun declension, no plural markers, and no grammatical gender agreement. Tense and aspect are expressed through adverbs and context. MT from heavily inflected languages sometimes produces redundant temporal markers.",
+    "compoundWords": "Vietnamese compound words are multi-syllable but each syllable is written as a separate word with spaces. This makes tokenization ambiguous — 'chủ tịch' (chairman) is two words but one concept. MT systems sometimes split compounds inappropriately."
+  },
+  "encyclopedic": {
+    "family": "Austroasiatic (Vietic)",
+    "demographics": {
+      "speakers": "~85 million",
+      "regions": [
+        "Vietnam",
+        "United States",
+        "France",
+        "Australia"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Three main dialect groups (Northern/Hanoi, Central/Hue, Southern/Saigon) — mutually intelligible but differ in pronunciation and some vocabulary. Standard Vietnamese is based on the Hanoi dialect.",
+      "variants": []
+    },
+    "history": "Vietnamese switched from Chinese characters (chữ Nôm) to a Latin-based alphabet (chữ Quốc ngữ) in the early 20th century. The romanization was originally created by Portuguese missionaries in the 17th century and later standardized by French colonists.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Vietnamese_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Từ điển tiếng Việt (Vietnamese Dictionary)",
+          "url": "https://vtudien.com"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "VnCoreNLP (Vietnamese NLP toolkit)",
+        "url": "https://github.com/vncorenlp/VnCoreNLP",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-VI parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&vi/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-vi"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-vi"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (vie_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

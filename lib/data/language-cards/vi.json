@@ -43,5 +43,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Previous default had no pronoun guidance. Added explicit bạn/quý vị pronoun choice which is critical for appropriate Vietnamese translation."
+  "notes": "Previous default had no pronoun guidance. Added explicit bạn/quý vị pronoun choice which is critical for appropriate Vietnamese translation.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

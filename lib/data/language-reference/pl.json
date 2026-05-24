@@ -1,0 +1,74 @@
+{
+  "code": "pl",
+  "name": "Polish",
+  "linguisticChallenges": {
+    "genderedFormalAddress": "Polish is unique among European languages in that formal address (Pan/Pani) is inherently gendered — there is no gender-neutral formal pronoun. Software UI addressing unknown users must either use impersonal constructions ('Proszę wybrać...' — Please choose), infinitives, or the Pan/Pani slash notation. MT models rarely handle this automatically.",
+    "complexPluralSystem": "Polish has four plural categories (one, few, many, other) with complex rules: 1 is 'one', 2-4 use 'few' (dwa pliki), 5-21 use 'many' (pięć plików), then 22-24 cycle back to 'few'. This cycling pattern based on the last two digits is notoriously difficult to implement correctly in ICU MessageFormat.",
+    "aspectAndPrefixes": "Like Russian, Polish verbs have imperfective/perfective aspect pairs, but Polish adds extensive prefixal derivation that changes meaning — robić (do/make), zrobić (complete doing), dorobić (earn extra), wyrobić (produce), narobić (make a mess). MT must select the correct prefixed form.",
+    "sevenCases": "Polish has seven grammatical cases (adding vocative to the six Russian cases). The vocative is actively used in direct address — 'Panie Kowalski!' not 'Pan Kowalski!' in greetings. Case affects every noun, adjective, and numeral in the sentence.",
+    "consonantClusters": "Polish allows consonant clusters that are challenging for non-native speakers and can trip up text-to-speech systems — 'źdźbło' (blade of grass), 'szczęście' (happiness), 'bezwzględny' (ruthless). These are normal Polish and should not be simplified in translation.",
+    "virileGender": "Polish masculine has a virile/non-virile distinction in plural — human males use different adjective and verb forms than all other nouns (including female humans in mixed groups). 'Użytkownicy byli' (masculine-personal, users were) vs 'Pliki były' (non-personal, files were). MT frequently confuses these forms."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~45 million",
+      "regions": [
+        "Poland",
+        "United States",
+        "United Kingdom",
+        "Germany"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Polish based on the Greater Poland and Lesser Poland dialects. Relatively uniform; Silesian and Kashubian are sometimes classified as separate languages.",
+      "variants": []
+    },
+    "history": "Polish is the second most widely spoken Slavic language. It uses the Latin alphabet with extensive diacritics (ą, ć, ę, ł, ń, ó, ś, ź, ż). The language survived partition (1795–1918) when Poland was divided between Russia, Prussia, and Austria.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Polish_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "SJP.pl (Polish dictionary)",
+          "url": "https://sjp.pl/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "Morfeusz (Polish morphological analyzer)",
+        "url": "http://morfeusz.sgjp.pl/",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-PL parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&pl/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-pl"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-pl"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (pol_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

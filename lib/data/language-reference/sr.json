@@ -1,0 +1,55 @@
+{
+  "code": "sr",
+  "name": "Serbian",
+  "linguisticChallenges": {
+    "dualScript": "Serbian uses both Cyrillic (official) and Latin script interchangeably. Software must support both or clearly target one. MT output must be in the correct script — producing Cyrillic when Latin is expected (or vice versa) is a critical error.",
+    "sevenCases": "Serbian has seven grammatical cases like other South Slavic languages, with complex noun and adjective declension.",
+    "ekavianVsIjekavian": "Serbian has two pronunciation/spelling standards: Ekavian (Belgrade, used in Serbia) and Ijekavian (used in Bosnia, Montenegro). 'Mleko' vs 'Mlijeko' (milk). Software typically targets Ekavian."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~12 million",
+      "regions": [
+        "Serbia",
+        "Bosnia and Herzegovina",
+        "Montenegro",
+        "Kosovo"
+      ]
+    },
+    "dialects": {
+      "split": true,
+      "classification": "Standard Serbian uses Ekavian pronunciation (Belgrade dialect). Ijekavian is used in western regions. Bosnian and Croatian are near-identical but politically distinct.",
+      "variants": [
+        "sr-Latn",
+        "sr-Cyrl"
+      ]
+    },
+    "history": "Serbian, Croatian, Bosnian, and Montenegrin were historically considered one language (Serbo-Croatian). Political separation after Yugoslavia's dissolution led to distinct standardization, though mutual intelligibility remains near-total.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Serbian_language",
+      "foundations": [],
+      "dictionaries": []
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-SR corpora)",
+        "url": "https://opus.nlpl.eu/results/en&sr/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-sr"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (srp_Cyrl)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

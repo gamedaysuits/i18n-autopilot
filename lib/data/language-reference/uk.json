@@ -1,0 +1,61 @@
+{
+  "code": "uk",
+  "name": "Ukrainian",
+  "linguisticChallenges": {
+    "ukrainianVsRussian": "Ukrainian and Russian are distinct languages despite superficial similarity. MT models sometimes produce Russian words in Ukrainian output (especially for technical terms). Key differences: 'и' (UA) vs 'и' (RU) are different sounds; 'ґ' exists only in Ukrainian.",
+    "sevenCases": "Ukrainian has seven grammatical cases like other East Slavic languages. The vocative case is actively used in modern Ukrainian, unlike in Russian.",
+    "apostrophe": "Ukrainian uses the apostrophe (') as a letter to indicate non-palatalization before iotated vowels: 'м'який' (soft). This is a meaningful orthographic element, not punctuation."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~45 million",
+      "regions": [
+        "Ukraine",
+        "diaspora"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Ukrainian based on the southeastern dialect. Northern, southwestern, and southeastern dialect groups exist.",
+      "variants": []
+    },
+    "history": "Ukrainian is the second most spoken Slavic language. Its use was restricted during both Russian Imperial and Soviet periods. Since 2019, Ukrainian is the sole state language of Ukraine.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Ukrainian_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "SUM (Ukrainian language dictionary)",
+          "url": "https://sum.in.ua/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "pymorphy2 (supports Ukrainian)",
+        "url": "https://github.com/pymorphy2/pymorphy2",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (EN-UK corpora)",
+        "url": "https://opus.nlpl.eu/results/en&uk/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-uk"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ukr_Cyrl)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

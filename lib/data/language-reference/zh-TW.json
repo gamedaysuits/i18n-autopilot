@@ -1,0 +1,66 @@
+{
+  "code": "zh-TW",
+  "name": "Chinese (Traditional)",
+  "linguisticChallenges": {
+    "traditionalVsSimplified": "Traditional Chinese uses more complex character forms than Simplified. Some characters differ substantially (e.g., 國 vs 国, 學 vs 学). MT must consistently produce Traditional characters — even a single Simplified character is immediately visible.",
+    "taiwanVocabulary": "Taiwan has distinct vocabulary from mainland China — '程式' (program, TW) vs '程序' (program, CN), '軟體' (software, TW) vs '軟件' (software, CN), '資料夾' (folder, TW) vs '文件夹' (folder, CN). These are not interchangeable.",
+    "bopomofo": "Taiwan uses Bopomofo (注音符號) for phonetic annotation rather than Pinyin. This affects input methods and user expectations around phonetic aids.",
+    "verticalText": "Traditional Chinese can be written vertically (top-to-bottom, right-to-left). While software UI uses horizontal text, some contexts (poetry, formal invitations) expect vertical layout support."
+  },
+  "encyclopedic": {
+    "family": "Sino-Tibetan",
+    "demographics": {
+      "speakers": "~23 million (Taiwan)",
+      "regions": [
+        "Taiwan",
+        "Hong Kong",
+        "Macau",
+        "overseas Chinese communities"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Mandarin as spoken in Taiwan, with Traditional Chinese characters. Taiwan Mandarin differs from mainland Mandarin in some vocabulary and usage.",
+      "variants": [
+        "zh-HK"
+      ]
+    },
+    "history": "Traditional Chinese characters have been in continuous use for thousands of years. When the PRC introduced Simplified characters in the 1950s, Taiwan, Hong Kong, and Macau retained the traditional forms.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Traditional_Chinese_characters",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "MOE Dictionary (教育部國語辭典)",
+          "url": "https://dict.revised.moe.edu.tw/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "jieba (Chinese text segmentation)",
+        "url": "https://github.com/fxsjy/jieba",
+        "type": "tokenizer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (EN-ZH corpora)",
+        "url": "https://opus.nlpl.eu/results/en&zh/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-zh"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (zho_Hant)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

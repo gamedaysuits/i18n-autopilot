@@ -41,5 +41,28 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Arabic dialects (Egyptian, Levantine, Gulf, Maghrebi) are significantly different from MSA but don't have separate ISO 639-1 codes. Dialect-specific translation would require custom register prompts."
+  "notes": "Arabic dialects (Egyptian, Levantine, Gulf, Maghrebi) are significantly different from MSA but don't have separate ISO 639-1 codes. Dialect-specific translation would require custom register prompts.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": false
+    },
+    "plurals": {
+      "categories": [
+        "zero",
+        "one",
+        "two",
+        "few",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

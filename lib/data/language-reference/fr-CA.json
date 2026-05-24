@@ -1,0 +1,60 @@
+{
+  "code": "fr-CA",
+  "name": "Canadian French",
+  "linguisticChallenges": {
+    "quebecVocabulary": "Quebec French has distinct vocabulary from France French — 'char' (car, vs 'voiture'), 'magasinage' (shopping, vs 'shopping'), 'courriel' (email, vs 'email/e-mail'). Quebec French often creates French neologisms for English terms that France French borrows directly.",
+    "tuVsVous": "Quebec French uses 'tu' more broadly than France French — 'tu' is standard in most consumer contexts. The vous/tu threshold is lower.",
+    "sacres": "Quebec French has a unique set of profanity derived from Catholic liturgical terms (tabernac, câlice, ostie). While not relevant for professional UI, MT models trained on informal Quebec text sometimes produce these inappropriately.",
+    "officeDeLaLangue": "The Office québécois de la langue française (OQLF) actively promotes French terminology over English loanwords, which affects technical vocabulary choices."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~7.3 million",
+      "regions": [
+        "Canada (Quebec, New Brunswick, Ontario)"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Quebec French (français québécois) is the standard for Canadian French. Acadian French is a distinct variety spoken in New Brunswick.",
+      "variants": []
+    },
+    "history": "Canadian French developed largely independently from European French after British conquest in 1763. The Quiet Revolution (1960s) and Quebec's language laws (notably Bill 101, 1977) strengthened French in public life.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Quebec_French",
+      "foundations": [
+        {
+          "name": "Office québécois de la langue française",
+          "url": "https://www.oqlf.gouv.qc.ca/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Usito (Quebec French dictionary)",
+          "url": "https://usito.usherbrooke.ca/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-FR corpora)",
+        "url": "https://opus.nlpl.eu/results/en&fr/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-fr"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (fra_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

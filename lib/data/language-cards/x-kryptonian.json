@@ -31,5 +31,17 @@
   },
   "scriptConverter": "x-kryptonian",
   "evalDatasets": [],
-  "notes": "Kryptonian 'script' is a 1:1 Latin cipher rendered via custom PUA font (U+E100–E119). The converter is font-based, not linguistic."
+  "notes": "Kryptonian 'script' is a 1:1 Latin cipher rendered via custom PUA font (U+E100–E119). The converter is font-based, not linguistic.",
+  "rules": {
+    "typography": {
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {}
+  }
 }

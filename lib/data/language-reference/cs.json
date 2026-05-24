@@ -1,0 +1,70 @@
+{
+  "code": "cs",
+  "name": "Czech",
+  "linguisticChallenges": {
+    "sevenCases": "Like Polish, Czech has seven grammatical cases. Case endings affect nouns, adjectives, pronouns, and numerals. Placeholder variables in translation strings face the same challenges as in other case-heavy Slavic languages.",
+    "háčkyAndČárky": "Czech diacritics (háčky: š, č, ř, ž, ň, ď, ť and čárky: á, é, í, ó, ú, ů, ý) are essential and meaning-distinguishing. The letter ř (a raised alveolar trill) is unique to Czech and is notoriously difficult for non-native speakers.",
+    "aspectAndMotion": "Czech shares the Slavic aspect system (perfective/imperfective) and complex motion verb system with Russian and Polish, creating the same translation challenges.",
+    "formalAddress": "Czech uses Pan/Paní (similar to Polish) for formal address and vy/ty for formal/informal pronouns. The formal system is fully gendered."
+  },
+  "encyclopedic": {
+    "family": "Slavic (Indo-European)",
+    "demographics": {
+      "speakers": "~10.7 million",
+      "regions": [
+        "Czech Republic",
+        "Slovakia"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Czech (spisovná čeština) based on central Bohemian dialect. Common Czech (obecná čeština) is a widely spoken informal koiné.",
+      "variants": []
+    },
+    "history": "Czech has a rich literary tradition dating to the 14th century. Jan Hus introduced diacritical marks in the 15th century that were later adopted by other Slavic languages using Latin script.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Czech_language",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Internetová jazyková příručka (Czech language guide)",
+          "url": "https://prirucka.ujc.cas.cz/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "MorphoDiTa (Czech morphological analyzer)",
+        "url": "https://ufal.mff.cuni.cz/morphodita",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-CS parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/cs&en/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-cs"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-cs"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (ces_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

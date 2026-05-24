@@ -37,5 +37,25 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "European Portuguese has significant vocabulary and grammar differences from Brazilian Portuguese. This is not just a spelling variant."
+  "notes": "European Portuguese has significant vocabulary and grammar differences from Brazilian Portuguese. This is not just a spelling variant.",
+  "rules": {
+    "typography": {
+      "quoteStart": "«",
+      "quoteEnd": "»",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

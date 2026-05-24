@@ -36,5 +36,23 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Indonesian (Bahasa Indonesia) and Malay (Bahasa Melayu) are mutually intelligible but have distinct standard forms. See ms.json for Malay."
+  "notes": "Indonesian (Bahasa Indonesia) and Malay (Bahasa Melayu) are mutually intelligible but have distinct standard forms. See ms.json for Malay.",
+  "rules": {
+    "typography": {
+      "quoteStart": "“",
+      "quoteEnd": "”",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "none"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "other"
+      ]
+    }
+  }
 }

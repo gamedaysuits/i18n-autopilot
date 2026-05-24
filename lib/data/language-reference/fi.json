@@ -1,0 +1,78 @@
+{
+  "code": "fi",
+  "name": "Finnish",
+  "linguisticChallenges": {
+    "fifteenCases": "Finnish has 15 grammatical cases that modify noun endings. Placeholder variables create severe challenges — the case of the interpolated noun depends on its role in the sentence. '{file} has been deleted' requires the nominative, but 'in {folder}' requires the inessive (-ssa/-ssä).",
+    "agglutination": "Finnish is heavily agglutinative — 'talossanikin' (in my house too) is one word with four morphemes. MT systems struggle to produce correct multi-suffix forms and sometimes over-generate or under-generate suffixes.",
+    "consonantGradation": "Consonant gradation changes consonants in stem syllables when suffixes are added (pp→p, tt→t, kk→k, and more complex patterns). Incorrect gradation produces misspellings immediately noticeable to native speakers.",
+    "noArticles": "Finnish has no articles (no 'the' or 'a'). MT from English sometimes introduces unnecessary demonstratives ('tämä', 'se') to compensate, which sounds unnatural.",
+    "possessiveSuffixes": "Finnish can express possession through suffixes (-ni my, -si your, -nsa their) instead of separate words. The suffix form is more natural in many contexts — 'taloni' (my house) rather than 'minun talo'. MT tends to use the separate pronoun form, which sounds formal.",
+    "longWords": "Agglutination produces very long words — 'epäjärjestelmällisyydellisyydestä' (about the quality of being unsystematic) is grammatically valid. While UI text won't hit this extreme, compound words regularly exceed 20 characters, creating layout challenges."
+  },
+  "encyclopedic": {
+    "family": "Uralic (Finnic)",
+    "demographics": {
+      "speakers": "~5.8 million",
+      "regions": [
+        "Finland",
+        "Sweden",
+        "Estonia"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard Finnish based on western dialects. Eastern and western dialect groups differ but are mutually intelligible.",
+      "variants": []
+    },
+    "history": "Finnish gained official status alongside Swedish in 1863. Despite geographic proximity, Finnish is not related to Swedish, Norwegian, or any other Indo-European language — its closest major relative is Estonian.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Finnish_language",
+      "foundations": [
+        {
+          "name": "Kotimaisten kielten keskus (Institute for the Languages of Finland)",
+          "url": "https://www.kotus.fi/"
+        }
+      ],
+      "dictionaries": [
+        {
+          "name": "Kielitoimiston sanakirja",
+          "url": "https://www.kielitoimistonsanakirja.fi/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "Omorfi (Finnish morphological analyzer)",
+        "url": "https://github.com/flammie/omorfi",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "OPUS (multiple EN-FI parallel corpora)",
+        "url": "https://opus.nlpl.eu/results/en&fi/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-fi"
+        ]
+      },
+      {
+        "name": "FLORES+ devtest",
+        "url": "https://github.com/openlanguagedata/flores",
+        "type": "parallel",
+        "pairs": [
+          "en-fi"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (fin_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}

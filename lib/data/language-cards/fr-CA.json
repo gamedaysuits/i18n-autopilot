@@ -41,5 +41,25 @@
   "evalDatasets": [
     "flores-plus-devtest"
   ],
-  "notes": "Québécois French has significant vocabulary and idiomatic differences from France French."
+  "notes": "Québécois French has significant vocabulary and idiomatic differences from France French.",
+  "rules": {
+    "typography": {
+      "quoteStart": "«",
+      "quoteEnd": "»",
+      "usesSpaces": true,
+      "punctuationSpacing": {
+        "doublePunctuation": "thin-nbsp"
+      }
+    },
+    "capitalization": {
+      "hasCase": true
+    },
+    "plurals": {
+      "categories": [
+        "one",
+        "many",
+        "other"
+      ]
+    }
+  }
 }

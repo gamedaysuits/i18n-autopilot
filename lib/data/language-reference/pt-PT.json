@@ -1,0 +1,57 @@
+{
+  "code": "pt-PT",
+  "name": "Portuguese (European)",
+  "linguisticChallenges": {
+    "europeanVsBrazilian": "European Portuguese differs substantially from Brazilian in vocabulary, grammar, and pronunciation. See pt.json for the full BR/PT divergence description.",
+    "enclisis": "European Portuguese strongly prefers enclisis (pronoun after verb: 'diga-me') while Brazilian prefers proclisis ('me diga'). This is the most visible grammatical difference.",
+    "mesoclisis": "European Portuguese still uses mesoclisis (pronoun inserted into future/conditional verbs: 'dir-lhe-ei' = I will tell him) in formal writing. This form is extinct in Brazilian Portuguese.",
+    "orthographicAgreement": "The 1990 Orthographic Agreement eliminated some spelling differences between BR and PT, but remains controversial in Portugal. Some words lost accents or consonants: 'acção' → 'ação', 'óptimo' → 'ótimo'."
+  },
+  "encyclopedic": {
+    "family": "Romance (Indo-European)",
+    "demographics": {
+      "speakers": "~10 million (European Portuguese)",
+      "regions": [
+        "Portugal",
+        "Angola (partly)",
+        "Mozambique (partly)"
+      ]
+    },
+    "dialects": {
+      "split": false,
+      "classification": "Standard European Portuguese based on the Lisbon-Coimbra dialect. Northern dialects differ in pronunciation.",
+      "variants": []
+    },
+    "history": "Portugal was the source of the language that spread globally during the Age of Exploration. European Portuguese retains more conservative features than Brazilian Portuguese, particularly in phonology.",
+    "resources": {
+      "wikipedia": "https://en.wikipedia.org/wiki/European_Portuguese",
+      "foundations": [],
+      "dictionaries": [
+        {
+          "name": "Priberam (Portuguese dictionary)",
+          "url": "https://dicionario.priberam.org/"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "fsts": [],
+    "corpora": [
+      {
+        "name": "OPUS (EN-PT corpora)",
+        "url": "https://opus.nlpl.eu/results/en&pt/corpus-result-table",
+        "type": "parallel",
+        "pairs": [
+          "en-pt"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "NLLB-200 (por_Latn)",
+        "url": "https://huggingface.co/facebook/nllb-200-distilled-600M",
+        "type": "nmt"
+      }
+    ]
+  }
+}
