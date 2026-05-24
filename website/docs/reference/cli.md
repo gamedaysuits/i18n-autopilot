@@ -19,6 +19,9 @@ i18n-rosetta integrity         Audit locale files for format/encoding issues
 i18n-rosetta status            Show pair configuration, plugins, and quality tiers
 i18n-rosetta provenance        Audit translation resource licensing
 i18n-rosetta plugin <sub>      Manage method plugins (install, remove, list)
+i18n-rosetta fonts <sub>       Download web fonts for PUA script converters
+i18n-rosetta tm <sub>          Manage Translation Memory cache (stats, clear)
+i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 ```
 
 Run `i18n-rosetta <command> --help` for detailed help on any command.
@@ -40,6 +43,8 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 --concurrency <n>       Max parallel API calls for content translation (default: 12)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
+--no-tm                 Skip Translation Memory cache for this sync run
+--locale <code>         Target locale (xliff export, tm clear)
 ```
 
 ---
@@ -81,7 +86,10 @@ i18n-rosetta sync --content-dir ./content           # include Hugo Markdown
 i18n-rosetta sync --method google-translate          # force Google Translate
 i18n-rosetta sync --concurrency 20                  # 20 parallel API calls
 i18n-rosetta sync --fallback                         # write [EN] prefixes on failure
+i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
+
+**Translation Memory**: By default, `sync` loads `.rosetta/tm.json` and serves cached translations for unchanged source values. Use `--no-tm` to bypass the cache (useful when switching translation providers or debugging quality). See [Translation Memory](/docs/concepts/translation-memory).
 
 **Change detection**: rosetta stores SHA-256 hashes in `.i18n-rosetta.lock`. When source values change, the next sync automatically re-translates those keys. Commit the lock file so all developers share the baseline.
 
@@ -180,6 +188,58 @@ i18n-rosetta integrity --warn-only   # non-blocking
 - Encoding issues (mojibake, invalid Unicode)
 - Untranslated copies (target value identical to source)
 - Orphaned keys (keys in target that don't exist in source)
+- ICU MessageFormat plural category completeness (e.g., Arabic needs 6 categories)
+
+---
+
+## tm
+
+Manage the Translation Memory cache (`.rosetta/tm.json`). TM stores previous translations and serves them on subsequent syncs instead of calling the API.
+
+```bash
+i18n-rosetta tm stats                  # show cache statistics
+i18n-rosetta tm clear                  # clear cache (with confirmation)
+i18n-rosetta tm clear --yes            # clear without confirmation
+i18n-rosetta tm clear --locale fr      # clear only French entries
+```
+
+| Subcommand | Output |
+|------------|--------|
+| `stats` | Entry count, file size, per-locale breakdown |
+| `clear` | Delete cache file (full or per-locale) |
+
+| Option | Effect |
+|--------|--------|
+| `--locale <code>` | Clear only entries for one locale |
+| `--yes` | Skip confirmation prompt |
+
+See [Translation Memory](/docs/concepts/translation-memory) for how TM works and when to clear it.
+
+---
+
+## xliff
+
+Export and import XLIFF 1.2 files for professional translator review. XLIFF is the universal exchange format supported by CAT tools like memoQ, SDL Trados, and Phrase.
+
+```bash
+i18n-rosetta xliff export --locale fr                   # export French XLIFF
+i18n-rosetta xliff export --locale ja --out ./review/   # custom output path
+i18n-rosetta xliff import .rosetta/xliff/fr.xliff       # import reviewed file
+i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
+```
+
+| Subcommand | Output |
+|------------|--------|
+| `export` | Generate `.xliff` from source + target locale files |
+| `import` | Merge reviewed `.xliff` translations into locale files |
+
+| Option | Effect |
+|--------|--------|
+| `--locale <code>` | Target locale for export (required) |
+| `--out <path>` | Custom output path or directory |
+| `--dry` | Preview import without writing |
+
+See [Working with Professional Translators](/docs/guides/professional-translators) for the full workflow.
 
 ---
 
@@ -217,6 +277,37 @@ See [Plugin Specification](/docs/reference/plugin-spec) for the plugin manifest 
 
 ---
 
+## fonts
+
+Downloads and manages PUA web fonts for constructed language script converters. Languages that use Private Use Area characters (Klingon, Sindarin, Kryptonian) need custom web fonts to render their scripts. This command downloads them from verified open-source repositories.
+
+```bash
+i18n-rosetta fonts list                           # show needed fonts
+i18n-rosetta fonts install                        # download all needed fonts
+i18n-rosetta fonts install --css                  # also generate CSS snippet
+i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
+```
+
+| Subcommand | Output |
+|------------|--------|
+| `list` | Shows which PUA fonts are needed and their install status |
+| `install` | Downloads fonts for configured languages |
+
+| Option | Effect |
+|--------|--------|
+| `--dir <path>` | Override font output directory (auto-detected from project type) |
+| `--css` | Generate a `conlang-fonts.css` snippet alongside the fonts |
+| `--config <path>` | Path to config file (used to detect which languages need fonts) |
+
+**Auto-detection:** The output directory is inferred from your project structure:
+- **Docusaurus** → `static/fonts/` or `website/static/fonts/`
+- **Hugo** → `static/fonts/`
+- **Default** → `public/fonts/`
+
+**Native Unicode converters** (`crk` → Cree Syllabics, `sr` → Serbian Cyrillic) do NOT require font installation.
+
+See [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) for full PUA font details.
+
 ## Three-Layer Pipeline
 
 Use `lint`, `sync`, and `audit` together for bulletproof i18n:
@@ -243,6 +334,8 @@ Use `lint`, `sync`, and `audit` together for bulletproof i18n:
 
 - [Configuration](/docs/getting-started/configuration) — config file reference
 - [Translation Methods](/docs/guides/translation-methods) — method selection per pair
+- [Translation Memory](/docs/concepts/translation-memory) — caching and cost savings
+- [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF workflow
 - [Plugin Specification](/docs/reference/plugin-spec) — plugin manifest format
 - [CI/CD Guide](/docs/guides/ci-cd) — automating CLI commands in your pipeline
 - [How Sync Works](/docs/concepts/how-sync-works) — understanding the sync pipeline

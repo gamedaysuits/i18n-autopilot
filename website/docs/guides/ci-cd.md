@@ -141,12 +141,25 @@ jobs:
 | **Sync** | `sync` | Post-commit / CI | Translate missing and changed keys |
 | **Audit** | `audit` | Build step | Fail deployment if any locale is incomplete |
 
+:::tip Translation Memory in CI
+If your CI runner has a persistent workspace (or caches `.rosetta/`), Translation Memory kicks in automatically — subsequent syncs only translate keys whose source text actually changed. For ephemeral runners, consider caching `.rosetta/tm.json` between runs:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
+
 ---
 
 ## See Also
 
 - [CLI Reference](/docs/reference/cli) — full command reference
 - [How Sync Works](/docs/concepts/how-sync-works) — understanding incremental sync
+- [Translation Memory](/docs/concepts/translation-memory) — caching and cost savings
 - [Translation Methods](/docs/guides/translation-methods) — method selection per pair
 - [Quality Gate](/docs/concepts/quality-gate) — what happens when translations fail
 - [Configuration](/docs/getting-started/configuration) — config reference

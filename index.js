@@ -79,3 +79,38 @@ export {
   buildContentCoachingBlock,
   DEFAULT_COACHING_DIR,
 } from './lib/methods/llm-coached.js';
+
+// ── Translation Memory ─────────────────────────────────────────────
+export {
+  loadTM,
+  saveTM,
+  lookupTM,
+  storeTM,
+  partitionByTM,
+  tmSize,
+} from './lib/tm.js';
+
+// ── XLIFF interchange ──────────────────────────────────────────────
+export {
+  exportXLIFF,
+  importXLIFF,
+} from './lib/xliff.js';
+
+// ── ICU MessageFormat ──────────────────────────────────────────────
+export {
+  isICUString,
+  parseICU,
+  reassembleICU,
+  extractTranslatableSegments,
+  getRequiredPluralCategories,
+} from './lib/icu.js';
+
+// ── Terminology enforcement ────────────────────────────────────────
+export { verifyTerminology } from './lib/terminology.js';
+
+// ── Integrity auditing ─────────────────────────────────────────────
+export {
+  auditLocalePair,
+  formatIntegrityReport,
+  checkPluralCategories,
+} from './lib/integrity.js';

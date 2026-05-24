@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './WordFlipper.module.css';
 
+/**
+ * WordFlipper — reusable flip-animation component.
+ *
+ * Each entry in `words` can be:
+ *   - A plain string: rendered as-is
+ *   - An object { text, script }: `text` is rendered inside a
+ *     <span data-script="..."> so PUA @font-face rules activate
+ *
+ * The `onChange` callback receives the raw word entry (string or object)
+ * so the parent can inspect it (e.g., to check if it's a number).
+ */
 export default function WordFlipper({
   words = [],
   interval = 2200,
@@ -31,7 +42,7 @@ export default function WordFlipper({
         
         // Step 3: Trigger transition-in
         setVisible(true);
-      }, 250); // half of CSS transition duration (300ms) or similar
+      }, 250);
 
       return () => clearTimeout(changeTimer);
     }, interval);
@@ -40,6 +51,20 @@ export default function WordFlipper({
   }, [words, interval, onChange]);
 
   if (words.length === 0) return null;
+
+  const currentWord = words[index];
+
+  // Determine what to render: plain string vs. script-wrapped object
+  const renderContent = () => {
+    if (typeof currentWord === 'object' && currentWord.script) {
+      return (
+        <span data-script={currentWord.script}>
+          {currentWord.text}
+        </span>
+      );
+    }
+    return currentWord;
+  };
 
   return (
     <span className={clsx(styles.flipperContainer, className)}>
@@ -50,7 +75,7 @@ export default function WordFlipper({
           wordClassName
         )}
       >
-        {words[index]}
+        {renderContent()}
       </span>
     </span>
   );

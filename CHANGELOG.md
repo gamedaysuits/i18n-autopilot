@@ -5,41 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Changed
-- **Shared retry helper** (`lib/methods/fetch-with-retry.js`): Extracted the common HTTP retry loop (AbortController + timeout, retryable status detection, exponential backoff with jitter) from all 4 non-LLM adapters into a single shared `fetchWithRetry()` function. Previously, Google Translate, DeepL, Microsoft Translator, and LibreTranslate each had independent ~50-line copy-pasted retry loops — bug fixes in one copy wouldn't propagate. ~400 lines eliminated.
-- **Setup help extraction** (`getSetupHelp()` on `TranslationMethod`): Moved method-specific setup guidance (API key instructions, box-drawing panels) from a 125-line `if/else if` chain in `sync.js` into each method's own `getSetupHelp()` override. Adding a new translation method no longer requires editing the sync orchestrator. ~120 lines eliminated from sync.js.
-- **Architecture notes**: Added `ARCHITECTURE NOTES` block to the `sync.js` file header documenting the god-module risk (config + format + hash + translation + I/O + content sync all in one file) and the output adoption gap (`console.log/error` used directly instead of the output controller, breaking `--json` and `--quiet` for the sync pipeline).
-
-### Fixed
-- **DeepL glossary retry budget** (`deepl.js`): When a glossary-attached batch got HTTP 400 and fell back to no-glossary, the recursive call reset `startAttempt` to 0, allowing up to 2× MAX_RETRIES total network requests. Now correctly passes the current attempt count forward.
-- **`resolveRuntime` config mutation** (`sync.js`): The `resolveRuntime()` function was mutating the shared `config.pairs` map when merging CLI overrides (`--method`, `--model`). Fixed with a defensive clone.
-- **Content sync double-counting** (`sync.js`): Content-synced files were being double-counted in the final stats summary.
+## [3.3.1] - 2026-05-24
 
 ### Added
-- **`fetchWithRetry` test suite** (`test/fetch-with-retry.test.js`): 25+ tests covering success paths, non-retryable error pass-through (400/401/403/404), retry exhaustion on 429/5xx, `startAttempt` budget sharing, network error retries, timeout (AbortError) handling, options pass-through, and mixed error sequences.
-
-## [3.3.1] - 2026-05-22
-
-### Added
+- **Translation Memory** (`lib/tm.js`, `lib/commands/tm.js`): Cache translations keyed by SHA-256(source + locale + method). Subsequent syncs serve unchanged keys from `.rosetta/tm.json` instead of calling the API. TM entries include locale (`l`) and method (`m`) metadata for per-locale management.
+  - `i18n-rosetta tm stats` — entry count, file size, per-locale breakdown
+  - `i18n-rosetta tm clear` — full or `--locale`-scoped clear with confirmation prompt (`--yes` to skip)
+  - `--no-tm` flag on `sync` — bypass cache entirely (useful when switching providers)
+- **XLIFF 1.2 interchange** (`lib/xliff.js`, `lib/commands/xliff.js`): Export/import translations for professional review in CAT tools (memoQ, SDL Trados, Phrase).
+  - `i18n-rosetta xliff export --locale fr` — generates `.rosetta/xliff/fr.xliff`
+  - `i18n-rosetta xliff import .rosetta/xliff/fr.xliff` — merges reviewed translations back (with `--dry` preview)
+- **Terminology enforcement** (`lib/terminology.js`): Post-translation verification that coached dictionary terms appear in the LLM output. Reports violations as warnings, not blocking errors.
+- **ICU MessageFormat support** (`lib/icu.js`): Parse, validate, and round-trip ICU plural/select strings. `integrity` command now checks plural category completeness per CLDR rules.
+- **`status` command shows TM cache**: Entry count and file size displayed in the project summary header.
+- **`init` wizard post-setup tips**: After writing config, the wizard now shows `tm stats` and `xliff export` examples with a cost-savings explanation.
 - **Six new translation methods**: Direct API integrations for `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, and `gemini`. Zero external dependencies — all use Node.js built-in `fetch`.
 - **Coaching support for direct LLM providers**: `openai`, `anthropic`, and `gemini` methods now load coaching data from `.rosetta/coaching/<locale>.json`, injecting grammar rules into the system prompt and dictionary term overrides into per-batch user messages. Same coaching format as `llm-coached`.
-- **Programmatic API** (`index.js`): New package entry point re-exports all method classes, orchestrator, configuration, sync pipeline, quality gate, and coaching utilities. Enables `import { OpenAIMethod } from 'i18n-rosetta'`.
+- **Programmatic API** (`index.js`): New package entry point re-exports all method classes, orchestrator, configuration, sync pipeline, quality gate, coaching, TM, XLIFF, ICU, terminology, and integrity utilities.
 - **Per-method onboarding**: `sync.js` now shows method-specific API key setup instructions with signup URLs when a key is missing (DeepL, Microsoft, LibreTranslate, OpenAI, Anthropic, Gemini).
-- **Runtime model validation**: Direct LLM providers now validate model strings before making API calls. Catches three categories of errors:
-  - OpenRouter-format strings (`google/gemini-3.5-flash`) used with direct providers — suggests `--method llm`
-  - Models from the wrong provider (`claude-*` on OpenAI) — suggests the correct `--method`
-  - Deprecated or misspelled model names — fetches the provider's live model list and suggests alternatives
-- **`DirectLLMMethod` base class** (`lib/methods/direct-llm.js`): Shared base class for OpenAI, Anthropic, and Gemini. Implements translate, coaching integration, retry loops, and model validation. Subclasses implement only provider-specific HTTP details (~130 lines each vs ~300 before).
-- **Model-aware quality tiers**: `getQualityTier()` now returns model-specific tiers: `gpt-4o-mini` → budget, `claude-opus` → premium, `gemini-pro` → premium, etc.
-- **56 new tests** (745 → 801): Direct provider unit tests, coaching integration tests with real temp files, MS Translator tests, LibreTranslate tests. Live API integration test (`test/live-provider-coaching.manual.js`) for manual verification.
+- **Runtime model validation**: Direct LLM providers now validate model strings before making API calls. Catches OpenRouter-format strings, wrong-provider models, and deprecated model names — suggests alternatives.
+- **`DirectLLMMethod` base class** (`lib/methods/direct-llm.js`): Shared base class for OpenAI, Anthropic, and Gemini. Subclasses implement only provider-specific HTTP details (~130 lines each vs ~300 before).
+- **Model-aware quality tiers**: `getQualityTier()` now returns model-specific tiers.
 
 ### Changed
-- **Default model names updated**: Anthropic default changed from `claude-3-5-sonnet-latest` (retired) to `claude-sonnet-4-6`. Gemini default changed from `gemini-1.5-flash` (deprecated) to `gemini-2.5-flash`.
-- **`package.json`**: Added `exports` and `main` fields pointing to `index.js`. Added `openai`, `anthropic`, `gemini`, `deepl` keywords.
-- **Error message standardization**: All providers now use consistent `[WARN] <Provider>: no API key — skipping.` format. Detailed setup help is provided by each method's `getSetupHelp()` override (see `lib/methods/base.js`).
-- **DeepL coaching dedup**: DeepL now uses the shared `loadCoachingData` from `llm-coached.js` instead of a local duplicate implementation.
+- **Shared retry helper** (`lib/methods/fetch-with-retry.js`): Extracted the common HTTP retry loop from all 4 non-LLM adapters into a single shared `fetchWithRetry()`. ~400 lines eliminated.
+- **Setup help extraction** (`getSetupHelp()` on `TranslationMethod`): Moved method-specific setup guidance from a 125-line `if/else if` chain in `sync.js` into each method's own `getSetupHelp()` override. ~120 lines eliminated from sync.js.
+- **Default model names updated**: Anthropic default changed to `claude-sonnet-4-6`. Gemini default changed to `gemini-2.5-flash`.
+- **Error message standardization**: All providers now use consistent `[WARN] <Provider>: no API key — skipping.` format.
+- **Documentation overhaul**: README, intro, quickstart, config, installation, CI/CD, troubleshooting all updated to reflect TM, XLIFF, and terminology features. Sidebar now includes all doc pages.
+
+### Fixed
+- **DeepL glossary retry budget** (`deepl.js`): Recursive fallback no longer resets the attempt counter.
+- **`resolveRuntime` config mutation** (`sync.js`): CLI overrides no longer mutate the shared pairs map.
+- **Content sync double-counting** (`sync.js`): Content-synced files no longer inflate final stats.
+
 
 ## [3.3.0] - 2026-05-22
 

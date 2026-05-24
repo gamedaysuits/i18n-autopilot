@@ -53,7 +53,13 @@ Rosetta needs a translation backend. Pick one:
 | Provider | Environment Variable | Best For |
 |----------|---------------------|----------|
 | **OpenRouter** (recommended) | `OPENROUTER_API_KEY` | Content-heavy projects, Markdown, 200+ models |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs (130+ languages) |
+| **Gemini** (free tier) | `GEMINI_API_KEY` | Zero-cost start, good quality |
+| **OpenAI** | `OPENAI_API_KEY` | Direct GPT-4o access |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Direct Claude access, nuanced text |
+| **DeepL** | `DEEPL_API_KEY` | European languages, built-in formality |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs, 130+ languages |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, 100+ languages |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Self-hosted, privacy-first |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>

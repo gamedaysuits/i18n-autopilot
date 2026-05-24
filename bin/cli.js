@@ -38,6 +38,8 @@ const { values, positionals } = parseArgs({
     'warn-only':      { type: 'boolean' },
     undo:             { type: 'boolean' },
     'force-content':  { type: 'boolean' },  // re-translate all content files (clears content lock)
+    'no-tm':          { type: 'boolean' },  // skip Translation Memory for this sync run
+    css:              { type: 'boolean' },  // fonts install --css: generate CSS snippet
 
     // --- String flags (take a value) ---
     config:        { type: 'string' },
@@ -54,6 +56,8 @@ const { values, positionals } = parseArgs({
     'min-length':  { type: 'string' },
     'force-keys':  { type: 'string' },
     concurrency:   { type: 'string' },     // max parallel API calls for content sync
+    temperature:   { type: 'string' },     // sampling temperature for LLM methods
+    locale:        { type: 'string' },     // target locale for xliff export, tm clear
   },
 });
 
@@ -114,6 +118,9 @@ if (args.help && command !== 'help') {
     seo:        () => import('../lib/commands/seo.js'),
     integrity:  () => import('../lib/commands/integrity.js'),
     plugin:     () => import('../lib/commands/plugin.js'),
+    fonts:      () => import('../lib/commands/fonts.js'),
+    tm:         () => import('../lib/commands/tm.js'),
+    xliff:      () => import('../lib/commands/xliff.js'),
   };
 
   if (commands[command]) {

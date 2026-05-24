@@ -210,6 +210,23 @@ src/utils/constants.js
 **/*.test.js
 ```
 
+## `.rosetta/` Directory
+
+Rosetta creates a `.rosetta/` directory in your project root for internal state. You should generally **add this to `.gitignore`** — it's local optimization, not project source:
+
+```gitignore
+.rosetta/
+```
+
+| File | Purpose | Commit? |
+|------|---------|--------|
+| `tm.json` | Translation Memory cache — stores previous translations keyed by source text + locale + method | No (local cache) |
+| `xliff/*.xliff` | XLIFF export files for professional translator review | No (transient) |
+| `methods/` | Installed method plugin manifests | Yes (shared config) |
+| `backups/` | Pre-wrap backups (created by `wrap --undo`) | No (safety net) |
+
+See [Translation Memory](/docs/concepts/translation-memory) for details on `tm.json` and how it saves API costs.
+
 ---
 
 ## Programmatic API
@@ -307,6 +324,8 @@ You get translate, coaching, retry loops, model validation, quality tiers, and s
 
 - [CLI Reference](/docs/reference/cli) — all commands and flags
 - [Translation Methods](/docs/guides/translation-methods) — choosing and mixing methods
+- [Translation Memory](/docs/concepts/translation-memory) — caching and cost savings
+- [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF workflow
 - [Plugin Specification](/docs/reference/plugin-spec) — method plugin manifest format
 - [Architecture](/docs/concepts/architecture) — how the pieces connect
 - [Supported Languages](/docs/reference/supported-languages) — built-in language support

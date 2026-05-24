@@ -6,15 +6,45 @@ import Translate from '@docusaurus/Translate';
 
 import styles from './languages.module.css';
 import { loadLanguages } from '../utils/languageLoader';
-import { convertScript, hasScriptConverter } from '../../../lib/scripts';
+import { convertScript, hasScriptConverter, getConverterInfo } from '../../../lib/scripts';
 
-// Helper to render name in script if a converter exists
+/**
+ * Map converter locale codes to CSS data-script attribute values.
+ * Must match the [data-script="..."] selectors in custom.css.
+ */
+const SCRIPT_ATTR_MAP = {
+  tlh: 'piqad',
+  'x-elvish-s': 'tengwar',
+};
+
+/**
+ * Render a language name with proper script handling.
+ * Returns a React element (not a plain string) for PUA-based scripts
+ * so they get wrapped in <span data-script="..."> for font activation.
+ *
+ * For native Unicode converters (crk, sr): returns the converted string directly.
+ * For PUA converters with a font (tlh, x-elvish-s): returns a <span> element.
+ * For PUA converters without a font (x-kryptonian): returns the Latin name.
+ */
 function getDisplayName(card) {
   const native = card.nativeName || card.name;
-  if (hasScriptConverter(card.code)) {
-    const { converted } = convertScript(native, card.code);
+  if (!hasScriptConverter(card.code)) return native;
+
+  const info = getConverterInfo(card.code);
+  const { converted } = convertScript(native, card.code);
+
+  if (!info.fontNote) {
+    // Native Unicode (Cree syllabics, Serbian Cyrillic)
     return converted;
   }
+
+  const scriptAttr = SCRIPT_ATTR_MAP[card.code];
+  if (scriptAttr) {
+    // PUA converter with a font — wrap in data-script span
+    return <span data-script={scriptAttr}>{converted}</span>;
+  }
+
+  // PUA converter without a font (Kryptonian) — show Latin name
   return native;
 }
 

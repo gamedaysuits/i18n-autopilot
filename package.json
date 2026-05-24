@@ -71,6 +71,10 @@
     "schemas/",
     "docs/",
     "!docs/planning/",
+    "!docs/readme-src/",
+    "!docs/readme-locales/",
+    "!docs/readme-i18n.config.json",
+    "!docs/.i18n-rosetta.lock",
     "README.md",
     "LICENSE"
   ],

@@ -20,6 +20,7 @@ const sidebars = {
         'guides/framework-integration',
         'tutorials/hugo-multilingual-site',
         'tutorials/translate-30-languages',
+        'tutorials/build-a-plugin',
         'guides/translation-methods',
         'guides/low-resource-languages',
         'guides/serving-a-method',
@@ -32,6 +33,7 @@ const sidebars = {
       items: [
         'concepts/architecture',
         'concepts/how-sync-works',
+        'concepts/translation-memory',
         'concepts/coaching-data',
         'concepts/quality-gate',
         'concepts/script-converters',
@@ -63,6 +65,7 @@ const sidebars = {
       type: 'category',
       label: 'Guides',
       items: [
+        'guides/professional-translators',
         'guides/data-sovereignty',
         'guides/ci-cd',
         'guides/content-translation',

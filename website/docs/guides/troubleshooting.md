@@ -198,8 +198,24 @@ Rosetta translates pairs sequentially by default. To speed up multi-language syn
 ### High API costs
 
 - **Check batch sizes** — Larger batches = fewer API calls = lower cost
+- **Use Translation Memory** — TM is on by default. Run `i18n-rosetta tm stats` to verify it's working. If you see 0 entries after multiple syncs, something may be wrong with your `.rosetta/` directory permissions
 - **Use prompt caching** — Rosetta splits system/user messages for cache hits on Anthropic and Google models
 - **Use Google Translate for Tier 2 languages** — See the [Translate 30 Languages](/docs/tutorials/translate-30-languages) cookbook
+
+### Stale translations after switching providers
+
+If you switch from one translation method to another (e.g., `llm` to `deepl`), the TM cache may still serve old translations from the previous method for keys whose source text hasn't changed. The cache key includes the method name, so most cases are handled automatically. But if you changed `model` within the same method:
+
+```bash
+# Force fresh translations for all keys
+i18n-rosetta sync --no-tm
+
+# Or clear the cache entirely and re-sync
+i18n-rosetta tm clear --yes
+i18n-rosetta sync
+```
+
+See [Translation Memory](/docs/concepts/translation-memory) for details on cache key design.
 
 ## Still Stuck?
 

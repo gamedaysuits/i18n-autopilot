@@ -51,6 +51,44 @@
 /* ---------- Typography ---------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ---------- PUA Conlang Fonts ---------- */
+/* These fonts render script-converted text for conlangs that use Unicode
+   Private Use Area (PUA) codepoints. unicode-range ensures they only
+   load when PUA characters are actually present on the page. */
+
+/* Klingon pIqaD — SIL OFL 1.1 — https://github.com/dadap/pIqaD-fonts */
+@font-face {
+  font-family: 'pIqaD';
+  src: url('/fonts/pIqaDqolqoS.ttf') format('truetype');
+  font-display: swap;
+  unicode-range: U+F8D0-F8FF;
+}
+
+/* Tengwar (Sindarin Elvish) — GPL v3 — Free Tengwar Font Project */
+@font-face {
+  font-family: 'Tengwar';
+  src: url('/fonts/FreeMonoTengwar.ttf') format('truetype');
+  font-display: swap;
+  unicode-range: U+E000-E07F;
+}
+
+/* Kryptonian — no open-source PUA font available.
+   Kryptonian text on this site falls back to Latin script.
+   End users can provide their own font via `rosetta fonts install`. */
+
+/* Apply PUA fonts to elements marked with :lang() or data-script attribute.
+   The data-script approach works in the WordFlipper where text cycles
+   rapidly and :lang() context would be impractical. */
+:lang(tlh),
+[data-script="piqad"] {
+  font-family: 'pIqaD', sans-serif;
+}
+
+:lang(x-elvish-s),
+[data-script="tengwar"] {
+  font-family: 'Tengwar', serif;
+}
+
 /* ---------- Global refinements ---------- */
 
 /* Slightly tighter sidebar for cleaner hierarchy */

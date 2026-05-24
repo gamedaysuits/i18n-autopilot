@@ -20,8 +20,8 @@ Rosetta détecte automatiquement vos fichiers de localisation, leur format et le
 Vous pourriez écrire un script rapide qui parcourt vos clés anglaises et appelle Google Translate. La plupart des développeurs le font — cela prend environ 30 lignes. Voici pourquoi cela échoue :
 
 - **Pas de détection de changement.** Lorsque vous mettez à jour une chaîne anglaise, la traduction reste obsolète pour toujours. Rosetta suit chaque valeur source avec des hachages SHA-256 et ne retraduit que ce qui a changé.
-- **Pas de batching.** Un appel d'API par clé signifie 200 clés = 200 allers-retours. Rosetta effectue un batching intelligent (configurable, par défaut 30 clés/batch pour LLM, 128 pour Google).
-- **Pas de porte qualité.** La traduction automatique hallucine, renvoie la source ou produit dans le mauvais script. Rosetta valide chaque traduction avant de l'écrire — les scripts incorrects, l'inflation de la longueur et les échos de la source sont détectés et rejetés.
+- **Pas de batching.** Un appel API par clé signifie 200 clés = 200 allers-retours. Rosetta effectue un batching intelligent (configurable, par défaut 30 clés/batch pour LLM, 128 pour Google).
+- **Pas de porte qualité.** La traduction automatique hallucine, renvoie la source ou produit un résultat dans le mauvais script. Rosetta valide chaque traduction avant de l'écrire — les scripts incorrects, l'inflation de longueur et les échos de source sont détectés et rejetés.
 - **Pas de connaissance du format.** Codé en dur pour JSON ? Rosetta gère JSON, TOML, YAML et Hugo Markdown (frontmatter + corps) avec détection automatique.
 - **Pas de sécurité.** Rosetta protège contre la pollution de prototype, la traversée de chemin via des codes de localisation malveillants et la corruption de blocs de code lors de la traduction Markdown.
 
@@ -42,9 +42,9 @@ Rosetta a besoin d'un backend de traduction. Choisissez-en un :
 | **OpenRouter** (recommandé) | `OPENROUTER_API_KEY` | Projets à fort contenu, Markdown, plus de 200 modèles |
 | **OpenAI** | `OPENAI_API_KEY` | Accès direct à GPT-4o |
 | **Anthropic** | `ANTHROPIC_API_KEY` | Accès direct à Claude |
-| **Gemini** | `GEMINI_API_KEY` | Niveau gratuit disponible |
+| **Gemini** | `GEMINI_API_KEY` | Tier gratuit disponible |
 | **DeepL** | `DEEPL_API_KEY` | Langues européennes, support de glossaire |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Plus de 130 langues, volume élevé |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Plus de 130 langues, gros volumes |
 
 **Démarrage le plus rapide** (gratuit) : Inscrivez-vous sur [aistudio.google.com](https://aistudio.google.com/apikey) pour une clé Gemini gratuite :
 
@@ -60,14 +60,14 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 npx i18n-rosetta sync
 ```
 
-Alternative **Google Translate** (paires clé-valeur uniquement — pas de connaissance Markdown) :
+Alternative à **Google Translate** (paires clé-valeur uniquement — pas de connaissance Markdown) :
 
 ```bash
 export GOOGLE_TRANSLATE_API_KEY=...
 npx i18n-rosetta sync --method google-translate
 ```
 
-> **Note** : Si seul `GOOGLE_TRANSLATE_API_KEY` est défini, rosetta bascule automatiquement vers Google Translate. Aucun changement de configuration n'est nécessaire. Utilise directement l'API REST — pas de SDK, pas de compte de service, pas de `pip install`. Juste la clé.
+> **Note** : Si seule `GOOGLE_TRANSLATE_API_KEY` est définie, rosetta bascule automatiquement sur Google Translate. Aucun changement de configuration n'est nécessaire. Utilise directement l'API REST — pas de SDK, pas de compte de service, pas de `pip install`. Juste la clé.
 
 C'est tout. Pour plus de contrôle, créez un fichier de configuration :
 
@@ -78,7 +78,7 @@ npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific langua
 
 Chaque langue est livrée avec des **préréglages de registre** — des instructions de ton/formalité pré-construites et adaptées à son système linguistique (vouvoiement pour le français, Siezen pour l'allemand, です/ます pour le japonais, 해요체 pour le coréen). L'assistant d'initialisation vous permet de parcourir et de choisir des préréglages, ou de passer `--yes` pour accepter les valeurs par défaut.
 
-### Source non-anglaise
+### Source non anglaise
 
 Si votre langue source n'est pas l'anglais :
 
@@ -92,16 +92,18 @@ Ou définissez-le de manière permanente dans votre configuration :
 { "inputLocale": "fr" }
 ```
 
-## Ce que cela fait
+## Ce qu'il fait
 
 Vous gérez le framework i18n (next-intl, i18next, Hugo). Rosetta gère les fichiers de traduction.
 
-- **Multi-format** — JSON, TOML, YAML et Hugo Markdown (front matter + corps)
-- **Incrémentiel** — Ne traduit que ce qui a changé (suivi du hachage SHA-256)
-- **Porte qualité** — Valide chaque traduction : détecte les hallucinations, les sorties de script incorrectes, les échos de source et l'inflation de la longueur
-- **Sensible au contenu** — Les méthodes LLM protègent les blocs de code, les shortcodes, les liens et les variables d'interpolation pendant la traduction Markdown
+- **Multi-format** — JSON, TOML, YAML, Hugo Markdown (front matter + corps), et XLIFF 1.2
+- **Incrémentiel** — Ne traduit que ce qui a changé (suivi des hachages SHA-256)
+- **Mis en cache** — La mémoire de traduction stocke les résultats précédents ; la resynchronisation ne coûte rien pour les clés inchangées
+- **Porte qualité** — Valide chaque traduction : détecte les hallucinations, les sorties de script incorrectes, les échos de source et l'inflation de longueur
+- **Conscient du contenu** — Les méthodes LLM protègent les blocs de code, les shortcodes, les liens et les variables d'interpolation lors de la traduction Markdown
 - **Outils de pipeline** — `lint`, `audit`, `integrity`, `seo` pour les portes CI
-- **Zéro dépendances** — Uniquement des modules Node.js intégrés. Pas de SDK, pas de modules natifs. Nécessite Node 20+
+- **Interopérabilité XLIFF** — Exportez les traductions pour une révision professionnelle dans des outils TAO (memoQ, SDL Trados, Phrase), importez-les
+- **Zéro dépendances** — Uniquement les modules intégrés de Node.js. Pas de SDK, pas de modules natifs. Nécessite Node 20+
 
 ## Au-delà de Google Translate
 
@@ -120,7 +122,7 @@ Le démarrage rapide vous permet de fonctionner avec un LLM ou Google Translate.
 }
 ```
 
-Si vous pouvez trouver comment traduire une paire de langues — par l'ingénierie des invites, les dictionnaires communautaires, les pipelines FST ou les modèles affinés — rosetta vous permet d'empaqueter cette méthode en tant que plugin et de la déployer avec tout le reste.
+Si vous pouvez trouver comment traduire une paire de langues — par l'ingénierie de prompt, des dictionnaires communautaires, des pipelines FST ou des modèles affinés — rosetta vous permet d'empaqueter cette méthode en tant que plugin et de la déployer avec tout le reste.
 
 > Né de la traduction d'un site web de production en cri des Plaines, où aucune API prête à l'emploi n'existe. L'architecture par paire n'est pas théorique — elle existe parce qu'un projet avait besoin de Google Translate pour le français et d'un pipeline FST coaché pour une langue autochtone, fonctionnant côte à côte dans la même commande de synchronisation.
 
@@ -130,7 +132,7 @@ Le [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) compag
 
 Rosetta prend en charge 10 méthodes de traduction. Chaque paire de langues peut utiliser une méthode différente.
 
-**Fournisseurs LLM** — idéal pour la qualité, la prise en charge de Markdown, compatible avec le coaching :
+**Fournisseurs LLM** — idéal pour la qualité, compatible Markdown, compatible coaching :
 
 | Méthode | Clé | Ce qu'elle fait |
 |--------|-----|-------------|
@@ -138,9 +140,9 @@ Rosetta prend en charge 10 méthodes de traduction. Chaque paire de langues peut
 | `llm-coached` | `OPENROUTER_API_KEY` | LLM + règles de grammaire, dictionnaires, notes de style |
 | `openai` | `OPENAI_API_KEY` | API OpenAI directe (gpt-4o, gpt-4o-mini) |
 | `anthropic` | `ANTHROPIC_API_KEY` | API Anthropic directe (Claude Sonnet, Haiku, Opus) |
-| `gemini` | `GEMINI_API_KEY` | API Google Gemini directe (Flash, Pro) — niveau gratuit disponible |
+| `gemini` | `GEMINI_API_KEY` | API Google Gemini directe (Flash, Pro) — tier gratuit disponible |
 
-**MT traditionnelle** — idéal pour la vitesse, le coût et les paires clé-valeur à volume élevé :
+**TA traditionnelle** — idéal pour la vitesse, le coût et les paires clé-valeur à grand volume :
 
 | Méthode | Clé | Ce qu'elle fait |
 |--------|-----|-------------|
@@ -172,11 +174,11 @@ i18n-rosetta sync --method deepl
 }
 ```
 
-> **Note** : Les méthodes de MT traditionnelles (Google Translate, DeepL, Microsoft Translator, LibreTranslate) gèrent bien les paires clé-valeur mais ne peuvent pas traduire en toute sécurité le contenu Markdown. Pour les projets à fort contenu, les méthodes LLM sont recommandées — elles protègent explicitement les blocs de code, les shortcodes et les variables d'interpolation.
+> **Note** : Les méthodes de TA traditionnelles (Google Translate, DeepL, Microsoft Translator, LibreTranslate) gèrent bien les paires clé-valeur mais ne peuvent pas traduire en toute sécurité le contenu Markdown. Pour les projets à fort contenu, les méthodes LLM sont recommandées — elles protègent explicitement les blocs de code, les shortcodes et les variables d'interpolation.
 
 ## Plugins
 
-Les plugins sont des recettes de traduction pré-empaquetées pour des paires de langues spécifiques. Ce sont des manifestes JSON — pas du code — qui indiquent à rosetta quelle méthode utiliser, avec quels paramètres, et quelle qualité a été évaluée.
+Les plugins sont des recettes de traduction pré-packagées pour des paires de langues spécifiques. Ce sont des manifestes JSON — pas du code — qui indiquent à rosetta quelle méthode utiliser, avec quels paramètres, et quelle qualité a été évaluée.
 
 ```bash
 i18n-rosetta plugin install ./french-formal-v1/    # install from directory
@@ -185,7 +187,7 @@ i18n-rosetta plugin remove french-formal-v1        # uninstall
 i18n-rosetta status                                # shows quality tiers + benchmarks
 ```
 
-Consultez [docs/METHOD_PLUGIN_SPEC.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/METHOD_PLUGIN_SPEC.md) pour le format du manifeste.
+Voir [docs/METHOD_PLUGIN_SPEC.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/METHOD_PLUGIN_SPEC.md) pour le format du manifeste.
 
 ## Commandes
 
@@ -196,14 +198,17 @@ Consultez [docs/METHOD_PLUGIN_SPEC.md](https://github.com/gamedaysuits/i18n-rose
 | `watch` | Synchronisation automatique lors des modifications de fichiers |
 | `audit` | Signaler les localisations incomplètes (porte CI) |
 | `lint` | Trouver les chaînes codées en dur dans le code source |
-| `wrap` | Envelopper automatiquement les chaînes codées en dur dans des appels `t()` (avec annulation) |
+| `wrap` | Envelopper automatiquement les chaînes codées en dur dans les appels `t()` (avec annulation) |
 | `seo` | Générer hreflang, sitemap.xml ou schéma JSON-LD |
-| `integrity` | Vérifier la corruption des espaces réservés et les problèmes d'encodage |
+| `integrity` | Vérifier la corruption des placeholders, l'encodage et l'exhaustivité des pluriels ICU |
 | `status` | Afficher la configuration des paires, les méthodes, les registres et les niveaux de qualité |
 | `provenance` | Auditer la licence des ressources de traduction |
 | `plugin` | Installer, supprimer ou lister les plugins de méthode |
+| `fonts` | Télécharger des polices web pour les convertisseurs de scripts PUA |
+| `tm` | Gérer le cache de la mémoire de traduction (statistiques, effacer, par locale) |
+| `xliff` | Exporter/importer XLIFF 1.2 pour la révision par un traducteur professionnel |
 
-Exécutez `i18n-rosetta <command> --help` pour une aide détaillée sur toute commande.
+Exécutez `i18n-rosetta <command> --help` pour une aide détaillée sur n'importe quelle commande.
 
 Référence complète : [docs/CLI_REFERENCE.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/CLI_REFERENCE.md)
 
@@ -229,13 +234,13 @@ Créez `i18n-rosetta.config.json` ou exécutez `i18n-rosetta init` :
 | `inputLocale` | `"en"` | Code de la langue source |
 | `localesDir` | `"./locales"` | Chemin vers les fichiers de localisation |
 | `contentDir` | `null` | Répertoire de contenu Hugo (active la traduction Markdown) |
-| `format` | `"auto"` | Format de fichier : `json`, `toml`, `yaml`, ou `auto` |
+| `format` | `"auto"` | Format de fichier : `json`, `toml`, `yaml` ou `auto` |
 | `model` | `"google/gemini-3.5-flash"` | Modèle OpenRouter par défaut |
 | `defaultMethod` | `"llm"` | Méthode de traduction par défaut (remplacée par le drapeau `--method`) |
 | `batchSize` | `30` | Clés par lot de traduction |
 | `pairs` | `{}` | Remplacements de méthode, de modèle et de qualité par paire |
 
-**Remplacements par langue** : Chaque langue possède une [Fiche linguistique](docs/planning/LANGUAGE_CARD_SPEC.md) avec des registres prédéfinis adaptés à son système de formalité. Utilisez les clés prédéfinies comme raccourci, ou écrivez un texte de registre personnalisé :
+**Remplacements par langue** : Chaque langue possède une [Fiche linguistique](docs/planning/LANGUAGE_CARD_SPEC.md) — l'une des 50 fiches sélectionnées contenant des préréglages de registre, des systèmes de formalité, des règles typographiques et des indicateurs de prise en charge des méthodes. Les fiches utilisent une [architecture à deux niveaux](website/docs/concepts/architecture.md) (exécution + référence) pour des performances à grande échelle. Créez une nouvelle fiche avec `node scripts/generate-language-card.mjs <code>`. Utilisez les clés de préréglage comme raccourci, ou écrivez un texte de registre personnalisé :
 
 ```json
 {
@@ -256,23 +261,25 @@ Créez `i18n-rosetta.config.json` ou exécutez `i18n-rosetta init` :
 
 **Mode zéro-config** : Pas de fichier de configuration ? Rosetta détecte automatiquement les fichiers de localisation, le format et les langues cibles de votre projet.
 
-Les valeurs de langue peuvent être une clé prédéfinie (par exemple, `"casual-tu"`), un texte de registre personnalisé ou un objet (contrôle total). Les remplacements au niveau de la paire dans `pairs` ont la priorité sur les paramètres au niveau de la langue. Exécutez `npx i18n-rosetta init` pour parcourir les préréglages disponibles pour chaque langue.
+Les valeurs de langue peuvent être une clé de préréglage (par exemple, `"casual-tu"`), un texte de registre personnalisé ou un objet (contrôle total). Les remplacements au niveau de la paire dans `pairs` ont priorité sur les paramètres au niveau de la langue. Exécutez `npx i18n-rosetta init` pour parcourir les préréglages disponibles pour chaque langue.
 
 Guides de configuration du framework : [docs/INTEGRATION_GUIDES.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/INTEGRATION_GUIDES.md)
 
 ## Durcissement
 
-- **Rétroaction exponentielle** — 3 tentatives avec gigue sur les erreurs 429/5xx
-- **Délai d'attente de 30s** — AbortController empêche les blocages
+- **Retrait exponentiel** — 3 tentatives avec jitter sur les erreurs 429/5xx
+- **Délai d'attente de 30s** — AbortController empêche le blocage
 - **Validation de la réponse** — n'accepte que les clés qui ont été envoyées pour traduction
-- **Porte qualité** — détecte les boucles d'hallucination, les sorties de script incorrectes, l'inflation de la longueur et les échos de source
-- **Cascade de réessais** — en cas d'échec d'analyse JSON, réessaie le batch → demi-batch → clés individuelles (plafond budgétaire via `maxRetries`)
-- **Mise en cache des invites** — la séparation des messages système/utilisateur permet la mise en cache au niveau du fournisseur, réduisant le coût des jetons sur les batchs
+- **Porte qualité** — détecte les boucles d'hallucination, les sorties de script incorrectes, l'inflation de longueur et les échos de source
+- **Cascade de réessais** — en cas d'échec d'analyse JSON, réessaie le lot → demi-lot → clés individuelles (plafonnées par budget via `maxRetries`)
+- **Mémoire de traduction** — `.rosetta/tm.json` met en cache les traductions indexées par texte source + locale + méthode ; les clés inchangées sont servies à partir du cache lors des synchronisations ultérieures, éliminant les appels API redondants
+- **Mise en cache des prompts** — la séparation des messages système/utilisateur permet la mise en cache au niveau du fournisseur, réduisant le coût des jetons sur les lots
+- **Application de la terminologie** — les traductions coachées sont vérifiées par rapport aux termes du dictionnaire après la réponse du LLM
 - **Protection contre la pollution de prototype** — bloque `__proto__`, `constructor`, `prototype`
-- **Contenement de chemin** — les écritures de fichiers sont validées pour rester dans les répertoires configurés
+- **Confinement du chemin** — les écritures de fichiers sont validées pour rester dans les répertoires configurés
 - **Protection des blocs** — les blocs de code, les shortcodes, le HTML sont protégés pendant la traduction de contenu
-- **Fallback explicite** — `--fallback` écrit des espaces réservés préfixés par `[EN]` lorsque l'API est indisponible (resynchronisation avec une clé pour les traductions réelles)
-- **Succès partiel** — un batch échoué ne bloque pas le reste
+- **Fallback explicite** — `--fallback` écrit des placeholders préfixés par `[EN]` lorsque l'API est indisponible (resynchronisez avec une clé pour de vraies traductions)
+- **Succès partiel** — un lot échoué ne bloque pas le reste
 
 ## Tests
 

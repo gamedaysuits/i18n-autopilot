@@ -51,18 +51,41 @@ What this means in practice:
 
 ### Loading PUA Web Fonts
 
-To display PUA-based conlang text in your web application, load the appropriate font via CSS:
+rosetta includes a built-in command to download and manage PUA web fonts:
+
+```bash
+# See which fonts are needed for your configured languages
+i18n-rosetta fonts list
+
+# Download all needed fonts (auto-detects project type for output directory)
+i18n-rosetta fonts install
+
+# Also generate a CSS snippet with @font-face declarations
+i18n-rosetta fonts install --css
+```
+
+The `fonts install` command downloads from verified open-source repositories:
+
+| Font | Script | License | Source |
+|------|--------|---------|--------|
+| pIqaD qolqoS | Klingon | SIL Open Font License 1.1 | [GitHub](https://github.com/dadap/pIqaD-fonts) |
+| FreeMonoTengwar | Tengwar | GNU GPL v3 (with font exception) | [SourceForge](https://sourceforge.net/projects/freetengwar/) |
+| *(user-provided)* | Kryptonian | Varies | No open-source PUA font available |
+
+The output directory is auto-detected from your project structure (Docusaurus → `static/fonts/`, Hugo → `static/fonts/`, default → `public/fonts/`). Override with `--dir`.
+
+If you prefer to manage fonts manually, add `@font-face` rules in your CSS:
 
 ```css
-/* Load a Klingon PUA font */
 @font-face {
   font-family: 'pIqaD';
-  src: url('/fonts/piqad.woff2') format('woff2');
-  unicode-range: U+F8D0-U+F8FF;
+  src: url('/fonts/pIqaDqolqoS.ttf') format('truetype');
+  font-display: swap;
+  unicode-range: U+F8D0-F8FF;
 }
 
 /* Apply to Klingon text elements */
-[lang="tlh"] {
+[lang="tlh"], [data-script="piqad"] {
   font-family: 'pIqaD', sans-serif;
 }
 ```

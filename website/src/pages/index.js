@@ -10,7 +10,54 @@ import { useState, useEffect } from 'react';
 import styles from './index.module.css';
 import WordFlipper from '../components/WordFlipper';
 import { loadLanguages } from '../utils/languageLoader';
-import { convertScript, hasScriptConverter } from '../../../lib/scripts';
+import { convertScript, hasScriptConverter, getConverterInfo } from '../../../lib/scripts';
+
+/**
+ * Map converter locale codes to CSS data-script attribute values.
+ * These must match the [data-script="..."] selectors in custom.css.
+ * Only PUA-based converters (those with a fontNote) need this mapping —
+ * native Unicode converters (crk, sr) render without any special font.
+ */
+const SCRIPT_ATTR_MAP = {
+  tlh: 'piqad',
+  'x-elvish-s': 'tengwar',
+  // x-kryptonian omitted: no PUA font available, falls back to Latin
+};
+
+/**
+ * Build a word entry for the WordFlipper from a language card.
+ * Returns either a plain string or a { text, script } object.
+ *
+ * Logic:
+ *   1. If the language has a script converter with no fontNote → native
+ *      Unicode (Cree, Serbian). Convert and return as a plain string.
+ *   2. If the language has a script converter with a fontNote AND we have
+ *      a CSS data-script mapping → convert and return as { text, script }
+ *      so the WordFlipper wraps it in <span data-script="...">.
+ *   3. If fontNote but no mapping (Kryptonian) → return the Latin name.
+ *   4. No converter → return the native name as-is.
+ */
+function buildFlipperWord(lang) {
+  const native = lang.nativeName || lang.name;
+  if (!hasScriptConverter(lang.code)) return native;
+
+  const info = getConverterInfo(lang.code);
+  const { converted } = convertScript(native, lang.code);
+
+  if (!info.fontNote) {
+    // Native Unicode converter (Cree syllabics, Serbian Cyrillic)
+    return converted;
+  }
+
+  const scriptAttr = SCRIPT_ATTR_MAP[lang.code];
+  if (scriptAttr) {
+    // PUA converter with a font we can render
+    return { text: converted, script: scriptAttr };
+  }
+
+  // PUA converter without a font (Kryptonian) — show Latin name
+  return native;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Hero — leads with the i18n framework, not the research angle      */
@@ -32,21 +79,21 @@ function HeroBanner() {
       '210',
       String(data.length),
       ...[...data]
-        .map(lang => {
-          const native = lang.nativeName || lang.name;
-          if (hasScriptConverter(lang.code)) {
-            return convertScript(native, lang.code).converted;
-          }
-          return native;
+        .map(lang => buildFlipperWord(lang))
+        .filter(word => {
+          // Filter out empty strings and objects with empty text
+          if (typeof word === 'object') return word.text && word.text.trim();
+          return word && word.trim();
         })
-        .filter(name => name)
         .sort(() => 0.5 - Math.random())
     ];
     setFlipperWords(dynamicWords);
   }, []);
 
   const wordsToUse = flipperWords.length > 0 ? flipperWords : ['5', '17', '210', '47'];
-  const isNumber = /^\d+$/.test(currentWord);
+  // currentWord can be a string or { text, script } object from WordFlipper
+  const displayText = typeof currentWord === 'object' ? currentWord.text : currentWord;
+  const isNumber = /^\d+$/.test(displayText);
   const suffix = isNumber
     ? ` ${translate({id: 'homepage.hero.languagesSuffix', message: 'languages', description: 'Suffix after the language count number in the hero'})}`
     : '';
@@ -442,26 +489,22 @@ function ArenaSection() {
   useEffect(() => {
     const data = loadLanguages();
     if (data.length > 0) {
-      // Sources: choose major world languages from data (use nativeName || name, convert if needed)
+      // Sources: major world languages (exclude conlangs and Cree for this flipper)
       const majorLangs = data
         .filter(lang => !lang.code.startsWith('x-') && lang.code !== 'crk')
-        .map(lang => {
-          const native = lang.nativeName || lang.name;
-          if (hasScriptConverter(lang.code)) {
-            return convertScript(native, lang.code).converted;
-          }
-          return native;
+        .map(lang => buildFlipperWord(lang))
+        .filter(word => {
+          if (typeof word === 'object') return word.text && word.text.trim();
+          return word && word.trim();
         })
         .sort(() => 0.5 - Math.random());
       
-      // Targets: choose all languages from data (use nativeName || name, convert if needed)
+      // Targets: all languages
       const allLangs = data
-        .map(lang => {
-          const native = lang.nativeName || lang.name;
-          if (hasScriptConverter(lang.code)) {
-            return convertScript(native, lang.code).converted;
-          }
-          return native;
+        .map(lang => buildFlipperWord(lang))
+        .filter(word => {
+          if (typeof word === 'object') return word.text && word.text.trim();
+          return word && word.trim();
         })
         .sort(() => 0.5 - Math.random());
 

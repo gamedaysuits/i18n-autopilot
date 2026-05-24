@@ -16,6 +16,7 @@ Every translation passes through a deterministic validation gate before it's wri
 | **Hallucination loop** | Repeated trigram patterns (e.g., `"Qo' Qo' Qo'"`) | `[GATE] hallucination` |
 | **Length inflation** | Output is significantly longer than source | `[GATE] length` |
 | **Script compliance** | Wrong script for the target locale | `[GATE] script` |
+| **ICU plural categories** | Missing required plural forms for the locale | `[GATE] icu-plural` |
 
 ### Empty/Blank
 
@@ -74,6 +75,31 @@ The system message (register, grammar rules, style notes) is split from the user
 
 This can significantly reduce token costs for projects with many batches.
 
+## ICU MessageFormat Validation
+
+The `integrity` command validates ICU MessageFormat plural patterns against CLDR plural rules. If your source file uses ICU syntax like:
+
+```json
+"items": "{count, plural, one {# item} other {# items}}"
+```
+
+Rosetta verifies that translated versions include all required plural categories for the target locale. For example, Arabic requires six categories (`zero`, `one`, `two`, `few`, `many`, `other`) — not just `one` and `other`.
+
+Run `i18n-rosetta integrity` to check plural completeness across all locales.
+
+## Terminology Enforcement
+
+For coached pairs with a dictionary, rosetta runs a post-translation terminology check. After the quality gate passes, it verifies whether the LLM actually used the required dictionary terms.
+
+```
+[TERM] en→fr: 2 term violation(s)
+  • hero.title: "dashboard" → expected "tableau de bord" but got "panneau de contrôle"
+```
+
+Terminology violations are **warnings, not blocking errors**. The translation is still written to disk. This is intentional — the LLM may have valid reasons for choosing an alternative (context, grammar), and blocking on term mismatches would cause more harm than good.
+
+To fix violations, update the coaching dictionary or manually edit the locale file.
+
 ---
 
 ## See Also
@@ -82,4 +108,6 @@ This can significantly reduce token costs for projects with many batches.
 - [Translation Methods](/docs/guides/translation-methods) — methods that feed into the gate
 - [Script Converters](/docs/concepts/script-converters) — post-gate script conversion
 - [Coaching Data](/docs/concepts/coaching-data) — improving translation quality upstream
+- [Translation Memory](/docs/concepts/translation-memory) — caching validated translations
 - [CLI Reference — sync](/docs/reference/cli#sync) — sync flags including retry behavior
+- [CLI Reference — integrity](/docs/reference/cli#integrity) — ICU plural auditing

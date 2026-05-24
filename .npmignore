@@ -1,7 +1,16 @@
 # Exclude internal planning docs, tests, and development artifacts from npm
 docs/planning/
+docs/readme-src/
+docs/readme-locales/
+docs/readme-i18n.config.json
+docs/.i18n-rosetta.lock
 test/
+website/
 .vault/
 .github/
+.rosetta/
 .rosetta-backup/
+supabase/
+scripts/
 *.lock
+CHANGELOG.md

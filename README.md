@@ -96,11 +96,13 @@ Or set it permanently in your config:
 
 You handle the i18n framework (next-intl, i18next, Hugo). Rosetta handles the translation files.
 
-- **Multi-format** — JSON, TOML, YAML, and Hugo Markdown (front matter + body)
+- **Multi-format** — JSON, TOML, YAML, Hugo Markdown (front matter + body), and XLIFF 1.2
 - **Incremental** — Only translates what changed (SHA-256 hash tracking)
+- **Cached** — Translation Memory stores previous results; re-running sync costs nothing for unchanged keys
 - **Quality-gated** — Validates every translation: catches hallucinations, wrong-script output, source echoes, and length inflation
 - **Content-aware** — LLM methods shield code blocks, shortcodes, links, and interpolation variables during Markdown translation
 - **Pipeline tools** — `lint`, `audit`, `integrity`, `seo` for CI gates
+- **XLIFF interop** — Export translations for professional review in CAT tools (memoQ, SDL Trados, Phrase), import them back
 - **Zero dependencies** — Node.js built-ins only. No SDKs, no native modules. Requires Node 20+
 
 ## Beyond Google Translate
@@ -198,10 +200,13 @@ See [docs/METHOD_PLUGIN_SPEC.md](https://github.com/gamedaysuits/i18n-rosetta/bl
 | `lint` | Find hardcoded strings in source code |
 | `wrap` | Auto-wrap hardcoded strings in `t()` calls (with undo) |
 | `seo` | Generate hreflang, sitemap.xml, or JSON-LD schema |
-| `integrity` | Check for placeholder corruption and encoding issues |
+| `integrity` | Check for placeholder corruption, encoding, and ICU plural completeness |
 | `status` | Show pair configuration, methods, registers, and quality tiers |
 | `provenance` | Audit translation resource licensing |
 | `plugin` | Install, remove, or list method plugins |
+| `fonts` | Download web fonts for PUA script converters |
+| `tm` | Manage Translation Memory cache (stats, clear, per-locale) |
+| `xliff` | Export/import XLIFF 1.2 for professional translator review |
 
 Run `i18n-rosetta <command> --help` for detailed help on any command.
 
@@ -267,7 +272,9 @@ Framework setup guides: [docs/INTEGRATION_GUIDES.md](https://github.com/gamedays
 - **Response validation** — only accepts keys that were sent for translation
 - **Quality gate** — catches hallucination loops, wrong-script output, length inflation, and source echoes
 - **Retry cascade** — on JSON parse failure, retries batch → half-batch → individual keys (budget-capped via `maxRetries`)
+- **Translation Memory** — `.rosetta/tm.json` caches translations keyed by source text + locale + method; unchanged keys are served from cache on subsequent syncs, eliminating redundant API calls
 - **Prompt caching** — system/user message split enables provider-level caching, reducing token cost across batches
+- **Terminology enforcement** — coached translations are verified against dictionary terms after the LLM responds
 - **Prototype pollution guard** — blocks `__proto__`, `constructor`, `prototype`
 - **Path containment** — file writes validated to stay within configured directories
 - **Block protection** — code blocks, shortcodes, HTML shielded during content translation

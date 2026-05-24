@@ -14,16 +14,21 @@ flowchart TD
     A["Load config\n+ resolve pairs"] --> B["Scan source locale\n(flatten nested keys)"]
     B --> C["Load lock file\n(.i18n-rosetta.lock)"]
     C --> D["Diff: find missing,\nstale, and fallback keys"]
-    D --> E{"Keys to translate?"}
+    D --> TM{"TM lookup"}
+    TM -->|Hits| TC["Serve from cache"]
+    TM -->|Misses| E{"Keys to translate?"}
     E -->|No| F["Done ✓"]
     E -->|Yes| G["Batch keys\n(default 30/batch)"]
     G --> H["Translate batch\n(method-specific)"]
     H --> I["Quality gate\n(validate each key)"]
-    I --> J{"All pass?"}
+    I --> TERM["Terminology check\n(coached pairs)"]
+    TERM --> J{"All pass?"}
     J -->|Yes| K["Write to locale file"]
     J -->|Failures| L["Retry cascade:\nfull → half → individual"]
     L --> H
-    K --> M["Update lock file\n(SHA-256 hashes)"]
+    TC --> I
+    K --> TMS["Store new entries\nin TM"]
+    TMS --> M["Update lock file\n(SHA-256 hashes)"]
     M --> N["Next pair"]
 ```
 
@@ -65,6 +70,19 @@ This is why rosetta only translates what changed — it's not re-translating you
 
 Keys are grouped into batches (default: 30 keys/batch for LLM, 128 for Google Translate). Batching reduces API round trips while keeping prompts manageable.
 
+### 4b. Translation Memory
+
+Before batching, rosetta checks the Translation Memory cache (`.rosetta/tm.json`). Keys whose source text + locale + method match a previous translation are served instantly from cache — no API call needed.
+
+```
+  [TM] 142 key(s) served from cache
+  Translating 3 key(s) to French (llm)... [OK]
+```
+
+TM is the primary cost-saving mechanism. Re-running sync after a single key change only translates that one key, not the entire file. See [Translation Memory](/docs/concepts/translation-memory) for details.
+
+To bypass the cache for a single run: `i18n-rosetta sync --no-tm`
+
 ### 5. Translation
 
 Each batch is sent to the configured translation method:
@@ -91,6 +109,17 @@ Every translation is validated before it's written to disk. Five checks run:
 Failures are logged with a `[GATE]` prefix. No silent fallbacks.
 
 See [Quality Gate](/docs/concepts/quality-gate) for details.
+
+### 6b. Terminology Verification
+
+For coached pairs with a dictionary, rosetta checks whether the LLM actually used the required terminology after translation. Violations are logged as `[TERM]` warnings:
+
+```
+[TERM] en→fr: 2 term violation(s)
+  • "dashboard" → expected "tableau de bord" but got "panneau"
+```
+
+These are warnings, not blocking errors — the translation is still written.
 
 ### 7. Retry Cascade
 
@@ -213,8 +242,10 @@ When a method can't determine cost (LLM methods, remote APIs), rosetta reports `
 ## See Also
 
 - [CLI Reference — sync](/docs/reference/cli#sync) — command flags and options
+- [Translation Memory](/docs/concepts/translation-memory) — caching and cost savings
 - [Quality Gate](/docs/concepts/quality-gate) — how translations are validated
 - [Translation Methods](/docs/guides/translation-methods) — how each method works
+- [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF workflow
 - [Configuration](/docs/getting-started/configuration) — config reference
 - [CI/CD Guide](/docs/guides/ci-cd) — automating syncs in your pipeline
 

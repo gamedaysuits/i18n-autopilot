@@ -33,11 +33,14 @@ Rosetta is a **CLI translation engine** — it translates your locale files dire
 | **Conlang & script conversion** | ✅ | ❌ | ❌ | ❌ |
 | **Plugin architecture** | ✅ | ❌ | ❌ | ❌ |
 | **Markdown / content translation** | ✅ | ✅ | ✅ | ❌ |
-| **Human translator workflow** | ❌ | ✅ | ✅ | ✅ |
-| **Translation memory** | ❌ | ✅ | ✅ | ✅ |
+| **Translation Memory** | ✅ | ✅ | ✅ | ✅ |
+| **XLIFF export/import** | ✅ | ✅ | ✅ | ❌ |
+| **ICU plural validation** | ✅ | ✅ | ✅ | ❌ |
+| **Terminology enforcement** | ✅ | ✅ | ✅ | ❌ |
+| **Human translator workflow** | XLIFF-based | ✅ | ✅ | ✅ |
 | **In-context editing (visual)** | ❌ | ✅ | ✅ | ✅ |
 | **Team collaboration** | ❌ | ✅ | ✅ | ✅ |
-| **File format support** | JSON, TOML, YAML, MD | 50+ | 40+ | JSON |
+| **File format support** | JSON, TOML, YAML, MD, XLIFF | 50+ | 40+ | JSON |
 | **Pricing** | Free (pay your LLM) | From $0/mo | From $0/mo | From $0/mo |
 
 ---
@@ -51,12 +54,13 @@ Rosetta is a **CLI translation engine** — it translates your locale files dire
 - You're translating to languages with no API coverage (Indigenous, endangered, constructed)
 - You want deterministic script output (Cree Syllabics, Klingon pIqaD, Tengwar)
 - You want zero vendor lock-in and zero cloud dependencies
-- You're a solo developer or small team that doesn't need a human translator workflow
+- You're a solo developer or small team that doesn't need a full TMS dashboard
+- You want XLIFF-based handoff to professional translators without a cloud subscription
 
 **A cloud TMS is a better fit when:**
 
-- You have professional human translators reviewing every string
-- You need translation memory and glossary management across projects
+- You have professional human translators reviewing every string (rosetta's XLIFF workflow is simpler than a full TMS)
+- You need cross-project translation memory and glossary management
 - You need in-context visual editing (preview translations inside your UI)
 - You have a large team with role-based access control needs
 - You need 50+ file format support

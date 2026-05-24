@@ -22,6 +22,7 @@ You could write a quick loop that calls Google Translate on each key. Most devel
 
 - **No change detection.** Update an English string — the translation stays stale forever. rosetta tracks every source value with SHA-256 hashes and re-translates only what changed.
 - **No batching.** One API call per key means 200 keys = 200 round trips. rosetta batches intelligently (configurable, default 30 keys/batch for LLM, 128 for Google).
+- **No caching.** Every sync re-translates everything. rosetta's Translation Memory caches translations by source text + locale + method — re-running sync after one key change only translates that one key, not the entire file.
 - **No quality gate.** Machine translation hallucinates, echoes the source back, or outputs in the wrong script. rosetta validates every translation before writing it — wrong-script, length inflation, and source echoes are caught and rejected.
 - **No format awareness.** Hardcoded to JSON? rosetta handles JSON, TOML, YAML, and Hugo Markdown (frontmatter + body) with auto-detection.
 - **No method control.** Every pair gets the same method. rosetta lets you use Google Translate for French, an LLM for Japanese, and a custom community-hosted pipeline for Cree — in the same config file.
@@ -79,11 +80,14 @@ rosetta isn't just `sync`. It's a complete i18n pipeline:
 | `lint` | Scan source code for hardcoded strings |
 | `wrap` | Auto-wrap hardcoded strings in `t()` calls |
 | `audit` | List all untranslated `[EN]` fallback values |
-| `integrity` | Detect placeholder corruption and encoding issues |
-| `seo` | Generate hreflang tags, sitemaps, and JSON-LD |
+| `integrity` | Detect placeholder corruption, encoding issues, and ICU plural completeness |
+| `seo` | Generate hreflang tags, sitemaps, and JSON-LD schema |
 | `status` | Show pair config, plugins, and benchmark scores |
 | `provenance` | Audit translation resource licensing |
 | `plugin` | Install, remove, and list method plugins |
+| `fonts` | Download web fonts for PUA script converters |
+| `tm` | Manage Translation Memory cache (stats, clear, per-locale) |
+| `xliff` | Export/import XLIFF 1.2 for professional translator review |
 
 Three of these — `lint`, `sync`, `audit` — form a CI pipeline that catches hardcoded strings, translates them, and fails the build if any locale is incomplete.
 
@@ -126,10 +130,12 @@ This is an open invitation. If you work with a low-resource language — as a re
 
 **Customizing your setup:**
 - [Translation Methods](/docs/guides/translation-methods) — Choose the right method per pair
+- [Translation Memory](/docs/concepts/translation-memory) — How caching saves you money
 - [Configuration](/docs/getting-started/configuration) — Full config reference
 - [Hugo Multilingual Site](/docs/tutorials/hugo-multilingual-site) — Markdown content translation
 
 **Going deeper:**
+- [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF export/import workflow
 - [Data Sovereignty](/docs/guides/data-sovereignty) — OCAP, CARE, and Māori Data Sovereignty principles
 - [Support a Low-Resource Language](/docs/guides/low-resource-languages) — The challenge that started it all
 - [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Build a decomposition pipeline

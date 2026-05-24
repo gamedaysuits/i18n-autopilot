@@ -140,7 +140,7 @@
     },
     "evalDatasets": {
       "type": "array",
-      "description": "IDs of evaluation datasets that cover this language (e.g., 'flores-plus-devtest').",
+      "description": "IDs of evaluation datasets from the companion eval harness (github.com/gamedaysuits/gds-mt-eval-harness). Not consumed by i18n-rosetta at runtime — metadata only.",
       "items": { "type": "string" }
     },
     "notes": {

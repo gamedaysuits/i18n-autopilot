@@ -97,6 +97,8 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+The unchanged key (`hero.subtitle`) is served from rosetta's **Translation Memory** cache — no API call, no cost. The cache is built automatically during every sync and stored at `.rosetta/tm.json`.
+
 ## Optional: Create a Config File
 
 For more control, generate a config file:
@@ -137,6 +139,9 @@ npx i18n-rosetta watch
 ## Next Steps
 
 - **[Configuration](/docs/getting-started/configuration)** — Full config reference
-- **[Translation Methods](/docs/guides/translation-methods)** — Choose the right method
+- **[Translation Methods](/docs/guides/translation-methods)** — Choose the right method per pair
+- **[Translation Memory](/docs/concepts/translation-memory)** — How caching saves you money on re-runs
+- **[Working with Professional Translators](/docs/guides/professional-translators)** — Export XLIFF for human review
 - **[Framework Integration](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
 - **[CI/CD](/docs/guides/ci-cd)** — Automate translations in your pipeline
+- **[Troubleshooting](/docs/guides/troubleshooting)** — Common issues and solutions
