@@ -76,7 +76,7 @@
     "description": "The label used to navigate to the next doc"
   },
   "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "[EN] One doc tagged|{count} docs tagged",
+    "message": "1 tài liệu được gắn thẻ|{count} tài liệu được gắn thẻ",
     "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
@@ -298,7 +298,7 @@
     "message": "Mọi nơi"
   },
   "theme.SearchPage.documentsFound.plurals": {
-    "message": "[EN] 1 document found|{count} documents found",
+    "message": "Tìm thấy 1 tài liệu|Tìm thấy {count} tài liệu",
     "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.SearchPage.noResultsText": {
@@ -326,7 +326,7 @@
     "description": "The title of the page for a blog tag"
   },
   "theme.blog.author.pageTitle": {
-    "message": "[EN] {authorName} - {nPosts}",
+    "message": "{authorName} - {nPosts}",
     "description": "The title of the page for a blog author"
   },
   "theme.blog.authorsList.pageTitle": {

@@ -43,7 +43,8 @@ describe('Language card schema validation', () => {
   for (const filename of cardFiles) {
     it(`${filename} has all required fields`, () => {
       const raw = fs.readFileSync(path.join(CARDS_DIR, filename), 'utf-8');
-      const card = JSON.parse(raw);
+      const rawCard = JSON.parse(raw);
+      const card = getLanguageCard(rawCard.code);
 
       // Required top-level string fields
       assert.ok(card.code, `${filename}: missing 'code'`);
@@ -615,5 +616,25 @@ describe('INVARIANT: production prompt pipeline genderGuidance wiring', () => {
       pairs.includes('card?.gender?.inclusiveGuidance'),
       'pairs.js must read genderGuidance from card.gender.inclusiveGuidance'
     );
+  });
+});
+
+describe('Language card taxonomic inheritance', () => {
+  it('resolves extends chain for crk (Plains Cree)', () => {
+    const card = getLanguageCard('crk');
+    assert.ok(card, 'crk card should load');
+    assert.equal(card.extends, 'subfamily-cree');
+
+    // Inherited from subfamily-cree
+    assert.equal(card.script, 'Latn');
+    assert.equal(card.rules?.variables?.syntax, 'SRO-style attachment');
+
+    // Inherited from family-algonquian (parent of subfamily-cree)
+    assert.equal(card.dir, 'ltr');
+    assert.equal(card.gender?.grammatical, false);
+
+    // Overridden by child card (crk)
+    assert.equal(card.name, 'Plains Cree');
+    assert.ok(card.formality.description.includes('Plains Cree does not have'));
   });
 });

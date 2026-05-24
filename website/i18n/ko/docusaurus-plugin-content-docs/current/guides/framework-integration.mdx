@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "프레임워크 통합"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 프레임워크 통합
+
+인기 있는 프레임워크와 i18n-rosetta를 설정하는 단계별 가이드예요.
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### 프로젝트 구조
+
+Hugo는 문자열 번역에 `i18n/`을 사용하고 페이지 콘텐츠에 `content/`를 사용해요:
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### 설정
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### 콘텐츠 번역 세부 정보
+
+**Front matter**: YAML(`---`) 및 TOML(`+++`) 구분 기호를 모두 지원해요. 기본적으로 `title`, `description`, `summary`, `subtitle`, `caption`, `linkTitle`를 번역해요. 다른 모든 필드(date, draft, tags, weight, slug 등)는 그대로 유지돼요. 설정에서 `translatableFields`을 사용해 커스터마이징할 수 있어요.
+
+**블록 보호**: 코드 블록, Hugo shortcodes, 인라인 코드, 원시 HTML은 유니코드 sentinel placeholders를 사용해 자동으로 보호돼요. 이 항목들은 변경되지 않고 그대로 통과돼요.
+
+**파일 이름 규칙**: Hugo의 파일 이름 기반 번역 패턴을 따라요:
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md` (소스 접미사 제거)
+
+**기존 파일 건너뛰기**: 이미 번역된 파일은 절대 덮어쓰지 않아요. 강제로 다시 번역하려면 대상 파일을 삭제해 주세요.
+
+### 복수형
+
+TOML 및 YAML 로케일은 CLDR 복수형을 지원해요:
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+diffing을 위해 내부적으로 `items.one` 및 `items.other`로 표현되며, 저장할 때 올바른 섹션 형식으로 다시 re-serialize돼요.
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### 프로젝트 구조
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### 설정
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+중첩된 키 구조를 유지하면서 완전히 번역된 `messages/fr.json`, `messages/ja.json` 등을 생성해요. next-intl이 이를 자동으로 인식해요.
+
+### 개발 워크플로우
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### 평면(Flat) 파일 구조 (권장)
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### 중첩 디렉터리 구조
+
+`{locale}/{namespace}.json` 구조를 사용하는 경우, flatten → translate → unflatten을 수행하는 동기화 스크립트를 작성해 주세요. 자세한 내용은 [react-i18next 문서](https://react.i18next.com/)를 참고해 주세요.
+
+  </TabItem>
+</Tabs>

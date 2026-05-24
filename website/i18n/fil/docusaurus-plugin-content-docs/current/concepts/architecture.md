@@ -1,12 +1,12 @@
 ---
 sidebar_position: 1
-title: "Arkitektura"
+title: "Architecture"
 ---
-# Arkitektura
+# Architecture
 
-Ang Rosetta translation ecosystem ay tatlong magkakahiwalay na tool na nagtutulungan sa pamamagitan ng mga malinaw na tinukoy na kontrata. Wala sa mga ito ang nakadepende sa isa't isa sa build time. Nakikipag-ugnayan ang mga ito sa pamamagitan ng isang ibinahaging **method plugin format** at isang **REST API contract**.
+Ang Rosetta translation ecosystem ay binubuo ng tatlong independent tools na nagtutulungan through well-defined contracts. Wala sa kanila ang naka-depend sa isa't isa at build time. Nag-co-communicate sila through a shared **method plugin format** at isang **REST API contract**.
 
-## Ang Tatlong Bahagi
+## Ang Tatlong Components
 
 ```mermaid
 graph TB
@@ -24,31 +24,37 @@ graph TB
     H -->|"Deploy methods"| T
 ```
 
-### i18n-rosetta (ang proyektong ito)
+### i18n-rosetta (ang project na ito)
 
-Ang open-source na developer tool. Nagsasalin ng mga locale file gamit ang mga pluggable na method. Walang mga dependency, opsyonal ang config, at gumagana agad.
+Ang open-source developer tool. Nagta-translate ito ng locale files gamit ang pluggable methods. Zero dependencies, config-optional, at works out of the box.
 
-**Mga built-in na method:**
-- `llm` → OpenRouter / anumang LLM
+**Built-in methods:**
+- `llm` → OpenRouter / any LLM (200+ models)
 - `llm-coached` → LLM + grammar/dictionary coaching
-- `google-translate` → Google Cloud Translation API
-- `api` → Manipis na pipe patungo sa anumang remote API
+- `openai` → Direct OpenAI API (GPT-4o, GPT-4o-mini)
+- `anthropic` → Direct Anthropic API (Claude Sonnet, Haiku, Opus)
+- `gemini` → Direct Google Gemini API (Flash, Pro — may free tier)
+- `google-translate` → Google Cloud Translation API v2
+- `deepl` → DeepL API na may glossary support
+- `microsoft-translator` → Azure Cognitive Services Translator
+- `libretranslate` → Self-hosted LibreTranslate (AGPL, libre)
+- `api` → Thin pipe papunta sa kahit anong remote REST endpoint
 
-### Eval Harness (kasamang proyekto)
+### Eval Harness (companion project)
 
-Isang research tool para sa pagbuo, pagsubok, at pag-benchmark ng mga translation method. Kapag umabot na sa katanggap-tanggap na kalidad ang isang method, nag-e-export ang harness ng isang **method plugin** — isang `method.json` manifest at mga opsyonal na coaching data file.
+Isang research tool para sa pag-develop, pag-test, at pag-benchmark ng translation methods. Kapag umabot na sa acceptable quality ang isang method, mag-e-export ang harness ng isang **method plugin** — isang `method.json` manifest at optional na coaching data files.
 
-Hindi kailanman tumatakbo ang harness sa loob ng rosetta. Ito ay isang hiwalay na tool na gumagawa ng static na output (mga JSON file). Binabasa lang ng Rosetta ang mga file na iyon.
+Hindi kailanman nagra-run ang harness sa loob ng rosetta. Isa itong separate tool na nagpo-produce ng static output (JSON files). Binabasa lang ng Rosetta ang mga files na ito.
 
 [→ Eval Harness sa GitHub](https://github.com/gamedaysuits/gds-mt-eval-harness)
 
-### Rosetta Translate (pinaplano)
+### Rosetta Translate (planned)
 
-Isang metered API service na nagho-host ng mga proprietary translation method sa server-side — ang mga prompt, coaching data, at linguistic pipeline ay hindi kailanman umaalis sa server.
+Isang metered API service na nagho-host ng proprietary translation methods sa server-side — ang mga prompts, coaching data, at linguistic pipelines ay hindi kailanman lumalabas ng server.
 
-## Paano Sila Nagkakaugnay
+## Paano Sila Naka-connect
 
-### Eval Harness → i18n-rosetta (one-way na export)
+### Eval Harness → i18n-rosetta (one-way export)
 
 ```mermaid
 flowchart LR
@@ -58,9 +64,9 @@ flowchart LR
     D --> E["rosetta sync"]
 ```
 
-**Kontrata**: [Plugin Specification](/docs/reference/plugin-spec)
+**Contract**: [Plugin Specification](/docs/reference/plugin-spec)
 
-### Rosetta Translate → i18n-rosetta (API sa runtime)
+### Rosetta Translate → i18n-rosetta (API at runtime)
 
 ```mermaid
 flowchart LR
@@ -71,46 +77,46 @@ flowchart LR
     E --> F["Returns translations"]
 ```
 
-Ang `APIMethod` ng Rosetta ay isang **dumb pipe**. Nagpapadala ito ng mga key palabas at tumatanggap ng mga pagsasalin pabalik. Wala itong naglalaman na translation logic at wala ring proprietary content.
+Ang `APIMethod` ng Rosetta ay isang **dumb pipe**. Nagse-send ito ng keys palabas at tumatanggap ng translations pabalik. Wala itong kahit anong translation logic at zero proprietary content.
 
-## Ano ang Alam ng Bawat Bahagi Tungkol sa Iba
+## Ano Ang Alam Ng Bawat Component Sa Isa't Isa
 
-| Tool | May alam ba sa rosetta? | May alam ba sa Rosetta Translate? | May alam ba sa harness? |
+| Tool | Alam ang rosetta? | Alam ang Rosetta Translate? | Alam ang harness? |
 |------|---------------------|-------------------------------|---------------------|
-| **i18n-rosetta** | *(ito ang rosetta)* | Oo — tinatawag ito ng `api` method | Wala — nagbabasa lang ng mga plugin export |
-| **Rosetta Translate** | Oo — nagsisilbi sa mga request nito | *(ito ang Rosetta Translate)* | Wala — tumatanggap ng mga na-deploy na method |
-| **Eval Harness** | Oo — nag-e-export ng plugin format | Wala — hiwalay na naka-deploy ang mga method | *(ito ang harness)* |
+| **i18n-rosetta** | *(ito ang rosetta)* | Oo — tinatawag ito ng `api` method | Hindi — nagbabasa lang ng plugin exports |
+| **Rosetta Translate** | Oo — nagse-serve ng requests nito | *(ito ang Rosetta Translate)* | Hindi — tumatanggap ng deployed methods |
+| **Eval Harness** | Oo — nag-e-export ng plugin format | Hindi — hiwalay na naka-deploy ang methods | *(ito ang harness)* |
 
-## Mga Sitwasyon ng User
+## User Scenarios
 
-### Sitwasyon 1: Libre, zero-config (karamihan sa mga user)
+### Scenario 1: Libre, zero-config (karamihan ng users)
 
 ```bash
 export OPENROUTER_API_KEY=sk-...
 npx i18n-rosetta sync
 ```
 
-Gumagamit ng built-in na `llm` method. Walang mga plugin, walang Rosetta Translate, walang harness.
+Gumagamit ng built-in na `llm` method. Walang plugins, walang Rosetta Translate, walang harness.
 
-### Sitwasyon 2: Google Translate baseline
+### Scenario 2: Google Translate baseline
 
 ```bash
 export GOOGLE_TRANSLATE_API_KEY=AIza...
 npx i18n-rosetta sync
 ```
 
-Gumagamit ng built-in na `google-translate` method. Hindi kailangan ng mga plugin.
+Gumagamit ng built-in na `google-translate` method. Hindi kailangan ng plugins.
 
-### Sitwasyon 3: Open plugin na may naka-bundle na coaching
+### Scenario 3: Open plugin na may bundled coaching
 
 ```bash
 rosetta plugin install ./french-formal-v1/
 rosetta sync
 ```
 
-May `type: "llm-coached"` ang plugin → gumagamit ang rosetta ng sariling OpenRouter key ng user. Lokal ang coaching data (walang server call).
+May `type: "llm-coached"` ang plugin → ginagamit ng rosetta ang sariling OpenRouter key ng user. Local ang coaching data (walang server call).
 
-### Sitwasyon 4: DIY coaching (walang plugin, walang harness)
+### Scenario 4: DIY coaching (walang plugin, walang harness)
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -120,12 +126,22 @@ May `type: "llm-coached"` ang plugin → gumagamit ang rosetta ng sariling OpenR
 }
 ```
 
-Pinapanatili ng user ang kanilang sariling mga panuntunan sa grammar at diksyunaryo sa `.rosetta/coaching/fr.json`.
+Mina-maintain ng user ang sarili nilang grammar rules at dictionary sa `.rosetta/coaching/fr.json`.
 
-## Mga Prinsipyo ng Disenyo
+## Design Principles
 
-1. **Walang mga circular dependency.** One-way ang mga tulay.
-2. **Ang Rosetta ay ang lightweight core.** Walang mga dependency, opsyonal ang config. Additive ang mga plugin at API.
-3. **Architectural ang proteksyon ng IP.** Nananatili sa server-side ang mga proprietary technique. Walang ipinapadalang proprietary ang npm package.
-4. **Ang plugin format ay ang kontrata.** Dumadaloy ang lahat sa pamamagitan ng `method.json`.
-5. **May iisang trabaho ang bawat tool.** Harness → bumuo ng mga method. Rosetta Translate → mag-host ng mga method. Rosetta → magsalin ng mga file.
+1. **Walang circular dependencies.** One-way lang ang mga bridges.
+2. **Ang Rosetta ang lightweight core.** Zero dependencies, config-optional. Additive ang mga plugins at API.
+3. **Architectural ang IP protection.** Nananatili sa server-side ang proprietary techniques. Walang shini-ship na proprietary ang npm package.
+4. **Ang plugin format ang contract.** Dumadaan ang lahat sa `method.json`.
+5. **May iisang trabaho ang bawat tool.** Harness → mag-develop ng methods. Rosetta Translate → mag-host ng methods. Rosetta → mag-translate ng files.
+
+---
+
+## See Also
+
+- [Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat built-in method
+- [Plugin Specification](/docs/reference/plugin-spec) — ang method.json manifest format
+- [Eval Harness](/docs/eval/harness) — ang companion research tool
+- [Serving a Method via API](/docs/guides/serving-a-method) — pag-host ng custom translation pipelines
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — ang use case na nag-drive sa architecture na ito

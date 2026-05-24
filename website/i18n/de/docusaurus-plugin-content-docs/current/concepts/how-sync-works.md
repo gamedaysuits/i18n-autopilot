@@ -1,10 +1,10 @@
 ---
 sidebar_position: 2
-title: "So funktioniert die Synchronisation"
+title: "Wie die Synchronisation funktioniert"
 ---
-# Wie Sync funktioniert
+# Wie die Synchronisierung funktioniert
 
-Der Befehl `sync` ist die Kernfunktion von rosetta. Hier ist, was passiert, wenn Sie `npx i18n-rosetta sync` ausführen.
+Der Befehl `sync` ist die Kernfunktion von rosetta. Folgendes passiert, wenn Sie `npx i18n-rosetta sync` ausführen.
 
 ## Pipeline-Übersicht
 
@@ -30,14 +30,14 @@ flowchart TD
 
 ### 1. Konfigurationsauflösung
 
-Rosetta lädt `i18n-rosetta.config.json` (oder erkennt Einstellungen automatisch). Es ermittelt:
+Rosetta lädt `i18n-rosetta.config.json` (oder erkennt die Einstellungen automatisch). Dabei wird Folgendes aufgelöst:
 - Quell-Locale und Ziel-Locales
-- Den Paar-Graphen (welche Quelle→Ziel-Kombinationen verarbeitet werden sollen)
+- Der Paar-Graph (welche Quelle→Ziel-Kombinationen verarbeitet werden sollen)
 - Methoden-, Modell- und Qualitätseinstellungen pro Paar
 
 ### 2. Quell-Scan
 
-Die Quell-Locale-Datei wird geladen und in eine Schlüssel→Wert-Zuordnung (Map) abgeflacht:
+Die Quell-Locale-Datei wird geladen und in eine Schlüssel→Wert-Zuordnung abgeflacht:
 
 ```json
 // Input (nested)
@@ -49,31 +49,31 @@ Die Quell-Locale-Datei wird geladen und in eine Schlüssel→Wert-Zuordnung (Map
 
 ### 3. Änderungserkennung
 
-Rosetta liest `.i18n-rosetta.lock`, wo SHA-256-Hashes von zuvor übersetzten Quellwerten gespeichert sind. Für jeden Schlüssel wird Folgendes geprüft:
+Rosetta liest `.i18n-rosetta.lock`, wo die SHA-256-Hashes der zuvor übersetzten Quellwerte gespeichert sind. Für jeden Schlüssel wird Folgendes geprüft:
 
 | Bedingung | Aktion |
 |-----------|--------|
 | Schlüssel fehlt im Ziel | **Übersetzen** |
-| Quell-Hash hat sich seit dem letzten Sync geändert | **Neu übersetzen** (veraltet) |
+| Quell-Hash hat sich seit der letzten Synchronisierung geändert | **Neu übersetzen** (veraltet) |
 | Zielwert beginnt mit `[EN]` | **Neu übersetzen** (Fallback-Platzhalter) |
 | Quell-Hash unverändert, Schlüssel existiert | **Überspringen** |
 
-Aus diesem Grund übersetzt rosetta nur das, was sich geändert hat – es wird nicht bei jedem Sync Ihre gesamte Datei neu übersetzt.
+Aus diesem Grund übersetzt rosetta nur das, was sich geändert hat — es wird nicht bei jeder Synchronisierung Ihre gesamte Datei neu übersetzt.
 
-### 4. Batching
+### 4. Stapelverarbeitung
 
-Schlüssel werden in Batches gruppiert (Standard: 30 Schlüssel/Batch für LLMs, 128 für Google Translate). Batching reduziert API-Roundtrips und hält die Prompts gleichzeitig überschaubar.
+Schlüssel werden in Stapeln (Batches) gruppiert (Standard: 30 Schlüssel/Stapel für LLMs, 128 für Google Translate). Die Stapelverarbeitung reduziert API-Roundtrips und hält die Prompts gleichzeitig handhabbar.
 
 ### 5. Übersetzung
 
-Jeder Batch wird an die konfigurierte Übersetzungsmethode gesendet:
+Jeder Stapel wird an die konfigurierte Übersetzungsmethode gesendet:
 
-- **`llm`**: Strukturierter Prompt an OpenRouter mit Register-Anweisungen
-- **`llm-coached`**: Dasselbe, aber mit injizierten Grammatikregeln, Wörterbuch und Stilhinweisen
-- **`google-translate`**: Google Cloud Translation API v2 Batch-Anfrage
-- **`api`**: HTTP POST an einen Remote-Endpunkt
+- **`llm`**: Strukturierter Prompt an OpenRouter mit Anweisungen zu Register und geschlechtsspezifischen Vorgaben
+- **`llm-coached`**: Identisch, jedoch mit injizierten Grammatikregeln, Wörterbuch und Stilhinweisen
+- **`google-translate`**: Stapelanfrage an die Google Cloud Translation API v2
+- **`api`**: HTTP-POST an einen Remote-Endpunkt
 
-Die Systemnachricht (Register, Regeln) ist über alle Batches für ein bestimmtes Locale hinweg identisch, was **Prompt Caching** ermöglicht – Anbieter wie Anthropic und Google cachen wiederholte Systemnachrichten, was die Token-Kosten senkt.
+Die Systemnachricht (Register, geschlechtsspezifische Vorgaben, Regeln) ist für ein bestimmtes Locale über alle Stapel hinweg identisch. Dies ermöglicht **Prompt-Caching** — Anbieter wie Anthropic und Google zwischenspeichern wiederholte Systemnachrichten, was die Token-Kosten senkt.
 
 ### 6. Quality Gate
 
@@ -81,19 +81,19 @@ Jede Übersetzung wird validiert, bevor sie auf die Festplatte geschrieben wird.
 
 | Prüfung | Was sie erkennt | Beispiel |
 |-------|----------------|---------|
-| **Leer/Blank** | Modell hat nichts zurückgegeben | `""` |
+| **Leer/Blanko** | Modell hat nichts zurückgegeben | `""` |
 | **Quell-Echo** | Modell hat die englische Eingabe zurückgegeben | `"Welcome"` für Japanisch |
 | **Halluzinationsschleife** | Wiederholte Trigramme | `"Qo' Qo' Qo' Qo'"` |
 | **Längeninflation** | Ausgabe ist 4×+ länger als die Quelle | 10-Zeichen-Quelle → 50-Zeichen-Ausgabe |
-| **Schrift-Konformität** | Falsche Schriftart für das Locale | Lateinischer Text für arabisches Locale |
+| **Schriftzeichen-Konformität** | Falsches Schriftsystem für das Locale | Lateinischer Text für arabisches Locale |
 
-Fehlschläge werden mit einem `[GATE]`-Präfix protokolliert. Keine stillen Fallbacks.
+Fehlschläge werden mit einem `[GATE]`-Präfix protokolliert. Es gibt keine stillen Fallbacks.
 
-Siehe [Quality Gate](/docs/concepts/quality-gate) für Details.
+Weitere Details finden Sie unter [Quality Gate](/docs/concepts/quality-gate).
 
-### 7. Retry-Kaskade
+### 7. Wiederholungskaskade
 
-Bei JSON-Parsing-Fehlern oder Fehlern auf Batch-Ebene versucht rosetta es mit zunehmend kleineren Batches erneut:
+Bei JSON-Parsing-Fehlern oder Fehlern auf Stapelebene unternimmt rosetta erneute Versuche mit zunehmend kleineren Stapeln:
 
 ```
 Full batch (30 keys) → Failed
@@ -101,17 +101,17 @@ Half batch (15 keys) → Failed
 Individual keys (1 each) → Isolates the problem key
 ```
 
-Das Retry-Budget ist durch `maxRetries` begrenzt (Standard: 3), um ausufernde Token-Ausgaben zu verhindern.
+Das Budget für erneute Versuche wird durch `maxRetries` begrenzt (Standard: 3), um ausufernde Token-Ausgaben zu verhindern.
 
-### 8. Write & Lock
+### 8. Schreiben & Sperren
 
-Erfolgreiche Übersetzungen werden in die Ziel-Locale-Datei geschrieben, wobei die ursprüngliche Verschachtelungsstruktur erhalten bleibt. Die Lock-Datei wird mit neuen SHA-256-Hashes aktualisiert.
+Erfolgreiche Übersetzungen werden in die Ziel-Locale-Datei geschrieben, wobei die ursprüngliche Verschachtelungsstruktur erhalten bleibt. Die Lock-Datei wird mit den neuen SHA-256-Hashes aktualisiert.
 
-## Partieller Erfolg
+## Teilweiser Erfolg
 
-Ein fehlgeschlagener Batch blockiert nicht den Rest. Wenn 9 von 10 Batches erfolgreich sind, werden diese 9 geschrieben. Der fehlgeschlagene Batch wird protokolliert, und Sie können `sync` erneut ausführen, um es noch einmal zu versuchen.
+Ein fehlgeschlagener Stapel blockiert nicht den Rest. Wenn 9 von 10 Stapeln erfolgreich sind, werden diese 9 geschrieben. Der fehlgeschlagene Stapel wird protokolliert, und Sie können `sync` erneut ausführen, um einen neuen Versuch zu starten.
 
-## Dry Run
+## Testlauf
 
 Zeigen Sie eine Vorschau der Änderungen an, ohne Dateien zu schreiben:
 
@@ -121,7 +121,7 @@ npx i18n-rosetta sync --dry
 
 ## Neuübersetzung erzwingen
 
-Erzwingen Sie die Neuübersetzung bestimmter Schlüssel, auch wenn sie unverändert sind:
+Erzwingen Sie die Neuübersetzung bestimmter Schlüssel, auch wenn diese unverändert sind:
 
 ```bash
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
@@ -129,7 +129,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## Kostenschätzung
 
-Vor der Übersetzung generiert rosetta einen **Pre-Sync-Kostenbericht**, der die geschätzten Kosten pro Paar anzeigt. Dieser wird automatisch bei jedem `sync` ausgeführt – Sie sehen ihn, bevor API-Aufrufe getätigt werden.
+Vor der Übersetzung generiert rosetta einen **Kostenbericht vor der Synchronisierung**, der die geschätzten Kosten pro Paar anzeigt. Dieser wird bei jedem `sync` automatisch ausgeführt — Sie sehen ihn, bevor API-Aufrufe getätigt werden.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -145,13 +145,23 @@ Vor der Übersetzung generiert rosetta einen **Pre-Sync-Kostenbericht**, der die
 
 ### Was geschätzt wird
 
-Jede Übersetzungsmethode bietet ihre eigene Kostenschätzung:
+Jede Übersetzungsmethode liefert ihre eigene Kostenschätzung:
 
 | Methode | Kostenbasis | Präzision |
 |--------|-----------|-----------|
-| `google-translate` | Von Google veröffentlichter Tarif (20 $/Million Zeichen) | Genau |
-| `llm` | Variiert je nach OpenRouter-Modell | Modellabhängig – siehe [OpenRouter-Preise](https://openrouter.ai/models) |
-| `llm-coached` | Wie `llm` plus Coaching-Kontext-Token | Modellabhängig |
-| `api` | Vom Server bestimmt | Unbekannt – kann ohne Abfrage des Endpunkts nicht geschätzt werden |
+| `google-translate` | Veröffentlichter Tarif von Google (20 $/Million Zeichen) | Genau |
+| `llm` | Variiert je nach OpenRouter-Modell | Modellabhängig — siehe [OpenRouter-Preise](https://openrouter.ai/models) |
+| `llm-coached` | Wie `llm` zuzüglich Coaching-Kontext-Token | Modellabhängig |
+| `api` | Vom Server bestimmt | Unbekannt — kann ohne Abfrage des Endpunkts nicht geschätzt werden |
 
-Wenn eine Methode die Kosten nicht ermitteln kann (LLM-Methoden, Remote-APIs), meldet rosetta `—`, anstatt zu raten. Verwenden Sie `--dry`, um Kostenschätzungen zu sehen, ohne tatsächlich zu übersetzen.
+Wenn eine Methode die Kosten nicht ermitteln kann (LLM-Methoden, Remote-APIs), meldet rosetta `—`, anstatt zu raten. Verwenden Sie `--dry`, um Kostenschätzungen anzuzeigen, ohne tatsächlich zu übersetzen.
+
+---
+
+## Siehe auch
+
+- [CLI-Referenz — sync](/docs/reference/cli#sync) — Befehls-Flags und Optionen
+- [Quality Gate](/docs/concepts/quality-gate) — wie Übersetzungen validiert werden
+- [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede Methode funktioniert
+- [Konfiguration](/docs/getting-started/configuration) — Konfigurationsreferenz
+- [CI/CD-Leitfaden](/docs/guides/ci-cd) — Automatisierung von Synchronisierungen in Ihrer Pipeline

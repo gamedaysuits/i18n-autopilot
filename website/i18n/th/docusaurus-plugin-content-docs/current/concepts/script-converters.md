@@ -1,0 +1,174 @@
+---
+sidebar_position: 6
+title: "ตัวแปลงสคริปต์"
+---
+# ตัวแปลงสคริปต์
+
+ตัวแปลงสคริปต์เป็น post-translation hooks แบบ deterministic ที่ไม่ต้องใช้ LLM ซึ่งจะแปลงข้อความจากระบบการเขียนหนึ่งไปยังอีกระบบหนึ่ง ช่วยให้เกิดเวิร์กโฟลว์แบบ "แปลครั้งเดียว แสดงผลได้หลายสคริปต์" — คุณแปลเป็นสคริปต์สำหรับทำงาน (มักจะเป็น Latin) จากนั้นระบบจะแปลงเป็นสคริปต์สำหรับแสดงผลโดยอัตโนมัติ
+
+## ทำไมต้องใช้ตัวแปลงสคริปต์?
+
+บางภาษาใช้หลายสคริปต์สำหรับภาษาพูดเดียวกัน:
+
+- **Plains Cree**: SRO (Latin) สำหรับการแก้ไข → Syllabics (ᓀᐦᐃᔭᐍᐏᐣ) สำหรับการแสดงผล
+- **Serbian**: Latin สำหรับการใช้งานระดับนานาชาติ → Cyrillic สำหรับการใช้งานภายในประเทศ
+- **Klingon**: Romanization สำหรับการพิมพ์ → pIqaD (  ) สำหรับการแสดงผล
+
+การแปลโดยตรงเป็นสคริปต์ที่ไม่ใช่ Latin ทำให้เกิดปัญหา: LLM อาจสร้างตัวอักษรที่ผิดเพี้ยน (hallucinate) ไฟล์ JSON จะทำ version-control ได้ยาก และเครื่องมือ diff ไม่สามารถเปรียบเทียบการเปลี่ยนแปลงได้ ตัวแปลงสคริปต์แก้ปัญหานี้โดยการเก็บคำแปลไว้ในสคริปต์ที่เป็นมิตรต่อ version-control และทำการแปลงแบบ deterministic ในช่วงเวลาซิงก์ (sync time)
+
+## ตัวแปลงที่มีให้ใช้งาน
+
+Rosetta มาพร้อมกับตัวแปลงสคริปต์ในตัว 5 แบบ:
+
+| Locale | จาก | เป็น | ประเภท | ต้องใช้ฟอนต์หรือไม่? |
+|--------|------|----|------|----------------|
+| `crk` | SRO (Standard Roman Orthography) | Cree Syllabics | Deterministic | ไม่ — เป็น Unicode มาตรฐาน |
+| `sr` | Latin | Cyrillic | Deterministic | ไม่ — เป็น Unicode มาตรฐาน |
+| `tlh` | Romanization | pIqaD | Deterministic | ใช่ — PUA U+F8D0–F8FF |
+| `x-elvish-s` | Latin | Tengwar (Mode of Beleriand) | Deterministic | ใช่ — PUA U+E000–E07F |
+| `x-kryptonian` | Latin | Kryptonian | Font-based cipher | ใช่ — PUA U+E100–E119 |
+
+### Deterministic กับ Font-Based
+
+- **Deterministic converters** (Cree, Serbian, Klingon, Tengwar) ทำการจับคู่ตัวอักษรต่อตัวอักษรจริงๆ โดยใช้กฎทางภาษาศาสตร์ ผลลัพธ์ที่ได้จะมีตัวอักษร Unicode จริงๆ
+- **Font-based converters** (Kryptonian) เป็นการเข้ารหัสแบบแทนที่ 1:1 โดยผลลัพธ์ที่ได้จะเป็นตัวอักษร Unicode PUA ซึ่งจะแสดงผลได้อย่างถูกต้องเมื่อโหลดฟอนต์เฉพาะเท่านั้น
+
+## วิธีการทำงาน
+
+ตัวแปลงสคริปต์จะทำงาน **หลังจาก** การแปลในฐานะขั้นตอน post-processing โดยมีไปป์ไลน์ดังนี้:
+
+```
+Source (English) → LLM Translation → Working Script → Script Converter → Display Script
+```
+
+ตัวอย่างเช่น Plains Cree:
+```
+"Welcome" → LLM → "tānisi" (SRO) → Converter → "ᑖᓂᓯ" (Syllabics)
+```
+
+### การจับคู่แบบ Greedy Left-to-Right
+
+ตัวแปลงทั้งหมดใช้อัลกอริทึมเดียวกัน: ในแต่ละตำแหน่งของตัวอักษร จะพยายามจับคู่กับรูปแบบที่ยาวที่สุดก่อน จากนั้นจึงค่อยๆ ลดความยาวลง ตัวอักษรที่ไม่ตรงกับรูปแบบใดๆ (ช่องว่าง เครื่องหมายวรรคตอน ตัวเลข) จะถูกปล่อยผ่านโดยไม่มีการเปลี่ยนแปลง
+
+วิธีนี้ช่วยจัดการกับ digraphs (อักษรคู่) และ trigraphs (อักษรสามตัว) ได้อย่างถูกต้อง:
+- Klingon: `tlh` → ตัวอักษร pIqaD ตัวเดียว (ไม่ใช่ `t` + `l` + `h`)
+- Serbian: `nj` → `њ` (ไม่ใช่ `н` + `ј`)
+- Cree: `twê` → syllabic ตัวเดียว (ไม่ใช่ `t` + `w` + `ê`)
+
+## การใช้งานตัวแปลงสคริปต์
+
+ตัวแปลงสคริปต์จะทำงานโดยอัตโนมัติเมื่อรหัส locale ตรงกับตัวแปลงที่ลงทะเบียนไว้ ไม่จำเป็นต้องตั้งค่าใดๆ — เพียงแค่กำหนด locale ปลายทางของคุณ:
+
+```json title="i18n-rosetta.config.json"
+{
+  "pairs": {
+    "en:crk": {
+      "method": "llm-coached",
+      "model": "google/gemini-2.5-pro"
+    }
+  }
+}
+```
+
+เมื่อ rosetta ซิงก์คู่ `en:crk` คำแปลจะถูกสร้างขึ้นในรูปแบบ SRO ก่อน จากนั้นจะถูกแปลงเป็น Syllabics โดยอัตโนมัติก่อนเขียนลงใน `crk.json`
+
+### การตรวจสอบสถานะตัวแปลง
+
+```bash
+npx i18n-rosetta status
+```
+
+ผลลัพธ์สถานะจะแสดงให้เห็นว่าคู่ใดมีตัวแปลงสคริปต์ที่ทำงานอยู่ และทำการแปลงแบบใด
+
+## ข้อกำหนดสำหรับ Web Font
+
+ตัวแปลง 3 ตัวจะให้ผลลัพธ์เป็นตัวอักษร Unicode Private Use Area (PUA) ซึ่งจำเป็นต้องใช้ web fonts แบบกำหนดเอง:
+
+### Klingon (pIqaD)
+
+ติดตั้งฟอนต์ pIqaD ที่รองรับ CSUR (เช่น "pIqaD qolqoS" หรือ "Klingon pIqaD HaSta"):
+
+```css
+@font-face {
+  font-family: 'pIqaD';
+  src: url('/fonts/pIqaD.woff2') format('woff2');
+  unicode-range: U+F8D0-F8FF;
+}
+
+:lang(tlh) {
+  font-family: 'pIqaD', sans-serif;
+}
+```
+
+### Tengwar (Sindarin)
+
+ติดตั้งฟอนต์ Tengwar ที่รองรับ CSUR (เช่น "Tengwar Formal CSUR", "Tengwar Annatar"):
+
+```css
+@font-face {
+  font-family: 'Tengwar';
+  src: url('/fonts/tengwar-formal-csur.woff2') format('woff2');
+  unicode-range: U+E000-E07F;
+}
+
+:lang(x-elvish-s) {
+  font-family: 'Tengwar', serif;
+}
+```
+
+### Kryptonian
+
+ติดตั้งฟอนต์ Kryptonian ที่แมปกับ PUA codepoints U+E100–E119:
+
+```css
+@font-face {
+  font-family: 'Kryptonian';
+  src: url('/fonts/kryptonian.woff2') format('woff2');
+  unicode-range: U+E100-E119;
+}
+
+:lang(x-kryptonian) {
+  font-family: 'Kryptonian', sans-serif;
+}
+```
+
+:::tip แนวทางเลือกสำหรับ Kryptonian
+เนื่องจาก Kryptonian เป็นการเข้ารหัสแบบ A-Z ล้วนๆ คุณจึงสามารถข้ามตัวแปลงสคริปต์ไปได้เลย และใช้ฟอนต์กับข้อความ Latin ผ่าน CSS วิธีนี้มักจะง่ายกว่าสำหรับการปรับใช้บนเว็บ — เพียงแค่ให้บริการฟอนต์ Kryptonian และตั้งค่า `font-family` ในองค์ประกอบที่เกี่ยวข้อง
+:::
+
+## การเพิ่มตัวแปลงแบบกำหนดเอง
+
+หากต้องการเพิ่มตัวแปลงสำหรับภาษาใหม่ ให้แก้ไข `lib/scripts.js`:
+
+1. **สร้าง conversion map** — อาร์เรย์แบบมีลำดับของคู่ `[from, to]` โดยเรียงลำดับจากลำดับที่ยาวที่สุดก่อน
+2. **สร้างฟังก์ชันตัวแปลง** — สแกนเนอร์แบบ greedy left-to-right (ใช้ `sroToSyllabics` เป็นเทมเพลต)
+3. **ลงทะเบียน** ในออบเจ็กต์ `SCRIPT_CONVERTERS` โดยใช้รหัส locale เป็นคีย์
+4. **เพิ่มฟิลด์ `script`** ในรายการลงทะเบียนของภาษาใน `registers.js`
+
+```javascript
+// Example: adding a converter for Cherokee (chr)
+const LATIN_TO_CHEROKEE_MAP = [
+  ['ga', 'Ꭶ'], ['ka', 'Ꭷ'], ['ge', 'Ꭸ'], // ...
+];
+
+function latinToCherokee(text) {
+  // Same greedy left-to-right pattern as other converters
+}
+
+SCRIPT_CONVERTERS['chr'] = {
+  from: 'Latin',
+  to: 'Cherokee Syllabary',
+  type: 'deterministic',
+  converter: latinToCherokee,
+};
+```
+
+---
+
+## ดูเพิ่มเติม
+
+- [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) — ฟอนต์ PUA, Unicode, การเพิ่มตัวแปลงใหม่
+- [Quality Gate](/docs/concepts/quality-gate) — การตรวจสอบความถูกต้องที่ทำงานก่อนการแปลงสคริปต์
+- [Supported Languages](/docs/reference/supported-languages) — ภาษาใดบ้างที่มีตัวแปลงสคริปต์
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — SRO→Syllabics ในบริบท
+- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — การแปลงสคริปต์ในไปป์ไลน์แบบหลายขั้นตอน

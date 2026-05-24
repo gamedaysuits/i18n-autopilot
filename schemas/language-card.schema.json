@@ -4,8 +4,15 @@
   "title": "i18n-rosetta Language Card",
   "description": "Complete reference for a single language's translation configuration, including metadata, formality system, register presets, method support, and eval dataset links.",
   "type": "object",
-  "required": ["code", "name", "bcp47", "script", "dir", "registers"],
+  "required": [
+    "code",
+    "name"
+  ],
   "properties": {
+    "extends": {
+      "type": ["string", "null"],
+      "description": "Locale code of another card/family this card inherits from."
+    },
     "code": {
       "type": "string",
       "description": "Locale code used as the key in rosetta config. Usually ISO 639-1 (e.g., 'fr') or BCP 47 with region (e.g., 'pt-PT'). For conlangs, use 'x-' prefix.",
@@ -139,6 +146,118 @@
     "notes": {
       "type": ["string", "null"],
       "description": "Free-form notes for developers and contributors."
+    },
+    "encyclopedic": {
+      "type": ["object", "null"],
+      "description": "Encyclopedic metadata for regional context, demographics, history, and active community projects.",
+      "properties": {
+        "family": { "type": "string" },
+        "dialects": {
+          "type": "object",
+          "properties": {
+            "split": { "type": "boolean" },
+            "classification": { "type": "string" },
+            "variants": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "demographics": {
+          "type": "object",
+          "properties": {
+            "speakers": { "type": "string" },
+            "regions": {
+              "type": ["array", "string"],
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "history": { "type": "string" },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "wikipedia": { "type": "string", "format": "uri" },
+            "foundations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              }
+            },
+            "dictionaries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "linguisticChallenges": {
+      "type": ["object", "null"],
+      "description": "Linguistic challenges, developer tips, and grammatical context for translating to this language.",
+      "additionalProperties": { "type": "string" }
+    },
+    "rules": {
+      "type": ["object", "null"],
+      "description": "Executable rules and constraints for typography, plurals, casing, and variables used in validation.",
+      "properties": {
+        "typography": {
+          "type": "object",
+          "properties": {
+            "quoteStart": { "type": "string" },
+            "quoteEnd": { "type": "string" },
+            "usesSpaces": { "type": "boolean" },
+            "punctuationSpacing": {
+              "type": "object",
+              "properties": {
+                "doublePunctuation": { "type": "string", "enum": ["none", "space", "thin-nbsp"] }
+              }
+            }
+          }
+        },
+        "plurals": {
+          "type": "object",
+          "properties": {
+            "categories": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "guidance": { "type": "string" }
+          }
+        },
+        "capitalization": {
+          "type": "object",
+          "properties": {
+            "hasCase": { "type": "boolean" },
+            "uiConventions": {
+              "type": "object",
+              "properties": {
+                "buttons": { "type": "string", "enum": ["title-case", "sentence-case", "all-caps", "none"] },
+                "headings": { "type": "string", "enum": ["title-case", "sentence-case", "all-caps", "none"] }
+              }
+            }
+          }
+        },
+        "variables": {
+          "type": "object",
+          "properties": {
+            "syntax": { "type": "string" },
+            "guidance": { "type": "string" }
+          }
+        }
+      }
     }
   }
 }

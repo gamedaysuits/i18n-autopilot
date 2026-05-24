@@ -6,7 +6,7 @@ title: "Hoe synchronisatie werkt"
 
 De opdracht `sync` is de kernbewerking van rosetta. Dit is wat er gebeurt wanneer u `npx i18n-rosetta sync` uitvoert.
 
-## Pipeline-overzicht
+## Overzicht van de pijplijn
 
 ```mermaid
 flowchart TD
@@ -28,16 +28,16 @@ flowchart TD
 
 ## Stap voor stap
 
-### 1. Configuratie bepalen
+### 1. Configuratie-resolutie
 
 Rosetta laadt `i18n-rosetta.config.json` (of detecteert instellingen automatisch). Het bepaalt:
 - Bron-locale en doel-locales
-- De pair graph (welke bron→doel combinaties verwerkt moeten worden)
+- De pair graph (welke bron→doel-combinaties verwerkt moeten worden)
 - Methode-, model- en kwaliteitsinstellingen per paar
 
 ### 2. Bron scannen
 
-Het bron-locale-bestand wordt geladen en afgevlakt naar een sleutel→waarde-map:
+Het bron-locale-bestand wordt geladen en afgevlakt tot een key→value map:
 
 ```json
 // Input (nested)
@@ -49,31 +49,31 @@ Het bron-locale-bestand wordt geladen en afgevlakt naar een sleutel→waarde-map
 
 ### 3. Wijzigingsdetectie
 
-Rosetta leest `.i18n-rosetta.lock`, waarin SHA-256-hashes van eerder vertaalde bronwaarden zijn opgeslagen. Voor elke sleutel wordt het volgende gecontroleerd:
+Rosetta leest `.i18n-rosetta.lock`, waarin SHA-256-hashes van eerder vertaalde bronwaarden zijn opgeslagen. Voor elke key wordt het volgende gecontroleerd:
 
 | Voorwaarde | Actie |
 |-----------|--------|
-| Sleutel ontbreekt in doel | **Vertalen** |
+| Key ontbreekt in doel | **Vertalen** |
 | Bron-hash is gewijzigd sinds de laatste sync | **Opnieuw vertalen** (verouderd) |
 | Doelwaarde begint met `[EN]` | **Opnieuw vertalen** (fallback-placeholder) |
-| Bron-hash ongewijzigd, sleutel bestaat | **Overslaan** |
+| Bron-hash is ongewijzigd, key bestaat | **Overslaan** |
 
 Dit is de reden waarom rosetta alleen vertaalt wat er is gewijzigd — uw volledige bestand wordt niet bij elke sync opnieuw vertaald.
 
 ### 4. Batching
 
-Sleutels worden gegroepeerd in batches (standaard: 30 sleutels/batch voor LLM, 128 voor Google Translate). Batching vermindert het aantal API-roundtrips en houdt prompts beheersbaar.
+Keys worden gegroepeerd in batches (standaard: 30 keys/batch voor LLM, 128 voor Google Translate). Batching vermindert het aantal API-roundtrips en houdt prompts beheersbaar.
 
 ### 5. Vertaling
 
 Elke batch wordt naar de geconfigureerde vertaalmethode verzonden:
 
-- **`llm`**: Gestructureerde prompt naar OpenRouter met registerinstructies
-- **`llm-coached`**: Hetzelfde, maar met geïnjecteerde grammaticaregels, woordenboek en stijlaantekeningen
+- **`llm`**: Gestructureerde prompt naar OpenRouter met instructies voor register en genderrichtlijnen
+- **`llm-coached`**: Hetzelfde, maar met geïnjecteerde grammaticaregels, dictionary en stijlopmerkingen
 - **`google-translate`**: Google Cloud Translation API v2 batch-verzoek
 - **`api`**: HTTP POST naar een extern endpoint
 
-Het systeembericht (register, regels) is identiek voor alle batches van een bepaalde locale, wat **prompt caching** mogelijk maakt — providers zoals Anthropic en Google cachen herhaalde systeemberichten, wat de tokenkosten verlaagt.
+Het systeembericht (register, genderrichtlijnen, regels) is identiek voor alle batches van een bepaalde locale, wat **prompt caching** mogelijk maakt — providers zoals Anthropic en Google cachen herhaalde systeemberichten, wat de tokenkosten verlaagt.
 
 ### 6. Quality Gate
 
@@ -83,15 +83,15 @@ Elke vertaling wordt gevalideerd voordat deze naar de schijf wordt geschreven. E
 |-------|----------------|---------|
 | **Leeg/blanco** | Model heeft niets geretourneerd | `""` |
 | **Bron-echo** | Model heeft de Engelse invoer geretourneerd | `"Welcome"` voor Japans |
-| **Hallucinatie-loop** | Herhaalde trigrammen | `"Qo' Qo' Qo' Qo'"` |
-| **Lengte-inflatie** | Uitvoer is 4×+ langer dan de bron | bron van 10 tekens → uitvoer van 50 tekens |
-| **Script-naleving** | Verkeerd schrift voor de locale | Latijnse tekst voor Arabische locale |
+| **Hallucinatie-loop** | Herhaalde trigrams | `"Qo' Qo' Qo' Qo'"` |
+| **Lengte-inflatie** | Uitvoer is 4×+ langer dan de bron | 10-char bron → 50-char uitvoer |
+| **Script-naleving** | Verkeerd script voor de locale | Latijnse tekst voor Arabische locale |
 
 Fouten worden gelogd met een `[GATE]`-voorvoegsel. Geen stille fallbacks.
 
-Zie [Quality Gate](/docs/concepts/quality-gate) voor details.
+Zie [Quality Gate](/docs/concepts/quality-gate) voor meer informatie.
 
-### 7. Retry-cascade
+### 7. Retry Cascade
 
 Bij een JSON-parseerfout of fouten op batchniveau, probeert rosetta het opnieuw met steeds kleinere batches:
 
@@ -101,11 +101,11 @@ Half batch (15 keys) → Failed
 Individual keys (1 each) → Isolates the problem key
 ```
 
-Het budget voor nieuwe pogingen wordt beperkt door `maxRetries` (standaard: 3) om uit de hand lopende tokenkosten te voorkomen.
+Het retry-budget is gemaximeerd door `maxRetries` (standaard: 3) om uit de hand lopende tokenkosten te voorkomen.
 
-### 8. Schrijven & Locken
+### 8. Schrijven & Vergrendelen
 
-Goedgekeurde vertalingen worden naar het doel-locale-bestand geschreven, waarbij de oorspronkelijke neststructuur behouden blijft. Het lock-bestand wordt bijgewerkt met nieuwe SHA-256-hashes.
+Goedgekeurde vertalingen worden naar het doel-locale-bestand geschreven, waarbij de oorspronkelijke nestingsstructuur behouden blijft. Het lock-bestand wordt bijgewerkt met nieuwe SHA-256-hashes.
 
 ## Gedeeltelijk succes
 
@@ -121,7 +121,7 @@ npx i18n-rosetta sync --dry
 
 ## Geforceerd opnieuw vertalen
 
-Forceer dat specifieke sleutels opnieuw worden vertaald, zelfs als ze ongewijzigd zijn:
+Forceer dat specifieke keys opnieuw worden vertaald, zelfs als ze ongewijzigd zijn:
 
 ```bash
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
@@ -145,13 +145,23 @@ Voordat het vertalen begint, genereert rosetta een **pre-sync kostenrapport** da
 
 ### Wat er wordt geschat
 
-Elke vertaalmethode biedt zijn eigen kostenraming:
+Elke vertaalmethode biedt een eigen kostenraming:
 
 | Methode | Kostenbasis | Precisie |
 |--------|-----------|-----------|
 | `google-translate` | Gepubliceerde tarief van Google ($20/miljoen tekens) | Accuraat |
 | `llm` | Varieert per OpenRouter-model | Modelafhankelijk — bekijk [OpenRouter-prijzen](https://openrouter.ai/models) |
-| `llm-coached` | Hetzelfde als `llm` plus coaching-contexttokens | Modelafhankelijk |
+| `llm-coached` | Zelfde als `llm` plus tokens voor coaching-context | Modelafhankelijk |
 | `api` | Bepaald door de server | Onbekend — kan niet worden geschat zonder het endpoint te bevragen |
 
 Wanneer een methode de kosten niet kan bepalen (LLM-methoden, externe API's), rapporteert rosetta `—` in plaats van te gissen. Gebruik `--dry` om kostenramingen te bekijken zonder daadwerkelijk te vertalen.
+
+---
+
+## Zie ook
+
+- [CLI-referentie — sync](/docs/reference/cli#sync) — opdracht-flags en opties
+- [Quality Gate](/docs/concepts/quality-gate) — hoe vertalingen worden gevalideerd
+- [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke methode werkt
+- [Configuratie](/docs/getting-started/configuration) — configuratiereferentie
+- [CI/CD-gids](/docs/guides/ci-cd) — syncs automatiseren in uw pijplijn

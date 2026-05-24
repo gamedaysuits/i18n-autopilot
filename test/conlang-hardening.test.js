@@ -281,9 +281,13 @@ describe('Quality gate: validateTranslations', () => {
   });
 
   it('rejects source echo (identical to English)', () => {
+    // Use a longer source string to avoid the short-ASCII exemption
+    // (short strings ≤30 chars of mostly ASCII are exempt because they
+    // may be proper nouns/brand names that legitimately stay in English)
+    const longSource = 'Welcome to our application and enjoy the experience';
     const { validated, failures } = validateTranslations(
-      { 'key1': 'Hello', 'key2': 'Bonjour' },
-      { 'key1': 'Hello', 'key2': 'Hello' },
+      { 'key1': longSource, 'key2': 'Bonjour le monde' },
+      { 'key1': longSource, 'key2': 'Hello world' },
       basicPairConfig,
     );
 
@@ -333,9 +337,12 @@ describe('Quality gate: validateTranslations', () => {
   });
 
   it('rejects ASCII-only for non-Latin locales', () => {
+    // Translated value is ASCII-only but different from source,
+    // and long enough to avoid the short-ASCII proper noun exemption.
+    // This simulates a romanized Russian translation that should be Cyrillic.
     const { validated, failures } = validateTranslations(
-      { 'key1': 'Privet' },         // Should be Привет (Cyrillic)
-      { 'key1': 'Hello' },
+      { 'key1': 'Dobro pozhalovat v nashe zamechatelnoe prilozhenie segodnya' },
+      { 'key1': 'Welcome to our wonderful application today' },
       { target: 'ru' },
     );
 

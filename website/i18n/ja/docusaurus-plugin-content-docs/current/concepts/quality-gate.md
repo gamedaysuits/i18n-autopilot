@@ -2,58 +2,56 @@
 sidebar_position: 3
 title: "Quality Gate"
 ---
-<!-- [EN] Original English content -->
-
 # Quality Gate
 
-Every translation passes through a deterministic validation gate before it's written to disk. The quality gate catches common machine translation failure modes — no silent fallbacks, no garbage written to your locale files.
+すべての翻訳は、ディスクに書き込まれる前に決定論的な検証ゲートを通過します。Quality Gateは、機械翻訳の一般的な失敗パターンを捕捉します。つまり、暗黙のフォールバックや、ロケールファイルへのゴミデータの書き込みを防ぎます。
 
-## Validation Checks
+## 検証チェック
 
-| Check | What It Catches | Gate Label |
+| チェック | 捕捉する内容 | ゲートラベル |
 |-------|----------------|-----------|
-| **Empty/blank** | Model returned empty string or whitespace | `[GATE] empty` |
-| **Source echo** | Model returned the original English input | `[GATE] source-echo` |
-| **Hallucination loop** | Repeated trigram patterns (e.g., `"Qo' Qo' Qo'"`) | `[GATE] hallucination` |
-| **Length inflation** | Output is significantly longer than source | `[GATE] length` |
-| **Script compliance** | Wrong script for the target locale | `[GATE] script` |
+| **空/空白** | モデルが空の文字列または空白を返した | `[GATE] empty` |
+| **ソースの反復** | モデルが元の英語の入力をそのまま返した | `[GATE] source-echo` |
+| **ハルシネーションループ** | 繰り返されるトライグラム（3文字）パターン（例: `"Qo' Qo' Qo'"`） | `[GATE] hallucination` |
+| **長さの膨張** | 出力がソースよりも著しく長い | `[GATE] length` |
+| **文字体系の準拠** | ターゲットロケールに対して誤った文字体系が使用されている | `[GATE] script` |
 
-### Empty/Blank
+### 空/空白
 
-Rejects translations that are empty strings, whitespace-only, or `null`. This catches models that return nothing for difficult keys.
+空の文字列、空白のみ、または `null` である翻訳を拒否します。これにより、翻訳が難しいキーに対してモデルが何も返さないケースを捕捉します。
 
-### Source Echo
+### ソースの反復
 
-Detects when the model returns the English source text instead of translating it. Common with short strings and under-specified prompts.
+モデルが翻訳せずに英語のソーステキストをそのまま返した場合に検出します。これは、短い文字列や指定が不十分なプロンプトでよく発生します。
 
-### Hallucination Loop
+### ハルシネーションループ
 
-Analyzes trigram (3-character) patterns in the output. If any trigram repeats more than a threshold number of times relative to the output length, the translation is rejected. This catches degenerate outputs like `"Qo' Qo' Qo' Qo' Qo'"`.
+出力内のトライグラム（3文字）パターンを分析します。出力の長さに対して、いずれかのトライグラムがしきい値を超えて繰り返された場合、その翻訳は拒否されます。これにより、`"Qo' Qo' Qo' Qo' Qo'"` のような劣化した出力を捕捉します。
 
-### Length Inflation
+### 長さの膨張
 
-Rejects translations where the output length exceeds `maxLengthRatio × source length` (default: 4×). This catches model hallucinations that produce walls of text for a short input.
+出力の長さが `maxLengthRatio × source length` （デフォルト: 4倍）を超える翻訳を拒否します。これにより、短い入力に対してモデルがハルシネーションを起こし、長文を生成してしまうケースを捕捉します。
 
-Configurable via `maxLengthRatio` in your config.
+設定ファイルの `maxLengthRatio` で設定可能です。
 
-### Script Compliance
+### 文字体系の準拠
 
-For locales with a configured `script` field (e.g., `"script": "cans"` for Plains Cree Syllabics), validates that the output contains non-ASCII characters appropriate for the target script. Latin-only output for an Arabic, CJK, or Syllabics locale is rejected.
+`script` フィールドが設定されているロケール（例: 平原クリー語の音節文字の `"script": "cans"`）の場合、出力にターゲットの文字体系に適した非ASCII文字が含まれているかを検証します。アラビア語、CJK（中国語・日本語・韓国語）、または音節文字のロケールに対して、ラテン文字のみの出力がされた場合は拒否されます。
 
-## What Happens on Failure
+## 失敗時の動作
 
-1. The failing translation is logged to stderr with a `[GATE]` prefix, the key name, the reason, and a preview of the value
-2. The key is **not** written to the locale file
-3. The retry cascade kicks in (see below)
+1. 失敗した翻訳は、`[GATE]` プレフィックス、キー名、理由、および値のプレビューとともに stderr にログ出力されます。
+2. そのキーはロケールファイルには書き込まれ**ません**。
+3. リトライカスケードが開始されます（下記参照）。
 
 ```
 [GATE] hero.title: source-echo — "Welcome to our platform"
 [GATE] nav.about: hallucination — "À À À À À À À À"
 ```
 
-## Retry Cascade
+## リトライカスケード
 
-When a batch fails (JSON parse error or quality gate rejections), rosetta retries with progressively smaller batches:
+バッチが失敗した場合（JSONの解析エラーやQuality Gateによる拒否など）、rosettaはバッチサイズを段階的に縮小してリトライします。
 
 ```
 Full batch (30 keys) → parse error
@@ -61,16 +59,26 @@ Full batch (30 keys) → parse error
       └→ Individual keys (1 each) → isolates the 2 problem keys
 ```
 
-The retry budget is capped by `maxRetries` (default: 3, configurable per-language). This prevents runaway token spend on keys that consistently fail.
+リトライの予算は `maxRetries` によって上限が設定されています（デフォルト: 3、言語ごとに設定可能）。これにより、常に失敗するキーに対してトークンが際限なく消費されるのを防ぎます。
 
-After exhausting retries, the problem keys are logged and skipped. They'll be retried on the next `sync` run.
+リトライを使い果たすと、問題のあるキーはログに記録され、スキップされます。これらは次回の `sync` 実行時に再度リトライされます。
 
-## Prompt Caching
+## プロンプトキャッシング
 
-The system message (register, grammar rules, style notes) is split from the user message (the keys to translate). This split is intentional:
+システムメッセージ（レジスター、文法規則、スタイルノート）は、ユーザーメッセージ（翻訳するキー）から分割されています。この分割は意図的なものです。
 
-- The system message is **identical across batches** for a given locale
-- Providers like Anthropic and Google cache repeated system messages
-- Result: the first batch pays full token cost, subsequent batches pay only for the user message
+- 特定のロケールにおいて、システムメッセージは**すべてのバッチで同一**です。
+- AnthropicやGoogleなどのプロバイダーは、繰り返されるシステムメッセージをキャッシュします。
+- 結果として、最初のバッチではフルのトークンコストを支払いますが、それ以降のバッチではユーザーメッセージの分のみを支払います。
 
-This can significantly reduce token costs for projects with many batches.
+これにより、多くのバッチを持つプロジェクトにおいて、トークンコストを大幅に削減できます。
+
+---
+
+## 関連項目
+
+- [同期の仕組み](/docs/concepts/how-sync-works) — パイプラインにおけるQuality Gateの位置づけ
+- [翻訳メソッド](/docs/guides/translation-methods) — ゲートに供給されるメソッド
+- [文字体系コンバーター](/docs/concepts/script-converters) — ゲート通過後の文字体系変換
+- [コーチングデータ](/docs/concepts/coaching-data) — 上流での翻訳品質の向上
+- [CLIリファレンス — sync](/docs/reference/cli#sync) — リトライ動作を含む同期フラグ

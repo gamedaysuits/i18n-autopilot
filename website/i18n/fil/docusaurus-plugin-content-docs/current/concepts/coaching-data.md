@@ -1,14 +1,14 @@
 ---
 sidebar_position: 5
-title: "Datos ng Coaching"
+title: "Coaching Data"
 ---
 # Coaching Data
 
-Ang coaching data ay ang mekanismo ng rosetta para turuan ang mga LLM tungkol sa mga wikang hindi kasama sa kanilang pagsasanay. Sa pamamagitan ng pagbibigay ng mga panuntunan sa gramatika, mga diksyunaryo, at mga tala sa istilo kasama ng bawat kahilingan sa pagsasalin, binabago mo ang isang general-purpose na LLM upang maging isang context-aware na tagasalin para sa anumang wika — kabilang ang mga wikang may zero na umiiral na suporta sa MT.
+Ang coaching data ay ang mechanism ng rosetta para turuan ang mga LLMs tungkol sa mga languages na hindi sila na-train. By providing grammar rules, dictionaries, at style notes kasama ng bawat translation request, nata-transform niyo po ang isang general-purpose LLM into a context-aware translator para sa kahit anong language — kasama na ang mga languages na may zero existing MT support.
 
 ## Paano Ito Gumagana
 
-Kapag itinakda mo ang method ng isang pares sa `llm-coached`, naglo-load ang rosetta ng isang coaching file mula sa `.rosetta/coaching/<locale>.json` at inilalagay ang mga nilalaman nito sa bawat LLM prompt bilang bahagi ng system message. Nakikita ng LLM ang iyong mga panuntunang linggwistiko kasama ng kahilingan sa pagsasalin, na gumagawa ng output na sumusunod sa iyong gramatika at terminolohiya sa halip na manghula.
+Kapag sinet niyo po ang method ng isang pair sa `llm-coached`, maglo-load ang rosetta ng coaching file mula sa `.rosetta/coaching/<locale>.json` at i-i-inject ang contents nito sa bawat LLM prompt as part of the system message. Makikita ng LLM ang inyong linguistic rules kasama ng translation request, kaya nagpo-produce ito ng output na sumusunod sa inyong grammar at terminology instead na manghula.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,11 +28,11 @@ Kapag itinakda mo ang method ng isang pares sa `llm-coached`, naglo-load ang ros
 └──────────────────────────────────────────────────────┘
 ```
 
-Dahil ang coaching data ay bahagi ng system message, nakikinabang ito sa **prompt caching** — ang mga provider tulad ng Anthropic at Google ay nagka-cache ng mga inuulit na system prefix, kaya minsan ka lang magbabayad para sa coaching context bawat session, hindi bawat batch.
+Dahil part ng system message ang coaching data, nagbe-benefit ito sa **prompt caching** — ang mga providers tulad ng Anthropic at Google ay nagka-cache ng repeated system prefixes, kaya once per session lang po kayo magbabayad para sa coaching context, hindi once per batch.
 
-## Format ng Coaching File
+## Coaching File Format
 
-Gumawa ng isang JSON file bawat locale sa `.rosetta/coaching/`:
+Gumawa po ng isang JSON file per locale sa `.rosetta/coaching/`:
 
 ```json title=".rosetta/coaching/crk.json"
 {
@@ -54,41 +54,41 @@ Gumawa ng isang JSON file bawat locale sa `.rosetta/coaching/`:
 }
 ```
 
-### Mga Field
+### Fields
 
-| Field | Type | Required | Paglalarawan |
+| Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `grammar_rules` | `string[]` | Hindi | Array ng mga panuntunan sa gramatika na inilagay sa system prompt. Ang bawat panuntunan ay dapat na isang maikli at naaaksyunan na tagubilin na maaaring sundin ng LLM. |
-| `dictionary` | `object` | Hindi | Key-value map ng terminong Ingles → termino sa target na wika. Ginagamit para sa domain-specific na bokabularyo na hindi malalaman ng LLM. |
-| `style_notes` | `string` | Hindi | Free-form na mga tagubilin sa istilo (register, tono, mga kumbensyon sa pormalidad). |
+| `grammar_rules` | `string[]` | No | Array ng mga grammar rules na i-i-inject sa system prompt. Ang bawat rule dapat ay concise at actionable instruction na kayang sundin ng LLM. |
+| `dictionary` | `object` | No | Key-value map ng English term → target language term. Ginagamit para sa domain-specific vocabulary na hindi alam ng LLM. |
+| `style_notes` | `string` | No | Free-form style instructions (register, tone, formality conventions). |
 
-Ang lahat ng mga field ay opsyonal — maaari kang magsimula sa isang diksyunaryo lamang at magdagdag ng mga panuntunan sa gramatika habang ikaw ay nagpapabuti.
+Optional po ang lahat ng fields — pwede kayong mag-start sa dictionary lang at mag-add ng grammar rules as you refine.
 
 ## Fallback Behavior
 
-Kung ang isang pares ay naka-configure para sa `llm-coached` ngunit walang umiiral na coaching file para sa locale na iyon, ang rosetta ay **babalik sa karaniwang `llm` method** na may kasamang babala sa console:
+Kung ang isang pair ay naka-configure para sa `llm-coached` pero walang existing na coaching file para sa locale na iyon, ang rosetta ay **magfa-fall back sa standard `llm` method** na may kasamang console warning:
 
 ```
 [INFO] No coaching data for "crk" at .rosetta/coaching/crk.json
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Nangangahulugan ito na maaari mong ligtas na itakda ang `"defaultMethod": "llm-coached"` nang globally — gagamitin ito ng mga wikang may coaching data, at ang iba ay makakakuha ng karaniwang LLM translation nang walang mga error.
+Ibig sabihin nito, pwede niyo pong i-safely set ang `"defaultMethod": "llm-coached"` globally — gagamitin ito ng mga languages na may coaching data, at ang iba naman ay makakakuha ng standard LLM translation nang walang errors.
 
-## Kailan Gagamitin ang Coaching
+## Kailan Dapat Gamitin ang Coaching
 
-| Senaryo | Inirerekomendang Method |
+| Scenario | Recommended Method |
 |----------|-------------------|
-| Mga Tier 1 na wika (French, Spanish, German) | `llm` o `google-translate` — alam na alam na ito ng mga LLM |
-| Mga Tier 2 na wika (Korean, Turkish, Thai) | `llm` na may register — sapat na pinangangasiwaan ito ng mga LLM na may gabay sa istilo |
-| Mga Tier 3 na wika (Plains Cree, Yoruba, Quechua) | `llm-coached` — kailangan ng mga LLM ng mga panuntunan sa gramatika at mga diksyunaryo |
-| Mga Conlang (Klingon, Sindarin, Kryptonian) | `llm-coached` — may ilang training data ang mga LLM ngunit nangangailangan ng mga pagwawasto |
+| Tier 1 languages (French, Spanish, German) | `llm` o `google-translate` — alam na alam na ito ng mga LLMs |
+| Tier 2 languages (Korean, Turkish, Thai) | `llm` with a register — naha-handle ito nang maayos ng mga LLMs kapag may style guidance |
+| Tier 3 languages (Plains Cree, Yoruba, Quechua) | `llm-coached` — kailangan ng mga LLMs ng grammar rules at dictionaries |
+| Conlangs (Klingon, Sindarin, Kryptonian) | `llm-coached` — may ilang training data ang mga LLMs pero kailangan ng corrections |
 
-## Pagbuo ng Mahusay na Coaching Data
+## Paggawa ng Magandang Coaching Data
 
-### Mga Panuntunan sa Gramatika
+### Grammar Rules
 
-Isulat ang mga panuntunan bilang **mga tagubilin**, hindi mga paglalarawan. Mas sinusunod ng LLM ang mga tagubilin kaysa sa pag-interpret nito ng teoryang linggwistiko.
+Isulat ang mga rules as **instructions**, hindi descriptions. Mas nasusunod ng LLM ang instructions kaysa mag-interpret ng linguistic theory.
 
 ```json
 // ❌ Descriptive (the LLM learns nothing actionable)
@@ -98,21 +98,21 @@ Isulat ang mga panuntunan bilang **mga tagubilin**, hindi mga paglalarawan. Mas 
 "When translating nouns, check whether the Cree equivalent is animate (NA) or inanimate (NI) — this affects which verb conjugation to use"
 ```
 
-### Mga Diksyunaryo
+### Dictionaries
 
-Magtuon sa **mga domain-specific na termino** na maaaring magkamali o maimbento ng LLM. Huwag nang abalahin ang mga karaniwang salita na pinangangasiwaan na ng LLM — magtuon sa mga terminong partikular sa UI ng iyong application.
+Mag-focus po sa **domain-specific terms** na posibleng magkamali o imbentuhin ng LLM. Huwag na pong isama ang mga common words na naha-handle na ng LLM — mag-focus sa mga terms na specific sa inyong application's UI.
 
-### Mga Tala sa Istilo
+### Style Notes
 
-Maging tiyak tungkol sa register, pormalidad, at mga kumbensyon:
+Maging specific tungkol sa register, formality, at conventions:
 
 ```json
 "style_notes": "Use formal register (vous-form in French). Preserve brand names untranslated. UI labels should be imperative mood ('Save', not 'Saves'). Maximum 40 characters for button text."
 ```
 
-## Pag-test ng mga Coached Translation
+## Pag-test ng Coached Translations
 
-Gamitin ang [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) upang i-benchmark ang iyong mga coached translation laban sa isang reference corpus:
+Gamitin po ang [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) para i-benchmark ang inyong coached translations laban sa isang reference corpus:
 
 ```bash
 # Install the harness
@@ -125,10 +125,14 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Nagbibigay ito sa iyo ng mga score para sa chrF++, BLEU, at exact match. Gumawa ng maraming bersyon ng coaching file at ihambing — mas maganda ang mga objective metric kaysa sa subjective na pagsusuri.
+Magbibigay ito sa inyo ng chrF++, BLEU, at exact match scores. Gumawa ng multiple coaching file versions at i-compare — mas maganda ang objective metrics kaysa sa subjective review.
 
-## Tingnan Din
+---
 
-- [Mga Low-Resource na Wika](/docs/guides/low-resource-languages) — buong walkthrough para sa pagbuo ng isang translation pipeline mula sa simula
-- [Mga Method ng Pagsasalin](/docs/guides/translation-methods) — paghahambing ng lahat ng available na method
-- [Bumuo ng Plugin](/docs/tutorials/build-a-plugin) — i-package ang isang coached method bilang isang magagamit muli na plugin
+## See Also
+
+- [Translation Methods](/docs/guides/translation-methods) — ang llm-coached method
+- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — coaching in practice
+- [Plugin Specification](/docs/reference/plugin-spec) — pag-package ng coaching data sa isang plugin
+- [Quality Gate](/docs/concepts/quality-gate) — kung paano vina-validate ang coached translations
+- [Configuration](/docs/getting-started/configuration) — per-pair coaching config

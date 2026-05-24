@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+title: "설치"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 설치
+
+## 요구 사항
+
+- **Node.js 20.11+** (네이티브 ESM)
+- 번역 API 키 (아래 참조)
+
+## 설치
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="npx" label="npx (no install)">
+
+```bash
+npx i18n-rosetta sync
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add -D i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add --dev i18n-rosetta
+```
+
+  </TabItem>
+</Tabs>
+
+## API 키 발급받기
+
+Rosetta는 번역 백엔드가 필요해요. 다음 중 하나를 선택해 주세요:
+
+| 제공자 | 환경 변수 | 추천 대상 |
+|----------|---------------------|----------|
+| **OpenRouter** (권장) | `OPENROUTER_API_KEY` | 콘텐츠가 많은 프로젝트, Markdown, 200개 이상의 모델 |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 대량의 키-값 쌍 (130개 이상의 언어) |
+
+<Tabs>
+  <TabItem value="openrouter" label="OpenRouter (recommended)" default>
+
+[OpenRouter](https://openrouter.ai)는 200개 이상의 LLM 모델을 위한 통합 API를 제공해요. 무료 티어도 이용할 수 있어요.
+
+```bash
+# Sign up at https://openrouter.ai, then:
+export OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+또는 `.env.local` 파일에 추가해 주세요:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+```
+
+추천 대상: 콘텐츠가 많은 프로젝트, Markdown 번역, 그리고 콘텐츠를 인식하는 보호 기능(코드 블록, 숏코드, 보간 변수 등)이 필요한 프로젝트에 적합해요.
+
+  </TabItem>
+  <TabItem value="google" label="Google Translate">
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=...
+```
+
+추천 대상: 대량의 키-값 문자열 쌍(130개 이상의 언어)에 적합해요. Markdown 콘텐츠에는 **권장하지 않아요**. Google Translate는 코드 블록, 숏코드 또는 보간 변수를 인식하지 못하기 때문이에요.
+
+:::tip 스마트 감지
+`GOOGLE_TRANSLATE_API_KEY`만 설정되어 있고 OpenRouter 키가 없다면, Rosetta는 자동으로 Google Translate로 전환해요. 별도의 설정 변경은 필요하지 않아요.
+:::
+
+  </TabItem>
+</Tabs>
+
+## 설치 확인하기
+
+```bash
+npx i18n-rosetta --help
+```
+
+사용 가능한 명령어 목록이 표시될 거예요. 이제 [빠른 시작](/docs/getting-started/quick-start)을 진행할 준비가 되었어요.

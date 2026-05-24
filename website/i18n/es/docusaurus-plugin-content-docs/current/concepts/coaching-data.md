@@ -2,13 +2,13 @@
 sidebar_position: 5
 title: "Datos de Coaching"
 ---
-# Datos de coaching
+# Datos de Coaching
 
-Los datos de coaching son el mecanismo de rosetta para enseñar a los LLM sobre idiomas en los que no fueron entrenados. Al proporcionar reglas gramaticales, diccionarios y notas de estilo junto con cada solicitud de traducción, se transforma un LLM de propósito general en un traductor consciente del contexto para cualquier idioma, incluidos aquellos sin soporte de MT existente.
+Los datos de coaching son el mecanismo de rosetta para enseñar a los LLMs sobre idiomas en los que no fueron entrenados. Al proporcionar reglas gramaticales, diccionarios y notas de estilo junto con cada solicitud de traducción, usted transforma un LLM de propósito general en un traductor consciente del contexto para cualquier idioma, incluyendo idiomas con cero soporte de MT (traducción automática) existente.
 
 ## Cómo funciona
 
-Cuando se configura el método de un par en `llm-coached`, rosetta carga un archivo de coaching desde `.rosetta/coaching/<locale>.json` e inyecta su contenido en cada prompt del LLM como parte del mensaje del sistema. El LLM ve sus reglas lingüísticas junto con la solicitud de traducción, produciendo un resultado que sigue su gramática y terminología en lugar de adivinar.
+Cuando usted configura el método de un par como `llm-coached`, rosetta carga un archivo de coaching desde `.rosetta/coaching/<locale>.json` e inyecta su contenido en cada prompt del LLM como parte del mensaje del sistema. El LLM ve sus reglas lingüísticas junto a la solicitud de traducción, produciendo un resultado que sigue su gramática y terminología en lugar de adivinar.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,7 +28,7 @@ Cuando se configura el método de un par en `llm-coached`, rosetta carga un arch
 └──────────────────────────────────────────────────────┘
 ```
 
-Debido a que los datos de coaching son parte del mensaje del sistema, se benefician del **prompt caching** (caché de prompts): proveedores como Anthropic y Google almacenan en caché los prefijos repetidos del sistema, por lo que solo se paga por el contexto de coaching una vez por sesión, no una vez por lote.
+Debido a que los datos de coaching son parte del mensaje del sistema, se benefician del **prompt caching** (almacenamiento en caché de prompts): proveedores como Anthropic y Google almacenan en caché los prefijos repetidos del sistema, por lo que usted solo paga por el contexto de coaching una vez por sesión, no una vez por lote.
 
 ## Formato del archivo de coaching
 
@@ -62,7 +62,7 @@ Cree un archivo JSON por configuración regional (locale) en `.rosetta/coaching/
 | `dictionary` | `object` | No | Mapa de clave-valor de término en inglés → término en el idioma de destino. Se utiliza para vocabulario específico del dominio que el LLM no conocería. |
 | `style_notes` | `string` | No | Instrucciones de estilo de formato libre (registro, tono, convenciones de formalidad). |
 
-Todos los campos son opcionales: puede comenzar solo con un diccionario y agregar reglas gramaticales a medida que lo perfecciona.
+Todos los campos son opcionales: usted puede comenzar solo con un diccionario y agregar reglas gramaticales a medida que perfecciona.
 
 ## Comportamiento de respaldo
 
@@ -73,22 +73,22 @@ Si un par está configurado para `llm-coached` pero no existe un archivo de coac
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Esto significa que puede configurar `"defaultMethod": "llm-coached"` globalmente de forma segura: los idiomas con datos de coaching lo usarán y el resto obtendrá la traducción estándar del LLM sin errores.
+Esto significa que usted puede configurar de manera segura `"defaultMethod": "llm-coached"` a nivel global: los idiomas con datos de coaching lo usarán, y el resto obtendrá la traducción estándar del LLM sin errores.
 
-## Cuándo usar el coaching
+## Cuándo usar el Coaching
 
 | Escenario | Método recomendado |
 |----------|-------------------|
-| Idiomas de nivel 1 (francés, español, alemán) | `llm` o `google-translate`: los LLM ya los conocen bien |
-| Idiomas de nivel 2 (coreano, turco, tailandés) | `llm` con un registro: los LLM los manejan adecuadamente con pautas de estilo |
-| Idiomas de nivel 3 (cree de las llanuras, yoruba, quechua) | `llm-coached`: los LLM necesitan reglas gramaticales y diccionarios |
-| Idiomas construidos (klingon, sindarin, kryptoniano) | `llm-coached`: los LLM tienen algunos datos de entrenamiento pero necesitan correcciones |
+| Idiomas de Nivel 1 (francés, español, alemán) | `llm` o `google-translate`: los LLMs ya los conocen bien |
+| Idiomas de Nivel 2 (coreano, turco, tailandés) | `llm` con un registro: los LLMs los manejan adecuadamente con orientación de estilo |
+| Idiomas de Nivel 3 (cree de las llanuras, yoruba, quechua) | `llm-coached`: los LLMs necesitan reglas gramaticales y diccionarios |
+| Lenguas construidas (klingon, sindarin, kryptoniano) | `llm-coached`: los LLMs tienen algunos datos de entrenamiento pero necesitan correcciones |
 
 ## Creación de buenos datos de coaching
 
 ### Reglas gramaticales
 
-Escriba las reglas como **instrucciones**, no como descripciones. El LLM sigue las instrucciones mejor de lo que interpreta la teoría lingüística.
+Escriba las reglas como **instrucciones**, no como descripciones. El LLM sigue mejor las instrucciones que lo que interpreta la teoría lingüística.
 
 ```json
 // ❌ Descriptive (the LLM learns nothing actionable)
@@ -100,7 +100,7 @@ Escriba las reglas como **instrucciones**, no como descripciones. El LLM sigue l
 
 ### Diccionarios
 
-Concéntrese en los **términos específicos del dominio** que el LLM podría equivocar o inventar. No se preocupe por las palabras comunes que el LLM ya maneja; concéntrese en los términos específicos de la interfaz de usuario de su aplicación.
+Concéntrese en los **términos específicos del dominio** que el LLM podría equivocar o inventar. No se moleste con palabras comunes que el LLM ya maneja; enfóquese en los términos específicos de la interfaz de usuario (UI) de su aplicación.
 
 ### Notas de estilo
 
@@ -110,9 +110,9 @@ Sea específico sobre el registro, la formalidad y las convenciones:
 "style_notes": "Use formal register (vous-form in French). Preserve brand names untranslated. UI labels should be imperative mood ('Save', not 'Saves'). Maximum 40 characters for button text."
 ```
 
-## Prueba de traducciones con coaching
+## Pruebas de traducciones con coaching
 
-Utilice el [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) para evaluar sus traducciones con coaching frente a un corpus de referencia:
+Utilice el [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) para evaluar el rendimiento de sus traducciones con coaching frente a un corpus de referencia:
 
 ```bash
 # Install the harness
@@ -125,10 +125,14 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Esto le proporciona puntuaciones de chrF++, BLEU y coincidencias exactas. Cree varias versiones de archivos de coaching y compárelas: las métricas objetivas superan a la revisión subjetiva.
+Esto le proporciona puntuaciones de chrF++, BLEU y coincidencias exactas. Cree múltiples versiones del archivo de coaching y compare: las métricas objetivas superan a la revisión subjetiva.
+
+---
 
 ## Consulte también
 
-- [Idiomas de bajos recursos](/docs/guides/low-resource-languages): guía completa para crear un flujo de trabajo de traducción desde cero
-- [Métodos de traducción](/docs/guides/translation-methods): comparación de todos los métodos disponibles
-- [Crear un plugin](/docs/tutorials/build-a-plugin): empaquete un método con coaching como un plugin reutilizable
+- [Métodos de traducción](/docs/guides/translation-methods): el método llm-coached
+- [Soporte para un idioma de bajos recursos](/docs/guides/low-resource-languages): el coaching en la práctica
+- [Especificación de plugins](/docs/reference/plugin-spec): empaquetado de datos de coaching en un plugin
+- [Puerta de calidad (Quality Gate)](/docs/concepts/quality-gate): cómo se validan las traducciones con coaching
+- [Configuración](/docs/getting-started/configuration): configuración de coaching por par

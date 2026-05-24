@@ -1,6 +1,6 @@
 {
   "link.title.Documentation": {
-    "message": "[EN] Documentation",
+    "message": "Documentation",
     "description": "The title of the footer links column with title=Documentation in the footer"
   },
   "link.title.Learn": {
@@ -40,7 +40,7 @@
     "description": "The label of footer link with label=Troubleshooting linking to /docs/guides/troubleshooting"
   },
   "link.item.label.Blog": {
-    "message": "[EN] Blog",
+    "message": "Blog",
     "description": "The label of footer link with label=Blog linking to /blog"
   },
   "link.item.label.Leaderboard": {
@@ -48,15 +48,15 @@
     "description": "The label of footer link with label=Leaderboard linking to /leaderboard"
   },
   "link.item.label.GitHub": {
-    "message": "[EN] GitHub",
+    "message": "GitHub",
     "description": "The label of footer link with label=GitHub linking to https://github.com/gamedaysuits/i18n-rosetta"
   },
   "link.item.label.npm": {
-    "message": "[EN] npm",
+    "message": "npm",
     "description": "The label of footer link with label=npm linking to https://www.npmjs.com/package/i18n-rosetta"
   },
   "link.item.label.Eval Harness": {
-    "message": "[EN] Eval Harness",
+    "message": "Eval Harness",
     "description": "The label of footer link with label=Eval Harness linking to https://github.com/gamedaysuits/gds-mt-eval-harness"
   },
   "copyright": {

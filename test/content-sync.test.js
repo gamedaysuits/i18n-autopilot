@@ -99,6 +99,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     // Should have created hello.fr.md and hello.de.md
@@ -116,6 +117,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     const output = fs.readFileSync(path.join(tmpDir, 'posts/hello.fr.md'), 'utf-8');
@@ -139,6 +141,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     const output = fs.readFileSync(path.join(tmpDir, 'posts/hello.fr.md'), 'utf-8');
@@ -157,6 +160,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     // Existing file should NOT be overwritten
@@ -175,6 +179,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: true,
+      cwd: tmpDir,
     });
 
     assert.ok(!fs.existsSync(path.join(tmpDir, 'posts/hello.fr.md')), 'French file NOT created');
@@ -191,6 +196,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     assert.ok(
@@ -210,6 +216,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     const output = fs.readFileSync(path.join(tmpDir, 'pages/about.fr.md'), 'utf-8');
@@ -228,6 +235,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: ['title'],  // Only translate title, not description
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     const output = fs.readFileSync(path.join(tmpDir, 'posts/hello.fr.md'), 'utf-8');
@@ -246,6 +254,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     // Should create hello.fr.md (not hello.en.fr.md)
@@ -264,6 +273,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
     // Should not throw
   });
@@ -276,6 +286,7 @@ describe('runContentSync (fallback mode)', () => {
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
     // Should not throw
   });
@@ -301,6 +312,7 @@ And inline \`code\` too.
       translatableFields: null,
       apiKey: null,
       dryRun: false,
+      cwd: tmpDir,
     });
 
     const output = fs.readFileSync(path.join(tmpDir, 'posts/code.fr.md'), 'utf-8');

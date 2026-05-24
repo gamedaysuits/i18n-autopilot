@@ -1,0 +1,18 @@
+{
+  "code": "subfamily-cree",
+  "extends": "family-algonquian",
+  "name": "Cree-Montagnais-Naskapi Continuum",
+  "bcp47": "cr",
+  "script": "Latn",
+  "formality": {
+    "system": "register-levels",
+    "description": "Formality is expressed through respectful particles, SRO lexical precision, and community-guided neologisms.",
+    "default": "standard"
+  },
+  "rules": {
+    "variables": {
+      "syntax": "SRO-style attachment",
+      "guidance": "Variables are marked with braces `{count}`. Since Cree relies heavily on affixation, suffixes must attach directly to placeholders. Use a hyphen to separate the variable from grammatical affixes (e.g., `{count}-ak` or `{count}-a` for plurals)."
+    }
+  }
+}

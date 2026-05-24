@@ -4,7 +4,7 @@ title: "Arquitectura"
 ---
 # Arquitectura
 
-El ecosistema de traducción de Rosetta consta de tres herramientas independientes que trabajan juntas a través de contratos bien definidos. Ninguna de ellas depende de las demás en el momento de la compilación. Se comunican a través de un **formato de plugin de método** compartido y un **contrato de API REST**.
+El ecosistema de traducción de Rosetta consta de tres herramientas independientes que trabajan juntas a través de contratos bien definidos. Ninguna de ellas depende de las otras en el momento de la compilación. Se comunican a través de un **formato de plugin de método** compartido y un **contrato de API REST**.
 
 ## Las tres piezas
 
@@ -29,10 +29,16 @@ graph TB
 La herramienta de código abierto para desarrolladores. Traduce archivos de configuración regional utilizando métodos conectables. Cero dependencias, configuración opcional, funciona de forma inmediata.
 
 **Métodos integrados:**
-- `llm` → OpenRouter / cualquier LLM
+- `llm` → OpenRouter / cualquier LLM (más de 200 modelos)
 - `llm-coached` → LLM + entrenamiento de gramática/diccionario
-- `google-translate` → Google Cloud Translation API
-- `api` → Conducto ligero hacia cualquier API remota
+- `openai` → API directa de OpenAI (GPT-4o, GPT-4o-mini)
+- `anthropic` → API directa de Anthropic (Claude Sonnet, Haiku, Opus)
+- `gemini` → API directa de Google Gemini (Flash, Pro — nivel gratuito disponible)
+- `google-translate` → Google Cloud Translation API v2
+- `deepl` → API de DeepL con soporte para glosarios
+- `microsoft-translator` → Azure Cognitive Services Translator
+- `libretranslate` → LibreTranslate autoalojado (AGPL, gratuito)
+- `api` → Conexión ligera a cualquier endpoint REST remoto
 
 ### Eval Harness (proyecto complementario)
 
@@ -44,7 +50,7 @@ El harness nunca se ejecuta dentro de rosetta. Es una herramienta separada que p
 
 ### Rosetta Translate (planificado)
 
-Un servicio de API medido que aloja métodos de traducción propietarios en el lado del servidor: los prompts, los datos de entrenamiento y los pipelines lingüísticos nunca abandonan el servidor.
+Un servicio de API de uso medido que aloja métodos de traducción propietarios en el lado del servidor: los prompts, los datos de entrenamiento y los pipelines lingüísticos nunca salen del servidor.
 
 ## Cómo se conectan
 
@@ -71,7 +77,7 @@ flowchart LR
     E --> F["Returns translations"]
 ```
 
-El `APIMethod` de Rosetta es un **conducto pasivo**. Envía claves y recibe traducciones. Contiene cero lógica de traducción y cero contenido propietario.
+El `APIMethod` de Rosetta es un **conducto simple**. Envía claves y recibe traducciones. Contiene cero lógica de traducción y cero contenido propietario.
 
 ## Qué sabe cada pieza sobre las demás
 
@@ -81,7 +87,7 @@ El `APIMethod` de Rosetta es un **conducto pasivo**. Envía claves y recibe trad
 | **Rosetta Translate** | Sí — atiende sus solicitudes | *(es Rosetta Translate)* | No — recibe métodos implementados |
 | **Eval Harness** | Sí — exporta el formato de plugin | No — los métodos se implementan por separado | *(es el harness)* |
 
-## Escenarios de uso
+## Escenarios de usuario
 
 ### Escenario 1: Gratuito, sin configuración (la mayoría de los usuarios)
 
@@ -90,7 +96,7 @@ export OPENROUTER_API_KEY=sk-...
 npx i18n-rosetta sync
 ```
 
-Utiliza el método `llm` integrado. Sin plugins, sin Rosetta Translate, sin harness.
+Utiliza el método integrado `llm`. Sin plugins, sin Rosetta Translate, sin harness.
 
 ### Escenario 2: Línea base de Google Translate
 
@@ -99,7 +105,7 @@ export GOOGLE_TRANSLATE_API_KEY=AIza...
 npx i18n-rosetta sync
 ```
 
-Utiliza el método `google-translate` integrado. No se necesitan plugins.
+Utiliza el método integrado `google-translate`. No se necesitan plugins.
 
 ### Escenario 3: Plugin abierto con entrenamiento incluido
 
@@ -128,4 +134,14 @@ El usuario mantiene sus propias reglas gramaticales y diccionario en `.rosetta/c
 2. **Rosetta es el núcleo ligero.** Cero dependencias, configuración opcional. Los plugins y la API son aditivos.
 3. **La protección de la propiedad intelectual es arquitectónica.** Las técnicas propietarias se mantienen en el lado del servidor. El paquete npm no incluye nada propietario.
 4. **El formato del plugin es el contrato.** Todo fluye a través de `method.json`.
-5. **Cada herramienta tiene un solo trabajo.** Harness → desarrolla métodos. Rosetta Translate → aloja métodos. Rosetta → traduce archivos.
+5. **Cada herramienta tiene un solo trabajo.** Harness → desarrollar métodos. Rosetta Translate → alojar métodos. Rosetta → traducir archivos.
+
+---
+
+## Consulte también
+
+- [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método integrado
+- [Especificación del plugin](/docs/reference/plugin-spec) — el formato del manifiesto method.json
+- [Eval Harness](/docs/eval/harness) — la herramienta de investigación complementaria
+- [Servir un método a través de la API](/docs/guides/serving-a-method) — alojamiento de pipelines de traducción personalizados
+- [Soporte para un idioma de bajos recursos](/docs/guides/low-resource-languages) — el caso de uso que impulsó esta arquitectura

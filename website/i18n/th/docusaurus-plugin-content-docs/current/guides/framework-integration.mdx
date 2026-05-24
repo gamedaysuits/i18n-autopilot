@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "การเชื่อมต่อ Framework"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# การผสานการทำงานกับ Framework
+
+การตั้งค่า i18n-rosetta ทีละขั้นตอนสำหรับ framework ยอดนิยม
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### โครงสร้างโปรเจกต์
+
+Hugo ใช้ `i18n/` สำหรับการแปลสตริง และ `content/` สำหรับเนื้อหาหน้าเว็บ:
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### การตั้งค่า
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### รายละเอียดการแปลเนื้อหา
+
+**Front matter**: รองรับตัวคั่นทั้งแบบ YAML (`---`) และ TOML (`+++`) โดยจะแปล `title`, `description`, `summary`, `subtitle`, `caption` และ `linkTitle` เป็นค่าเริ่มต้น ฟิลด์อื่นๆ ทั้งหมด (date, draft, tags, weight, slug ฯลฯ) จะถูกเก็บไว้ตามเดิม คุณสามารถปรับแต่งได้ด้วย `translatableFields` ใน config ของคุณ
+
+**Block protection**: Code blocks, Hugo shortcodes, inline code และ raw HTML จะถูกป้องกันโดยอัตโนมัติโดยใช้ Unicode sentinel placeholders ซึ่งจะถูกส่งผ่านโดยไม่มีการเปลี่ยนแปลงใดๆ
+
+**Filename convention**: เป็นไปตามรูปแบบการแปลด้วยชื่อไฟล์ของ Hugo:
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md` (ตัดคำต่อท้ายของต้นฉบับออก)
+
+**Skip existing**: ไฟล์ที่แปลแล้วจะไม่มีการเขียนทับ หากต้องการบังคับให้แปลใหม่ ให้ลบไฟล์ปลายทางทิ้ง
+
+### รูปพหูพจน์ (Plural Forms)
+
+Locale แบบ TOML และ YAML รองรับรูปพหูพจน์แบบ CLDR:
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+ในระบบภายในจะแสดงเป็น `items.one` และ `items.other` สำหรับการเปรียบเทียบความแตกต่าง (diffing) จากนั้นจะถูกแปลงกลับ (re-serialized) ให้อยู่ในรูปแบบส่วนที่ถูกต้องเมื่อทำการเขียนไฟล์
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### โครงสร้างโปรเจกต์
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### การตั้งค่า
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+สร้าง `messages/fr.json`, `messages/ja.json` ฯลฯ — ซึ่งแปลเสร็จสมบูรณ์ โดยยังคงโครงสร้างคีย์ที่ซ้อนกัน (nested key) ของคุณไว้ next-intl จะนำไปใช้งานโดยอัตโนมัติ
+
+### กระบวนการพัฒนา (Development Workflow)
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### โครงสร้างไฟล์แบบ Flat (แนะนำ)
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### โครงสร้างไดเรกทอรีแบบซ้อนกัน (Nested Directory)
+
+หากคุณใช้โครงสร้างแบบ `{locale}/{namespace}.json` ให้สร้างสคริปต์ซิงค์เพื่อทำ flatten → แปล → unflatten ดูรายละเอียดเพิ่มเติมได้ที่ [เอกสารประกอบของ react-i18next](https://react.i18next.com/)
+
+  </TabItem>
+</Tabs>

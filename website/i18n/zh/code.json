@@ -326,7 +326,7 @@
     "description": "The title of the page for a blog tag"
   },
   "theme.blog.author.pageTitle": {
-    "message": "[EN] {authorName} - {nPosts}",
+    "message": "{authorName} - {nPosts}",
     "description": "The title of the page for a blog author"
   },
   "theme.blog.authorsList.pageTitle": {

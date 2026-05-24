@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "Tích hợp Framework"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Tích hợp Framework
+
+Hướng dẫn từng bước để cài đặt i18n-rosetta với các framework phổ biến.
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### Cấu trúc dự án
+
+Hugo sử dụng `i18n/` để dịch chuỗi và `content/` cho nội dung trang:
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### Cài đặt
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### Chi tiết dịch nội dung
+
+**Front matter**: Hỗ trợ cả dấu phân cách YAML (`---`) và TOML (`+++`). Dịch `title`, `description`, `summary`, `subtitle`, `caption`, và `linkTitle` theo mặc định. Tất cả các trường khác (date, draft, tags, weight, slug, v.v.) đều được giữ nguyên. Tùy chỉnh bằng `translatableFields` trong file cấu hình của bạn.
+
+**Bảo vệ khối**: Code block, Hugo shortcode, inline code và raw HTML được tự động bảo vệ bằng các placeholder Unicode sentinel. Chúng sẽ được giữ nguyên không bị thay đổi.
+
+**Quy ước đặt tên file**: Tuân theo mẫu dịch-theo-tên-file (translation-by-filename) của Hugo:
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md` (loại bỏ hậu tố nguồn)
+
+**Bỏ qua file đã tồn tại**: Các file đã được dịch sẽ không bao giờ bị ghi đè. Xóa file đích để buộc dịch lại.
+
+### Dạng số nhiều
+
+Các locale TOML và YAML hỗ trợ dạng số nhiều CLDR:
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+Được biểu diễn nội bộ dưới dạng `items.one` và `items.other` để so sánh (diffing), sau đó được tuần tự hóa lại thành định dạng phân chia chính xác khi ghi.
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### Cấu trúc dự án
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### Cài đặt
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+Tạo ra `messages/fr.json`, `messages/ja.json`, v.v. — được dịch hoàn toàn, giữ nguyên cấu trúc key lồng nhau của bạn. next-intl sẽ tự động nhận diện chúng.
+
+### Quy trình phát triển
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### Cấu trúc file phẳng (khuyên dùng)
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### Cấu trúc thư mục lồng nhau
+
+Nếu bạn sử dụng cấu trúc `{locale}/{namespace}.json`, hãy tạo một script đồng bộ để làm phẳng (flatten) → dịch → bỏ làm phẳng (unflatten). Xem [tài liệu react-i18next](https://react.i18next.com/) để biết thêm chi tiết.
+
+  </TabItem>
+</Tabs>

@@ -2,7 +2,7 @@
 sidebar_position: 2
 title: "Como funciona a sincronização"
 ---
-# Como a Sincronização Funciona
+# Como o Sync Funciona
 
 O comando `sync` é a operação principal do rosetta. Aqui está o que acontece quando você executa `npx i18n-rosetta sync`.
 
@@ -37,7 +37,7 @@ O rosetta carrega o `i18n-rosetta.config.json` (ou detecta as configurações au
 
 ### 2. Varredura da Origem
 
-O arquivo de localidade de origem é carregado e planificado em um mapa chave→valor:
+O arquivo de localidade de origem é carregado e convertido em um mapa plano de chave→valor:
 
 ```json
 // Input (nested)
@@ -49,31 +49,31 @@ O arquivo de localidade de origem é carregado e planificado em um mapa chave→
 
 ### 3. Detecção de Alterações
 
-O rosetta lê o `.i18n-rosetta.lock`, que armazena os hashes SHA-256 dos valores de origem traduzidos anteriormente. Para cada chave, ele verifica:
+O rosetta lê o `.i18n-rosetta.lock`, que armazena hashes SHA-256 de valores de origem traduzidos anteriormente. Para cada chave, ele verifica:
 
 | Condição | Ação |
 |-----------|--------|
 | Chave ausente no destino | **Traduzir** |
-| Hash de origem alterado desde a última sincronização | **Retraduzir** (desatualizado) |
+| Hash de origem alterado desde o último sync | **Retraduzir** (desatualizado) |
 | Valor de destino começa com `[EN]` | **Retraduzir** (placeholder de fallback) |
 | Hash de origem inalterado, chave existe | **Ignorar** |
 
-É por isso que o rosetta traduz apenas o que foi alterado — ele não retraduz o arquivo inteiro a cada sincronização.
+É por isso que o rosetta traduz apenas o que mudou — ele não retraduz o arquivo inteiro a cada sync.
 
 ### 4. Agrupamento em Lotes
 
-As chaves são agrupadas em lotes (padrão: 30 chaves/lote para LLM, 128 para o Google Translate). O agrupamento em lotes reduz as idas e vindas da API, mantendo os prompts gerenciáveis.
+As chaves são agrupadas em lotes (padrão: 30 chaves/lote para LLM, 128 para o Google Translate). O agrupamento em lotes reduz as requisições (round trips) à API, mantendo os prompts gerenciáveis.
 
 ### 5. Tradução
 
 Cada lote é enviado para o método de tradução configurado:
 
-- **`llm`**: Prompt estruturado para o OpenRouter com instruções de registro
+- **`llm`**: Prompt estruturado para o OpenRouter com instruções de registro e orientação de gênero
 - **`llm-coached`**: O mesmo, mas com regras gramaticais, dicionário e notas de estilo injetados
 - **`google-translate`**: Requisição em lote para a Google Cloud Translation API v2
 - **`api`**: HTTP POST para um endpoint remoto
 
-A mensagem do sistema (registro, regras) é idêntica em todos os lotes para uma determinada localidade, permitindo o **cache de prompt** (prompt caching) — provedores como Anthropic e Google armazenam em cache mensagens de sistema repetidas, reduzindo os custos de tokens.
+A mensagem do sistema (registro, orientação de gênero, regras) é idêntica em todos os lotes para uma determinada localidade, permitindo o **cache de prompt** — provedores como Anthropic e Google fazem cache de mensagens de sistema repetidas, reduzindo os custos de tokens.
 
 ### 6. Quality Gate
 
@@ -85,11 +85,11 @@ Cada tradução é validada antes de ser gravada no disco. Cinco verificações 
 | **Eco da origem** | O modelo retornou a entrada em inglês | `"Welcome"` para japonês |
 | **Loop de alucinação** | Trigramas repetidos | `"Qo' Qo' Qo' Qo'"` |
 | **Inflação de tamanho** | A saída é 4x+ maior que a origem | Origem de 10 caracteres → Saída de 50 caracteres |
-| **Conformidade de script** | Script incorreto para a localidade | Texto latino para localidade árabe |
+| **Conformidade de escrita** | Sistema de escrita errado para a localidade | Texto latino para localidade árabe |
 
 As falhas são registradas com um prefixo `[GATE]`. Não há fallbacks silenciosos.
 
-Consulte [Quality Gate](/docs/concepts/quality-gate) para obter detalhes.
+Consulte [Quality Gate](/docs/concepts/quality-gate) para mais detalhes.
 
 ### 7. Cascata de Retentativas
 
@@ -109,7 +109,7 @@ As traduções aprovadas são gravadas no arquivo de localidade de destino, pres
 
 ## Sucesso Parcial
 
-Um lote com falha não bloqueia o restante. Se 9 de 10 lotes forem bem-sucedidos, esses 9 serão gravados. O lote com falha é registrado, e você pode executar `sync` novamente para retentar.
+Um lote com falha não bloqueia o restante. Se 9 de 10 lotes forem bem-sucedidos, esses 9 serão gravados. O lote que falhou é registrado no log, e você pode executar `sync` novamente para tentar de novo.
 
 ## Dry Run
 
@@ -121,7 +121,7 @@ npx i18n-rosetta sync --dry
 
 ## Forçar Retradução
 
-Force a retradução de chaves específicas, mesmo que não tenham sido alteradas:
+Force chaves específicas a serem retraduzidas, mesmo se inalteradas:
 
 ```bash
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
@@ -129,7 +129,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## Estimativa de Custos
 
-Antes de traduzir, o rosetta gera um **relatório de custos pré-sincronização** mostrando os custos estimados por par. Isso é executado automaticamente durante cada `sync` — você o vê antes que qualquer chamada de API seja feita.
+Antes de traduzir, o rosetta gera um **relatório de custos pré-sync** mostrando os custos estimados por par. Isso é executado automaticamente durante cada `sync` — você o vê antes que qualquer chamada de API seja feita.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -150,8 +150,18 @@ Cada método de tradução fornece sua própria estimativa de custo:
 | Método | Base de Custo | Precisão |
 |--------|-----------|-----------|
 | `google-translate` | Taxa publicada pelo Google (US$ 20/milhão de caracteres) | Precisa |
-| `llm` | Varia de acordo com o modelo do OpenRouter | Depende do modelo — consulte os [preços do OpenRouter](https://openrouter.ai/models) |
-| `llm-coached` | O mesmo que `llm` mais os tokens de contexto de coaching | Depende do modelo |
+| `llm` | Varia de acordo com o modelo no OpenRouter | Depende do modelo — consulte os [preços do OpenRouter](https://openrouter.ai/models) |
+| `llm-coached` | O mesmo que `llm` mais tokens de contexto de coaching | Depende do modelo |
 | `api` | Determinado pelo servidor | Desconhecida — não é possível estimar sem consultar o endpoint |
 
 Quando um método não consegue determinar o custo (métodos LLM, APIs remotas), o rosetta relata `—` em vez de adivinhar. Use `--dry` para ver as estimativas de custo sem realmente traduzir.
+
+---
+
+## Veja Também
+
+- [Referência da CLI — sync](/docs/reference/cli#sync) — flags e opções do comando
+- [Quality Gate](/docs/concepts/quality-gate) — como as traduções são validadas
+- [Métodos de Tradução](/docs/guides/translation-methods) — como cada método funciona
+- [Configuração](/docs/getting-started/configuration) — referência de configuração
+- [Guia de CI/CD](/docs/guides/ci-cd) — automatizando syncs no seu pipeline

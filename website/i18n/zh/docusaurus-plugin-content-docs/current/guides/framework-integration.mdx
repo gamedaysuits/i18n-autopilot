@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "框架集成"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 框架集成
+
+i18n-rosetta 与主流框架的逐步设置指南。
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### 项目结构
+
+Hugo 使用 `i18n/` 进行字符串翻译，使用 `content/` 管理页面内容：
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### 设置
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### 内容翻译详情
+
+**Front matter**：支持 YAML (`---`) 和 TOML (`+++`) 分隔符。默认翻译 `title`、`description`、`summary`、`subtitle`、`caption` 和 `linkTitle`。所有其他字段（date、draft、tags、weight、slug 等）将保持不变。你可以在配置中使用 `translatableFields` 进行自定义。
+
+**块保护**：代码块、Hugo shortcodes、内联代码和原生 HTML 会使用 Unicode 占位符自动进行保护。它们会原样保留，不被修改。
+
+**文件名约定**：遵循 Hugo 的按文件名翻译模式：
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md`（去除源语言后缀）
+
+**跳过已有文件**：现有的已翻译文件绝不会被覆盖。如需强制重新翻译，请删除目标文件。
+
+### 复数形式
+
+TOML 和 YAML 语言环境支持 CLDR 复数形式：
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+在内部表示为 `items.one` 和 `items.other` 以便进行差异比较，然后在写入时重新序列化为正确的分段格式。
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### 项目结构
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### 设置
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+创建 `messages/fr.json`、`messages/ja.json` 等文件 —— 完全翻译，并保留你的嵌套键结构。next-intl 会自动识别它们。
+
+### 开发工作流
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### 扁平文件结构（推荐）
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### 嵌套目录结构
+
+如果你使用 `{locale}/{namespace}.json` 结构，请创建一个同步脚本来执行 扁平化 → 翻译 → 反扁平化。详情请参阅 [react-i18next 文档](https://react.i18next.com/)。
+
+  </TabItem>
+</Tabs>

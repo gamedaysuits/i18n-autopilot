@@ -4,38 +4,38 @@ title: "Skript-Konverter"
 ---
 # Schrift-Konverter
 
-Schrift-Konverter sind deterministische, LLM-freie Post-Translation-Hooks, die Text von einem Schriftsystem in ein anderes konvertieren. Sie ermöglichen einen „einmal übersetzen, in mehreren Schriften rendern“-Workflow — Sie übersetzen in eine Arbeitsschrift (typischerweise Lateinisch) und konvertieren dann automatisch in die Anzeigeschrift.
+Schrift-Konverter sind deterministische, LLM-freie Hooks nach der Übersetzung, die Text von einem Schriftsystem in ein anderes umwandeln. Sie ermöglichen einen Arbeitsablauf nach dem Prinzip „einmal übersetzen, in mehreren Schriften darstellen“ — Sie übersetzen in eine Arbeitsschrift (in der Regel Lateinisch) und wandeln diese dann automatisch in die Anzeigeschrift um.
 
 ## Warum Schrift-Konverter?
 
 Einige Sprachen verwenden mehrere Schriftsysteme für dieselbe gesprochene Sprache:
 
-- **Plains Cree**: SRO (Lateinisch) für die Bearbeitung → Syllabics (ᓀᐦᐃᔭᐍᐏᐣ) für die Anzeige
+- **Plains Cree**: SRO (Lateinisch) für die Bearbeitung → Silbenschrift (ᓀᐦᐃᔭᐍᐏᐣ) für die Anzeige
 - **Serbisch**: Lateinisch für den internationalen Gebrauch → Kyrillisch für den inländischen Gebrauch
 - **Klingonisch**: Romanisierung für die Eingabe → pIqaD (  ) für die Anzeige
 
-Die direkte Übersetzung in nicht-lateinische Schriften verursacht Probleme: LLMs halluzinieren Zeichen, JSON-Dateien lassen sich schwer versionieren und Diff-Tools können Änderungen nicht vergleichen. Schrift-Konverter lösen dies, indem sie Übersetzungen in einer versionskontrollfreundlichen Schrift belassen und diese beim Synchronisieren deterministisch konvertieren.
+Die direkte Übersetzung in nicht-lateinische Schriften verursacht Probleme: LLMs halluzinieren Zeichen, JSON-Dateien lassen sich schwer in der Versionskontrolle verwalten und Diff-Tools können Änderungen nicht vergleichen. Schrift-Konverter lösen dieses Problem, indem sie Übersetzungen in einer für die Versionskontrolle geeigneten Schrift belassen und diese zum Zeitpunkt der Synchronisierung deterministisch umwandeln.
 
 ## Verfügbare Konverter
 
 Rosetta wird mit fünf integrierten Schrift-Konvertern ausgeliefert:
 
-| Locale | Von | Nach | Typ | Schriftart erforderlich? |
+| Gebietsschema | Von | Nach | Typ | Schriftart erforderlich? |
 |--------|------|----|------|----------------|
-| `crk` | SRO (Standard Roman Orthography) | Cree Syllabics | Deterministisch | Nein — natives Unicode |
+| `crk` | SRO (Standard Roman Orthography) | Cree-Silbenschrift | Deterministisch | Nein — natives Unicode |
 | `sr` | Lateinisch | Kyrillisch | Deterministisch | Nein — natives Unicode |
 | `tlh` | Romanisierung | pIqaD | Deterministisch | Ja — PUA U+F8D0–F8FF |
 | `x-elvish-s` | Lateinisch | Tengwar (Modus von Beleriand) | Deterministisch | Ja — PUA U+E000–E07F |
-| `x-kryptonian` | Lateinisch | Kryptonisch | Schriftart-basierte Chiffre | Ja — PUA U+E100–E119 |
+| `x-kryptonian` | Lateinisch | Kryptonisch | Schriftartbasierte Chiffre | Ja — PUA U+E100–E119 |
 
-### Deterministisch vs. Schriftart-basiert
+### Deterministisch vs. Schriftartbasiert
 
-- **Deterministische Konverter** (Cree, Serbisch, Klingonisch, Tengwar) führen ein echtes Zeichen-für-Zeichen-Mapping anhand linguistischer Regeln durch. Die Ausgabe enthält tatsächliche Unicode-Zeichen.
-- **Schriftart-basierte Konverter** (Kryptonisch) sind 1:1-Substitutionschiffren, bei denen die Ausgabe aus Unicode-PUA-Zeichen besteht, die nur dann korrekt gerendert werden, wenn eine bestimmte Schriftart geladen ist.
+- **Deterministische Konverter** (Cree, Serbisch, Klingonisch, Tengwar) führen eine echte Zeichen-zu-Zeichen-Zuordnung anhand linguistischer Regeln durch. Die Ausgabe enthält tatsächliche Unicode-Zeichen.
+- **Schriftartbasierte Konverter** (Kryptonisch) sind 1:1-Substitutionschiffren, bei denen die Ausgabe aus Unicode-PUA-Zeichen besteht, die nur dann korrekt dargestellt werden, wenn eine bestimmte Schriftart geladen ist.
 
-## Wie sie funktionieren
+## Funktionsweise
 
-Schrift-Konverter werden **nach** der Übersetzung als Post-Processing-Schritt ausgeführt. Die Pipeline sieht wie folgt aus:
+Schrift-Konverter werden **nach** der Übersetzung als Nachbearbeitungsschritt ausgeführt. Die Pipeline sieht wie folgt aus:
 
 ```
 Source (English) → LLM Translation → Working Script → Script Converter → Display Script
@@ -46,9 +46,9 @@ Zum Beispiel Plains Cree:
 "Welcome" → LLM → "tānisi" (SRO) → Converter → "ᑖᓂᓯ" (Syllabics)
 ```
 
-### Greedy Left-to-Right Matching
+### Gieriger Abgleich von links nach rechts
 
-Alle Konverter verwenden denselben Algorithmus: An jeder Zeichenposition wird zuerst die längstmögliche Übereinstimmung (Match) versucht, dann schrittweise kürzere Übereinstimmungen. Zeichen, die keinem Muster entsprechen (Leerzeichen, Satzzeichen, Zahlen), werden unverändert durchgereicht.
+Alle Konverter verwenden denselben Algorithmus: An jeder Zeichenposition wird zunächst die längstmögliche Übereinstimmung versucht, danach schrittweise kürzere Übereinstimmungen. Zeichen, die keinem Muster entsprechen (Leerzeichen, Satzzeichen, Zahlen), werden unverändert durchgereicht.
 
 Dadurch werden Digraphen und Trigraphen korrekt verarbeitet:
 - Klingonisch: `tlh` → einzelnes pIqaD-Zeichen (nicht `t` + `l` + `h`)
@@ -57,7 +57,7 @@ Dadurch werden Digraphen und Trigraphen korrekt verarbeitet:
 
 ## Verwendung von Schrift-Konvertern
 
-Schrift-Konverter werden automatisch aktiviert, wenn der Locale-Code mit einem registrierten Konverter übereinstimmt. Es ist keine Konfiguration erforderlich — legen Sie einfach Ihr Ziel-Locale fest:
+Schrift-Konverter werden automatisch aktiviert, wenn der Gebietsschema-Code mit einem registrierten Konverter übereinstimmt. Es ist keine Konfiguration erforderlich — legen Sie einfach Ihr Ziel-Gebietsschema fest:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -70,19 +70,19 @@ Schrift-Konverter werden automatisch aktiviert, wenn der Locale-Code mit einem r
 }
 ```
 
-Wenn Rosetta das Paar `en:crk` synchronisiert, werden die Übersetzungen zunächst in SRO erstellt und dann automatisch in Syllabics konvertiert, bevor sie in `crk.json` geschrieben werden.
+Wenn Rosetta das Paar `en:crk` synchronisiert, werden die Übersetzungen zunächst in SRO erstellt und dann automatisch in die Silbenschrift umgewandelt, bevor sie in `crk.json` geschrieben werden.
 
-### Konverter-Status überprüfen
+### Überprüfen des Konverter-Status
 
 ```bash
 npx i18n-rosetta status
 ```
 
-Die Statusausgabe zeigt, welche Paare aktive Schrift-Konverter haben und welche Konvertierung sie durchführen.
+Die Statusausgabe zeigt, welche Paare über aktive Schrift-Konverter verfügen und welche Umwandlung sie durchführen.
 
 ## Anforderungen an Web-Schriftarten
 
-Drei Konverter geben Unicode Private Use Area (PUA)-Zeichen aus, die benutzerdefinierte Web-Schriftarten erfordern:
+Drei Konverter geben Zeichen aus dem Unicode Private Use Area (PUA) aus, die benutzerdefinierte Web-Schriftarten erfordern:
 
 ### Klingonisch (pIqaD)
 
@@ -118,7 +118,7 @@ Installieren Sie eine CSUR-kompatible Tengwar-Schriftart (z. B. „Tengwar Forma
 
 ### Kryptonisch
 
-Installieren Sie eine kryptonische Schriftart, die auf die PUA-Codepoints U+E100–E119 gemappt ist:
+Installieren Sie eine kryptonische Schriftart, die den PUA-Codepoints U+E100–E119 zugeordnet ist:
 
 ```css
 @font-face {
@@ -133,16 +133,16 @@ Installieren Sie eine kryptonische Schriftart, die auf die PUA-Codepoints U+E100
 ```
 
 :::tip Alternativer Ansatz für Kryptonisch
-Da Kryptonisch eine reine A-Z-Chiffre ist, können Sie den Schrift-Konverter komplett überspringen und die Schriftart über CSS auf lateinischen Text anwenden. Dies ist für Web-Deployments oft einfacher — stellen Sie einfach die kryptonische Schriftart bereit und setzen Sie `font-family` auf den entsprechenden Elementen.
+Da Kryptonisch eine reine A-Z-Chiffre ist, können Sie den Schrift-Konverter komplett überspringen und die Schriftart über CSS auf lateinischen Text anwenden. Dies ist für Web-Bereitstellungen oft einfacher — stellen Sie einfach die kryptonische Schriftart bereit und setzen Sie `font-family` auf den entsprechenden Elementen.
 :::
 
 ## Hinzufügen eines benutzerdefinierten Konverters
 
 Um einen Konverter für eine neue Sprache hinzuzufügen, bearbeiten Sie `lib/scripts.js`:
 
-1. **Erstellen Sie die Konvertierungs-Map** — ein geordnetes Array von `[from, to]`-Paaren, längste Sequenzen zuerst
-2. **Erstellen Sie die Konverter-Funktion** — einen Greedy-Scanner von links nach rechts (verwenden Sie `sroToSyllabics` als Vorlage)
-3. **Registrieren Sie ihn** im `SCRIPT_CONVERTERS`-Objekt mit dem Locale-Code als Schlüssel
+1. **Erstellen Sie die Konvertierungszuordnung** — ein geordnetes Array von `[from, to]`-Paaren, wobei die längsten Sequenzen zuerst stehen
+2. **Erstellen Sie die Konverter-Funktion** — einen gierigen Scanner von links nach rechts (verwenden Sie `sroToSyllabics` als Vorlage)
+3. **Registrieren Sie ihn** im `SCRIPT_CONVERTERS`-Objekt mit dem Gebietsschema-Code als Schlüssel
 4. **Fügen Sie das Feld `script`** zum Registereintrag der Sprache in `registers.js` hinzu
 
 ```javascript
@@ -163,8 +163,12 @@ SCRIPT_CONVERTERS['chr'] = {
 };
 ```
 
+---
+
 ## Siehe auch
 
-- [Ressourcenarme Sprachen](/docs/guides/low-resource-languages) — vollständiger Pipeline-Walkthrough einschließlich Schrift-Konvertierung
-- [Coaching-Daten](/docs/concepts/coaching-data) — wie Sie dem LLM Ihre Sprache vor der Konvertierung beibringen
-- [Quality Gate](/docs/concepts/quality-gate) — die `script compliance`-Prüfung, die das Ausgabe-Schriftsystem validiert
+- [Kunstsprachen, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) — PUA-Schriftarten, Unicode, Hinzufügen neuer Konverter
+- [Quality Gate](/docs/concepts/quality-gate) — Validierung, die vor der Schriftkonvertierung ausgeführt wird
+- [Unterstützte Sprachen](/docs/reference/supported-languages) — welche Sprachen über Schrift-Konverter verfügen
+- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — SRO→Silbenschrift im Kontext
+- [Kochbuch: FST-gesteuerte Pipeline](/docs/tutorials/fst-gated-pipeline) — Schriftkonvertierung in einer mehrstufigen Pipeline

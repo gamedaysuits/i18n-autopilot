@@ -4,9 +4,9 @@ title: "สถาปัตยกรรม"
 ---
 # สถาปัตยกรรม
 
-ระบบนิเวศการแปลของ Rosetta ประกอบด้วยเครื่องมืออิสระสามชิ้นที่ทำงานร่วมกันผ่านข้อตกลง (contracts) ที่กำหนดไว้อย่างชัดเจนครับ เครื่องมือเหล่านี้ไม่มีการพึ่งพากันในขั้นตอนการบิลด์ (build time) โดยจะสื่อสารกันผ่าน **method plugin format** และ **REST API contract** ที่ใช้ร่วมกันครับ
+ระบบนิเวศการแปลของ Rosetta ประกอบด้วยเครื่องมืออิสระ 3 ตัวที่ทำงานร่วมกันผ่านข้อตกลง (contracts) ที่กำหนดไว้อย่างชัดเจน เครื่องมือเหล่านี้ไม่มีการพึ่งพากันในขั้นตอนการบิลด์ (build time) โดยจะสื่อสารกันผ่าน **รูปแบบปลั๊กอินของเมธอด (method plugin format)** และ **ข้อตกลง REST API** ที่ใช้ร่วมกัน
 
-## องค์ประกอบทั้งสามส่วน
+## องค์ประกอบทั้งสาม
 
 ```mermaid
 graph TB
@@ -26,25 +26,31 @@ graph TB
 
 ### i18n-rosetta (โปรเจกต์นี้)
 
-เครื่องมือสำหรับนักพัฒนาแบบโอเพนซอร์ส (open-source) ทำหน้าที่แปลไฟล์ locale โดยใช้วิธีการแบบปลั๊กอิน (pluggable methods) ไม่มี dependencies ไม่จำเป็นต้องตั้งค่า (config-optional) และพร้อมใช้งานได้ทันทีครับ
+เครื่องมือสำหรับนักพัฒนาแบบโอเพนซอร์ส ใช้แปลไฟล์ภาษา (locale files) ด้วยเมธอดแบบปลั๊กอิน ไม่มี dependency เพิ่มเติม ไม่บังคับตั้งค่า (config-optional) และพร้อมใช้งานได้ทันที
 
-**วิธีการที่มีมาให้ในตัว (Built-in methods):**
-- `llm` → OpenRouter / LLM ใดๆ ก็ได้
-- `llm-coached` → LLM + การโค้ชไวยากรณ์/พจนานุกรม (grammar/dictionary coaching)
-- `google-translate` → Google Cloud Translation API
-- `api` → ช่องทางเชื่อมต่อขนาดเล็ก (Thin pipe) ไปยัง remote API ใดๆ
+**เมธอดที่มีในตัว:**
+- `llm` → OpenRouter / LLM ใดๆ (มากกว่า 200 โมเดล)
+- `llm-coached` → LLM + การสอนไวยากรณ์/พจนานุกรม (grammar/dictionary coaching)
+- `openai` → OpenAI API โดยตรง (GPT-4o, GPT-4o-mini)
+- `anthropic` → Anthropic API โดยตรง (Claude Sonnet, Haiku, Opus)
+- `gemini` → Google Gemini API โดยตรง (Flash, Pro — มีระดับการใช้งานฟรี)
+- `google-translate` → Google Cloud Translation API v2
+- `deepl` → DeepL API พร้อมรองรับอภิธานศัพท์ (glossary)
+- `microsoft-translator` → Azure Cognitive Services Translator
+- `libretranslate` → LibreTranslate แบบโฮสต์เอง (AGPL, ฟรี)
+- `api` → การเชื่อมต่อแบบบาง (Thin pipe) ไปยัง REST endpoint ระยะไกลใดๆ
 
 ### Eval Harness (โปรเจกต์คู่ขนาน)
 
-เครื่องมือวิจัยสำหรับการพัฒนา การทดสอบ และการวัดประสิทธิภาพ (benchmarking) วิธีการแปลต่างๆ ครับ เมื่อวิธีการใดมีคุณภาพถึงเกณฑ์ที่ยอมรับได้ harness จะส่งออก (export) เป็น **method plugin** ซึ่งประกอบด้วย `method.json` manifest และไฟล์ข้อมูลการโค้ช (coaching data) ที่สามารถเลือกใช้ได้ครับ
+เครื่องมือวิจัยสำหรับการพัฒนา ทดสอบ และวัดประสิทธิภาพ (benchmarking) เมธอดการแปล เมื่อเมธอดมีคุณภาพถึงระดับที่ยอมรับได้ harness จะส่งออก **ปลั๊กอินของเมธอด** ซึ่งประกอบด้วยไฟล์ manifest `method.json` และไฟล์ข้อมูลการสอน (coaching data) ที่เป็นทางเลือก
 
-harness จะไม่ทำงานอยู่ภายใน rosetta ครับ แต่เป็นเครื่องมือแยกต่างหากที่สร้างผลลัพธ์แบบคงที่ (ไฟล์ JSON) โดย Rosetta จะทำหน้าที่เพียงแค่อ่านไฟล์เหล่านั้นครับ
+harness จะไม่ทำงานอยู่ภายใน rosetta โดยเป็นเครื่องมือแยกต่างหากที่สร้างผลลัพธ์แบบคงที่ (ไฟล์ JSON) และ Rosetta จะทำหน้าที่เพียงแค่อ่านไฟล์เหล่านั้น
 
 [→ Eval Harness บน GitHub](https://github.com/gamedaysuits/gds-mt-eval-harness)
 
-### Rosetta Translate (แผนในอนาคต)
+### Rosetta Translate (ตามแผนงาน)
 
-บริการ API แบบคิดค่าใช้จ่ายตามการใช้งาน (metered API) ซึ่งโฮสต์วิธีการแปลที่เป็นกรรมสิทธิ์ (proprietary) ไว้ที่ฝั่งเซิร์ฟเวอร์ โดยที่ prompts, ข้อมูลการโค้ช และกระบวนการทางภาษา (linguistic pipelines) จะไม่ถูกส่งออกจากเซิร์ฟเวอร์เลยครับ
+บริการ API แบบคิดค่าใช้จ่ายตามการใช้งาน (metered) ซึ่งโฮสต์เมธอดการแปลที่เป็นกรรมสิทธิ์ไว้ฝั่งเซิร์ฟเวอร์ — พรอมต์ (prompts) ข้อมูลการสอน และไปป์ไลน์ทางภาษาศาสตร์จะไม่มีการส่งออกจากเซิร์ฟเวอร์
 
 ## วิธีการเชื่อมต่อ
 
@@ -58,7 +64,7 @@ flowchart LR
     D --> E["rosetta sync"]
 ```
 
-**ข้อตกลง (Contract)**: [Plugin Specification](/docs/reference/plugin-spec)
+**ข้อตกลง**: [ข้อกำหนดของปลั๊กอิน (Plugin Specification)](/docs/reference/plugin-spec)
 
 ### Rosetta Translate → i18n-rosetta (API ขณะรันไทม์)
 
@@ -71,46 +77,46 @@ flowchart LR
     E --> F["Returns translations"]
 ```
 
-`APIMethod` ของ Rosetta ทำหน้าที่เป็นเพียง **ช่องทางผ่านข้อมูล (dumb pipe)** ครับ โดยจะส่งคีย์ออกไปและรับคำแปลกลับมา ซึ่งจะไม่มีตรรกะการแปลและไม่มีเนื้อหาที่เป็นกรรมสิทธิ์ใดๆ อยู่ในส่วนนี้เลยครับ
+`APIMethod` ของ Rosetta เป็นเพียง **ท่อส่งผ่านข้อมูล (dumb pipe)** โดยจะส่งคีย์ออกไปและรับคำแปลกลับมา ซึ่งไม่มีตรรกะการแปลและไม่มีเนื้อหาที่เป็นกรรมสิทธิ์ใดๆ อยู่เลย
 
 ## สิ่งที่แต่ละส่วนประกอบรับรู้เกี่ยวกับส่วนอื่นๆ
 
-| เครื่องมือ (Tool) | รู้จัก rosetta หรือไม่? | รู้จัก Rosetta Translate หรือไม่? | รู้จัก harness หรือไม่? |
+| เครื่องมือ | รู้จัก rosetta หรือไม่? | รู้จัก Rosetta Translate หรือไม่? | รู้จัก harness หรือไม่? |
 |------|---------------------|-------------------------------|---------------------|
-| **i18n-rosetta** | *(คือ rosetta)* | รู้จัก — `api` method จะเรียกใช้งาน | ไม่รู้จัก — เพียงแค่อ่าน plugin ที่ส่งออกมาเท่านั้น |
-| **Rosetta Translate** | รู้จัก — ให้บริการตามคำขอ | *(คือ Rosetta Translate)* | ไม่รู้จัก — รับ methods ที่ถูก deploy มา |
-| **Eval Harness** | รู้จัก — ส่งออก plugin format | ไม่รู้จัก — methods ถูก deploy แยกต่างหาก | *(คือ harness)* |
+| **i18n-rosetta** | *(คือ rosetta)* | รู้จัก — เมธอด `api` จะเรียกใช้งาน | ไม่รู้จัก — เพียงแค่อ่านข้อมูลที่ปลั๊กอินส่งออก |
+| **Rosetta Translate** | รู้จัก — ให้บริการตามคำขอ | *(คือ Rosetta Translate)* | ไม่รู้จัก — รับเมธอดที่ถูกดีพลอย (deployed) มา |
+| **Eval Harness** | รู้จัก — ส่งออกรูปแบบปลั๊กอิน | ไม่รู้จัก — เมธอดถูกดีพลอยแยกต่างหาก | *(คือ harness)* |
 
-## สถานการณ์การใช้งานของผู้ใช้ (User Scenarios)
+## สถานการณ์การใช้งานของผู้ใช้
 
-### สถานการณ์ที่ 1: ใช้งานฟรี ไม่ต้องตั้งค่า (ผู้ใช้ส่วนใหญ่)
+### สถานการณ์ที่ 1: ฟรี ไม่ต้องตั้งค่า (ผู้ใช้ส่วนใหญ่)
 
 ```bash
 export OPENROUTER_API_KEY=sk-...
 npx i18n-rosetta sync
 ```
 
-ใช้วิธีการ `llm` ที่มีมาให้ในตัว ไม่ต้องใช้ปลั๊กอิน ไม่ต้องใช้ Rosetta Translate และไม่ต้องใช้ harness ครับ
+ใช้เมธอด `llm` ที่มีในตัว ไม่มีปลั๊กอิน ไม่มี Rosetta Translate ไม่มี harness
 
-### สถานการณ์ที่ 2: ใช้ Google Translate เป็นพื้นฐาน
+### สถานการณ์ที่ 2: พื้นฐานด้วย Google Translate
 
 ```bash
 export GOOGLE_TRANSLATE_API_KEY=AIza...
 npx i18n-rosetta sync
 ```
 
-ใช้วิธีการ `google-translate` ที่มีมาให้ในตัว โดยไม่จำเป็นต้องใช้ปลั๊กอินครับ
+ใช้เมธอด `google-translate` ที่มีในตัว ไม่จำเป็นต้องใช้ปลั๊กอิน
 
-### สถานการณ์ที่ 3: Open plugin พร้อมข้อมูลการโค้ชที่แนบมาด้วย
+### สถานการณ์ที่ 3: ปลั๊กอินแบบเปิดพร้อมการสอนที่รวมมาด้วย
 
 ```bash
 rosetta plugin install ./french-formal-v1/
 rosetta sync
 ```
 
-ปลั๊กอินมี `type: "llm-coached"` → rosetta จะใช้คีย์ OpenRouter ของผู้ใช้เอง ข้อมูลการโค้ชจะอยู่ภายในเครื่อง (local) (ไม่มีการเรียกไปยังเซิร์ฟเวอร์) ครับ
+ปลั๊กอินมี `type: "llm-coached"` → rosetta จะใช้คีย์ OpenRouter ของผู้ใช้เอง ข้อมูลการสอนจะอยู่ภายในเครื่อง (ไม่มีการเรียกไปยังเซิร์ฟเวอร์)
 
-### สถานการณ์ที่ 4: การโค้ชแบบ DIY (ไม่มีปลั๊กอิน, ไม่มี harness)
+### สถานการณ์ที่ 4: การสอนแบบทำเอง (ไม่มีปลั๊กอิน ไม่มี harness)
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -120,12 +126,22 @@ rosetta sync
 }
 ```
 
-ผู้ใช้ดูแลจัดการกฎไวยากรณ์และพจนานุกรมของตนเองใน `.rosetta/coaching/fr.json` ครับ
+ผู้ใช้ดูแลรักษากฎไวยากรณ์และพจนานุกรมของตนเองใน `.rosetta/coaching/fr.json`
 
-## หลักการออกแบบ (Design Principles)
+## หลักการออกแบบ
 
-1. **ไม่มีการพึ่งพากันแบบวงกลม (No circular dependencies)** การเชื่อมต่อจะเป็นแบบทางเดียวครับ
-2. **Rosetta คือแกนหลักที่มีน้ำหนักเบา** ไม่มี dependencies ไม่จำเป็นต้องตั้งค่า (config-optional) ส่วนปลั๊กอินและ API เป็นเพียงส่วนเสริมครับ
-3. **การปกป้องทรัพย์สินทางปัญญา (IP protection) อยู่ในระดับสถาปัตยกรรม** เทคนิคที่เป็นกรรมสิทธิ์จะอยู่ฝั่งเซิร์ฟเวอร์เท่านั้น แพ็กเกจ npm จะไม่มีการรวมสิ่งที่เป็นกรรมสิทธิ์ใดๆ มาด้วยครับ
-4. **รูปแบบปลั๊กอิน (plugin format) คือข้อตกลง** ทุกอย่างจะไหลผ่าน `method.json` ครับ
-5. **เครื่องมือแต่ละชิ้นมีหน้าที่เดียว** Harness → พัฒนา methods, Rosetta Translate → โฮสต์ methods, Rosetta → แปลไฟล์ครับ
+1. **ไม่มีการพึ่งพาแบบวงกลม (No circular dependencies)** การเชื่อมต่อเป็นแบบทางเดียว
+2. **Rosetta คือแกนหลักที่มีน้ำหนักเบา** ไม่มี dependency เพิ่มเติม ไม่บังคับตั้งค่า ปลั๊กอินและ API เป็นส่วนเสริม
+3. **การปกป้องทรัพย์สินทางปัญญา (IP) อยู่ในระดับสถาปัตยกรรม** เทคนิคที่เป็นกรรมสิทธิ์จะอยู่ฝั่งเซิร์ฟเวอร์ แพ็กเกจ npm จะไม่มีการจัดส่งสิ่งที่เป็นกรรมสิทธิ์ใดๆ
+4. **รูปแบบปลั๊กอินคือข้อตกลง** ทุกอย่างจะไหลผ่าน `method.json`
+5. **เครื่องมือแต่ละตัวมีหน้าที่เดียว** Harness → พัฒนาเมธอด Rosetta Translate → โฮสต์เมธอด Rosetta → แปลไฟล์
+
+---
+
+## ดูเพิ่มเติม
+
+- [เมธอดการแปล (Translation Methods)](/docs/guides/translation-methods) — วิธีการทำงานของแต่ละเมธอดที่มีในตัว
+- [ข้อกำหนดของปลั๊กอิน (Plugin Specification)](/docs/reference/plugin-spec) — รูปแบบ manifest ของ method.json
+- [Eval Harness](/docs/eval/harness) — เครื่องมือวิจัยคู่ขนาน
+- [การให้บริการเมธอดผ่าน API (Serving a Method via API)](/docs/guides/serving-a-method) — การโฮสต์ไปป์ไลน์การแปลแบบกำหนดเอง
+- [การรองรับภาษาที่มีทรัพยากรน้อย (Support a Low-Resource Language)](/docs/guides/low-resource-languages) — กรณีการใช้งานที่เป็นตัวผลักดันสถาปัตยกรรมนี้

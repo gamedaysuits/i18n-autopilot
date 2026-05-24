@@ -4,11 +4,11 @@ title: "Coachinggegevens"
 ---
 # Coaching Data
 
-Coaching data is het mechanisme van rosetta om LLM's te onderwijzen over talen waarop ze niet zijn getraind. Door grammaticaregels, woordenboeken en stijlaantekeningen mee te leveren bij elk vertaalverzoek, transformeert u een algemene LLM in een contextbewuste vertaler voor elke taal — inclusief talen zonder enige bestaande MT-ondersteuning.
+Coaching data is het mechanisme van rosetta om LLM's te onderwijzen over talen waarop ze niet zijn getraind. Door grammaticaregels, woordenboeken en stijlaantekeningen te verstrekken bij elk vertaalverzoek, transformeert u een algemene LLM in een contextbewuste vertaler voor elke taal — inclusief talen zonder enige bestaande MT-ondersteuning.
 
 ## Hoe het werkt
 
-Wanneer u de methode van een paar instelt op `llm-coached`, laadt rosetta een coachingbestand uit `.rosetta/coaching/<locale>.json` en injecteert de inhoud ervan in elke LLM-prompt als onderdeel van het systeembericht. De LLM ziet uw linguïstische regels naast het vertaalverzoek, waardoor er output wordt geproduceerd die uw grammatica en terminologie volgt in plaats van te raden.
+Wanneer u de methode van een paar instelt op `llm-coached`, laadt rosetta een coachingbestand uit `.rosetta/coaching/<locale>.json` en injecteert de inhoud ervan in elke LLM-prompt als onderdeel van het system message. De LLM ziet uw taalkundige regels naast het vertaalverzoek, waardoor er uitvoer wordt geproduceerd die uw grammatica en terminologie volgt in plaats van te raden.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,11 +28,11 @@ Wanneer u de methode van een paar instelt op `llm-coached`, laadt rosetta een co
 └──────────────────────────────────────────────────────┘
 ```
 
-Omdat de coaching data deel uitmaakt van het systeembericht, profiteert het van **prompt caching** — providers zoals Anthropic en Google cachen herhaalde systeemvoorvoegsels, zodat u slechts één keer per sessie betaalt voor de coachingcontext, en niet één keer per batch.
+Omdat de coaching data deel uitmaakt van het system message, profiteert het van **prompt caching** — providers zoals Anthropic en Google cachen herhaalde system prefixes, zodat u slechts één keer per sessie betaalt voor de coachingcontext, en niet één keer per batch.
 
 ## Formaat van het coachingbestand
 
-Maak één JSON-bestand per locale in `.rosetta/coaching/`:
+Maak één JSON-bestand per locale aan in `.rosetta/coaching/`:
 
 ```json title=".rosetta/coaching/crk.json"
 {
@@ -58,37 +58,37 @@ Maak één JSON-bestand per locale in `.rosetta/coaching/`:
 
 | Veld | Type | Vereist | Beschrijving |
 |-------|------|----------|-------------|
-| `grammar_rules` | `string[]` | Nee | Array van grammaticaregels die in de systeemprompt worden geïnjecteerd. Elke regel moet een beknopte, uitvoerbare instructie zijn die de LLM kan volgen. |
-| `dictionary` | `object` | Nee | Key-value map van Engelse term → doeltaalterm. Gebruikt voor domeinspecifieke woordenschat die de LLM niet zou kennen. |
+| `grammar_rules` | `string[]` | Nee | Array van grammaticaregels die in de system prompt worden geïnjecteerd. Elke regel moet een beknopte, uitvoerbare instructie zijn die de LLM kan volgen. |
+| `dictionary` | `object` | Nee | Key-value map van Engelse term → term in de doeltaal. Gebruikt voor domeinspecifieke woordenschat die de LLM niet zou kennen. |
 | `style_notes` | `string` | Nee | Vrije-vorm stijlinstructies (register, toon, formaliteitsconventies). |
 
 Alle velden zijn optioneel — u kunt beginnen met alleen een woordenboek en grammaticaregels toevoegen naarmate u deze verfijnt.
 
 ## Fallback-gedrag
 
-Als een paar is geconfigureerd voor `llm-coached` maar er geen coachingbestand bestaat voor die locale, valt rosetta **terug op de standaard `llm` methode** met een consolewaarschuwing:
+Als een paar is geconfigureerd voor `llm-coached`, maar er geen coachingbestand bestaat voor die locale, valt rosetta **terug op de standaard `llm` methode** met een consolewaarschuwing:
 
 ```
 [INFO] No coaching data for "crk" at .rosetta/coaching/crk.json
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Dit betekent dat u `"defaultMethod": "llm-coached"` veilig globaal kunt instellen — talen met coaching data zullen het gebruiken, en de rest krijgt standaard LLM-vertaling zonder fouten.
+Dit betekent dat u `"defaultMethod": "llm-coached"` veilig globaal kunt instellen — talen met coaching data zullen dit gebruiken, en de rest krijgt een standaard LLM-vertaling zonder fouten.
 
-## Wanneer coaching te gebruiken
+## Wanneer u coaching moet gebruiken
 
 | Scenario | Aanbevolen methode |
 |----------|-------------------|
 | Tier 1-talen (Frans, Spaans, Duits) | `llm` of `google-translate` — LLM's kennen deze al goed |
-| Tier 2-talen (Koreaans, Turks, Thais) | `llm` met een register — LLM's gaan hier adequaat mee om met stijlbegeleiding |
+| Tier 2-talen (Koreaans, Turks, Thais) | `llm` met een register — LLM's verwerken deze adequaat met stijlbegeleiding |
 | Tier 3-talen (Plains Cree, Yoruba, Quechua) | `llm-coached` — LLM's hebben grammaticaregels en woordenboeken nodig |
-| Kunsttalen (Klingon, Sindarin, Kryptoniaans) | `llm-coached` — LLM's hebben enige trainingsdata maar hebben correcties nodig |
+| Conlangs (Klingon, Sindarin, Kryptonian) | `llm-coached` — LLM's hebben enige trainingsdata, maar hebben correcties nodig |
 
 ## Goede coaching data opbouwen
 
 ### Grammaticaregels
 
-Schrijf regels als **instructies**, niet als beschrijvingen. De LLM volgt instructies beter op dan dat het linguïstische theorie interpreteert.
+Schrijf regels als **instructies**, niet als beschrijvingen. De LLM volgt instructies beter op dan dat het taalkundige theorie interpreteert.
 
 ```json
 // ❌ Descriptive (the LLM learns nothing actionable)
@@ -100,7 +100,7 @@ Schrijf regels als **instructies**, niet als beschrijvingen. De LLM volgt instru
 
 ### Woordenboeken
 
-Focus op **domeinspecifieke termen** die de LLM verkeerd zou doen of zou verzinnen. Besteed geen moeite aan veelvoorkomende woorden die de LLM al aankan — focus op de termen die specifiek zijn voor de UI van uw applicatie.
+Richt u op **domeinspecifieke termen** die de LLM verkeerd zou begrijpen of zou verzinnen. Besteed geen aandacht aan veelvoorkomende woorden die de LLM al aankan — richt u op de termen die specifiek zijn voor de UI van uw applicatie.
 
 ### Stijlaantekeningen
 
@@ -125,10 +125,14 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Dit geeft u chrF++, BLEU en exact match scores. Maak meerdere versies van coachingbestanden en vergelijk ze — objectieve statistieken verslaan subjectieve beoordelingen.
+Dit geeft u chrF++, BLEU en exact match-scores. Maak meerdere versies van het coachingbestand aan en vergelijk deze — objectieve metrieken overtreffen subjectieve beoordelingen.
+
+---
 
 ## Zie ook
 
-- [Low-Resource Languages](/docs/guides/low-resource-languages) — volledige walkthrough voor het vanaf nul opbouwen van een vertaalpijplijn
-- [Translation Methods](/docs/guides/translation-methods) — vergelijking van alle beschikbare methoden
-- [Build a Plugin](/docs/tutorials/build-a-plugin) — verpak een gecoachte methode als een herbruikbare plug-in
+- [Vertaalmethoden](/docs/guides/translation-methods) — de llm-coached methode
+- [Een Low-Resource taal ondersteunen](/docs/guides/low-resource-languages) — coaching in de praktijk
+- [Plugin-specificatie](/docs/reference/plugin-spec) — coaching data verpakken in een plugin
+- [Quality Gate](/docs/concepts/quality-gate) — hoe gecoachte vertalingen worden gevalideerd
+- [Configuratie](/docs/getting-started/configuration) — coachingconfiguratie per paar

@@ -1,10 +1,10 @@
 ---
 sidebar_position: 2
-title: "Comment fonctionne la synchronisation"
+title: "Fonctionnement de la synchronisation"
 ---
 # Fonctionnement de la synchronisation
 
-La commande `sync` est l'opération principale de rosetta. Voici ce qui se passe lorsque vous exécutez `npx i18n-rosetta sync`.
+La commande `sync` est l'opération principale de rosetta. Voici ce qui se produit lorsque vous exécutez `npx i18n-rosetta sync`.
 
 ## Aperçu du pipeline
 
@@ -37,7 +37,7 @@ Rosetta charge `i18n-rosetta.config.json` (ou détecte automatiquement les param
 
 ### 2. Analyse de la source
 
-Le fichier de la locale source est chargé et aplati en un mapping clé→valeur :
+Le fichier de la locale source est chargé et mis à plat sous forme de mappage clé→valeur :
 
 ```json
 // Input (nested)
@@ -53,27 +53,27 @@ Rosetta lit `.i18n-rosetta.lock`, qui stocke les hachages SHA-256 des valeurs so
 
 | Condition | Action |
 |-----------|--------|
-| Clé absente de la cible | **Traduire** |
+| Clé manquante dans la cible | **Traduire** |
 | Le hachage source a changé depuis la dernière synchronisation | **Retraduire** (obsolète) |
-| La valeur cible commence par `[EN]` | **Retraduire** (espace réservé de repli) |
-| Hachage source inchangé, la clé existe | **Ignorer** |
+| La valeur cible commence par `[EN]` | **Retraduire** (espace réservé de secours) |
+| Le hachage source est inchangé, la clé existe | **Ignorer** |
 
 C'est pourquoi rosetta ne traduit que ce qui a changé — il ne retraduit pas l'intégralité de votre fichier à chaque synchronisation.
 
 ### 4. Traitement par lots
 
-Les clés sont regroupées en lots (par défaut : 30 clés/lot pour les LLM, 128 pour Google Translate). Le traitement par lots réduit les allers-retours avec l'API tout en gardant des prompts gérables.
+Les clés sont regroupées en lots (par défaut : 30 clés/lot pour les LLM, 128 pour Google Translate). Le traitement par lots réduit les allers-retours avec l'API tout en conservant des invites (prompts) gérables.
 
 ### 5. Traduction
 
 Chaque lot est envoyé à la méthode de traduction configurée :
 
-- **`llm`** : Prompt structuré vers OpenRouter avec des instructions de registre
-- **`llm-coached`** : Identique, mais avec injection de règles de grammaire, d'un dictionnaire et de notes de style
+- **`llm`** : Invite structurée vers OpenRouter avec des instructions sur le registre et des directives de genre
+- **`llm-coached`** : Identique, mais avec l'injection de règles de grammaire, d'un dictionnaire et de notes de style
 - **`google-translate`** : Requête par lots vers Google Cloud Translation API v2
-- **`api`** : HTTP POST vers un point de terminaison distant
+- **`api`** : Requête HTTP POST vers un point de terminaison distant
 
-Le message système (registre, règles) est identique pour tous les lots d'une locale donnée, ce qui permet la **mise en cache des prompts** — les fournisseurs comme Anthropic et Google mettent en cache les messages systèmes répétés, réduisant ainsi les coûts en tokens.
+Le message système (registre, directives de genre, règles) est identique d'un lot à l'autre pour une locale donnée, ce qui permet la **mise en cache des invites** (prompt caching) — les fournisseurs tels qu'Anthropic et Google mettent en cache les messages systèmes répétés, réduisant ainsi les coûts en jetons (tokens).
 
 ### 6. Contrôle de qualité
 
@@ -84,16 +84,16 @@ Chaque traduction est validée avant d'être écrite sur le disque. Cinq vérifi
 | **Vide/blanc** | Le modèle n'a rien renvoyé | `""` |
 | **Écho de la source** | Le modèle a renvoyé l'entrée en anglais | `"Welcome"` pour le japonais |
 | **Boucle d'hallucination** | Trigrammes répétés | `"Qo' Qo' Qo' Qo'"` |
-| **Inflation de longueur** | La sortie est plus de 4 fois plus longue que la source | Source de 10 caractères → sortie de 50 caractères |
-| **Conformité de l'écriture** | Mauvais système d'écriture pour la locale | Texte latin pour une locale arabe |
+| **Inflation de la longueur** | La sortie est 4 fois plus longue que la source | Source de 10 caractères → sortie de 50 caractères |
+| **Conformité de l'écriture** | Écriture incorrecte pour la locale | Texte latin pour une locale arabe |
 
-Les échecs sont journalisés avec un préfixe `[GATE]`. Aucun repli silencieux.
+Les échecs sont consignés avec un préfixe `[GATE]`. Aucune solution de repli silencieuse.
 
 Consultez [Contrôle de qualité](/docs/concepts/quality-gate) pour plus de détails.
 
-### 7. Cascade de nouvelles tentatives
+### 7. Tentatives en cascade
 
-En cas d'échec de l'analyse JSON ou d'erreurs au niveau du lot, rosetta effectue de nouvelles tentatives avec des lots de plus en plus petits :
+En cas d'échec de l'analyse JSON ou d'erreurs au niveau du lot, rosetta effectue de nouvelles tentatives avec des lots progressivement plus petits :
 
 ```
 Full batch (30 keys) → Failed
@@ -101,7 +101,7 @@ Half batch (15 keys) → Failed
 Individual keys (1 each) → Isolates the problem key
 ```
 
-Le budget de nouvelles tentatives est plafonné par `maxRetries` (par défaut : 3) pour éviter des dépenses incontrôlées en tokens.
+Le budget des nouvelles tentatives est plafonné par `maxRetries` (par défaut : 3) afin d'éviter des dépenses excessives en jetons.
 
 ### 8. Écriture et verrouillage
 
@@ -109,11 +109,11 @@ Les traductions validées sont écrites dans le fichier de la locale cible, en p
 
 ## Succès partiel
 
-L'échec d'un lot ne bloque pas le reste. Si 9 lots sur 10 réussissent, ces 9 lots sont écrits. Le lot ayant échoué est journalisé, et vous pouvez réexécuter `sync` pour réessayer.
+L'échec d'un lot ne bloque pas le reste. Si 9 lots sur 10 réussissent, ces 9 lots sont écrits. Le lot ayant échoué est consigné, et vous pouvez réexécuter `sync` pour réessayer.
 
 ## Exécution à blanc
 
-Prévisualisez ce qui changerait sans écrire de fichiers :
+Prévisualisez ce qui changerait sans écrire aucun fichier :
 
 ```bash
 npx i18n-rosetta sync --dry
@@ -129,7 +129,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## Estimation des coûts
 
-Avant de traduire, rosetta génère un **rapport de coûts pré-synchronisation** indiquant les coûts estimés par paire. Cela s'exécute automatiquement lors de chaque `sync` — vous le voyez avant que le moindre appel API ne soit effectué.
+Avant de traduire, rosetta génère un **rapport de coûts pré-synchronisation** indiquant les coûts estimés par paire. Cela s'exécute automatiquement lors de chaque `sync` — vous le voyez avant qu'aucun appel d'API ne soit effectué.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -145,13 +145,23 @@ Avant de traduire, rosetta génère un **rapport de coûts pré-synchronisation*
 
 ### Ce qui est estimé
 
-Chaque méthode de traduction fournit sa propre estimation de coût :
+Chaque méthode de traduction fournit sa propre estimation des coûts :
 
 | Méthode | Base de coût | Précision |
 |--------|-----------|-----------|
 | `google-translate` | Tarif publié par Google (20 $/million de caractères) | Précise |
 | `llm` | Varie selon le modèle OpenRouter | Dépend du modèle — consultez la [tarification d'OpenRouter](https://openrouter.ai/models) |
-| `llm-coached` | Identique à `llm` plus les tokens de contexte de coaching | Dépend du modèle |
-| `api` | Déterminée par le serveur | Inconnue — impossible d'estimer sans interroger le point de terminaison |
+| `llm-coached` | Identique à `llm` plus les jetons de contexte d'encadrement (coaching) | Dépend du modèle |
+| `api` | Déterminée par le serveur | Inconnue — impossible à estimer sans interroger le point de terminaison |
 
-Lorsqu'une méthode ne peut pas déterminer le coût (méthodes LLM, API distantes), rosetta indique `—` plutôt que de deviner. Utilisez `--dry` pour voir les estimations de coûts sans effectuer de traduction réelle.
+Lorsqu'une méthode ne peut pas déterminer le coût (méthodes LLM, API distantes), rosetta signale `—` plutôt que de deviner. Utilisez `--dry` pour voir les estimations de coûts sans effectuer de traduction réelle.
+
+---
+
+## Voir aussi
+
+- [Référence de la CLI — sync](/docs/reference/cli#sync) — indicateurs et options de la commande
+- [Contrôle de qualité](/docs/concepts/quality-gate) — comment les traductions sont validées
+- [Méthodes de traduction](/docs/guides/translation-methods) — comment fonctionne chaque méthode
+- [Configuration](/docs/getting-started/configuration) — référence de la configuration
+- [Guide CI/CD](/docs/guides/ci-cd) — automatisation des synchronisations dans votre pipeline

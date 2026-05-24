@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "Framework-Integration"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Framework-Integration
+
+Schritt-für-Schritt-Einrichtung für i18n-rosetta mit gängigen Frameworks.
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### Projektstruktur
+
+Hugo verwendet `i18n/` für die Übersetzung von Zeichenfolgen und `content/` für Seiteninhalte:
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### Einrichtung
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### Details zur Inhaltsübersetzung
+
+**Frontmatter**: Unterstützt sowohl YAML- (`---`) als auch TOML-Trennzeichen (`+++`). Übersetzt standardmäßig `title`, `description`, `summary`, `subtitle`, `caption` und `linkTitle`. Alle anderen Felder (date, draft, tags, weight, slug, usw.) bleiben erhalten. Sie können dies mit `translatableFields` in Ihrer Konfiguration anpassen.
+
+**Blockschutz**: Codeblöcke, Hugo-Shortcodes, Inline-Code und reines HTML werden automatisch durch Unicode-Sentinel-Platzhalter abgeschirmt. Sie werden unverändert durchgereicht.
+
+**Dateinamenskonvention**: Folgt Hugos Muster der Übersetzung nach Dateinamen (translation-by-filename):
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md` (entfernt das Quell-Suffix)
+
+**Vorhandene überspringen**: Bereits vorhandene übersetzte Dateien werden niemals überschrieben. Löschen Sie eine Zieldatei, um eine erneute Übersetzung zu erzwingen.
+
+### Pluralformen
+
+TOML- und YAML-Locales unterstützen CLDR-Pluralformen:
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+Intern für den Abgleich als `items.one` und `items.other` dargestellt und beim Speichern wieder in das korrekte, in Abschnitte unterteilte Format serialisiert.
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### Projektstruktur
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### Einrichtung
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+Erstellt `messages/fr.json`, `messages/ja.json`, usw. — vollständig übersetzt, wobei Ihre verschachtelte Schlüsselstruktur erhalten bleibt. next-intl erkennt diese automatisch.
+
+### Entwicklungs-Arbeitsablauf
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### Flache Dateistruktur (empfohlen)
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### Verschachtelte Verzeichnisstruktur
+
+Wenn Sie die Struktur `{locale}/{namespace}.json` verwenden, erstellen Sie ein Synchronisierungsskript zum Abflachen → Übersetzen → Wiederverschachteln. Weitere Details finden Sie in der [Dokumentation zu react-i18next](https://react.i18next.com/).
+
+  </TabItem>
+</Tabs>

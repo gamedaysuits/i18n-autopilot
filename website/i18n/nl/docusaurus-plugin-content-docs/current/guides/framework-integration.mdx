@@ -1,0 +1,166 @@
+---
+sidebar_position: 2
+title: "Framework-integratie"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Framework-integratie
+
+Stapsgewijze configuratie voor i18n-rosetta met populaire frameworks.
+
+<Tabs>
+  <TabItem value="hugo" label="Hugo" default>
+
+## Hugo (TOML / YAML / Markdown)
+
+### Projectstructuur
+
+Hugo gebruikt `i18n/` voor stringvertalingen en `content/` voor pagina-inhoud:
+
+```
+my-hugo-site/
+├── i18n/
+│   ├── en.toml             ← source of truth
+│   ├── fr.toml
+│   └── ja.toml
+├── content/
+│   ├── posts/
+│   │   ├── hello.md        ← source (English)
+│   │   ├── hello.fr.md
+│   │   └── hello.ja.md
+│   └── about.md
+└── .env.local
+```
+
+### Configuratie
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./i18n",
+  "contentDir": "./content",
+  "format": "auto",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh"]
+}
+```
+
+```bash
+i18n-rosetta sync           # sync i18n string files + content files
+i18n-rosetta sync --dry     # preview changes without writing
+```
+
+### Details van contentvertaling
+
+**Front matter**: Ondersteunt zowel YAML- (`---`) als TOML-scheidingstekens (`+++`). Vertaalt standaard `title`, `description`, `summary`, `subtitle`, `caption` en `linkTitle`. Alle andere velden (date, draft, tags, weight, slug, enz.) blijven behouden. U kunt dit aanpassen met `translatableFields` in uw configuratie.
+
+**Blokbescherming**: Codeblokken, Hugo-shortcodes, inline code en ruwe HTML worden automatisch afgeschermd met behulp van Unicode-sentinel-placeholders. Deze worden ongewijzigd doorgegeven.
+
+**Bestandsnaamconventie**: Volgt Hugo's patroon voor vertaling via bestandsnamen:
+- `my-post.md` → `my-post.fr.md`
+- `my-post.en.md` → `my-post.fr.md` (verwijdert het achtervoegsel van de bron)
+
+**Bestaande overslaan**: Bestaande vertaalde bestanden worden nooit overschreven. Verwijder een doelbestand om een hervertaling af te dwingen.
+
+### Meervoudsvormen
+
+TOML- en YAML-locales ondersteunen CLDR-meervoudsvormen:
+
+```toml
+[items]
+one = "{{ .Count }} item"
+other = "{{ .Count }} items"
+```
+
+Intern weergegeven als `items.one` en `items.other` voor diffing, en vervolgens bij het wegschrijven opnieuw geserialiseerd naar het correcte, in secties verdeelde formaat.
+
+  </TabItem>
+  <TabItem value="nextintl" label="Next.js (next-intl)">
+
+## next-intl (JSON)
+
+### Projectstructuur
+
+```
+my-app/
+├── messages/
+│   └── en.json        ← source of truth
+├── src/
+│   ├── i18n/
+│   │   ├── routing.ts
+│   │   └── request.ts
+│   └── middleware.ts
+└── .env.local
+```
+
+### Configuratie
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./messages",
+  "languages": ["fr", "de", "ja", "es", "ko", "zh", "pt", "ar"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+Creëert `messages/fr.json`, `messages/ja.json`, enz. — volledig vertaald, met behoud van uw geneste sleutelstructuur. next-intl pakt deze automatisch op.
+
+### Ontwikkelingsworkflow
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "i18n-rosetta watch & next dev",
+    "i18n:sync": "i18n-rosetta sync",
+    "i18n:audit": "i18n-rosetta audit"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react" label="React (react-i18next)">
+
+## react-i18next (JSON)
+
+### Platte bestandsstructuur (aanbevolen)
+
+```
+locales/
+├── en.json
+├── fr.json
+└── ja.json
+```
+
+```json title="i18n-rosetta.config.json"
+{
+  "version": 3,
+  "inputLocale": "en",
+  "localesDir": "./locales",
+  "languages": ["fr", "de", "ja"]
+}
+```
+
+```bash
+npx i18n-rosetta sync
+```
+
+### Geneste mappenstructuur
+
+Als u de `{locale}/{namespace}.json`-structuur gebruikt, maak dan een synchronisatiescript aan om te flatten → vertalen → unflatten. Raadpleeg de [react-i18next-documentatie](https://react.i18next.com/) voor meer details.
+
+  </TabItem>
+</Tabs>

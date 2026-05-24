@@ -1,201 +1,201 @@
 {
   "theme.ErrorPageContent.title": {
-    "message": "[EN] This page crashed.",
+    "message": "페이지에 오류가 발생했어요.",
     "description": "The title of the fallback page when the page crashed"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
-    "message": "[EN] Scroll back to top",
+    "message": "맨 위로 이동",
     "description": "The ARIA label for the back to top button"
   },
   "theme.blog.archive.title": {
-    "message": "[EN] Archive",
+    "message": "아카이브",
     "description": "The page & hero title of the blog archive page"
   },
   "theme.blog.archive.description": {
-    "message": "[EN] Archive",
+    "message": "아카이브",
     "description": "The page & hero description of the blog archive page"
   },
   "theme.blog.paginator.navAriaLabel": {
-    "message": "[EN] Blog list page navigation",
+    "message": "블로그 목록 페이지 탐색",
     "description": "The ARIA label for the blog pagination"
   },
   "theme.blog.paginator.newerEntries": {
-    "message": "[EN] Newer entries",
+    "message": "최신 글",
     "description": "The label used to navigate to the newer blog posts page (previous page)"
   },
   "theme.blog.paginator.olderEntries": {
-    "message": "[EN] Older entries",
+    "message": "이전 글",
     "description": "The label used to navigate to the older blog posts page (next page)"
   },
   "theme.blog.post.paginator.navAriaLabel": {
-    "message": "[EN] Blog post page navigation",
+    "message": "블로그 게시물 페이지 탐색",
     "description": "The ARIA label for the blog posts pagination"
   },
   "theme.blog.post.paginator.newerPost": {
-    "message": "[EN] Newer post",
+    "message": "최신 글",
     "description": "The blog post button label to navigate to the newer/previous post"
   },
   "theme.blog.post.paginator.olderPost": {
-    "message": "[EN] Older post",
+    "message": "이전 글",
     "description": "The blog post button label to navigate to the older/next post"
   },
   "theme.tags.tagsPageLink": {
-    "message": "[EN] View all tags",
+    "message": "모든 태그 보기",
     "description": "The label of the link targeting the tag list page"
   },
   "theme.colorToggle.ariaLabel.mode.system": {
-    "message": "[EN] system mode",
+    "message": "시스템 모드",
     "description": "The name for the system color mode"
   },
   "theme.colorToggle.ariaLabel.mode.light": {
-    "message": "[EN] light mode",
+    "message": "라이트 모드",
     "description": "The name for the light color mode"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
-    "message": "[EN] dark mode",
+    "message": "다크 모드",
     "description": "The name for the dark color mode"
   },
   "theme.colorToggle.ariaLabel": {
-    "message": "[EN] Switch between dark and light mode (currently {mode})",
+    "message": "다크 모드와 라이트 모드 간 전환 (현재 {mode})",
     "description": "The ARIA label for the color mode toggle"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
-    "message": "[EN] Breadcrumbs",
+    "message": "탐색 경로",
     "description": "The ARIA label for the breadcrumbs"
   },
   "theme.docs.paginator.navAriaLabel": {
-    "message": "[EN] Docs pages",
+    "message": "문서 페이지",
     "description": "The ARIA label for the docs pagination"
   },
   "theme.docs.paginator.previous": {
-    "message": "[EN] Previous",
+    "message": "이전",
     "description": "The label used to navigate to the previous doc"
   },
   "theme.docs.paginator.next": {
-    "message": "[EN] Next",
+    "message": "다음",
     "description": "The label used to navigate to the next doc"
   },
   "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "[EN] One doc tagged|{count} docs tagged",
+    "message": "1개의 문서가 태그됨|{count}개의 문서가 태그됨",
     "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
-    "message": "[EN] {nDocsTagged} with \"{tagName}\"",
+    "message": "\"{tagName}\" 태그가 추가된 {nDocsTagged}",
     "description": "The title of the page for a docs tag"
   },
   "theme.docs.versionBadge.label": {
-    "message": "[EN] Version: {versionLabel}"
+    "message": "버전: {versionLabel}"
   },
   "theme.docs.versions.unreleasedVersionLabel": {
-    "message": "[EN] This is unreleased documentation for {siteTitle} {versionLabel} version.",
+    "message": "이 문서는 출시되지 않은 {siteTitle} {versionLabel} 버전의 문서예요.",
     "description": "The label used to tell the user that he's browsing an unreleased doc version"
   },
   "theme.docs.versions.unmaintainedVersionLabel": {
-    "message": "[EN] This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained.",
+    "message": "이 문서는 더 이상 적극적으로 유지보수되지 않는 {siteTitle} {versionLabel} 버전의 문서예요.",
     "description": "The label used to tell the user that he's browsing an unmaintained doc version"
   },
   "theme.docs.versions.latestVersionSuggestionLabel": {
-    "message": "[EN] For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).",
+    "message": "최신 문서는 {latestVersionLink} ({versionLabel})을 참고해 주세요.",
     "description": "The label used to tell the user to check the latest version"
   },
   "theme.docs.versions.latestVersionLinkLabel": {
-    "message": "[EN] latest version",
+    "message": "최신 버전",
     "description": "The label used for the latest version suggestion link label"
   },
   "theme.common.editThisPage": {
-    "message": "[EN] Edit this page",
+    "message": "이 페이지 편집하기",
     "description": "The link label to edit the current page"
   },
   "theme.common.headingLinkTitle": {
-    "message": "[EN] Direct link to {heading}",
+    "message": "{heading} 직접 링크",
     "description": "Title for link to heading"
   },
   "theme.lastUpdated.atDate": {
-    "message": "[EN]  on {date}",
+    "message": " {date}에",
     "description": "The words used to describe on which date a page has been last updated"
   },
   "theme.lastUpdated.byUser": {
-    "message": "[EN]  by {user}",
+    "message": " ({user}님)",
     "description": "The words used to describe by who the page has been last updated"
   },
   "theme.lastUpdated.lastUpdatedAtBy": {
-    "message": "[EN] Last updated{atDate}{byUser}",
+    "message": "마지막 업데이트:{atDate}{byUser}",
     "description": "The sentence used to display when a page has been last updated, and by who"
   },
   "theme.NotFound.title": {
-    "message": "[EN] Page Not Found",
+    "message": "페이지를 찾을 수 없어요",
     "description": "The title of the 404 page"
   },
   "theme.navbar.mobileVersionsDropdown.label": {
-    "message": "[EN] Versions",
+    "message": "버전",
     "description": "The label for the navbar versions dropdown on mobile view"
   },
   "theme.tags.tagsListLabel": {
-    "message": "[EN] Tags:",
+    "message": "태그:",
     "description": "The label alongside a tag list"
   },
   "theme.admonition.caution": {
-    "message": "[EN] caution",
+    "message": "주의",
     "description": "The default label used for the Caution admonition (:::caution)"
   },
   "theme.admonition.danger": {
-    "message": "[EN] danger",
+    "message": "위험",
     "description": "The default label used for the Danger admonition (:::danger)"
   },
   "theme.admonition.info": {
-    "message": "[EN] info",
+    "message": "정보",
     "description": "The default label used for the Info admonition (:::info)"
   },
   "theme.admonition.note": {
-    "message": "[EN] note",
+    "message": "참고",
     "description": "The default label used for the Note admonition (:::note)"
   },
   "theme.admonition.tip": {
-    "message": "[EN] tip",
+    "message": "팁",
     "description": "The default label used for the Tip admonition (:::tip)"
   },
   "theme.admonition.warning": {
-    "message": "[EN] warning",
+    "message": "경고",
     "description": "The default label used for the Warning admonition (:::warning)"
   },
   "theme.AnnouncementBar.closeButtonAriaLabel": {
-    "message": "[EN] Close",
+    "message": "닫기",
     "description": "The ARIA label for close button of announcement bar"
   },
   "theme.blog.sidebar.navAriaLabel": {
-    "message": "[EN] Blog recent posts navigation",
+    "message": "블로그 최근 게시물 탐색",
     "description": "The ARIA label for recent posts in the blog sidebar"
   },
   "theme.DocSidebarItem.expandCategoryAriaLabel": {
-    "message": "[EN] Expand sidebar category '{label}'",
+    "message": "'{label}' 사이드바 카테고리 펼치기",
     "description": "The ARIA label to expand the sidebar category"
   },
   "theme.DocSidebarItem.collapseCategoryAriaLabel": {
-    "message": "[EN] Collapse sidebar category '{label}'",
+    "message": "'{label}' 사이드바 카테고리 접기",
     "description": "The ARIA label to collapse the sidebar category"
   },
   "theme.IconExternalLink.ariaLabel": {
-    "message": "[EN] (opens in new tab)",
+    "message": "(새 탭에서 열림)",
     "description": "The ARIA label for the external link icon"
   },
   "theme.NavBar.navAriaLabel": {
-    "message": "[EN] Main",
+    "message": "메인",
     "description": "The ARIA label for the main navigation"
   },
   "theme.NotFound.p1": {
-    "message": "[EN] We could not find what you were looking for.",
+    "message": "찾으시는 내용을 찾을 수 없어요.",
     "description": "The first paragraph of the 404 page"
   },
   "theme.NotFound.p2": {
-    "message": "[EN] Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+    "message": "원래 URL로 연결된 사이트의 소유자에게 연락하여 링크가 잘못되었음을 알려주세요.",
     "description": "The 2nd paragraph of the 404 page"
   },
   "theme.navbar.mobileLanguageDropdown.label": {
-    "message": "[EN] Languages",
+    "message": "언어",
     "description": "The label for the mobile language switcher dropdown"
   },
   "theme.TOCCollapsible.toggleButtonLabel": {
-    "message": "[EN] On this page",
+    "message": "이 페이지의 내용",
     "description": "The label used by the button on the collapsible TOC component"
   },
   "theme.blog.post.readMore": {
@@ -326,7 +326,7 @@
     "description": "The title of the page for a blog tag"
   },
   "theme.blog.author.pageTitle": {
-    "message": "[EN] {authorName} - {nPosts}",
+    "message": "{authorName} - {nPosts}",
     "description": "The title of the page for a blog author"
   },
   "theme.blog.authorsList.pageTitle": {

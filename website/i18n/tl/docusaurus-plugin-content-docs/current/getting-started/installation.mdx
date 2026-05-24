@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+title: "Pag-install"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+## Mga Requirement
+
+- **Node.js 20.11+** (native ESM)
+- Isang translation API key (tingnan sa ibaba)
+
+## Install
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="npx" label="npx (no install)">
+
+```bash
+npx i18n-rosetta sync
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add -D i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add --dev i18n-rosetta
+```
+
+  </TabItem>
+</Tabs>
+
+## Kumuha ng API Key
+
+Kailangan po ng Rosetta ng isang translation backend. Pumili po ng isa:
+
+| Provider | Environment Variable | Best For |
+|----------|---------------------|----------|
+| **OpenRouter** (inirerekomenda) | `OPENROUTER_API_KEY` | Mga content-heavy na project, Markdown, 200+ na model |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume na key-value pairs (130+ na wika) |
+
+<Tabs>
+  <TabItem value="openrouter" label="OpenRouter (recommended)" default>
+
+Nagpo-provide po ang [OpenRouter](https://openrouter.ai) ng unified API para sa 200+ na LLM model. May available na free tier.
+
+```bash
+# Sign up at https://openrouter.ai, then:
+export OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+O kaya ay idagdag sa `.env.local`:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+```
+
+Best for: mga content-heavy na project, Markdown translation, at mga project na kailangan ng content-aware shielding (code blocks, shortcodes, interpolation variables).
+
+  </TabItem>
+  <TabItem value="google" label="Google Translate">
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=...
+```
+
+Best for: high-volume na key-value string pairs (130+ na wika). **Hindi inirerekomenda** para sa Markdown content — walang awareness ang Google Translate sa mga code block, shortcode, o interpolation variable.
+
+:::tip Smart detection
+Kung `GOOGLE_TRANSLATE_API_KEY` lang ang naka-set (walang OpenRouter key), mag-o-auto-switch po ang rosetta sa Google Translate. Wala na pong kailangang baguhin sa config.
+:::
+
+  </TabItem>
+</Tabs>
+
+## I-verify ang Installation
+
+```bash
+npx i18n-rosetta --help
+```
+
+Dapat niyo pong makita ang listahan ng mga available na command. Ready na po kayo para sa [Quick Start](/docs/getting-started/quick-start).

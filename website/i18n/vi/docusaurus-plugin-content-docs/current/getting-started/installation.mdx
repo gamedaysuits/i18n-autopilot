@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+title: "Cài đặt"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Cài đặt
+
+## Yêu cầu
+
+- **Node.js 20.11+** (native ESM)
+- API key dịch thuật (xem bên dưới)
+
+## Cài đặt
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="npx" label="npx (no install)">
+
+```bash
+npx i18n-rosetta sync
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add -D i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add --dev i18n-rosetta
+```
+
+  </TabItem>
+</Tabs>
+
+## Lấy API Key
+
+Rosetta cần một backend dịch thuật. Hãy chọn một:
+
+| Nhà cung cấp | Biến môi trường | Phù hợp nhất cho |
+|----------|---------------------|----------|
+| **OpenRouter** (khuyên dùng) | `OPENROUTER_API_KEY` | Các dự án nhiều nội dung, Markdown, hơn 200 model |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Các cặp key-value số lượng lớn (hơn 130 ngôn ngữ) |
+
+<Tabs>
+  <TabItem value="openrouter" label="OpenRouter (recommended)" default>
+
+[OpenRouter](https://openrouter.ai) cung cấp một API thống nhất cho hơn 200 model LLM. Có sẵn gói miễn phí.
+
+```bash
+# Sign up at https://openrouter.ai, then:
+export OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+Hoặc thêm vào `.env.local`:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+```
+
+Phù hợp nhất cho: các dự án nhiều nội dung, dịch Markdown và các dự án cần bảo vệ nội dung theo ngữ cảnh (khối mã, shortcode, biến nội suy).
+
+  </TabItem>
+  <TabItem value="google" label="Google Translate">
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=...
+```
+
+Phù hợp nhất cho: các cặp chuỗi key-value số lượng lớn (hơn 130 ngôn ngữ). **Không khuyên dùng** cho nội dung Markdown — Google Translate không nhận biết được các khối mã, shortcode hoặc biến nội suy.
+
+:::tip Phát hiện thông minh
+Nếu chỉ thiết lập `GOOGLE_TRANSLATE_API_KEY` (không có key OpenRouter), rosetta sẽ tự động chuyển sang Google Translate. Không cần thay đổi cấu hình.
+:::
+
+  </TabItem>
+</Tabs>
+
+## Xác minh cài đặt
+
+```bash
+npx i18n-rosetta --help
+```
+
+Bạn sẽ thấy danh sách các lệnh có sẵn. Bạn đã sẵn sàng cho phần [Bắt đầu nhanh](/docs/getting-started/quick-start).

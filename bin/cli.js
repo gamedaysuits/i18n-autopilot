@@ -29,13 +29,14 @@ const { values, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     // --- Boolean flags (shared across commands) ---
-    dry:         { type: 'boolean' },
-    help:        { type: 'boolean', short: 'h' },
-    version:     { type: 'boolean', short: 'v' },
-    fallback:    { type: 'boolean' },
-    yes:         { type: 'boolean', short: 'y' },
-    'warn-only': { type: 'boolean' },
-    undo:        { type: 'boolean' },
+    dry:              { type: 'boolean' },
+    help:             { type: 'boolean', short: 'h' },
+    version:          { type: 'boolean', short: 'v' },
+    fallback:         { type: 'boolean' },
+    yes:              { type: 'boolean', short: 'y' },
+    'warn-only':      { type: 'boolean' },
+    undo:             { type: 'boolean' },
+    'force-content':  { type: 'boolean' },  // re-translate all content files (clears content lock)
 
     // --- String flags (take a value) ---
     config:        { type: 'string' },
@@ -51,6 +52,7 @@ const { values, positionals } = parseArgs({
     src:           { type: 'string' },
     'min-length':  { type: 'string' },
     'force-keys':  { type: 'string' },
+    concurrency:   { type: 'string' },     // max parallel API calls for content sync
   },
 });
 

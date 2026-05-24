@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+title: "التثبيت"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# التثبيت
+
+## المتطلبات
+
+- **Node.js 20.11+** (ESM أصلي)
+- مفتاح API للترجمة (انظر أدناه)
+
+## التثبيت
+
+<Tabs>
+  <TabItem value="npm" label="npm" default>
+
+```bash
+npm install --save-dev i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="npx" label="npx (no install)">
+
+```bash
+npx i18n-rosetta sync
+```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add -D i18n-rosetta
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+
+```bash
+yarn add --dev i18n-rosetta
+```
+
+  </TabItem>
+</Tabs>
+
+## الحصول على مفتاح API
+
+تحتاج Rosetta إلى واجهة خلفية للترجمة. اختر واحدة:
+
+| المزود | متغير البيئة | الأفضل لـ |
+|----------|---------------------|----------|
+| **OpenRouter** (موصى به) | `OPENROUTER_API_KEY` | المشاريع المليئة بالمحتوى، Markdown، أكثر من 200 نموذج |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | أزواج المفتاح والقيمة (key-value) بحجم كبير (أكثر من 130 لغة) |
+
+<Tabs>
+  <TabItem value="openrouter" label="OpenRouter (recommended)" default>
+
+يوفر [OpenRouter](https://openrouter.ai) واجهة برمجة تطبيقات (API) موحدة لأكثر من 200 نموذج LLM. تتوفر باقة مجانية.
+
+```bash
+# Sign up at https://openrouter.ai, then:
+export OPENROUTER_API_KEY=sk-or-v1-...
+```
+
+أو أضفه إلى `.env.local`:
+
+```bash
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+```
+
+الأفضل لـ: المشاريع المليئة بالمحتوى، وترجمة Markdown، والمشاريع التي تحتاج إلى حماية واعية بالمحتوى (كتل الأكواد، الأكواد القصيرة، متغيرات الاستيفاء).
+
+  </TabItem>
+  <TabItem value="google" label="Google Translate">
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=...
+```
+
+الأفضل لـ: أزواج المفتاح والقيمة (key-value) النصية بحجم كبير (أكثر من 130 لغة). **غير موصى به** لمحتوى Markdown — لا يمتلك Google Translate أي وعي بكتل الأكواد، أو الأكواد القصيرة، أو متغيرات الاستيفاء.
+
+:::tip اكتشاف ذكي
+إذا تم تعيين `GOOGLE_TRANSLATE_API_KEY` فقط (بدون مفتاح OpenRouter)، ستقوم rosetta بالتبديل تلقائيًا إلى Google Translate. لا حاجة لتغيير الإعدادات.
+:::
+
+  </TabItem>
+</Tabs>
+
+## التحقق من التثبيت
+
+```bash
+npx i18n-rosetta --help
+```
+
+يجب أن ترى قائمة بالأوامر المتاحة. أنت الآن جاهز لـ [البدء السريع](/docs/getting-started/quick-start).

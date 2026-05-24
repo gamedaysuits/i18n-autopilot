@@ -4,45 +4,45 @@ title: "Quality Gate"
 ---
 # Quality Gate
 
-Ang bawat pagsasalin ay dumadaan sa isang deterministic validation gate bago ito isulat sa disk. Sinasalo ng quality gate ang mga karaniwang failure mode ng machine translation — walang mga tahimik na fallback, walang basurang isusulat sa iyong mga locale file.
+Dumadaan po ang bawat translation sa isang deterministic validation gate bago ito ma-write sa disk. Sinasalo ng quality gate ang mga common machine translation failure modes — walang silent fallbacks, at walang garbage na maisusulat sa inyong mga locale files.
 
-## Mga Validation Check
+## Validation Checks
 
 | Check | Ano ang Sinasalo Nito | Gate Label |
 |-------|----------------|-----------|
-| **Empty/blank** | Nagbalik ang model ng empty string o whitespace | `[GATE] empty` |
-| **Source echo** | Nagbalik ang model ng orihinal na English input | `[GATE] source-echo` |
-| **Hallucination loop** | Mga naulit na trigram pattern (hal., `"Qo' Qo' Qo'"`) | `[GATE] hallucination` |
-| **Length inflation** | Ang output ay mas mahaba nang malaki kaysa sa source | `[GATE] length` |
-| **Script compliance** | Maling script para sa target na locale | `[GATE] script` |
+| **Empty/blank** | Nag-return ang model ng empty string o whitespace | `[GATE] empty` |
+| **Source echo** | Nag-return ang model ng original English input | `[GATE] source-echo` |
+| **Hallucination loop** | Paulit-ulit na trigram patterns (hal., `"Qo' Qo' Qo'"`) | `[GATE] hallucination` |
+| **Length inflation** | Mas mahaba nang sobra ang output kaysa sa source | `[GATE] length` |
+| **Script compliance** | Maling script para sa target locale | `[GATE] script` |
 
 ### Empty/Blank
 
-Nire-reject ang mga pagsasalin na empty string, whitespace lamang, o `null`. Sinasalo nito ang mga model na walang ibinabalik para sa mga mahihirap na key.
+Nire-reject po nito ang mga translations na empty strings, whitespace-only, o `null`. Sinasalo nito ang mga models na walang nire-return para sa mga difficult keys.
 
 ### Source Echo
 
-Nade-detect kung kailan ibinabalik ng model ang English source text sa halip na isalin ito. Karaniwan ito sa mga maiikling string at mga under-specified na prompt.
+Dine-detect nito kapag nag-return ang model ng English source text sa halip na i-translate ito. Common po ito sa mga short strings at under-specified prompts.
 
 ### Hallucination Loop
 
-Sinusuri ang mga trigram (3-character) pattern sa output. Kung ang anumang trigram ay maulit nang higit sa isang threshold na bilang ng beses kaugnay ng haba ng output, ire-reject ang pagsasalin. Sinasalo nito ang mga degenerate na output tulad ng `"Qo' Qo' Qo' Qo' Qo'"`.
+Ina-analyze nito ang mga trigram (3-character) patterns sa output. Kung may anumang trigram na umulit nang higit sa isang threshold number of times relative sa output length, ire-reject po ang translation. Sinasalo nito ang mga degenerate outputs tulad ng `"Qo' Qo' Qo' Qo' Qo'"`.
 
 ### Length Inflation
 
-Nire-reject ang mga pagsasalin kung saan ang haba ng output ay lumampas sa `maxLengthRatio × source length` (default: 4×). Sinasalo nito ang mga model hallucination na gumagawa ng napakahabang teksto para sa isang maikling input.
+Nire-reject nito ang mga translations kung saan ang output length ay lumampas sa `maxLengthRatio × source length` (default: 4×). Sinasalo nito ang mga model hallucinations na nagpo-produce ng walls of text para sa isang short input.
 
-Maaaring i-configure sa pamamagitan ng `maxLengthRatio` sa iyong config.
+Configurable po ito via `maxLengthRatio` sa inyong config.
 
 ### Script Compliance
 
-Para sa mga locale na may naka-configure na `script` field (hal., `"script": "cans"` para sa Plains Cree Syllabics), bina-validate na ang output ay naglalaman ng mga non-ASCII na character na angkop para sa target na script. Ang Latin-only na output para sa isang Arabic, CJK, o Syllabics na locale ay ire-reject.
+Para sa mga locales na may configured na `script` field (hal., `"script": "cans"` para sa Plains Cree Syllabics), vina-validate nito na ang output ay naglalaman ng mga non-ASCII characters na appropriate para sa target script. Ang Latin-only output para sa isang Arabic, CJK, o Syllabics locale ay ire-reject po.
 
-## Ano ang Mangyayari Kapag Nag-fail
+## Ano ang Nangyayari sa Failure
 
-1. Ang nag-fail na pagsasalin ay ila-log sa stderr na may `[GATE]` prefix, ang pangalan ng key, ang dahilan, at isang preview ng value
-2. Ang key ay **hindi** isusulat sa locale file
-3. Magsisimula ang retry cascade (tingnan sa ibaba)
+1. Ilo-log ang failing translation sa stderr na may `[GATE]` prefix, ang key name, ang reason, at isang preview ng value
+2. **Hindi** isusulat ang key sa locale file
+3. Magki-kick in ang retry cascade (tingnan sa ibaba)
 
 ```
 [GATE] hero.title: source-echo — "Welcome to our platform"
@@ -51,7 +51,7 @@ Para sa mga locale na may naka-configure na `script` field (hal., `"script": "ca
 
 ## Retry Cascade
 
-Kapag nag-fail ang isang batch (JSON parse error o mga quality gate rejection), magre-retry ang rosetta gamit ang mga unti-unting lumiliit na batch:
+Kapag nag-fail ang isang batch (JSON parse error o quality gate rejections), magre-retry po ang rosetta gamit ang progressively smaller batches:
 
 ```
 Full batch (30 keys) → parse error
@@ -59,16 +59,26 @@ Full batch (30 keys) → parse error
       └→ Individual keys (1 each) → isolates the 2 problem keys
 ```
 
-Ang retry budget ay nililimitahan ng `maxRetries` (default: 3, maaaring i-configure bawat wika). Pinipigilan nito ang labis na paggastos ng token sa mga key na patuloy na nagfe-fail.
+Naka-cap po ang retry budget sa `maxRetries` (default: 3, configurable per-language). Pinipigilan nito ang runaway token spend sa mga keys na consistently nagfe-fail.
 
-Matapos maubos ang mga retry, ang mga problemang key ay ila-log at lalampasan. Ire-retry ang mga ito sa susunod na pagtakbo ng `sync`.
+Pagkatapos ma-exhaust ang mga retries, ilo-log at isi-skip ang mga problem keys. Ire-retry po ang mga ito sa susunod na `sync` run.
 
 ## Prompt Caching
 
-Ang system message (register, mga panuntunan sa grammar, mga style note) ay hinihiwalay mula sa user message (ang mga key na isasalin). Sinasadya ang paghihiwalay na ito:
+Naka-split po ang system message (register, grammar rules, style notes) mula sa user message (ang mga keys na ita-translate). Intentional po ang split na ito:
 
-- Ang system message ay **magkapareho sa lahat ng batch** para sa isang partikular na locale
-- Kina-cache ng mga provider tulad ng Anthropic at Google ang mga inuulit na system message
-- Resulta: ang unang batch ay magbabayad ng buong halaga ng token, ang mga susunod na batch ay magbabayad lamang para sa user message
+- Ang system message ay **identical across batches** para sa isang given locale
+- Kina-cache ng mga providers tulad ng Anthropic at Google ang mga repeated system messages
+- Resulta: magbabayad ng full token cost ang unang batch, habang ang mga subsequent batches ay magbabayad lamang para sa user message
 
-Maaari nitong mapababa nang malaki ang mga gastos sa token para sa mga project na may maraming batch.
+Maaari po nitong ma-reduce nang malaki ang token costs para sa mga projects na may maraming batches.
+
+---
+
+## Tingnan Din
+
+- [Paano Gumagana ang Sync](/docs/concepts/how-sync-works) — kung saan nagfi-fit ang quality gate sa pipeline
+- [Translation Methods](/docs/guides/translation-methods) — mga methods na nagfi-feed sa gate
+- [Script Converters](/docs/concepts/script-converters) — post-gate script conversion
+- [Coaching Data](/docs/concepts/coaching-data) — pag-improve ng translation quality upstream
+- [CLI Reference — sync](/docs/reference/cli#sync) — sync flags kasama ang retry behavior
