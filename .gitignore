@@ -43,3 +43,15 @@ supabase/.temp/
 
 # Co-located ecosystem projects (separate git repos, not part of rosetta)
 crk-translate/
+
+# One-time dev scripts (already run, not user-facing)
+scripts/split-cards-to-tiers.mjs
+scripts/enrich-cards-from-cldr.mjs
+scripts/enrich-tier3-batch.mjs
+
+# Internal planning docs (not for contributors — LANGUAGE_CARD_SPEC.md stays, it's linked from README)
+docs/planning/TRANSLATE_API_SPEC.md
+docs/planning/TRANSLATE_SERVICE_BUILDOUT.md
+
+# Generated website data (rebuilt on every npm start/build via generate-languages-json.js)
+website/src/data/languages.json
