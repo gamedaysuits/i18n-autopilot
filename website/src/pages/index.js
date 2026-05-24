@@ -47,13 +47,15 @@ function HeroBanner() {
 
   const wordsToUse = flipperWords.length > 0 ? flipperWords : ['5', '17', '210', '47'];
   const isNumber = /^\d+$/.test(currentWord);
-  const suffix = isNumber ? ' languages' : '';
+  const suffix = isNumber
+    ? ` ${translate({id: 'homepage.hero.languagesSuffix', message: 'languages', description: 'Suffix after the language count number in the hero'})}`
+    : '';
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className={styles.heroTitle}>
-          Build your entire website in{' '}
+          <Translate id="homepage.hero.titlePrefix" description="Hero title text before the animated language flipper">Build your entire website in</Translate>{' '}
           <WordFlipper
             words={wordsToUse}
             onChange={(word) => setCurrentWord(word)}
@@ -62,7 +64,7 @@ function HeroBanner() {
           />
           {suffix}
           <br />
-          with one command, or with infinite customization
+          <Translate id="homepage.hero.titleSuffix" description="Hero title text after the animated language flipper">with one command, or with infinite customization</Translate>
         </Heading>
         <p className={styles.heroSubtitle}>
           <Translate id="homepage.hero.subtitle" description="Hero subtitle explaining the product">
@@ -88,7 +90,8 @@ function HeroBanner() {
           <Link
             className={clsx('button button--lg', styles.buttonLanguages)}
             to="/languages">
-            {languages.length > 0 ? languages.length : '47'} languages supported
+            {languages.length > 0 ? languages.length : '47'}{' '}
+            <Translate id="homepage.hero.languagesSupported" description="Languages supported button label">languages supported</Translate>
           </Link>
         </div>
       </div>

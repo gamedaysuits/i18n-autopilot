@@ -612,5 +612,21 @@
   "homepage.arena.cards.respectData.linkText": {
     "message": "Data Sovereignty →",
     "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "Build your entire website in",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "with one command, or with infinite customization",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "languages",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "languages supported",
+    "description": "Languages supported button label"
   }
 }
