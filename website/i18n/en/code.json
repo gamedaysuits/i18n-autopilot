@@ -360,5 +360,257 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 item|{count} items",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "Fully customizable",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "internationalization",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "One command translates your locale files. Every translation method — Google Translate, LLMs, custom APIs, coached pipelines — is a config option. Use what works for each language.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "Get Started →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "See Methods",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "Tests",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Dependencies",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Script converters",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Language registers",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "Mix methods per language pair",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "Each source→target pair gets its own translation method, model, and quality configuration. Use what works for each language — not a one-size-fits-all.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "Learn about methods →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "Built For",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "Not another TMS platform",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase, and Locize are cloud platforms that require accounts, dashboards, and monthly fees. Rosetta is a CLI tool that runs in your project — no accounts, no dashboards, no vendor lock-in.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "See the full comparison →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "THE ARENA",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "Think you have the best method",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "for translating",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "Prove it.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "7,000+ languages. ~130 have machine translation. The rest are an unsolved problem — and an open invitation. rosetta's evaluation harness benchmarks any method with fingerprinted, reproducible scoring. The leaderboard tracks every submission.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "This is an unsolved problem that everyone in the world can contribute to.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "Build a method. Score it. Give it back.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Method Leaderboard",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "Top translation methods ranked by chrF++ score.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "Think you can beat them?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "Run the harness",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "Full Leaderboard →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "Method",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "Model",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "Pair",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Fully customizable internationalization",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "An i18n framework where every translation method is a config option. Google Translate, LLMs, custom pipelines — one command, per-pair control, quality-gated.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "One Command",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "Auto-detect your locale files, format, and target languages. Translate what changed. Skip what didn't.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "Per-Pair Methods",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "Google Translate for French, an LLM for Japanese, a coached plugin for Plains Cree — all in the same config.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Registers & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "Steer the LLM with per-language tone instructions. Formal Sie-form for German, Taglish code-switching for Filipino, warrior's honor for Klingon.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "Content Aware",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Code blocks, shortcodes, interpolation variables, and raw HTML are shielded during translation. The LLM never sees your code.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Zero Dependencies",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Node.js built-ins only. No SDKs, no native modules, no build step. Works anywhere Node 20+ runs.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "Every translation is validated before writing. Wrong-script output, source echoes, length inflation, and placeholder corruption are caught and rejected.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS Internationalization",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "Translate your Next.js, Hugo, or React app to 30+ languages with per-pair quality control.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "Translate 30 Languages →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "Build a Custom Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "Chain LLMs with FST validators, dictionaries, and post-processors. Package it as a plugin.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline Cookbook →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "Language Preservation",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "Coached LLM translation for languages with no API coverage — Indigenous, endangered, constructed.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "Low-Resource Guide →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "Plug and Test",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "Run your method against standardized benchmarks. chrF++, exact match, FST acceptance — all computed by the same harness.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "Claim Your Score",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "Every submission is fingerprinted to a Git commit and scored against the same dataset. Open a PR to submit.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Leaderboard →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "Respect the Data",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "Indigenous languages belong to their communities. rosetta supports OCAP, CARE, and Māori Data Sovereignty principles.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Data Sovereignty →",
+    "description": "Arena card link text: Respect the Data"
   }
 }

@@ -30,6 +30,7 @@ const { values, positionals } = parseArgs({
   options: {
     // --- Boolean flags (shared across commands) ---
     dry:              { type: 'boolean' },
+    'dry-run':        { type: 'boolean' },    // alias for --dry (more intuitive)
     help:             { type: 'boolean', short: 'h' },
     version:          { type: 'boolean', short: 'v' },
     fallback:         { type: 'boolean' },
@@ -60,6 +61,10 @@ const { values, positionals } = parseArgs({
 //   { _: ['command', 'subcommand', ...], flagName: value, ... }
 // This preserves backward compatibility with every command module.
 const args = { _: positionals, ...values };
+
+// --dry-run is an alias for --dry — merge so command modules only check args.dry
+if (args['dry-run']) args.dry = true;
+
 const command = args._[0] || 'help';
 const cwd = process.cwd();
 

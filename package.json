@@ -73,5 +73,9 @@
     "!docs/planning/",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "devDependencies": {
+    "cldr-core": "^48.2.0",
+    "cldr-misc-full": "^48.2.0"
+  }
 }

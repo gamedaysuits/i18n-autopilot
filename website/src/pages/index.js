@@ -1,17 +1,18 @@
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import Translate, {translate} from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
 import Heading from '@theme/Heading';
 import { useState, useEffect } from 'react';
 
-import homepage from '../data/homepage.json';
 import styles from './index.module.css';
 
 /* ------------------------------------------------------------------ */
 /*  Hero — leads with the i18n framework, not the research angle      */
-/*  All text sourced from homepage.json so the CMS can edit it.       */
+/*  All text wrapped in <Translate> so rosetta sync picks it up       */
+/*  via code.json keys.                                                */
 /* ------------------------------------------------------------------ */
 
 function HeroBanner() {
@@ -19,10 +20,14 @@ function HeroBanner() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className={styles.heroTitle}>
-          {homepage.hero.title_line1}<br />{homepage.hero.title_line2}
+          <Translate id="homepage.hero.titleLine1" description="Hero title line 1">Fully customizable</Translate>
+          <br />
+          <Translate id="homepage.hero.titleLine2" description="Hero title line 2">internationalization</Translate>
         </Heading>
         <p className={styles.heroSubtitle}>
-          {homepage.hero.subtitle}
+          <Translate id="homepage.hero.subtitle" description="Hero subtitle explaining the product">
+            One command translates your locale files. Every translation method — Google Translate, LLMs, custom APIs, coached pipelines — is a config option. Use what works for each language.
+          </Translate>
         </p>
         <div className={styles.heroCode}>
           <CodeBlock language="bash">
@@ -33,12 +38,12 @@ function HeroBanner() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/getting-started/installation">
-            {homepage.hero.cta_primary}
+            <Translate id="homepage.hero.ctaPrimary" description="Primary call-to-action button">Get Started →</Translate>
           </Link>
           <Link
             className={clsx('button button--lg', styles.buttonOutline)}
             to="/docs/guides/translation-methods">
-            {homepage.hero.cta_secondary}
+            <Translate id="homepage.hero.ctaSecondary" description="Secondary call-to-action button">See Methods</Translate>
           </Link>
         </div>
       </div>
@@ -48,29 +53,29 @@ function HeroBanner() {
 
 /* ------------------------------------------------------------------ */
 /*  Stats Bar                                                          */
+/*  Numbers are data (not translated). Labels are translated.          */
 /* ------------------------------------------------------------------ */
 
 function StatsBar() {
-  const s = homepage.stats;
   return (
     <section className={styles.statsBar}>
       <div className="container">
         <div className="row">
           <div className="col col--3 text--center">
-            <Heading as="h3" className={styles.stat}>{s.tests}</Heading>
-            <p>Tests</p>
+            <Heading as="h3" className={styles.stat}>752</Heading>
+            <p><Translate id="homepage.stats.tests" description="Stats bar label for test count">Tests</Translate></p>
           </div>
           <div className="col col--3 text--center">
-            <Heading as="h3" className={styles.stat}>{s.dependencies}</Heading>
-            <p>Dependencies</p>
+            <Heading as="h3" className={styles.stat}>0</Heading>
+            <p><Translate id="homepage.stats.dependencies" description="Stats bar label for dependency count">Dependencies</Translate></p>
           </div>
           <div className="col col--3 text--center">
-            <Heading as="h3" className={styles.stat}>{s.script_converters}</Heading>
-            <p>Script converters</p>
+            <Heading as="h3" className={styles.stat}>5</Heading>
+            <p><Translate id="homepage.stats.scriptConverters" description="Stats bar label for script converter count">Script converters</Translate></p>
           </div>
           <div className="col col--3 text--center">
-            <Heading as="h3" className={styles.stat}>{s.language_registers}</Heading>
-            <p>Language registers</p>
+            <Heading as="h3" className={styles.stat}>47</Heading>
+            <p><Translate id="homepage.stats.languageRegisters" description="Stats bar label for language register count">Language registers</Translate></p>
           </div>
         </div>
       </div>
@@ -91,14 +96,64 @@ const featureLinks = [
   '/docs/concepts/quality-gate',
 ];
 
-function Feature({icon, title, description, link}) {
+// Feature data uses translate() for non-JSX contexts so keys land in code.json
+const featureData = [
+  {
+    icon: '⚡',
+    titleId: 'homepage.features.oneCommand.title',
+    titleDefault: 'One Command',
+    descId: 'homepage.features.oneCommand.description',
+    descDefault: "Auto-detect your locale files, format, and target languages. Translate what changed. Skip what didn't.",
+  },
+  {
+    icon: '🔀',
+    titleId: 'homepage.features.perPairMethods.title',
+    titleDefault: 'Per-Pair Methods',
+    descId: 'homepage.features.perPairMethods.description',
+    descDefault: 'Google Translate for French, an LLM for Japanese, a coached plugin for Plains Cree — all in the same config.',
+  },
+  {
+    icon: '🎭',
+    titleId: 'homepage.features.registersCoaching.title',
+    titleDefault: 'Registers & Coaching',
+    descId: 'homepage.features.registersCoaching.description',
+    descDefault: "Steer the LLM with per-language tone instructions. Formal Sie-form for German, Taglish code-switching for Filipino, warrior's honor for Klingon.",
+  },
+  {
+    icon: '🧱',
+    titleId: 'homepage.features.contentAware.title',
+    titleDefault: 'Content Aware',
+    descId: 'homepage.features.contentAware.description',
+    descDefault: 'Code blocks, shortcodes, interpolation variables, and raw HTML are shielded during translation. The LLM never sees your code.',
+  },
+  {
+    icon: '📦',
+    titleId: 'homepage.features.zeroDependencies.title',
+    titleDefault: 'Zero Dependencies',
+    descId: 'homepage.features.zeroDependencies.description',
+    descDefault: 'Node.js built-ins only. No SDKs, no native modules, no build step. Works anywhere Node 20+ runs.',
+  },
+  {
+    icon: '🛡️',
+    titleId: 'homepage.features.qualityGate.title',
+    titleDefault: 'Quality Gate',
+    descId: 'homepage.features.qualityGate.description',
+    descDefault: 'Every translation is validated before writing. Wrong-script output, source echoes, length inflation, and placeholder corruption are caught and rejected.',
+  },
+];
+
+function Feature({icon, titleId, titleDefault, descId, descDefault, link}) {
   return (
     <div className={clsx('col col--4', styles.feature)}>
       <Link to={link} className={styles.featureCardLink}>
         <div className={styles.featureCard}>
           <div className={styles.featureIcon}>{icon}</div>
-          <Heading as="h3">{title}</Heading>
-          <p>{description}</p>
+          <Heading as="h3">
+            <Translate id={titleId} description={`Feature card title: ${titleDefault}`}>{titleDefault}</Translate>
+          </Heading>
+          <p>
+            <Translate id={descId} description={`Feature card description: ${titleDefault}`}>{descDefault}</Translate>
+          </p>
         </div>
       </Link>
     </div>
@@ -110,7 +165,7 @@ function FeaturesSection() {
     <section className={styles.features}>
       <div className="container">
         <div className="row">
-          {homepage.features.map((feat, idx) => (
+          {featureData.map((feat, idx) => (
             <Feature key={idx} {...feat} link={featureLinks[idx]} />
           ))}
         </div>
@@ -145,13 +200,20 @@ function QuickExample() {
       <div className="container">
         <div className="row">
           <div className="col col--6">
-            <Heading as="h2">Mix methods per language pair</Heading>
+            <Heading as="h2">
+              <Translate id="homepage.quickExample.title" description="Quick example section heading">
+                Mix methods per language pair
+              </Translate>
+            </Heading>
             <p>
-              Each source→target pair gets its own translation method, model, and quality
-              configuration. Use what works for each language — not a one-size-fits-all.
+              <Translate id="homepage.quickExample.description" description="Quick example section description">
+                Each source→target pair gets its own translation method, model, and quality configuration. Use what works for each language — not a one-size-fits-all.
+              </Translate>
             </p>
             <Link to="/docs/guides/translation-methods" className="button button--primary button--md">
-              Learn about methods →
+              <Translate id="homepage.quickExample.cta" description="Quick example CTA button">
+                Learn about methods →
+              </Translate>
             </Link>
           </div>
           <div className="col col--6">
@@ -175,18 +237,55 @@ const useCaseLinks = [
   '/docs/guides/low-resource-languages',
 ];
 
+const useCaseData = [
+  {
+    titleId: 'homepage.useCases.saas.title',
+    titleDefault: 'SaaS Internationalization',
+    descId: 'homepage.useCases.saas.description',
+    descDefault: 'Translate your Next.js, Hugo, or React app to 30+ languages with per-pair quality control.',
+    linkId: 'homepage.useCases.saas.linkText',
+    linkDefault: 'Translate 30 Languages →',
+  },
+  {
+    titleId: 'homepage.useCases.pipeline.title',
+    titleDefault: 'Build a Custom Pipeline',
+    descId: 'homepage.useCases.pipeline.description',
+    descDefault: 'Chain LLMs with FST validators, dictionaries, and post-processors. Package it as a plugin.',
+    linkId: 'homepage.useCases.pipeline.linkText',
+    linkDefault: 'FST Pipeline Cookbook →',
+  },
+  {
+    titleId: 'homepage.useCases.preservation.title',
+    titleDefault: 'Language Preservation',
+    descId: 'homepage.useCases.preservation.description',
+    descDefault: 'Coached LLM translation for languages with no API coverage — Indigenous, endangered, constructed.',
+    linkId: 'homepage.useCases.preservation.linkText',
+    linkDefault: 'Low-Resource Guide →',
+  },
+];
+
 function UseCasesSection() {
   return (
     <section className={styles.useCases}>
       <div className="container">
-        <Heading as="h2" className={styles.sectionTitle}>Built For</Heading>
+        <Heading as="h2" className={styles.sectionTitle}>
+          <Translate id="homepage.useCases.sectionTitle" description="Use cases section heading">
+            Built For
+          </Translate>
+        </Heading>
         <div className="row">
-          {homepage.use_cases.map((uc, idx) => (
+          {useCaseData.map((uc, idx) => (
             <div key={idx} className="col col--4">
               <div className={styles.useCaseCard}>
-                <Heading as="h3">{uc.title}</Heading>
-                <p>{uc.description}</p>
-                <Link to={useCaseLinks[idx]} className={styles.useCaseLink}>{uc.link_text}</Link>
+                <Heading as="h3">
+                  <Translate id={uc.titleId} description={`Use case title: ${uc.titleDefault}`}>{uc.titleDefault}</Translate>
+                </Heading>
+                <p>
+                  <Translate id={uc.descId} description={`Use case description: ${uc.titleDefault}`}>{uc.descDefault}</Translate>
+                </p>
+                <Link to={useCaseLinks[idx]} className={styles.useCaseLink}>
+                  <Translate id={uc.linkId} description={`Use case link: ${uc.titleDefault}`}>{uc.linkDefault}</Translate>
+                </Link>
               </div>
             </div>
           ))}
@@ -205,13 +304,19 @@ function ComparisonTeaser() {
     <section className={styles.comparisonTeaser}>
       <div className="container text--center">
         <Heading as="h2" className={styles.sectionTitle}>
-          {homepage.comparison.title}
+          <Translate id="homepage.comparison.title" description="Comparison section title">
+            Not another TMS platform
+          </Translate>
         </Heading>
         <p className={styles.comparisonSubtitle}>
-          {homepage.comparison.description}
+          <Translate id="homepage.comparison.description" description="Comparison section description">
+            Crowdin, Phrase, and Locize are cloud platforms that require accounts, dashboards, and monthly fees. Rosetta is a CLI tool that runs in your project — no accounts, no dashboards, no vendor lock-in.
+          </Translate>
         </p>
         <Link to="/docs/guides/comparison" className="button button--primary button--md">
-          See the full comparison →
+          <Translate id="homepage.comparison.cta" description="Comparison section CTA">
+            See the full comparison →
+          </Translate>
         </Link>
       </div>
     </section>
@@ -242,10 +347,37 @@ const TARGET_LANGS = [
   'Ojibwe', 'Ainu', 'Azerbaijani', 'Cantonese', 'Basque',
 ];
 
-const arenaCardLinks = [
-  '/docs/eval/harness',
-  '/leaderboard',
-  '/docs/guides/data-sovereignty',
+const arenaCardData = [
+  {
+    icon: '🧪',
+    titleId: 'homepage.arena.cards.plugTest.title',
+    titleDefault: 'Plug and Test',
+    descId: 'homepage.arena.cards.plugTest.description',
+    descDefault: 'Run your method against standardized benchmarks. chrF++, exact match, FST acceptance — all computed by the same harness.',
+    linkId: 'homepage.arena.cards.plugTest.linkText',
+    linkDefault: 'Eval Harness →',
+    link: '/docs/eval/harness',
+  },
+  {
+    icon: '🏆',
+    titleId: 'homepage.arena.cards.claimScore.title',
+    titleDefault: 'Claim Your Score',
+    descId: 'homepage.arena.cards.claimScore.description',
+    descDefault: 'Every submission is fingerprinted to a Git commit and scored against the same dataset. Open a PR to submit.',
+    linkId: 'homepage.arena.cards.claimScore.linkText',
+    linkDefault: 'Leaderboard →',
+    link: '/leaderboard',
+  },
+  {
+    icon: '🤝',
+    titleId: 'homepage.arena.cards.respectData.title',
+    titleDefault: 'Respect the Data',
+    descId: 'homepage.arena.cards.respectData.description',
+    descDefault: 'Indigenous languages belong to their communities. rosetta supports OCAP, CARE, and Māori Data Sovereignty principles.',
+    linkId: 'homepage.arena.cards.respectData.linkText',
+    linkDefault: 'Data Sovereignty →',
+    link: '/docs/guides/data-sovereignty',
+  },
 ];
 
 function ArenaSection() {
@@ -278,15 +410,17 @@ function ArenaSection() {
     return () => clearInterval(interval);
   }, []);
 
-  const a = homepage.arena;
-
   return (
     <section className={styles.arena}>
       <div className="container text--center">
-        <p className={styles.arenaEyebrow}>{a.eyebrow}</p>
+        <p className={styles.arenaEyebrow}>
+          <Translate id="homepage.arena.eyebrow" description="Arena section eyebrow label">THE ARENA</Translate>
+        </p>
         <Heading as="h2" className={styles.arenaTitle}>
-          {a.title_line1}<br />
-          {a.title_line2}{' '}
+          <Translate id="homepage.arena.titleLine1" description="Arena title line 1">Think you have the best method</Translate>
+          <br />
+          <Translate id="homepage.arena.titleLine2" description="Arena title line 2">for translating</Translate>
+          {' '}
           <span className={clsx(styles.arenaPair, srcVisible && styles.arenaPairVisible)}>
             {SOURCE_LANGS[srcIndex]}
           </span>
@@ -297,22 +431,41 @@ function ArenaSection() {
           ?
         </Heading>
         <p className={styles.arenaTagline}>
-          <strong>{a.tagline}</strong>
+          <strong>
+            <Translate id="homepage.arena.tagline" description="Arena section tagline">Prove it.</Translate>
+          </strong>
         </p>
-        <p className={styles.arenaDescription}>{a.description}</p>
+        <p className={styles.arenaDescription}>
+          <Translate id="homepage.arena.description" description="Arena section description paragraph">
+            7,000+ languages. ~130 have machine translation. The rest are an unsolved problem — and an open invitation. rosetta's evaluation harness benchmarks any method with fingerprinted, reproducible scoring. The leaderboard tracks every submission.
+          </Translate>
+        </p>
         <div className={styles.arenaCards}>
-          {a.cards.map((card, idx) => (
+          {arenaCardData.map((card, idx) => (
             <div key={idx} className={styles.arenaCard}>
               <div className={styles.arenaCardIcon}>{card.icon}</div>
-              <Heading as="h3">{card.title}</Heading>
-              <p>{card.description}</p>
-              <Link to={arenaCardLinks[idx]} className={styles.arenaLink}>{card.link_text}</Link>
+              <Heading as="h3">
+                <Translate id={card.titleId} description={`Arena card title: ${card.titleDefault}`}>{card.titleDefault}</Translate>
+              </Heading>
+              <p>
+                <Translate id={card.descId} description={`Arena card description: ${card.titleDefault}`}>{card.descDefault}</Translate>
+              </p>
+              <Link to={card.link} className={styles.arenaLink}>
+                <Translate id={card.linkId} description={`Arena card link: ${card.titleDefault}`}>{card.linkDefault}</Translate>
+              </Link>
             </div>
           ))}
         </div>
         <p className={styles.arenaCallout}>
-          {a.callout_line1}<br/>
-          <strong>{a.callout_line2}</strong>
+          <Translate id="homepage.arena.calloutLine1" description="Arena callout line 1">
+            This is an unsolved problem that everyone in the world can contribute to.
+          </Translate>
+          <br/>
+          <strong>
+            <Translate id="homepage.arena.calloutLine2" description="Arena callout line 2">
+              Build a method. Score it. Give it back.
+            </Translate>
+          </strong>
         </p>
       </div>
     </section>
@@ -364,8 +517,6 @@ function LeaderboardWidget() {
 
   if (entries.length === 0) return null;
 
-  const lw = homepage.leaderboard_widget;
-
   return (
     <section className={styles.leaderboardWidget}>
       <div className="container">
@@ -373,15 +524,24 @@ function LeaderboardWidget() {
           <div className={styles.leaderboardWidgetHeader}>
             <div>
               <Heading as="h2" className={styles.sectionTitle} style={{marginBottom: '0.5rem', textAlign: 'left'}}>
-                {lw.title}
+                <Translate id="homepage.leaderboard.title" description="Leaderboard widget title">🏆 Method Leaderboard</Translate>
               </Heading>
               <p className={styles.leaderboardWidgetSubtitle}>
-                {lw.subtitle}{' '}
-                {lw.cta} <Link to="/docs/eval/harness">Run the harness</Link>.
+                <Translate id="homepage.leaderboard.subtitle" description="Leaderboard widget subtitle">
+                  Top translation methods ranked by chrF++ score.
+                </Translate>
+                {' '}
+                <Translate id="homepage.leaderboard.cta" description="Leaderboard widget call to action">
+                  Think you can beat them?
+                </Translate>
+                {' '}
+                <Link to="/docs/eval/harness">
+                  <Translate id="homepage.leaderboard.runHarness" description="Leaderboard run harness link">Run the harness</Translate>
+                </Link>.
               </p>
             </div>
             <Link to="/leaderboard" className="button button--primary button--sm">
-              {lw.full_leaderboard_text}
+              <Translate id="homepage.leaderboard.fullLeaderboard" description="Full leaderboard link button">Full Leaderboard →</Translate>
             </Link>
           </div>
           <div className={styles.leaderboardWidgetTable}>
@@ -389,9 +549,9 @@ function LeaderboardWidget() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Method</th>
-                  <th>Model</th>
-                  <th>Pair</th>
+                  <th><Translate id="homepage.leaderboard.colMethod" description="Leaderboard table header: Method">Method</Translate></th>
+                  <th><Translate id="homepage.leaderboard.colModel" description="Leaderboard table header: Model">Model</Translate></th>
+                  <th><Translate id="homepage.leaderboard.colPair" description="Leaderboard table header: Pair">Pair</Translate></th>
                   <th>chrF++</th>
                   <th>EM%</th>
                 </tr>
@@ -424,8 +584,16 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} — ${homepage.seo.title_suffix}`}
-      description={homepage.seo.description}>
+      title={translate({
+        id: 'homepage.seo.titleSuffix',
+        message: 'Fully customizable internationalization',
+        description: 'SEO title suffix for the homepage',
+      })}
+      description={translate({
+        id: 'homepage.seo.description',
+        message: 'An i18n framework where every translation method is a config option. Google Translate, LLMs, custom pipelines — one command, per-pair control, quality-gated.',
+        description: 'SEO meta description for the homepage',
+      })}>
       <HeroBanner />
       <main>
         <StatsBar />
