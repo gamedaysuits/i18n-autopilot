@@ -29,7 +29,7 @@ The harness scores your method against a standardized corpus with reproducible m
 When your method reaches acceptable quality, package it as a rosetta plugin — a `method.json` manifest with optional coaching data.
 
 :::info Export CLI is planned
-Currently, you create the method.json manifest manually. The `mt-eval export` command will automate this. See the full [Bridge Guide](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/BRIDGE_GUIDE.md) for details.
+Currently, you create the method.json manifest manually. The `mt-eval export` command will automate this. See the [Method Interface](https://mtevalarena.org/docs/specifications/methods) for the full plugin format.
 :::
 
 ### 4. Install in rosetta

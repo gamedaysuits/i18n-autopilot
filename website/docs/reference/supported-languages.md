@@ -237,7 +237,7 @@ Rosetta resolves the key to the full register prompt. Run `npx i18n-rosetta init
 | Thai | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
 | Spanish | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
 
-See [Contributing a Language Card](https://github.com/nicholasgriffintn/i18n-rosetta/blob/main/docs/planning/LANGUAGE_CARD_SPEC.md) for the full spec, including field validation and PR checklist.
+See [Contributing a Language Card](https://github.com/gamedaysuits/i18n-rosetta) for the full spec, including field validation and PR checklist.
 
 ---
 
