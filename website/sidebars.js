@@ -5,6 +5,7 @@ const sidebars = {
   docsSidebar: [
     'intro',
     'how-it-works',
+    'guides/enterprise',
     {
       type: 'category',
       label: 'Getting Started',
