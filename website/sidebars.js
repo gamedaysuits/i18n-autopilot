@@ -4,27 +4,25 @@
 const sidebars = {
   docsSidebar: [
     'intro',
+    'how-it-works',
     {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
       items: [
-        'getting-started/installation',
         'getting-started/quick-start',
+        'getting-started/configuration',
       ],
     },
     {
       type: 'category',
       label: 'Use Cases',
       items: [
-        'guides/framework-integration',
         'tutorials/hugo-multilingual-site',
         'tutorials/translate-30-languages',
         'tutorials/build-a-plugin',
         'guides/translation-methods',
-        'guides/low-resource-languages',
         'guides/serving-a-method',
-        'tutorials/fst-gated-pipeline',
       ],
     },
     {
@@ -42,23 +40,22 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'For MT Researchers',
+      label: 'Reference',
       items: [
-        'eval/index',
-        'eval/harness',
-        'eval/datasets',
-        'eval/methods',
-        'eval/run-card',
+        'reference/cli',
+        'reference/plugin-spec',
+        'reference/supported-languages',
       ],
     },
     {
       type: 'category',
-      label: 'Reference',
+      label: 'Integrations',
       items: [
-        'reference/cli',
-        'getting-started/configuration',
-        'reference/plugin-spec',
-        'reference/supported-languages',
+        'guides/bridge',
+        'guides/ci-cd',
+        'guides/content-translation',
+        'guides/conlangs-scripts-orthography',
+        'guides/comparison',
       ],
     },
     {
@@ -66,11 +63,6 @@ const sidebars = {
       label: 'Guides',
       items: [
         'guides/professional-translators',
-        'guides/data-sovereignty',
-        'guides/ci-cd',
-        'guides/content-translation',
-        'guides/conlangs-scripts-orthography',
-        'guides/comparison',
         'guides/troubleshooting',
       ],
     },
