@@ -17,12 +17,13 @@ node_modules/
 .idea/
 .vscode/
 
-# Internal planning docs (not for public repo)
-docs/internal/
-
 # Rosetta user config (generated per-project, not part of the tool)
 i18n-rosetta.config.json
 .i18n-rosetta.lock
+
+# Dogfooding lock files — content hash manifests from local dev runs.
+# These leak local project structure and aren't part of the shipped tool.
+.i18n-rosetta-content.lock
 
 # Research vault
 .vault/
@@ -43,13 +44,35 @@ supabase/.temp/
 
 # Co-located ecosystem projects (separate git repos, not part of rosetta)
 crk-translate/
+gds-mt-eval-harness/
 
 # One-time dev scripts (already run, not user-facing)
 scripts/split-cards-to-tiers.mjs
 scripts/enrich-cards-from-cldr.mjs
 scripts/enrich-tier3-batch.mjs
 
-# Internal planning docs (not for contributors — LANGUAGE_CARD_SPEC.md stays, it's linked from README)
-docs/planning/TRANSLATE_API_SPEC.md
-docs/planning/TRANSLATE_SERVICE_BUILDOUT.md
+# ── Internal / non-public files ─────────────────────────────────────
+# These exist locally for project development but should NOT be in the
+# public GitHub repo. They contain SaaS planning, pricing strategy,
+# competitive details, and internal marketing assets.
 
+# Internal planning docs have been moved to crk-translate/docs/internal/ (private repo).
+# Nothing to gitignore here — they no longer exist in this repo.
+
+# README translation scaffolding — internal tooling for dogfooding rosetta on its own README.
+# The finished translations (docs/README.*.md) are public; the build pipeline isn't.
+docs/readme-src/
+docs/readme-locales/
+docs/readme-i18n.config.json
+
+# Marketing assets — promo videos, logo animations, walkthrough HTML.
+# Not part of the OSS tool. Keep locally for campaigns.
+marketing/
+
+# Local-only research/presentation assets — never commit
+pitch-deck.html
+automata.svg
+dfa.svg
+ast.svg
+arxiv_results.xml
+*.pdf
