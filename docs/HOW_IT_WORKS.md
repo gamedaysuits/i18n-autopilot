@@ -253,10 +253,10 @@ The OCAP® principles (Ownership, Control, Access, Possession), the CARE princip
 | Phase | What | Status |
 |-------|------|--------|
 | Baseline sweep | 12 models × 3 temperatures × 2 coaching configs on EDTeKLA | 🔲 Planned |
-| Composite score | Weighted metric implementation in harness | 🔲 Planned |
-| Semantic score | Embedding-based meaning preservation metric | 🔲 Planned |
+| Composite score | Weighted metric implementation in harness | ✅ Done |
+| Semantic score | Verdict-weighted score from CrkSemanticMetric plugin | ✅ Done |
 | Morphological accuracy | Per-morpheme scoring against gold-standard analysis | 🔲 Planned |
-| Equivalent match | Variant-class matching for flexible word order | 🔲 Planned |
+| Equivalent match | Variant-class matching via CrkLinterMetric plugin | ✅ Done |
 | Rosetta API | Metered API for community-owned methods | 🔲 Planned |
 | Second language | Expand to a second language pair (Inuktitut, Quechua, or Sámi) | 🔲 Planned |
 
