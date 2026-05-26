@@ -132,7 +132,7 @@ mt-eval test eval/logs/run_*.json
 ## انظر أيضًا
 
 - [طرق الترجمة](/docs/guides/translation-methods) — طريقة llm-coached
-- [دعم لغة قليلة الموارد](/docs/guides/low-resource-languages) — التوجيه في الممارسة العملية
+- [دعم لغة قليلة الموارد](https://mtevalarena.org/docs/community/low-resource-languages) — التوجيه في الممارسة العملية
 - [مواصفات المكون الإضافي](/docs/reference/plugin-spec) — حزم بيانات التوجيه في مكون إضافي
 - [بوابة الجودة](/docs/concepts/quality-gate) — كيفية التحقق من صحة الترجمات الموجهة
 - [التكوين](/docs/getting-started/configuration) — تكوين التوجيه لكل زوج لغوي

@@ -132,7 +132,7 @@ Cela vous fournit les scores chrF++, BLEU et de correspondance exacte. Créez pl
 ## Voir aussi
 
 - [Méthodes de traduction](/docs/guides/translation-methods) — la méthode llm-coached
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — le coaching en pratique
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — le coaching en pratique
 - [Spécification des plugins](/docs/reference/plugin-spec) — empaqueter les données de coaching dans un plugin
 - [Porte de qualité](/docs/concepts/quality-gate) — comment les traductions avec coaching sont validées
 - [Configuration](/docs/getting-started/configuration) — configuration du coaching par paire

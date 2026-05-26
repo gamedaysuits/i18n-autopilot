@@ -243,5 +243,5 @@ flowchart LR
 
 - **[插件规范](/docs/reference/plugin-spec)** — 完整的清单格式参考
 - **[翻译方法](/docs/guides/translation-methods)** — 比较所有四种方法
-- **[低资源语言](/docs/guides/low-resource-languages)** — 将此模式应用于没有 API 覆盖的语言
+- **[低资源语言](https://mtevalarena.org/docs/community/low-resource-languages)** — 将此模式应用于没有 API 覆盖的语言
 - **[翻译 30 种语言](/docs/tutorials/translate-30-languages)** — 将你的项目扩展到全球受众

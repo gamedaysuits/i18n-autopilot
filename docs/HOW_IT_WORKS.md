@@ -246,7 +246,7 @@ The OCAP® principles (Ownership, Control, Access, Possession), the CARE princip
 - **EDTeKLA Dev v1** — 124-entry Plains Cree evaluation corpus (CC BY-NC-SA 4.0), sourced from the University of Alberta's EdTeKLA research group.
 - **FLORES+ Devtest** — 1,012 sentences × 39 languages (CC BY-SA 4.0).
 - **Arena website** — Docusaurus-based documentation site with leaderboard, specifications, tutorials, and sovereignty framework.
-- **Benchmark Specification** — [Canonical spec](BENCHMARK_SPEC.md) defining corpus schema, run card format, metrics, composite weights, and evaluation protocol.
+- **Benchmark Specification** — [Canonical spec](BENCHMARK_SPEC.md) defining corpus schema, run card format, and evaluation protocol. For metric definitions, composite weights, and quality tiers, see [SCORING_SPEC.md](SCORING_SPEC.md).
 
 ### What's Next
 
@@ -276,11 +276,12 @@ The OCAP® principles (Ownership, Control, Access, Possession), the CARE princip
 
 ## See Also
 
-- **[Benchmark Specification](BENCHMARK_SPEC.md)** — the canonical technical spec for evaluation, metrics, and sovereignty
+- **[Benchmark Specification](BENCHMARK_SPEC.md)** — corpus format, run card schema, evaluation protocol, sovereignty
+- **[Scoring Specification](SCORING_SPEC.md)** — metrics, composite weights, quality tiers, cost/speed formulas
 - **[MT Eval Arena](https://mtevalarena.org)** — the R&D proving ground
 - **[i18n-rosetta](https://github.com/gamedaysuits/i18n-rosetta)** — the deployment platform
 - **[Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages)** — deep dive into polysynthetic MT challenges and approaches
 
 ---
 
-*This document is the entry point for anyone encountering the project for the first time. For the full technical specification, see [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md). For agent-optimized navigation, see [AGENTS.md](AGENTS.md).*
+*This document is the entry point for anyone encountering the project for the first time. For the full technical specification, see [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) (protocol) and [SCORING_SPEC.md](SCORING_SPEC.md) (metrics). For agent-optimized navigation, see [AGENTS.md](AGENTS.md).*

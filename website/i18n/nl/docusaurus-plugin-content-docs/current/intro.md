@@ -52,9 +52,9 @@ Frans krijgt Google Translate (snel, goedkoop). Japans krijgt een premium LLM (g
 
 Denkt u dat uw methode Engels naar Spaans kan vertalen? Turks naar Azerbeidzjaans? Engels naar Cree?
 
-**Bewijs het.** De bijbehorende [eval harness](/docs/eval/harness) benchmarkt elke vertaalmethode met reproduceerbare, gefingerprinte scores. Het [leaderboard](/leaderboard) houdt elke inzending bij.
+**Bewijs het.** De bijbehorende [eval harness](https://mtevalarena.org/docs/specifications/harness) benchmarkt elke vertaalmethode met reproduceerbare, gefingerprinte scores. Het [leaderboard](/leaderboard) houdt elke inzending bij.
 
-De eval harness en de productie-CLI delen dezelfde plugin-interface. Een methode die goed scoort in de harness kan in productie worden gebruikt — mits de gemeenschap wiens taal het bedient, toestemming geeft. Voor inheemse talen en talen met weinig bronnen (low-resource languages) is die toestemming van groot belang. Zie [Data Sovereignty](/docs/guides/data-sovereignty).
+De eval harness en de productie-CLI delen dezelfde plugin-interface. Een methode die goed scoort in de harness kan in productie worden gebruikt — mits de gemeenschap wiens taal het bedient, toestemming geeft. Voor inheemse talen en talen met weinig bronnen (low-resource languages) is die toestemming van groot belang. Zie [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Dit is een open uitnodiging. Als u werkt met een taal met weinig bronnen (low-re
 - [Hugo Meertalige Site](/docs/tutorials/hugo-multilingual-site) — Vertaling van Markdown-content
 
 **Dieper de materie in:**
-- [Data Sovereignty](/docs/guides/data-sovereignty) — Principes van OCAP, CARE en Māori Data Sovereignty
-- [Ondersteun een Low-Resource Language](/docs/guides/low-resource-languages) — De uitdaging waar het allemaal mee begon
-- [Kookboek: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Bouw een decompositie-pipeline
-- [MT-evaluatie](/docs/eval/) — Hoe de harness en het leaderboard werken
+- [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Principes van OCAP, CARE en Māori Data Sovereignty
+- [Ondersteun een Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — De uitdaging waar het allemaal mee begon
+- [Kookboek: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Bouw een decompositie-pipeline
+- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — Hoe de harness en het leaderboard werken
 - [Method Leaderboard](/leaderboard) — Live scores en inzendingen

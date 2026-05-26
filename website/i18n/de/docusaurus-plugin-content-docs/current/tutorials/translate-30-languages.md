@@ -52,7 +52,7 @@ Nicht alle 30 Sprachen erfordern denselben Ansatz. Gruppieren Sie diese nach der
 **Hinweis:** Sprachen, die nicht in `pairs` aufgeführt sind, erben `defaultMethod: "google-translate"`. Sie müssen nicht alle 30 auflisten.
 
 :::info
-Die Unterstützung für `crk` befindet sich in der Entwicklung — siehe [Eine ressourcenarme Sprache unterstützen](/docs/guides/low-resource-languages) für den Status und Richtlinien zur Mitwirkung.
+Die Unterstützung für `crk` befindet sich in der Entwicklung — siehe [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) für den Status und Richtlinien zur Mitwirkung.
 :::
 
 ## Schritt 3: Richten Sie die API-Schlüssel ein
@@ -163,4 +163,4 @@ Inkrementelle Synchronisationen (5–20 geänderte Schlüssel) kosten nur einen 
 - [CI/CD-Leitfaden](/docs/guides/ci-cd) — Fortgeschrittene CI-Muster einschließlich PR-Vorschau-Builds
 - [Quality Gate](/docs/concepts/quality-gate) — Wie Rosetta jede Übersetzung vor dem Schreiben validiert
 - [Unterstützte Sprachen](/docs/reference/supported-languages) — Vollständige Liste der Sprachcodes und Methodenkompatibilität
-- [Eine ressourcenarme Sprache unterstützen](/docs/guides/low-resource-languages) — Fügen Sie Coaching-Daten für Sprachen ohne breite Abdeckung durch maschinelle Übersetzung hinzu
+- [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) — Fügen Sie Coaching-Daten für Sprachen ohne breite Abdeckung durch maschinelle Übersetzung hinzu

@@ -223,9 +223,11 @@ describe('sync-pairs: pair config → method class dispatch', () => {
     assert.equal(method.endpoint, 'https://api.example.com/v1/translate');
   });
 
-  it('unknown method falls back to LLM with warning', () => {
-    const method = getMethod('nonexistent-method');
-    assert.equal(method.name, 'llm', 'Should fall back to LLM');
+  it('unknown method throws descriptive error', () => {
+    assert.throws(
+      () => getMethod('nonexistent-method'),
+      /Unknown translation method "nonexistent-method"/,
+    );
   });
 });
 

@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [인공어, 스크립트 및 정서법](/docs/guides/conlangs-scripts-orthography) — PUA 폰트, Unicode, 새 변환기 추가
 - [품질 게이트 (Quality Gate)](/docs/concepts/quality-gate) — 스크립트 변환 전에 실행되는 유효성 검사
 - [지원되는 언어](/docs/reference/supported-languages) — 스크립트 변환기가 있는 언어 목록
-- [자원이 부족한 언어 지원하기](/docs/guides/low-resource-languages) — 컨텍스트 내 SRO→Syllabics 변환
-- [쿡북: FST-Gated 파이프라인](/docs/tutorials/fst-gated-pipeline) — 다단계 파이프라인에서의 스크립트 변환
+- [자원이 부족한 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages) — 컨텍스트 내 SRO→Syllabics 변환
+- [쿡북: FST-Gated 파이프라인](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 다단계 파이프라인에서의 스크립트 변환

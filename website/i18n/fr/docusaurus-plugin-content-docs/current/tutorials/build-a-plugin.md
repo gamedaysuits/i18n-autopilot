@@ -243,5 +243,5 @@ Vous disposez désormais de :
 
 - **[Spécification du plugin](/docs/reference/plugin-spec)** — Référence complète du format du manifeste
 - **[Méthodes de traduction](/docs/guides/translation-methods)** — Comparaison des quatre méthodes
-- **[Langues à faibles ressources](/docs/guides/low-resource-languages)** — Appliquer ce modèle aux langues non couvertes par les API
+- **[Langues à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)** — Appliquer ce modèle aux langues non couvertes par les API
 - **[Traduire en 30 langues](/docs/tutorials/translate-30-languages)** — Faire évoluer votre projet pour un public mondial

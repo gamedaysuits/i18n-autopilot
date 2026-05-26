@@ -243,5 +243,5 @@ U heeft nu:
 
 - **[Plugin-specificatie](/docs/reference/plugin-spec)** — Volledige referentie van het manifestformaat
 - **[Vertaalmethoden](/docs/guides/translation-methods)** — Vergelijk alle vier de methoden
-- **[Low-Resource Talen](/docs/guides/low-resource-languages)** — Pas dit patroon toe op talen zonder API-dekking
+- **[Low-Resource Talen](https://mtevalarena.org/docs/community/low-resource-languages)** — Pas dit patroon toe op talen zonder API-dekking
 - **[30 Talen Vertalen](/docs/tutorials/translate-30-languages)** — Schaal uw project voor een wereldwijd publiek

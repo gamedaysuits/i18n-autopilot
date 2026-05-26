@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`models` command** (`lib/commands/models.js`): Query available models from a provider's live API. `i18n-rosetta models --method gemini` lists all models, helping users pick exact slugs. Read-only — does not modify config.
+- **Centralized model service** (`lib/models.js`): Single source of truth for fetching available models from Gemini, OpenAI, and Anthropic APIs. In-memory cache prevents redundant API calls within a session.
+- **Dynamic model picker in `init` wizard**: When selecting a direct provider (Gemini, OpenAI, Anthropic), the wizard now fetches real models from the API and shows a numbered picker. No more hardcoded model lists.
+- **YAML format auto-detection** (`detectYAMLStyle()` in `lib/format.js`): Distinguishes Hugo i18n YAML (CLDR plural sub-keys only) from standard nested YAML by inspecting sub-key names.
+- **Standard nested YAML serializer** (`flatToNestedYAML()` in `lib/format.js`): Writes proper tree-structured YAML without Hugo's `other:` wrapping. Used automatically when `detectYAMLStyle()` returns `'nested'`.
+
+### Changed
+- **`DEFAULT_MODEL` → `DEFAULT_OPENROUTER_MODEL`**: Renamed across 16 files to clarify this constant is the OpenRouter fallback, not a universal default. Direct providers (Gemini, OpenAI, Anthropic) now resolve their own default model from their method class at runtime.
+- **Pair graph model resolution** (`pairs.js`): Direct-provider pairs now receive `model: null` instead of the OpenRouter slug. Each provider's method class handles model selection internally, preventing cross-provider slug confusion.
+- **`writeLocaleFile()` signature**: New optional 5th parameter `yamlStyle` (`'hugo'|'nested'|null`) routes to the correct YAML serializer. Backward compatible — existing callers are unaffected.
+- **`buildDefaultConfig()` is now `async`**: Fetches the top model from the provider API in `--yes` mode instead of hardcoding. Test updated accordingly.
+- **YAML value quoting refactored**: Extracted `quoteYAMLValue()` from `flatToYAML()` — shared by both Hugo and nested serializers for consistent quoting behavior.
+- **sync.js decomposition**: Broke the 1,145-line monolith into focused modules — `lib/cost-report.js` (cost estimation), `lib/docusaurus-sync.js` (Docusaurus pipeline), `lib/translate-pair.js` (shared TM→API→gate pipeline). sync.js is now 447 lines.
+- **Output controller wiring**: `sync` command now routes all output through `lib/output.js`. `--json` flag emits NDJSON, `--quiet` suppresses informational messages.
+- **Security consolidation**: `isUnsafeKey()` (prototype pollution guard) moved from `lib/methods/llm.js` to `lib/security.js` alongside `isPathContained()`. Security surface map documented in the module header.
+- **Unknown method error**: `getMethod()` now throws a descriptive error for unrecognized translation method names instead of silently falling back to LLM. Prevents typos like `"gogle-translate"` from burning API spend on the wrong provider.
+- **Method strategy docs**: `fst-gated` and `human-review` marked as `(planned)` in `lib/methods/base.js` instead of appearing as existing options.
+
+### Fixed
+- **Lint `walkDir` false exclusions** (`lib/lint.js`): `fullPath.includes(ig)` matched ignore patterns as substrings anywhere in the absolute path (e.g., `"test"` matched `/user/test-project/src/`). Now uses basename matching only (`entry.name === ig`).
+- **YAML format mangling** (`lib/format.js`, `lib/sync.js`): Standard nested YAML files (e.g., `nav: { home: Home }`) were written back using Hugo's `other:` wrapping pattern. Sync now detects the source YAML style and preserves it on write.
+- **`--json` and `--quiet` flags on sync**: Were parsed by the CLI but had no effect — now properly wired.
+- **v2 backward compat**: `translateBatch()` defaults to `'llm'` when `pairConfig.method` is undefined (legacy callers that don't set a method field).
+
 ## [3.3.1] - 2026-05-24
 
 ### Added
@@ -49,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Short CLI flags**: `-h` (help), `-v` (version), `-y` (yes/skip wizard) — standard UNIX conventions.
 - **Plugin precedence tracking**: `resolvePairs()` now tracks which fields were filled from system defaults (`_defaults` set). `resolvePluginForPair()` uses this to override only defaulted fields — explicit user configuration is never clobbered by a plugin.
 - **Shared string classification** (`lib/string-classify.js`): Extracted common regex heuristics (URL detection, dot-notation, hex colors, template expressions) from `lint.js` and `autofix.js` into a shared module. Both consumers now use identical classification logic.
-- **36 new tests** (702 → 738): Docusaurus format helpers, plugin precedence, CLI edge cases (`--force-keys`, subcommand positionals), and `util.parseArgs` validation.
+- **36 new tests** (702 → 738 at time of 3.3.0 release; current suite is 1502 tests).
 
 ### Changed
 - **CLI parser**: Migrated from hand-rolled `argv` loop to Node.js built-in `util.parseArgs` with `strict: false`. Preserves all existing flag behavior while gaining proper type validation for known options.

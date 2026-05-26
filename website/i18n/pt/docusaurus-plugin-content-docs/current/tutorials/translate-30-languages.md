@@ -52,7 +52,7 @@ Nem todos os 30 idiomas precisam da mesma abordagem. Agrupe-os pela qualidade do
 **Nota:** Idiomas não listados em `pairs` herdam `defaultMethod: "google-translate"`. Você não precisa listar todos os 30.
 
 :::info
-O suporte a `crk` está em desenvolvimento — veja [Apoie um Idioma de Poucos Recursos](/docs/guides/low-resource-languages) para o status e diretrizes de contribuição.
+O suporte a `crk` está em desenvolvimento — veja [Apoie um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para o status e diretrizes de contribuição.
 :::
 
 ## Passo 3: Configure as Chaves de API
@@ -163,4 +163,4 @@ Sincronizações incrementais (5–20 chaves alteradas) custam uma fração de u
 - [Guia de CI/CD](/docs/guides/ci-cd) — Padrões avançados de CI, incluindo builds de preview para PRs
 - [Quality Gate](/docs/concepts/quality-gate) — Como o Rosetta valida cada tradução antes de gravá-la
 - [Idiomas Suportados](/docs/reference/supported-languages) — Lista completa de códigos de idioma e compatibilidade de métodos
-- [Apoie um Idioma de Poucos Recursos](/docs/guides/low-resource-languages) — Adicione dados de coaching para idiomas sem ampla cobertura de MT
+- [Apoie um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — Adicione dados de coaching para idiomas sem ampla cobertura de MT

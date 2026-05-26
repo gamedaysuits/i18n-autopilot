@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ Het `api` method-patroon is volledig open — er zijn geen licentiebeperkingen o
 
 - [Vertaalmethoden](/docs/guides/translation-methods) — overzicht van elke ingebouwde method (`openai`, `google`, `api`, enz.)
 - [Plugin-specificatie](/docs/reference/plugin-spec) — volledig schema voor `i18n-rosetta.config.json` inclusief `api` method-velden
-- [Een Low-Resource Taal Ondersteunen](/docs/guides/low-resource-languages) — end-to-end gids voor talen met weinig middelen, inclusief OCAP-principes
+- [Een Low-Resource Taal Ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — end-to-end gids voor talen met weinig middelen, inclusief OCAP-principes
 - [Architectuur](/docs/concepts/architecture) — hoe de sync-loop, batching en method-dispatch van i18n-rosetta werken
-- [MT-evaluatie](/docs/eval/) — evaluatiemethodologie, metrieken en het indieningsproces voor het leaderboard
+- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — evaluatiemethodologie, metrieken en het indieningsproces voor het leaderboard
 - [Method Leaderboard](/leaderboard) — live kwaliteitsranglijsten over methods en vertaalparen heen

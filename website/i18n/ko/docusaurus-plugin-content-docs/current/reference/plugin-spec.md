@@ -243,6 +243,6 @@ IDE 자동 완성을 위해 `method.json`에서 스키마를 참조하세요:
 - [번역 메서드](/docs/guides/translation-methods) — 각 내장 메서드의 작동 방식
 - [구성](/docs/getting-started/configuration) — 쌍별 및 언어별 구성
 - [API를 통해 메서드 제공하기](/docs/guides/serving-a-method) — 메서드를 HTTP 서비스로 호스팅하기
-- [쿡북: FST-Gated 파이프라인](/docs/tutorials/fst-gated-pipeline) — 파이프라인 구축 및 패키징
-- [MT 평가](/docs/eval/) — 리더보드 제출을 위한 메서드 벤치마킹
-- [리소스가 부족한 언어 지원](/docs/guides/low-resource-languages) — 커뮤니티 플러그인의 사용 사례
+- [쿡북: FST-Gated 파이프라인](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 파이프라인 구축 및 패키징
+- [MT 평가](https://mtevalarena.org/docs/leaderboard/rules) — 리더보드 제출을 위한 메서드 벤치마킹
+- [리소스가 부족한 언어 지원](https://mtevalarena.org/docs/community/low-resource-languages) — 커뮤니티 플러그인의 사용 사례

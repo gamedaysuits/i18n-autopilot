@@ -105,7 +105,7 @@ flowchart TD
 }
 ```
 
-另请参阅：[低资源语言指南](/docs/guides/low-resource-languages)
+另请参阅：[低资源语言指南](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 :::note 兼容 OCAP 的社区翻译
 `api` 方法是通向**兼容 OCAP 的社区托管翻译**的桥梁。原住民和少数语种社区可以托管自己的翻译端点——将辅导数据、微调模型和语言知识产权置于社区控制之下——而 Rosetta 则作为轻量级客户端连接到它们。
 
-有关完整的社区托管演练，请参阅[支持低资源语言](/docs/guides/low-resource-languages)；有关端点要求，请参阅[通过 API 提供方法](/docs/guides/serving-a-method)。
+有关完整的社区托管演练，请参阅[支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages)；有关端点要求，请参阅[通过 API 提供方法](/docs/guides/serving-a-method)。
 :::
 
 ---
@@ -388,7 +388,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 插件是为特定语言对预先打包的翻译配方。它们是 JSON 清单——而非代码——用于告诉 rosetta 使用哪种方法、什么设置以及已基准测试的质量如何。
 
 :::tip 一键从评估工具链投入生产
-在[评估工具链](/docs/eval/harness)中开发并验证的插件可以直接安装——你在那里验证的方法，只需一条 `plugin install` 命令即可在此部署。有关完整的评估工作流，请参阅 [MT 评估](/docs/eval/)。
+在[评估工具链](https://mtevalarena.org/docs/specifications/harness)中开发并验证的插件可以直接安装——你在那里验证的方法，只需一条 `plugin install` 命令即可在此部署。有关完整的评估工作流，请参阅 [MT 评估](https://mtevalarena.org/docs/leaderboard/rules)。
 :::
 
 ```bash
@@ -480,7 +480,7 @@ i18n-rosetta plugin remove french-formal-v1
 
 - [支持的语言](/docs/reference/supported-languages)
 - [辅导数据](/docs/concepts/coaching-data)
-- [支持低资源语言](/docs/guides/low-resource-languages)
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages)
 - [插件规范](/docs/reference/plugin-spec)
 - [通过 API 提供方法](/docs/guides/serving-a-method)
 - [质量门禁](/docs/concepts/quality-gate)

@@ -69,7 +69,7 @@ Semantic metrics measure meaning preservation using embeddings or learned models
 
 | ID | Metric | Status | Scale | Level | Implementation |
 |----|--------|--------|-------|-------|---------------|
-| `semantic_score` | Semantic Similarity | 🔲 Planned | 0.0–1.0 | Both | Cosine similarity of sentence embeddings (source + predicted vs source + reference). Model TBD — must support low-resource languages, which rules out most English-centric embedding models. |
+| `semantic_score` | Semantic Similarity | ⚡ Partial | 0.0–1.0 | Both | CRK: verdict-weighted score from `CrkSemanticMetric` (proxy). Universal: cosine similarity of sentence embeddings (source + predicted vs source + reference). Model TBD — must support low-resource languages, which rules out most English-centric embedding models. |
 | `comet_score` | COMET | ✅ Implemented | ~0.0–1.0 | Both | Learned MT evaluation metric (Unbabel). Trained on human quality judgments. **Excluded from composite** — training data is biased toward high-resource European languages; scores for LRLs are unreliable. Computed when `unbabel-comet` is installed. Reported with a low-resource warning flag. |
 
 > **Why COMET is excluded from the composite.** COMET is trained on WMT human evaluation data, which is overwhelmingly high-resource European language pairs. When applied to Plains Cree or other LRLs, the model's internal representations have no exposure to those languages — it's extrapolating from languages with fundamentally different morphological systems. The scores are still directionally useful (higher COMET ≈ more fluent-sounding output in general) but the absolute values are not calibrated. We report COMET for transparency but don't let it influence the composite score until we can validate it against human judgments for each target language.
@@ -100,13 +100,24 @@ Compliance metrics validate that translations preserve structural integrity — 
 
 ## 3. Metric Status Tiers
 
-Every metric in §2 falls into one of three implementation tiers:
+Every metric in §2 falls into one of four implementation tiers:
 
 | Tier | Meaning | Run Card Behavior |
 |------|---------|-------------------|
 | **✅ Implemented** | Code exists, tested, producing values in run cards today | Numeric value in run card |
+| **⚡ Partial** | Language-specific proxy exists (e.g., CRK) but universal implementation is pending | Numeric value when proxy applies, `null` otherwise |
 | **🔲 Planned** | Specified but not yet implemented | `null` in run card (field present, value absent) |
 | **💡 Proposed** | Under discussion, not yet specified | Not in run card |
+
+A metric moves from Planned → Partial when:
+1. A language-specific implementation is merged and tested
+2. It produces values for at least one language pair
+3. The universal implementation remains pending (documented in this spec)
+
+A metric moves from Partial → Implemented when:
+1. A language-agnostic implementation is merged and tested
+2. It produces values for any language pair without language-specific plugins
+3. This document is updated to reflect ✅ status
 
 A metric moves from Planned → Implemented when:
 1. Implementation is merged and tested
@@ -330,8 +341,8 @@ This section defines the hierarchical structure of the `scores` block in a run c
     // §2.1 Surface metrics
     "exact_match_rate":       0.6613,       // 0.0–1.0
     "exact_matches":          41,           // count
-    "equivalent_match_rate":  null,         // 🔲 planned
-    "equivalent_matches":     null,         // 🔲 planned
+    "equivalent_match_rate":  0.7258,       // ⚡ partial (CRK: CrkLinterMetric)
+    "equivalent_matches":     45,           // ⚡ partial (CRK: CrkLinterMetric)
     "chrf_plus_plus":         80.65,        // 0–100 (sacrebleu native scale)
     "bleu":                   54.78,        // 0–100, NOT in composite
     "ter":                    null,         // 🔲 planned, 0–∞ (lower=better)
@@ -344,7 +355,7 @@ This section defines the hierarchical structure of the `scores` block in a run c
     "orthographic_accuracy":  null,         // 🔲 planned
 
     // §2.3 Semantic metrics
-    "semantic_score":         null,         // 🔲 planned
+    "semantic_score":         0.6842,       // ⚡ partial (CRK: CrkSemanticMetric)
     "comet_score":            null,         // nullable, NOT in composite
     "comet_model":            "",           // model ID used for COMET
 

@@ -105,7 +105,7 @@ Identisch mit `llm`, jedoch werden Grammatikregeln, Wörterbücher für Fachbegr
 }
 ```
 
-Siehe auch: [Leitfaden für ressourcenarme Sprachen](/docs/guides/low-resource-languages)
+Siehe auch: [Leitfaden für ressourcenarme Sprachen](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ Ein schlanker HTTP-Client für von der Community gehostete oder IP-geschützte �
 :::note OCAP-kompatible Community-Übersetzung
 Die Methode `api` ist die Brücke zur **OCAP-kompatiblen, von der Community gehosteten Übersetzung**. Indigene und Minderheitensprachgemeinschaften können ihre eigenen Übersetzungsendpunkte hosten — wodurch Coaching-Daten, feinabgestimmte Modelle und linguistisches geistiges Eigentum unter der Kontrolle der Community bleiben —, während Rosetta sich als schlanker Client mit ihnen verbindet.
 
-Siehe [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) für die vollständige Anleitung zum Community-Hosting und [Bereitstellung einer Methode über API](/docs/guides/serving-a-method) für Endpunktanforderungen.
+Siehe [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständige Anleitung zum Community-Hosting und [Bereitstellung einer Methode über API](/docs/guides/serving-a-method) für Endpunktanforderungen.
 :::
 
 ---
@@ -388,7 +388,7 @@ Dies übersetzt Französisch über DeepL (Glossar-Unterstützung), Japanisch üb
 Plugins sind vorgefertigte Übersetzungsrezepte für bestimmte Sprachpaare. Es handelt sich um JSON-Manifeste — keinen Code —, die Rosetta mitteilen, welche Methode mit welchen Einstellungen verwendet werden soll und welche Qualität durch Benchmarks ermittelt wurde.
 
 :::tip Von der Evaluierungsumgebung zur Produktion mit einem Befehl
-Plugins, die in der [Evaluierungsumgebung](/docs/eval/harness) entwickelt und erprobt wurden, können direkt installiert werden — die Methode, die Sie dort validieren, wird hier mit einem einzigen `plugin install`-Befehl bereitgestellt. Siehe [MT-Evaluierung](/docs/eval/) für den vollständigen Evaluierungs-Workflow.
+Plugins, die in der [Evaluierungsumgebung](https://mtevalarena.org/docs/specifications/harness) entwickelt und erprobt wurden, können direkt installiert werden — die Methode, die Sie dort validieren, wird hier mit einem einzigen `plugin install`-Befehl bereitgestellt. Siehe [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) für den vollständigen Evaluierungs-Workflow.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ Die tatsächlichen Kosten hängen von der Länge Ihres Quelltextes, der Stapelgr
 
 - [Unterstützte Sprachen](/docs/reference/supported-languages)
 - [Coaching-Daten](/docs/concepts/coaching-data)
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages)
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plugin-Spezifikation](/docs/reference/plugin-spec)
 - [Bereitstellung einer Methode über API](/docs/guides/serving-a-method)
 - [Quality Gate](/docs/concepts/quality-gate)

@@ -133,7 +133,7 @@ This gives you chrF++, BLEU, and exact match scores. Create multiple coaching fi
 ## See Also
 
 - [Translation Methods](/docs/guides/translation-methods) — the llm-coached method
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — coaching in practice
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — coaching in practice
 - [Plugin Specification](/docs/reference/plugin-spec) — packaging coaching data in a plugin
 - [Quality Gate](/docs/concepts/quality-gate) — how coached translations are validated
 - [Configuration](/docs/getting-started/configuration) — per-pair coaching config

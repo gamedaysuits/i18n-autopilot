@@ -142,6 +142,6 @@ O usuário mantém suas próprias regras gramaticais e dicionário em `.rosetta/
 
 - [Métodos de Tradução](/docs/guides/translation-methods) — como cada método nativo funciona
 - [Especificação do Plugin](/docs/reference/plugin-spec) — o formato do manifesto method.json
-- [Eval Harness](/docs/eval/harness) — a ferramenta de pesquisa complementar
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — a ferramenta de pesquisa complementar
 - [Servindo um Método via API](/docs/guides/serving-a-method) — hospedando pipelines de tradução personalizados
-- [Suporte a um Idioma com Poucos Recursos](/docs/guides/low-resource-languages) — o caso de uso que impulsionou esta arquitetura
+- [Suporte a um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — o caso de uso que impulsionou esta arquitetura

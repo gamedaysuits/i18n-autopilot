@@ -243,5 +243,5 @@ flowchart LR
 
 - **[مواصفات الإضافة](/docs/reference/plugin-spec)** — مرجع كامل لتنسيق البيان (manifest)
 - **[طرق الترجمة](/docs/guides/translation-methods)** — مقارنة بين الطرق الأربع جميعها
-- **[اللغات منخفضة الموارد](/docs/guides/low-resource-languages)** — تطبيق هذا النمط على اللغات التي لا تغطيها واجهات برمجة التطبيقات (API)
+- **[اللغات منخفضة الموارد](https://mtevalarena.org/docs/community/low-resource-languages)** — تطبيق هذا النمط على اللغات التي لا تغطيها واجهات برمجة التطبيقات (API)
 - **[ترجمة 30 لغة](/docs/tutorials/translate-30-languages)** — توسيع نطاق مشروعك ليصل إلى جمهور عالمي

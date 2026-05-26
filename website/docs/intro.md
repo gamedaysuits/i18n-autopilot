@@ -54,9 +54,9 @@ French gets Google Translate (fast, cheap). Japanese gets a premium LLM (nuanced
 
 Think your method can translate English to Spanish? Turkish to Azerbaijani? English to Cree?
 
-**Prove it.** The companion [eval harness](/docs/eval/harness) benchmarks any translation method with reproducible, fingerprinted scoring. The [leaderboard](/leaderboard) tracks every submission.
+**Prove it.** The companion [eval harness](https://mtevalarena.org/docs/specifications/harness) benchmarks any translation method with reproducible, fingerprinted scoring. The [leaderboard](/leaderboard) tracks every submission.
 
-The eval harness and the production CLI share the same plugin interface. A method that scores well in the harness can be used in production — if the community whose language it serves gives consent. For Indigenous and low-resource languages, that consent matters. See [Data Sovereignty](/docs/guides/data-sovereignty).
+The eval harness and the production CLI share the same plugin interface. A method that scores well in the harness can be used in production — if the community whose language it serves gives consent. For Indigenous and low-resource languages, that consent matters. See [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -136,8 +136,8 @@ This is an open invitation. If you work with a low-resource language — as a re
 
 **Going deeper:**
 - [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF export/import workflow
-- [Data Sovereignty](/docs/guides/data-sovereignty) — OCAP, CARE, and Māori Data Sovereignty principles
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — The challenge that started it all
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Build a decomposition pipeline
-- [MT Evaluation](/docs/eval/) — How the harness and leaderboard work
+- [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — OCAP, CARE, and Māori Data Sovereignty principles
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — The challenge that started it all
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Build a decomposition pipeline
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — How the harness and leaderboard work
 - [Method Leaderboard](/leaderboard) — Live scores and submissions

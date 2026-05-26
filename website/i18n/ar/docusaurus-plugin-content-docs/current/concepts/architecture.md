@@ -142,6 +142,6 @@ rosetta sync
 
 - [طرق الترجمة](/docs/guides/translation-methods) — كيف تعمل كل طريقة مدمجة
 - [مواصفات المكون الإضافي](/docs/reference/plugin-spec) — تنسيق ملف البيان method.json
-- [Eval Harness](/docs/eval/harness) — الأداة البحثية المرافقة
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — الأداة البحثية المرافقة
 - [تقديم طريقة عبر واجهة برمجة التطبيقات (API)](/docs/guides/serving-a-method) — استضافة مسارات ترجمة مخصصة
-- [دعم لغة منخفضة الموارد](/docs/guides/low-resource-languages) — حالة الاستخدام التي قادت إلى هذه البنية
+- [دعم لغة منخفضة الموارد](https://mtevalarena.org/docs/community/low-resource-languages) — حالة الاستخدام التي قادت إلى هذه البنية

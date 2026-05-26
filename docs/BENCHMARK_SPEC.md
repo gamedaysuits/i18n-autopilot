@@ -1,8 +1,8 @@
 # Benchmark Specification
 
-> **Executive Summary.** This is the single source of truth for the Rosetta evaluation ecosystem. It defines the corpus format (§2), run card schema (§3), automated metrics and composite scoring (§4), quality tiers (§5), benchmark protocol (§6), human validation requirements (§7), sovereignty mechanisms (§8), leaderboard and submission model (§9), cost framework (§10), and extensibility to new languages (§11). All other documentation — harness docs, arena pages, API specs — references this document. When they conflict, this document is authoritative.
+> **Executive Summary.** This document defines the evaluation protocol for the Rosetta MT evaluation ecosystem: corpus format (§2), run card schema (§3), benchmark protocol (§6), human validation requirements (§7), sovereignty mechanisms (§8), leaderboard and submission model (§9), cost framework (§10), and extensibility to new languages (§11). For metric definitions, composite scoring weights, quality tier thresholds, and cost/speed metric formulas, see `SCORING_SPEC.md` — the single source of truth for all scoring logic. This document references SCORING_SPEC for those details rather than duplicating them.
 >
-> Last updated: 2026-05-25
+> Last updated: 2026-05-26
 
 ---
 
@@ -240,7 +240,7 @@ Aggregate metrics for the entire run. All quality metrics are **automated** — 
 | `scores.morphological_accuracy` | number | 0.0–1.0, `null` if no gold-standard analysis |
 | `scores.chrf_plus_plus` | number | Corpus-level chrF++ score (0–100) |
 | `scores.semantic_score` | number | Embedding-based semantic similarity (0.0–1.0) |
-| `scores.composite` | number | Weighted composite score (0.0–1.0). See §4.2 |
+| `scores.composite` | number | Weighted composite score (0.0–1.0). See SCORING_SPEC §4 |
 | `scores.errors` | number | Entries that failed (API error, timeout, etc.) |
 | `scores.by_difficulty` | object | Scores broken down by difficulty tier |
 | `scores.by_provenance` | object | Scores broken down by provenance tag |
@@ -319,8 +319,8 @@ All metrics in this section are machine-computed. See §1.1.
 | **FST acceptance rate** | ✅ Implemented | Fraction of predicted words accepted by the morphological analyzer (GiellaLT HFST) as valid forms in the target language. A word the FST accepts is a real, structurally valid word — not a hallucination. | 0.0–1.0 |
 | **Exact match** | ✅ Implemented | Fraction of predictions that exactly match the reference after Unicode normalization. Strict but unambiguous — useful as a ceiling check. | 0.0–1.0 |
 | **Morphological accuracy** | 🔲 Planned | For entries with gold-standard morphological analysis: fraction of morphemes correctly generated. More granular than FST acceptance — a word can be FST-valid but have the wrong morpheme structure (right root, wrong tense). | 0.0–1.0 |
-| **Equivalent match** | 🔲 Planned | Fraction matching an acceptable variant of the reference. Accounts for word order variation, dialectal differences, and orthographic conventions. Requires `variant_class` definitions in the corpus (§2.2). | 0.0–1.0 |
-| **Semantic score** | 🔲 Planned | Embedding-based semantic similarity between prediction and reference. Captures meaning preservation regardless of surface form. Uses multilingual sentence embeddings (e.g., LaBSE, SONAR). | 0.0–1.0 |
+| **Equivalent match** | ⚡ Partial | Fraction matching an acceptable variant of the reference — accounting for word order, dialectal differences, and orthographic conventions. Currently implemented for CRK via `CrkLinterMetric`; generic implementation requires per-entry `variants[]` in corpus. | 0.0–1.0 |
+| **Semantic score** | ⚡ Partial | Meaning preservation regardless of surface form. Currently implemented for CRK via `CrkSemanticMetric` (verdict-weighted proxy). Universal embedding-based cosine similarity is planned — see SCORING_SPEC §2.3. | 0.0–1.0 |
 
 ### 4.2 Composite Score
 
@@ -334,52 +334,28 @@ composite = Σ (weight_i × metric_i)   for all available metrics
 
 When a metric is unavailable (no FST configured, no variant classes defined, no embedding model), its weight is redistributed proportionally across the remaining metrics. This means the composite is always comparable within a language — it uses whatever metrics are available for that language and normalizes accordingly.
 
-**For languages with FST coverage (target weights):**
+**Weight tables, input normalization rules, and the full metric inventory are defined in `SCORING_SPEC.md` §4.** That document is the SSOT for:
+- Profile A weights (languages with FST coverage — 9 metrics, structural metrics carry 40%)
+- Profile B weights (languages without FST coverage — 8 metrics)
+- Normalization rules (chrF++ ÷ 100, code-switching and hallucination rate inversion)
+- Metrics excluded from the composite (BLEU, COMET, TER, length ratio, consistency) and why
 
-| Metric | Weight | Rationale |
-|--------|--------|-----------|
-| FST acceptance rate | 0.30 | **Highest weight.** For polysynthetic languages, this is the strongest signal. If the FST rejects a word, it's not a valid form in the language — regardless of what other metrics say. This is a binary, structurally grounded check that no surface-level metric can replace. |
-| Morphological accuracy | 0.20 | A word can be FST-valid but morphologically wrong (right root, wrong inflection). This metric catches that. Together with FST acceptance, morphological metrics carry **50%** of the composite — reflecting the primacy of structural correctness for morphologically rich languages. |
-| chrF++ | 0.20 | Character n-gram overlap is the best surface-level proxy for translation quality. It catches partial matches (correct root, wrong suffix) that exact match misses, and handles agglutinative morphology better than word-level metrics. |
-| Semantic score | 0.15 | Captures meaning preservation when surface form diverges. Important for catching translations that are morphologically valid but semantically wrong ("I see the dog" translated as "I see the cat" — FST accepts both). |
-| Equivalent match | 0.10 | Rewards methods that produce acceptable variants, not just the one reference translation. Important for languages with flexible word order or dialectal variation. |
-| Exact match | 0.05 | **Lowest weight.** Exact match is too strict for most polysynthetic languages — multiple correct translations exist for any given input. Kept at 5% as a ceiling check, not a quality signal. |
+The harness code mirrors these tables in `mt_eval_harness/scoring.py`. When SCORING_SPEC changes, `scoring.py` is updated to match and `test_scoring_ssot.py` validates alignment.
 
-**For languages without FST coverage (target weights):**
-
-| Metric | Weight | Rationale |
-|--------|--------|-----------|
-| Semantic score | 0.35 | **Highest weight.** Without morphological validation, meaning preservation is the strongest available signal. |
-| chrF++ | 0.35 | Without FST, character-level overlap becomes the primary surface-level check. |
-| Equivalent match | 0.15 | Variant matching provides structured quality assessment without requiring morphological tools. |
-| Exact match | 0.15 | Without FST, exact match carries more weight because there's no other structural validation. |
-
-> **Why not BLEU?** BLEU operates at the word level and penalizes morphological variation. For polysynthetic languages, a single word can be an entire clause — BLEU would treat minor inflectional differences as complete misses. chrF++ handles this better by operating at the character level. BLEU is excluded from both weight tables.
+> **Why not BLEU?** BLEU operates at the word level and penalizes morphological variation. For polysynthetic languages, a single word can be an entire clause — BLEU would treat minor inflectional differences as complete misses. chrF++ handles this better by operating at the character level. BLEU is excluded from both weight tables. See SCORING_SPEC Appendix A for the full rationale.
 
 
 ### 4.3 Cost-Adjusted Score
 
-For methods using paid APIs, we also report:
-
-```
-cost_adjusted = composite / log2(1 + cost_per_entry_usd × 1000)
-```
-
-This is a **secondary ranking** — the primary leaderboard ranks by composite score. Cost-adjusted score rewards methods that achieve good scores efficiently.
+For methods using paid APIs, we also report a secondary ranking. The cost-adjusted formula is defined in `SCORING_SPEC.md` §6.3.
 
 ---
 
 ## 5. Quality Tiers
 
-These tiers are heuristic labels on automated composite scores. They describe what the scores tend to mean in practice, based on human review of outputs at each level. **They are not validated quality judgments** — only human review (§6) can confirm actual usability.
+Quality tiers are heuristic labels on automated composite scores. They describe what the scores tend to mean in practice, based on human review of outputs at each level. **They are not validated quality judgments** — only human review (§6) can confirm actual usability.
 
-| Tier | Composite | What a speaker typically sees at this level |
-|------|-----------|-------------------------------------------|
-| **Baseline** | 0.00–0.30 | Raw LLM output with no language-specific support. Morphology is mostly hallucinated. |
-| **Emerging** | 0.30–0.50 | Some correct patterns appearing. Coaching is helping, but output is not reliable. |
-| **Functional** | 0.50–0.70 | Output is recognizable to a speaker. Major grammatical categories usually correct. Frequent morphological errors. |
-| **Deployable** | 0.70–0.85 | Suitable for draft translation with human review. Most morphology is correct. |
-| **Fluent** | 0.85–1.00 | Approaching competent human translation. Errors are rare and minor. |
+**The tier thresholds and descriptions are defined in `SCORING_SPEC.md` §5.** The tiers are: Baseline (0.00–0.30), Emerging (0.30–0.50), Functional (0.50–0.70), Deployable (0.70–0.85), and Fluent (0.85–1.00).
 
 These tiers are provisional. They will be recalibrated as human validation data accumulates and we learn where the actual "a speaker finds this useful" threshold falls for each language. The tier boundaries may differ across languages.
 

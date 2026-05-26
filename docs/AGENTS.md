@@ -18,7 +18,8 @@ This is a monorepo. The three main components:
 i18n-autopilot/                          ← You are here
 ├── docs/
 │   ├── HOW_IT_WORKS.md                  ← START HERE: the solution explainer
-│   ├── BENCHMARK_SPEC.md                ← Single source of truth for all schemas and metrics
+│   ├── BENCHMARK_SPEC.md                ← Evaluation protocol, corpus schema, run card format
+│   ├── SCORING_SPEC.md                  ← SSOT: metrics, composite weights, quality tiers
 │   └── AGENTS.md                        ← This file
 │
 ├── src/                                 ← i18n-rosetta CLI source (Node.js)
@@ -30,8 +31,10 @@ i18n-autopilot/                          ← You are here
 ├── gds-mt-eval-harness/                 ← MT Eval Arena (Python)
 │   ├── mt_eval_harness/                 ← Harness source
 │   │   ├── config.py                    ← Default configuration (canonical field names)
-│   │   ├── scorer.py                    ← Metric computation (chrF++, exact match, FST)
-│   │   └── harness.py                   ← Main evaluation loop
+│   │   ├── scoring.py                   ← Code mirror of SCORING_SPEC (weights, tiers, formulas)
+│   │   ├── publish.py                   ← Run card assembly (imports from scoring.py)
+│   │   ├── tester.py                    ← Metric computation (chrF++, exact match, FST)
+│   │   └── runner.py                    ← Main evaluation loop
 │   ├── eval/                            ← Experiment scripts
 │   ├── website/                         ← Arena Docusaurus site (mtevalarena.org)
 │   │   └── docs/
@@ -57,11 +60,12 @@ Read in this order for fastest comprehension:
 | Priority | Document | What It Tells You |
 |----------|----------|-------------------|
 | 1 | [HOW_IT_WORKS.md](HOW_IT_WORKS.md) | Why this exists, the full solution loop, who it serves |
-| 2 | [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Corpus schema, run card format, all metrics, composite weights, evaluation protocol |
-| 3 | [Arena intro](../gds-mt-eval-harness/website/docs/intro.md) | Arena landing page — how to submit, current benchmarks |
-| 4 | [Methods spec](../gds-mt-eval-harness/website/docs/specifications/methods.md) | The `TranslationProcess` protocol, method classes, plugin format |
-| 5 | [Datasets](../gds-mt-eval-harness/website/docs/leaderboard/datasets.md) | Available evaluation corpora, entry schema, difficulty tiers |
-| 6 | [Harness docs](../gds-mt-eval-harness/website/docs/specifications/harness.md) | How to install and run the eval harness |
+| 2 | [SCORING_SPEC.md](SCORING_SPEC.md) | **SSOT**: All metric definitions, composite weights, quality tiers, cost/speed formulas |
+| 3 | [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Evaluation protocol, corpus schema, run card format, sovereignty mechanisms |
+| 4 | [Arena intro](../gds-mt-eval-harness/website/docs/intro.md) | Arena landing page — how to submit, current benchmarks |
+| 5 | [Methods spec](../gds-mt-eval-harness/website/docs/specifications/methods.md) | The `TranslationProcess` protocol, method classes, plugin format |
+| 6 | [Datasets](../gds-mt-eval-harness/website/docs/leaderboard/datasets.md) | Available evaluation corpora, entry schema, difficulty tiers |
+| 7 | [Harness docs](../gds-mt-eval-harness/website/docs/specifications/harness.md) | How to install and run the eval harness |
 
 ---
 
@@ -69,7 +73,7 @@ Read in this order for fastest comprehension:
 
 ### "I want to build a translation method and submit to the leaderboard"
 
-1. Read [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) §3 (run card schema) and §4 (metrics)
+1. Read [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) §3 (run card schema) and [SCORING_SPEC.md](SCORING_SPEC.md) §2 (metrics)
 2. Read [Methods spec](../gds-mt-eval-harness/website/docs/specifications/methods.md) for the `TranslationProcess` protocol
 3. Clone the [eval harness](https://github.com/gamedaysuits/gds-mt-eval-harness)
 4. Look at `eval/baseline_experiment.py` for a working example
@@ -78,12 +82,13 @@ Read in this order for fastest comprehension:
 
 ### "I want to understand the evaluation metrics"
 
-Read [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) §4. Key points:
+Read [SCORING_SPEC.md](SCORING_SPEC.md) §2. Key points:
 - **chrF++** (0–100): Character n-gram F-score. Best surface metric for morphologically rich languages.
 - **FST acceptance** (0.0–1.0): Morphological validity gate. If the FST rejects a word, it's not a valid word form.
 - **Exact match** (0.0–1.0): Strict match after normalization.
-- **Composite**: Weighted average. Weights differ by FST availability. See §4.2 for the rationale.
-- ✅ = implemented. 🔲 = planned (morphological accuracy, equivalent match, semantic score).
+- **Equivalent match** (0.0–1.0): Accepts word order and dialectal variants. Available for CRK today; will generalize.
+- **Semantic score** (0.0–1.0): Meaning preservation regardless of surface form. Available for CRK today; will generalize.
+- **Composite**: Weighted average of available metrics. Weights differ by FST availability. See SCORING_SPEC §4.
 
 ### "I want to add a new language"
 
@@ -111,7 +116,7 @@ You don't need the Arena docs at all. Read:
 | **Method** | A complete translation recipe: model + prompt + tools + pre/post-processing. Not just a model. |
 | **Run card** | JSON document recording the complete configuration and results of one evaluation run. The atomic unit of benchmarking. |
 | **Fingerprint** | SHA-256 hash of the experiment configuration. Two runs with the same fingerprint used the same setup. |
-| **Composite score** | Weighted average of available metrics (0.0–1.0). Weights depend on FST availability. See BENCHMARK_SPEC §4.2. |
+| **Composite score** | Weighted average of available metrics (0.0–1.0). Weights differ by FST availability. See SCORING_SPEC §4 for weight tables. |
 | **FST** | Finite-state transducer. A morphological analyzer that deterministically validates whether a word is a valid form in the target language. |
 | **Corpus segment** | `development` (public, iterate freely), `diagnostic` (targeted linguistic phenomena), `gold_standard` (secret, governance-controlled). |
 | **Quality tier** | Heuristic label on composite score: Baseline (0–0.30), Emerging (0.30–0.50), Functional (0.50–0.70), Deployable (0.70–0.85), Fluent (0.85–1.0). |

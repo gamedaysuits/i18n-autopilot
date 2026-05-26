@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ Das `api`-Methodenmuster ist vollständig offen — es gibt keine Lizenzbeschrä
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — Übersicht über alle integrierten Methoden (`openai`, `google`, `api` usw.)
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — vollständiges Schema für `i18n-rosetta.config.json` einschließlich der `api`-Methodenfelder
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — durchgängiger Leitfaden für ressourcenarme Sprachen, einschließlich OCAP-Prinzipien
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — durchgängiger Leitfaden für ressourcenarme Sprachen, einschließlich OCAP-Prinzipien
 - [Architektur](/docs/concepts/architecture) — wie die Synchronisierungsschleife, die Stapelverarbeitung und die Methodenverteilung von i18n-rosetta funktionieren
-- [MT-Evaluierung](/docs/eval/) — Evaluierungsmethodik, Metriken und der Einreichungsprozess für die Rangliste
+- [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) — Evaluierungsmethodik, Metriken und der Einreichungsprozess für die Rangliste
 - [Methoden-Rangliste](/leaderboard) — Live-Qualitätsrankings über Methoden und Sprachpaare hinweg

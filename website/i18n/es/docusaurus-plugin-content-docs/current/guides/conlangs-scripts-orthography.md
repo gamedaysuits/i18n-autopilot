@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Las vocales largas usan macrón/circunflejo: ê, î, ô, â. El convertidor maneja todos los diacríticos SRO y los mapea a los caracteres silábicos correctos. Consulte [Soporte para una lengua de bajos recursos](/docs/guides/low-resource-languages) para ver el pipeline completo del cree.
+Las vocales largas usan macrón/circunflejo: ê, î, ô, â. El convertidor maneja todos los diacríticos SRO y los mapea a los caracteres silábicos correctos. Consulte [Soporte para una lengua de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) para ver el pipeline completo del cree.
 
 #### Serbio: Latino → Cirílico (`sr`)
 
@@ -257,4 +257,4 @@ El LLM solo puede traducir a un conlang que haya visto en los datos de entrenami
 - [Convertidores de sistemas de escritura](/docs/concepts/script-converters) — detalles técnicos del pipeline de conversión
 - [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método de traducción
 - [Configuración](/docs/getting-started/configuration) — referencia de configuración que incluye la configuración de idiomas y registros
-- [Soporte para una lengua de bajos recursos](/docs/guides/low-resource-languages) — la misma infraestructura aplicada a lenguas desatendidas reales
+- [Soporte para una lengua de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — la misma infraestructura aplicada a lenguas desatendidas reales

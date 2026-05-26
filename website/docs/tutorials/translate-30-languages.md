@@ -53,7 +53,7 @@ Not all 30 languages need the same approach. Group them by available method qual
 **Note:** Languages not listed in `pairs` inherit `defaultMethod: "google-translate"`. You don't need to list all 30.
 
 :::info
-`crk` support is under development — see [Support a Low-Resource Language](/docs/guides/low-resource-languages) for status and contribution guidelines.
+`crk` support is under development — see [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for status and contribution guidelines.
 :::
 
 ## Step 3: Set Up API Keys
@@ -164,4 +164,4 @@ Incremental syncs (5–20 changed keys) cost a fraction of a full sync.
 - [CI/CD Guide](/docs/guides/ci-cd) — Advanced CI patterns including PR preview builds
 - [Quality Gate](/docs/concepts/quality-gate) — How Rosetta validates every translation before writing it
 - [Supported Languages](/docs/reference/supported-languages) — Full list of language codes and method compatibility
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — Add coaching data for languages without broad MT coverage
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — Add coaching data for languages without broad MT coverage

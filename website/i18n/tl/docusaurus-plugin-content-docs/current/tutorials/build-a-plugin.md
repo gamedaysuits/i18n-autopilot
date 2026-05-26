@@ -243,5 +243,5 @@ Meron na po kayong:
 
 - **[Plugin Specification](/docs/reference/plugin-spec)** — Full manifest format reference
 - **[Translation Methods](/docs/guides/translation-methods)** — I-compare ang lahat ng apat na methods
-- **[Low-Resource Languages](/docs/guides/low-resource-languages)** — I-apply ang pattern na ito sa mga languages na walang API coverage
+- **[Low-Resource Languages](https://mtevalarena.org/docs/community/low-resource-languages)** — I-apply ang pattern na ito sa mga languages na walang API coverage
 - **[Translate 30 Languages](/docs/tutorials/translate-30-languages)** — I-scale ang inyong project para sa global audience

@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) — PUA fonts, Unicode, pag-add ng mga bagong converter
 - [Quality Gate](/docs/concepts/quality-gate) — validation na nagra-run bago ang script conversion
 - [Supported Languages](/docs/reference/supported-languages) — kung aling mga language ang may mga script converter
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — SRO→Syllabics in context
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — script conversion sa isang multi-stage pipeline
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics in context
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — script conversion sa isang multi-stage pipeline

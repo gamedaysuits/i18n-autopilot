@@ -17,7 +17,7 @@ Chaque langue peut utiliser une ou plusieurs de ces méthodes de traduction :
 | 🟢 | **Google Translate** | Référence en traduction automatique neuronale (Neural MT). Plus de 130 langues. Chaînes de type clé-valeur uniquement — ne peut pas traduire le contenu Markdown de manière fiable. | ~20 $/1M de caractères |
 | 🔵 | **LLM (OpenRouter)** | Toute langue connue par le modèle. Prompts orientés par le registre. Gère les clés-valeurs et le contenu Markdown. | Varie selon le modèle |
 | 🟣 | **LLM-Coached** | LLM + dictionnaires de grammaire + données d'entraînement (coaching) injectées dans les prompts. Idéal pour les langues morphologiquement complexes. | Varie selon le modèle |
-| 🟠 | **API (Plugin)** | Pipelines de traduction hébergés par la communauté et servis via HTTP. [Compatible OCAP](/docs/guides/low-resource-languages). | Varie selon le fournisseur |
+| 🟠 | **API (Plugin)** | Pipelines de traduction hébergés par la communauté et servis via HTTP. [Compatible OCAP](https://mtevalarena.org/docs/community/low-resource-languages). | Varie selon le fournisseur |
 
 Définissez `GOOGLE_TRANSLATE_API_KEY` pour Google Translate, ou `OPENROUTER_API_KEY` pour les méthodes LLM. Consultez [Méthodes de traduction](/docs/guides/translation-methods) pour plus de détails.
 
@@ -84,14 +84,14 @@ Il s'agit des paramètres régionaux (locales) les plus fréquemment demandés p
 
 ## Langues autochtones et à faibles ressources
 
-Ces langues ne sont pas prises en charge par les services commerciaux de traduction automatique (MT). rosetta fournit les outils nécessaires aux communautés linguistiques pour concevoir leurs propres méthodes selon les [principes OCAP](/docs/guides/low-resource-languages).
+Ces langues ne sont pas prises en charge par les services commerciaux de traduction automatique (MT). rosetta fournit les outils nécessaires aux communautés linguistiques pour concevoir leurs propres méthodes selon les [principes OCAP](https://mtevalarena.org/docs/community/low-resource-languages).
 
 | | Langue | Code | Google | LLM | Coached | Script | Statut |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Cri des plaines | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabique | 🚧 En cours de développement |
 
 :::info Le cri des plaines est en cours de développement actif
-Le registre, l'infrastructure d'entraînement (coaching), le convertisseur de script et le dispositif d'évaluation pour le cri des plaines sont tous fonctionnels, mais le pipeline de traduction n'a **pas encore été publié**. Nous collaborons avec les communautés linguistiques selon les [principes OCAP](/docs/guides/low-resource-languages) afin de garantir la qualité avant la publication. Consultez [Soutenir une langue à faibles ressources](/docs/guides/low-resource-languages) pour connaître l'histoire complète — et savoir comment vous pouvez y contribuer.
+Le registre, l'infrastructure d'entraînement (coaching), le convertisseur de script et le dispositif d'évaluation pour le cri des plaines sont tous fonctionnels, mais le pipeline de traduction n'a **pas encore été publié**. Nous collaborons avec les communautés linguistiques selon les [principes OCAP](https://mtevalarena.org/docs/community/low-resource-languages) afin de garantir la qualité avant la publication. Consultez [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour connaître l'histoire complète — et savoir comment vous pouvez y contribuer.
 :::
 
 :::tip Ajouter d'autres langues à faibles ressources
@@ -206,4 +206,4 @@ Consultez [Contribuer à une Language Card](https://github.com/nicholasgriffintn
 - [Méthodes de traduction](/docs/guides/translation-methods) — fonctionnement de chaque méthode
 - [Convertisseurs de script](/docs/concepts/script-converters) — pipeline de conversion de script déterministe
 - [Langues construites, scripts et orthographe](/docs/guides/conlangs-scripts-orthography) — polices PUA, Unicode, ajout de langues construites
-- [Soutenir une langue à faibles ressources](/docs/guides/low-resource-languages) — conception de méthodes pour les langues sous-représentées
+- [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — conception de méthodes pour les langues sous-représentées

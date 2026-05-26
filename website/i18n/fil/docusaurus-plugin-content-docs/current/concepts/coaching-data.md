@@ -132,7 +132,7 @@ Magbibigay ito sa inyo ng chrF++, BLEU, at exact match scores. Gumawa ng multipl
 ## See Also
 
 - [Translation Methods](/docs/guides/translation-methods) — ang llm-coached method
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — coaching in practice
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — coaching in practice
 - [Plugin Specification](/docs/reference/plugin-spec) — pag-package ng coaching data sa isang plugin
 - [Quality Gate](/docs/concepts/quality-gate) — kung paano vina-validate ang coached translations
 - [Configuration](/docs/getting-started/configuration) — per-pair coaching config

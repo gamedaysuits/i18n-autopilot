@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) — ฟอนต์ PUA, Unicode, การเพิ่มตัวแปลงใหม่
 - [Quality Gate](/docs/concepts/quality-gate) — การตรวจสอบความถูกต้องที่ทำงานก่อนการแปลงสคริปต์
 - [Supported Languages](/docs/reference/supported-languages) — ภาษาใดบ้างที่มีตัวแปลงสคริปต์
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — SRO→Syllabics ในบริบท
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — การแปลงสคริปต์ในไปป์ไลน์แบบหลายขั้นตอน
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics ในบริบท
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — การแปลงสคริปต์ในไปป์ไลน์แบบหลายขั้นตอน

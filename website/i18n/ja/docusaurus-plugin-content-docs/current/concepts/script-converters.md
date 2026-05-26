@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [人工言語、スクリプト、正書法](/docs/guides/conlangs-scripts-orthography) — PUAフォント、Unicode、新しいコンバーターの追加
 - [Quality Gate](/docs/concepts/quality-gate) — スクリプト変換の前に実行される検証
 - [サポートされている言語](/docs/reference/supported-languages) — スクリプトコンバーターを備えている言語
-- [低リソース言語のサポート](/docs/guides/low-resource-languages) — コンテキストにおけるSRO→Syllabicsの変換
-- [クックブック: FSTゲートパイプライン](/docs/tutorials/fst-gated-pipeline) — マルチステージパイプラインにおけるスクリプト変換
+- [低リソース言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages) — コンテキストにおけるSRO→Syllabicsの変換
+- [クックブック: FSTゲートパイプライン](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — マルチステージパイプラインにおけるスクリプト変換

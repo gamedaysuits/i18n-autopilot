@@ -132,7 +132,7 @@ Esto le proporciona puntuaciones de chrF++, BLEU y coincidencias exactas. Cree m
 ## Consulte también
 
 - [Métodos de traducción](/docs/guides/translation-methods): el método llm-coached
-- [Soporte para un idioma de bajos recursos](/docs/guides/low-resource-languages): el coaching en la práctica
+- [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages): el coaching en la práctica
 - [Especificación de plugins](/docs/reference/plugin-spec): empaquetado de datos de coaching en un plugin
 - [Puerta de calidad (Quality Gate)](/docs/concepts/quality-gate): cómo se validan las traducciones con coaching
 - [Configuración](/docs/getting-started/configuration): configuración de coaching por par

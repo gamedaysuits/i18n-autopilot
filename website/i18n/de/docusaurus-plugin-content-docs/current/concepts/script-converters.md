@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Kunstsprachen, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) — PUA-Schriftarten, Unicode, Hinzufügen neuer Konverter
 - [Quality Gate](/docs/concepts/quality-gate) — Validierung, die vor der Schriftkonvertierung ausgeführt wird
 - [Unterstützte Sprachen](/docs/reference/supported-languages) — welche Sprachen über Schrift-Konverter verfügen
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — SRO→Silbenschrift im Kontext
-- [Kochbuch: FST-gesteuerte Pipeline](/docs/tutorials/fst-gated-pipeline) — Schriftkonvertierung in einer mehrstufigen Pipeline
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Silbenschrift im Kontext
+- [Kochbuch: FST-gesteuerte Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Schriftkonvertierung in einer mehrstufigen Pipeline

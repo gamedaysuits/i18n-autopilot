@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Gumagamit ng macron/circumflex ang mga long vowels: ê, î, ô, â. Hina-handle ng converter ang lahat ng SRO diacritics at mina-map ang mga ito sa tamang syllabic characters. Tingnan ang [Mag-support ng Low-Resource Language](/docs/guides/low-resource-languages) para sa buong Cree pipeline.
+Gumagamit ng macron/circumflex ang mga long vowels: ê, î, ô, â. Hina-handle ng converter ang lahat ng SRO diacritics at mina-map ang mga ito sa tamang syllabic characters. Tingnan ang [Mag-support ng Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong Cree pipeline.
 
 #### Serbian: Latin → Cyrillic (`sr`)
 
@@ -257,4 +257,4 @@ Kaya lang i-translate ng LLM ang text papunta sa isang conlang kung nakita na ni
 - [Mga Script Converters](/docs/concepts/script-converters) — technical details ng conversion pipeline
 - [Mga Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat translation method
 - [Configuration](/docs/getting-started/configuration) — config reference kasama ang language at register setup
-- [Mag-support ng Low-Resource Language](/docs/guides/low-resource-languages) — ang parehong infrastructure na in-apply sa mga totoong underserved languages
+- [Mag-support ng Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — ang parehong infrastructure na in-apply sa mga totoong underserved languages

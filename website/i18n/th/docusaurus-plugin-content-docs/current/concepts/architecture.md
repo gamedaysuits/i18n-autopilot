@@ -142,6 +142,6 @@ rosetta sync
 
 - [เมธอดการแปล (Translation Methods)](/docs/guides/translation-methods) — วิธีการทำงานของแต่ละเมธอดที่มีในตัว
 - [ข้อกำหนดของปลั๊กอิน (Plugin Specification)](/docs/reference/plugin-spec) — รูปแบบ manifest ของ method.json
-- [Eval Harness](/docs/eval/harness) — เครื่องมือวิจัยคู่ขนาน
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — เครื่องมือวิจัยคู่ขนาน
 - [การให้บริการเมธอดผ่าน API (Serving a Method via API)](/docs/guides/serving-a-method) — การโฮสต์ไปป์ไลน์การแปลแบบกำหนดเอง
-- [การรองรับภาษาที่มีทรัพยากรน้อย (Support a Low-Resource Language)](/docs/guides/low-resource-languages) — กรณีการใช้งานที่เป็นตัวผลักดันสถาปัตยกรรมนี้
+- [การรองรับภาษาที่มีทรัพยากรน้อย (Support a Low-Resource Language)](https://mtevalarena.org/docs/community/low-resource-languages) — กรณีการใช้งานที่เป็นตัวผลักดันสถาปัตยกรรมนี้

@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [اللغات المصطنعة (Conlangs)، وأنظمة الكتابة، والإملاء](/docs/guides/conlangs-scripts-orthography) — خطوط PUA، وUnicode، وإضافة محولات جديدة
 - [بوابة الجودة (Quality Gate)](/docs/concepts/quality-gate) — التحقق الذي يتم تشغيله قبل تحويل النص
 - [اللغات المدعومة](/docs/reference/supported-languages) — اللغات التي تحتوي على محولات نصوص
-- [دعم لغة قليلة الموارد](/docs/guides/low-resource-languages) — تحويل SRO → المقاطع اللفظية (Syllabics) في السياق
-- [كتاب الوصفات: مسار عمل FST-Gated](/docs/tutorials/fst-gated-pipeline) — تحويل النصوص في مسار عمل متعدد المراحل
+- [دعم لغة قليلة الموارد](https://mtevalarena.org/docs/community/low-resource-languages) — تحويل SRO → المقاطع اللفظية (Syllabics) في السياق
+- [كتاب الوصفات: مسار عمل FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — تحويل النصوص في مسار عمل متعدد المراحل

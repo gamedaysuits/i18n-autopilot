@@ -17,7 +17,7 @@ Ang bawat language ay pwedeng gumamit ng isa o higit pa sa mga translation metho
 | 🟢 | **Google Translate** | Neural MT baseline. 130+ languages. Key-value strings lang — hindi kayang i-translate nang safe ang Markdown content. | ~$20/1M chars |
 | 🔵 | **LLM (OpenRouter)** | Kahit anong language na alam ng model. Register-steered prompts. Kayang i-handle ang key-value + Markdown content. | Depende sa model |
 | 🟣 | **LLM-Coached** | LLM + grammar dictionaries + coaching data na naka-inject sa mga prompt. Best para sa mga morphologically complex na language. | Depende sa model |
-| 🟠 | **API (Plugin)** | Community-hosted translation pipelines na naka-serve over HTTP. [OCAP-compatible](/docs/guides/low-resource-languages). | Depende sa provider |
+| 🟠 | **API (Plugin)** | Community-hosted translation pipelines na naka-serve over HTTP. [OCAP-compatible](https://mtevalarena.org/docs/community/low-resource-languages). | Depende sa provider |
 
 I-set ang `GOOGLE_TRANSLATE_API_KEY` para sa Google Translate, o `OPENROUTER_API_KEY` para sa mga LLM method. Tingnan ang [Mga Translation Method](/docs/guides/translation-methods) para sa buong detalye.
 
@@ -84,14 +84,14 @@ Ito ang mga pinakamadalas i-request na locale para sa mga web at mobile applicat
 
 ## Mga Indigenous & Low-Resource Language
 
-Hindi supported ang mga language na ito ng mga commercial MT service. Nagpo-provide ang rosetta ng tooling para sa mga language community na i-build ang sarili nilang mga method sa ilalim ng [mga OCAP principle](/docs/guides/low-resource-languages).
+Hindi supported ang mga language na ito ng mga commercial MT service. Nagpo-provide ang rosetta ng tooling para sa mga language community na i-build ang sarili nilang mga method sa ilalim ng [mga OCAP principle](https://mtevalarena.org/docs/community/low-resource-languages).
 
 | | Language | Code | Google | LLM | Coached | Script | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 Under development |
 
 :::info Ang Plains Cree ay under active development
-Functional na ang register, coaching infrastructure, script converter, at evaluation harness para sa Plains Cree, pero **hindi pa nare-release** ang translation pipeline. Nakikipagtulungan po kami sa mga language community sa ilalim ng [mga OCAP principle](/docs/guides/low-resource-languages) para masiguro ang quality bago ito i-release. Tingnan ang [Suportahan ang isang Low-Resource Language](/docs/guides/low-resource-languages) para sa buong kwento — at kung paano ka makakapag-contribute.
+Functional na ang register, coaching infrastructure, script converter, at evaluation harness para sa Plains Cree, pero **hindi pa nare-release** ang translation pipeline. Nakikipagtulungan po kami sa mga language community sa ilalim ng [mga OCAP principle](https://mtevalarena.org/docs/community/low-resource-languages) para masiguro ang quality bago ito i-release. Tingnan ang [Suportahan ang isang Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong kwento — at kung paano ka makakapag-contribute.
 :::
 
 :::tip Pag-add ng mas marami pang low-resource language
@@ -206,4 +206,4 @@ Tingnan ang [Pag-contribute ng Language Card](https://github.com/nicholasgriffin
 - [Mga Translation Method](/docs/guides/translation-methods) — kung paano gumagana ang bawat method
 - [Mga Script Converter](/docs/concepts/script-converters) — deterministic script conversion pipeline
 - [Mga Conlang, Script at Orthography](/docs/guides/conlangs-scripts-orthography) — mga PUA font, Unicode, pag-add ng mga conlang
-- [Suportahan ang isang Low-Resource Language](/docs/guides/low-resource-languages) — pag-build ng mga method para sa mga underserved language
+- [Suportahan ang isang Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — pag-build ng mga method para sa mga underserved language

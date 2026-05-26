@@ -132,7 +132,7 @@ Dit geeft u chrF++, BLEU en exact match-scores. Maak meerdere versies van het co
 ## Zie ook
 
 - [Vertaalmethoden](/docs/guides/translation-methods) — de llm-coached methode
-- [Een Low-Resource taal ondersteunen](/docs/guides/low-resource-languages) — coaching in de praktijk
+- [Een Low-Resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — coaching in de praktijk
 - [Plugin-specificatie](/docs/reference/plugin-spec) — coaching data verpakken in een plugin
 - [Quality Gate](/docs/concepts/quality-gate) — hoe gecoachte vertalingen worden gevalideerd
 - [Configuratie](/docs/getting-started/configuration) — coachingconfiguratie per paar

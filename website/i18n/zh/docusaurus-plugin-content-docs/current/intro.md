@@ -52,9 +52,9 @@ rosetta 就是那个脚本的生产级版本。
 
 认为你的方法能把英语翻译成西班牙语？土耳其语翻译成阿塞拜疆语？英语翻译成 Cree 语？
 
-**证明它。** 配套的 [评估工具](/docs/eval/harness) 可对任何翻译方法进行基准测试，并提供可复现、带指纹的评分。[排行榜](/leaderboard) 会跟踪每次提交。
+**证明它。** 配套的 [评估工具](https://mtevalarena.org/docs/specifications/harness) 可对任何翻译方法进行基准测试，并提供可复现、带指纹的评分。[排行榜](/leaderboard) 会跟踪每次提交。
 
-评估工具和生产 CLI 共享相同的插件接口。在评估工具中得分高的方法可以用于生产环境——前提是该语言所属的社区同意。对于原住民和低资源语言，这种同意至关重要。请参阅 [数据主权](/docs/guides/data-sovereignty)。
+评估工具和生产 CLI 共享相同的插件接口。在评估工具中得分高的方法可以用于生产环境——前提是该语言所属的社区同意。对于原住民和低资源语言，这种同意至关重要。请参阅 [数据主权](https://mtevalarena.org/docs/sovereignty/data-sovereignty)。
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ rosetta 不仅仅是 `sync`。它是一个完整的 i18n 流水线：
 - [Hugo 多语言站点](/docs/tutorials/hugo-multilingual-site) — Markdown 内容翻译
 
 **深入了解：**
-- [数据主权](/docs/guides/data-sovereignty) — OCAP、CARE 和毛利数据主权原则
-- [支持低资源语言](/docs/guides/low-resource-languages) — 开启这一切的挑战
-- [实战指南：FST 门控流水线](/docs/tutorials/fst-gated-pipeline) — 构建分解流水线
-- [机器翻译评估](/docs/eval/) — 评估工具和排行榜的工作原理
+- [数据主权](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — OCAP、CARE 和毛利数据主权原则
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 开启这一切的挑战
+- [实战指南：FST 门控流水线](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 构建分解流水线
+- [机器翻译评估](https://mtevalarena.org/docs/leaderboard/rules) — 评估工具和排行榜的工作原理
 - [方法排行榜](/leaderboard) — 实时分数和提交记录

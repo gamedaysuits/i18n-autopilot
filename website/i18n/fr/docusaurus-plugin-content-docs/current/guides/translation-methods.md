@@ -105,7 +105,7 @@ Identique à `llm`, mais avec des règles de grammaire, des dictionnaires de ter
 }
 ```
 
-Voir aussi : [Guide des langues à faibles ressources](/docs/guides/low-resource-languages)
+Voir aussi : [Guide des langues à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ Un client HTTP léger pour les points de terminaison de traduction hébergés pa
 :::note Traduction communautaire compatible OCAP
 La méthode `api` constitue la passerelle vers une **traduction hébergée par la communauté et compatible OCAP**. Les communautés autochtones et de langues minoritaires peuvent héberger leurs propres points de terminaison de traduction — en gardant le contrôle communautaire sur les données d'encadrement, les modèles affinés et la propriété intellectuelle linguistique — tandis que Rosetta s'y connecte en tant que client léger.
 
-Consultez [Soutenir une langue à faibles ressources](/docs/guides/low-resource-languages) pour la procédure complète d'hébergement communautaire, et [Servir une méthode via API](/docs/guides/serving-a-method) pour les exigences relatives aux points de terminaison.
+Consultez [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour la procédure complète d'hébergement communautaire, et [Servir une méthode via API](/docs/guides/serving-a-method) pour les exigences relatives aux points de terminaison.
 :::
 
 ---
@@ -388,7 +388,7 @@ Cela permet de traduire le français via DeepL (prise en charge des glossaires),
 Les plugins sont des recettes de traduction pré-emballées pour des paires de langues spécifiques. Ce sont des manifestes JSON — et non du code — qui indiquent à rosetta quelle méthode utiliser, avec quels paramètres, et quelle qualité a été évaluée.
 
 :::tip Du harnais d'évaluation à la production en une seule commande
-Les plugins développés et éprouvés dans le [harnais d'évaluation](/docs/eval/harness) peuvent être installés directement — la méthode que vous y validez se déploie ici avec une seule commande `plugin install`. Consultez [Évaluation MT](/docs/eval/) pour le flux de travail d'évaluation complet.
+Les plugins développés et éprouvés dans le [harnais d'évaluation](https://mtevalarena.org/docs/specifications/harness) peuvent être installés directement — la méthode que vous y validez se déploie ici avec une seule commande `plugin install`. Consultez [Évaluation MT](https://mtevalarena.org/docs/leaderboard/rules) pour le flux de travail d'évaluation complet.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ Les coûts réels dépendent de la longueur de votre texte source, de la taille 
 
 - [Langues prises en charge](/docs/reference/supported-languages)
 - [Données d'encadrement](/docs/concepts/coaching-data)
-- [Soutenir une langue à faibles ressources](/docs/guides/low-resource-languages)
+- [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Spécification des plugins](/docs/reference/plugin-spec)
 - [Servir une méthode via API](/docs/guides/serving-a-method)
 - [Passerelle de qualité](/docs/concepts/quality-gate)

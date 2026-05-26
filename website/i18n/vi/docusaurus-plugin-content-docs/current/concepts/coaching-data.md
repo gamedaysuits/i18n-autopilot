@@ -132,7 +132,7 @@ Công cụ này cung cấp cho bạn các điểm số chrF++, BLEU và khớp c
 ## Xem thêm
 
 - [Phương thức dịch](/docs/guides/translation-methods) — phương thức llm-coached
-- [Hỗ trợ ngôn ngữ có tài nguyên thấp](/docs/guides/low-resource-languages) — thực hành coaching
+- [Hỗ trợ ngôn ngữ có tài nguyên thấp](https://mtevalarena.org/docs/community/low-resource-languages) — thực hành coaching
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — đóng gói dữ liệu coaching vào một plugin
 - [Cổng chất lượng (Quality Gate)](/docs/concepts/quality-gate) — cách các bản dịch coached được xác thực
 - [Cấu hình](/docs/getting-started/configuration) — cấu hình coaching cho từng cặp ngôn ngữ

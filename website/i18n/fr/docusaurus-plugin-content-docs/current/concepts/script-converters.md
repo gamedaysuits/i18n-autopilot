@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Langues construites, scripts et orthographe](/docs/guides/conlangs-scripts-orthography) — Polices PUA, Unicode, ajout de nouveaux convertisseurs
 - [Porte de qualité](/docs/concepts/quality-gate) — validation qui s'exécute avant la conversion de scripts
 - [Langues prises en charge](/docs/reference/supported-languages) — quelles langues disposent de convertisseurs de scripts
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — SRO→Syllabique en contexte
-- [Livre de recettes : Pipeline contrôlé par FST](/docs/tutorials/fst-gated-pipeline) — conversion de scripts dans un pipeline à plusieurs étapes
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabique en contexte
+- [Livre de recettes : Pipeline contrôlé par FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — conversion de scripts dans un pipeline à plusieurs étapes

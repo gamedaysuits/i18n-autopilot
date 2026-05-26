@@ -132,7 +132,7 @@ mt-eval test eval/logs/run_*.json
 ## ดูเพิ่มเติม
 
 - [วิธีการแปล](/docs/guides/translation-methods) — วิธี llm-coached
-- [การรองรับภาษาที่มีทรัพยากรน้อย](/docs/guides/low-resource-languages) — การทำ coaching ในทางปฏิบัติ
+- [การรองรับภาษาที่มีทรัพยากรน้อย](https://mtevalarena.org/docs/community/low-resource-languages) — การทำ coaching ในทางปฏิบัติ
 - [ข้อกำหนดของปลั๊กอิน](/docs/reference/plugin-spec) — การแพ็กเกจข้อมูล coaching ในปลั๊กอิน
 - [Quality Gate](/docs/concepts/quality-gate) — วิธีตรวจสอบความถูกต้องของการแปลแบบ coached
 - [การตั้งค่า](/docs/getting-started/configuration) — การตั้งค่า coaching ต่อคู่ภาษา

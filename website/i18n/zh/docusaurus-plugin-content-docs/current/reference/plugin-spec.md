@@ -243,6 +243,6 @@ i18n-rosetta plugin install ./french-formal-v1/
 - [翻译方法](/docs/guides/translation-methods) — 每个内置方法的工作原理
 - [配置](/docs/getting-started/configuration) — 按语言对和按语言的配置
 - [通过 API 提供方法服务](/docs/guides/serving-a-method) — 将方法作为 HTTP 服务托管
-- [Cookbook：FST 门控流水线](/docs/tutorials/fst-gated-pipeline) — 构建和打包流水线
-- [机器翻译评估 (MT Evaluation)](/docs/eval/) — 为提交排行榜对方法进行基准测试
-- [支持低资源语言](/docs/guides/low-resource-languages) — 社区插件的用例
+- [Cookbook：FST 门控流水线](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 构建和打包流水线
+- [机器翻译评估 (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) — 为提交排行榜对方法进行基准测试
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 社区插件的用例

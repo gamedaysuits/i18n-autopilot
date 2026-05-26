@@ -17,7 +17,7 @@ Für jede Sprache können Sie eine oder mehrere dieser Übersetzungsmethoden ver
 | 🟢 | **Google Translate** | Neuronale MT-Basis. Über 130 Sprachen. Nur Schlüssel-Wert-Zeichenfolgen (Key-Value) — kann Markdown-Inhalte nicht sicher übersetzen. | ~$20/1 Mio. Zeichen |
 | 🔵 | **LLM (OpenRouter)** | Jede Sprache, die das Modell beherrscht. Registergesteuerte Prompts. Verarbeitet Schlüssel-Wert-Paare und Markdown-Inhalte. | Variiert je nach Modell |
 | 🟣 | **LLM-Coached** | LLM + Grammatikwörterbücher + Coaching-Daten, die in Prompts injiziert werden. Am besten für morphologisch komplexe Sprachen geeignet. | Variiert je nach Modell |
-| 🟠 | **API (Plugin)** | Von der Community gehostete Übersetzungspipelines, die über HTTP bereitgestellt werden. [OCAP-kompatibel](/docs/guides/low-resource-languages). | Variiert je nach Anbieter |
+| 🟠 | **API (Plugin)** | Von der Community gehostete Übersetzungspipelines, die über HTTP bereitgestellt werden. [OCAP-kompatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Variiert je nach Anbieter |
 
 Setzen Sie `GOOGLE_TRANSLATE_API_KEY` für Google Translate oder `OPENROUTER_API_KEY` für LLM-Methoden. Weitere Einzelheiten finden Sie unter [Übersetzungsmethoden](/docs/guides/translation-methods).
 
@@ -84,14 +84,14 @@ Dies sind die am häufigsten nachgefragten Gebietsschemas (Locales) für Web- un
 
 ## Indigene & ressourcenarme Sprachen
 
-Diese Sprachen werden von kommerziellen MT-Diensten (maschinelle Übersetzung) nicht unterstützt. rosetta stellt die Werkzeuge bereit, damit Sprachgemeinschaften ihre eigenen Methoden nach den [OCAP-Prinzipien](/docs/guides/low-resource-languages) entwickeln können.
+Diese Sprachen werden von kommerziellen MT-Diensten (maschinelle Übersetzung) nicht unterstützt. rosetta stellt die Werkzeuge bereit, damit Sprachgemeinschaften ihre eigenen Methoden nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) entwickeln können.
 
 | | Sprache | Code | Google | LLM | Coached | Schrift | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Silbenschrift | 🚧 In Entwicklung |
 
 :::info Plains Cree befindet sich in aktiver Entwicklung
-Das Register, die Coaching-Infrastruktur, der Schriftkonverter und die Evaluierungsumgebung für Plains Cree sind alle funktionsfähig, aber die Übersetzungspipeline wurde **noch nicht veröffentlicht**. Wir arbeiten mit Sprachgemeinschaften nach den [OCAP-Prinzipien](/docs/guides/low-resource-languages) zusammen, um die Qualität vor der Veröffentlichung sicherzustellen. Lesen Sie [Eine ressourcenarme Sprache unterstützen](/docs/guides/low-resource-languages) für die vollständigen Hintergründe — und wie Sie dazu beitragen können.
+Das Register, die Coaching-Infrastruktur, der Schriftkonverter und die Evaluierungsumgebung für Plains Cree sind alle funktionsfähig, aber die Übersetzungspipeline wurde **noch nicht veröffentlicht**. Wir arbeiten mit Sprachgemeinschaften nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) zusammen, um die Qualität vor der Veröffentlichung sicherzustellen. Lesen Sie [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständigen Hintergründe — und wie Sie dazu beitragen können.
 :::
 
 :::tip Weitere ressourcenarme Sprachen hinzufügen
@@ -206,4 +206,4 @@ Unter [Eine Sprachkarte beisteuern](https://github.com/nicholasgriffintn/i18n-ro
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede Methode funktioniert
 - [Schriftkonverter](/docs/concepts/script-converters) — deterministische Schriftkonvertierungspipeline
 - [Conlangs, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) — PUA-Schriftarten, Unicode, Hinzufügen von Conlangs
-- [Eine ressourcenarme Sprache unterstützen](/docs/guides/low-resource-languages) — Entwicklung von Methoden für unterversorgte Sprachen
+- [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) — Entwicklung von Methoden für unterversorgte Sprachen

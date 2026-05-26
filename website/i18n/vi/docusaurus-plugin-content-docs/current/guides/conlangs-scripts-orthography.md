@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Các nguyên âm dài sử dụng dấu macron/mũ: ê, î, ô, â. Bộ chuyển đổi xử lý tất cả các dấu phụ SRO và ánh xạ chúng sang các ký tự âm tiết chính xác. Xem [Hỗ trợ ngôn ngữ tài nguyên thấp](/docs/guides/low-resource-languages) để biết toàn bộ luồng xử lý tiếng Cree.
+Các nguyên âm dài sử dụng dấu macron/mũ: ê, î, ô, â. Bộ chuyển đổi xử lý tất cả các dấu phụ SRO và ánh xạ chúng sang các ký tự âm tiết chính xác. Xem [Hỗ trợ ngôn ngữ tài nguyên thấp](https://mtevalarena.org/docs/community/low-resource-languages) để biết toàn bộ luồng xử lý tiếng Cree.
 
 #### Tiếng Serbia: Latin → Cyrillic (`sr`)
 
@@ -257,4 +257,4 @@ LLM chỉ có thể dịch sang một ngôn ngữ nhân tạo mà nó đã thấ
 - [Bộ chuyển đổi chữ viết](/docs/concepts/script-converters) — chi tiết kỹ thuật của luồng chuyển đổi
 - [Các phương pháp dịch thuật](/docs/guides/translation-methods) — cách hoạt động của từng phương pháp dịch
 - [Cấu hình](/docs/getting-started/configuration) — tham chiếu cấu hình bao gồm thiết lập ngôn ngữ và register
-- [Hỗ trợ ngôn ngữ tài nguyên thấp](/docs/guides/low-resource-languages) — cùng một cơ sở hạ tầng được áp dụng cho các ngôn ngữ thực tế ít được hỗ trợ
+- [Hỗ trợ ngôn ngữ tài nguyên thấp](https://mtevalarena.org/docs/community/low-resource-languages) — cùng một cơ sở hạ tầng được áp dụng cho các ngôn ngữ thực tế ít được hỗ trợ

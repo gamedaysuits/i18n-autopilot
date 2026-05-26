@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 - [Translation Methods](/docs/guides/translation-methods) — ภาพรวมของ built-in method ทั้งหมด (`openai`, `google`, `api` ฯลฯ)
 - [Plugin Specification](/docs/reference/plugin-spec) — schema แบบเต็มสำหรับ `i18n-rosetta.config.json` รวมถึงฟิลด์ของ `api` method
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — คู่มือแบบ end-to-end สำหรับภาษาที่มีทรัพยากรน้อย (low-resource language) รวมถึงหลักการ OCAP
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — คู่มือแบบ end-to-end สำหรับภาษาที่มีทรัพยากรน้อย (low-resource language) รวมถึงหลักการ OCAP
 - [Architecture](/docs/concepts/architecture) — วิธีการทำงานของ sync loop, batching และ method dispatch ของ i18n-rosetta
-- [MT Evaluation](/docs/eval/) — ระเบียบวิธีในการประเมิน, เมตริก และขั้นตอนการส่งผลขึ้น leaderboard
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — ระเบียบวิธีในการประเมิน, เมตริก และขั้นตอนการส่งผลขึ้น leaderboard
 - [Method Leaderboard](/leaderboard) — การจัดอันดับคุณภาพแบบเรียลไทม์สำหรับ method และคู่ภาษาต่างๆ

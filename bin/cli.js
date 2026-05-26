@@ -40,6 +40,8 @@ const { values, positionals } = parseArgs({
     'force-content':  { type: 'boolean' },  // re-translate all content files (clears content lock)
     'no-tm':          { type: 'boolean' },  // skip Translation Memory for this sync run
     css:              { type: 'boolean' },  // fonts install --css: generate CSS snippet
+    json:             { type: 'boolean' },  // machine-readable NDJSON output
+    quiet:            { type: 'boolean', short: 'q' },  // suppress info/ok messages, show only warnings/errors
 
     // --- String flags (take a value) ---
     config:        { type: 'string' },
@@ -121,6 +123,7 @@ if (args.help && command !== 'help') {
     fonts:      () => import('../lib/commands/fonts.js'),
     tm:         () => import('../lib/commands/tm.js'),
     xliff:      () => import('../lib/commands/xliff.js'),
+    models:     () => import('../lib/commands/models.js'),
   };
 
   if (commands[command]) {

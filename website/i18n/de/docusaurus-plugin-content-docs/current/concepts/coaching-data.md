@@ -132,7 +132,7 @@ Dies liefert Ihnen chrF++-, BLEU- und Exact-Match-Werte. Erstellen Sie mehrere V
 ## Siehe auch
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — die llm-coached Methode
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — Coaching in der Praxis
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — Coaching in der Praxis
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — Bündeln von Coaching-Daten in einem Plugin
 - [Quality Gate](/docs/concepts/quality-gate) — wie gecoachte Übersetzungen validiert werden
 - [Konfiguration](/docs/getting-started/configuration) — Coaching-Konfiguration pro Sprachpaar

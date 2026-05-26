@@ -52,9 +52,9 @@ Le français bénéficie de Google Translate (rapide, économique). Le japonais 
 
 Pensez-vous que votre méthode soit capable de traduire de l'anglais vers l'espagnol ? Du turc vers l'azerbaïdjanais ? De l'anglais vers le cri ?
 
-**Démontrez-le.** L'outil d'évaluation associé ([eval harness](/docs/eval/harness)) évalue toute méthode de traduction au moyen d'une notation reproductible et dotée d'une empreinte numérique (fingerprinted). Le [classement](/leaderboard) assure le suivi de chaque soumission.
+**Démontrez-le.** L'outil d'évaluation associé ([eval harness](https://mtevalarena.org/docs/specifications/harness)) évalue toute méthode de traduction au moyen d'une notation reproductible et dotée d'une empreinte numérique (fingerprinted). Le [classement](/leaderboard) assure le suivi de chaque soumission.
 
-L'outil d'évaluation et la CLI de production partagent la même interface de plugin. Une méthode obtenant d'excellents résultats lors de l'évaluation peut être déployée en production, à condition que la communauté dont elle traite la langue y consente. Pour les langues autochtones et celles disposant de peu de ressources, ce consentement revêt une importance capitale. Veuillez consulter la section [Souveraineté des données](/docs/guides/data-sovereignty).
+L'outil d'évaluation et la CLI de production partagent la même interface de plugin. Une méthode obtenant d'excellents résultats lors de l'évaluation peut être déployée en production, à condition que la communauté dont elle traite la langue y consente. Pour les langues autochtones et celles disposant de peu de ressources, ce consentement revêt une importance capitale. Veuillez consulter la section [Souveraineté des données](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Ceci constitue une invitation ouverte. Si vous travaillez sur une langue disposa
 - [Site multilingue Hugo](/docs/tutorials/hugo-multilingual-site) — Traduction de contenu Markdown
 
 **Pour aller plus loin :**
-- [Souveraineté des données](/docs/guides/data-sovereignty) — Principes OCAP, CARE et de souveraineté des données maories
-- [Soutenir une langue à faibles ressources](/docs/guides/low-resource-languages) — Le défi à l'origine du projet
-- [Livre de recettes : Pipeline contrôlé par FST](/docs/tutorials/fst-gated-pipeline) — Construire un pipeline de décomposition
-- [Évaluation de la traduction automatique (MT)](/docs/eval/) — Fonctionnement de l'outil d'évaluation et du classement
+- [Souveraineté des données](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Principes OCAP, CARE et de souveraineté des données maories
+- [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — Le défi à l'origine du projet
+- [Livre de recettes : Pipeline contrôlé par FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Construire un pipeline de décomposition
+- [Évaluation de la traduction automatique (MT)](https://mtevalarena.org/docs/leaderboard/rules) — Fonctionnement de l'outil d'évaluation et du classement
 - [Classement des méthodes](/leaderboard) — Scores en direct et soumissions

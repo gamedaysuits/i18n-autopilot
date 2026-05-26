@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Ngôn ngữ nhân tạo, Chữ viết & Chính tả](/docs/guides/conlangs-scripts-orthography) — Font PUA, Unicode, thêm các trình chuyển đổi mới
 - [Cổng chất lượng (Quality Gate)](/docs/concepts/quality-gate) — quá trình xác thực chạy trước khi chuyển đổi chữ viết
 - [Các ngôn ngữ được hỗ trợ](/docs/reference/supported-languages) — những ngôn ngữ nào có trình chuyển đổi chữ viết
-- [Hỗ trợ Ngôn ngữ ít tài nguyên](/docs/guides/low-resource-languages) — SRO→Syllabics trong ngữ cảnh
-- [Cookbook: Luồng xử lý FST-Gated](/docs/tutorials/fst-gated-pipeline) — chuyển đổi chữ viết trong một luồng xử lý nhiều giai đoạn
+- [Hỗ trợ Ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics trong ngữ cảnh
+- [Cookbook: Luồng xử lý FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — chuyển đổi chữ viết trong một luồng xử lý nhiều giai đoạn

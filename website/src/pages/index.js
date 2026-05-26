@@ -126,7 +126,7 @@ function HeroBanner() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting-started/installation">
+            to="/docs/getting-started/quick-start">
             <Translate id="homepage.hero.ctaPrimary" description="Primary call-to-action button">Get Started →</Translate>
           </Link>
           <Link
@@ -328,8 +328,8 @@ function QuickExample() {
 
 const useCaseLinks = [
   '/docs/tutorials/translate-30-languages',
-  '/docs/tutorials/fst-gated-pipeline',
-  '/docs/guides/low-resource-languages',
+  'https://mtevalarena.org/docs/tutorials/fst-gated-pipeline',
+  'https://mtevalarena.org/docs/community/low-resource-languages',
 ];
 
 const useCaseData = [
@@ -451,7 +451,7 @@ const arenaCardData = [
     descDefault: 'Run your method against standardized benchmarks. chrF++, exact match, FST acceptance — all computed by the same harness.',
     linkId: 'homepage.arena.cards.plugTest.linkText',
     linkDefault: 'Eval Harness →',
-    link: '/docs/eval/harness',
+    link: 'https://mtevalarena.org/docs/specifications/harness',
   },
   {
     icon: '🏆',
@@ -471,7 +471,7 @@ const arenaCardData = [
     descDefault: 'Indigenous languages belong to their communities. rosetta supports OCAP, CARE, and Māori Data Sovereignty principles.',
     linkId: 'homepage.arena.cards.respectData.linkText',
     linkDefault: 'Data Sovereignty →',
-    link: '/docs/guides/data-sovereignty',
+    link: 'https://mtevalarena.org/docs/sovereignty/data-sovereignty',
   },
 ];
 
@@ -643,7 +643,7 @@ function LeaderboardWidget() {
                   Think you can beat them?
                 </Translate>
                 {' '}
-                <Link to="/docs/eval/harness">
+                <Link to="https://mtevalarena.org/docs/specifications/harness">
                   <Translate id="homepage.leaderboard.runHarness" description="Leaderboard run harness link">Run the harness</Translate>
                 </Link>.
               </p>

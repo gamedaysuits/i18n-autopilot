@@ -52,9 +52,9 @@ Französisch erhält Google Translate (schnell, günstig). Japanisch erhält ein
 
 Glauben Sie, Ihre Methode kann von Englisch nach Spanisch übersetzen? Von Türkisch nach Aserbaidschanisch? Von Englisch nach Cree?
 
-**Beweisen Sie es.** Die zugehörige [Evaluierungsumgebung](/docs/eval/harness) unterzieht jede Übersetzungsmethode einem Benchmark-Test mit reproduzierbarer, eindeutig identifizierbarer Bewertung. Die [Rangliste](/leaderboard) erfasst jede Einreichung.
+**Beweisen Sie es.** Die zugehörige [Evaluierungsumgebung](https://mtevalarena.org/docs/specifications/harness) unterzieht jede Übersetzungsmethode einem Benchmark-Test mit reproduzierbarer, eindeutig identifizierbarer Bewertung. Die [Rangliste](/leaderboard) erfasst jede Einreichung.
 
-Die Evaluierungsumgebung und die Produktions-CLI teilen sich dieselbe Plugin-Schnittstelle. Eine Methode, die in der Evaluierung gut abschneidet, kann in der Produktion verwendet werden — sofern die Community, deren Sprache sie dient, ihre Zustimmung gibt. Für indigene und ressourcenarme Sprachen ist diese Zustimmung von Bedeutung. Siehe [Datensouveränität](/docs/guides/data-sovereignty).
+Die Evaluierungsumgebung und die Produktions-CLI teilen sich dieselbe Plugin-Schnittstelle. Eine Methode, die in der Evaluierung gut abschneidet, kann in der Produktion verwendet werden — sofern die Community, deren Sprache sie dient, ihre Zustimmung gibt. Für indigene und ressourcenarme Sprachen ist diese Zustimmung von Bedeutung. Siehe [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Dies ist eine offene Einladung. Wenn Sie mit einer ressourcenarmen Sprache arbei
 - [Mehrsprachige Hugo-Website](/docs/tutorials/hugo-multilingual-site) — Übersetzung von Markdown-Inhalten
 
 **Tiefer einsteigen:**
-- [Datensouveränität](/docs/guides/data-sovereignty) — OCAP-, CARE- und Māori-Prinzipien zur Datensouveränität
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — Die Herausforderung, mit der alles begann
-- [Kochbuch: FST-gesteuerte Pipeline](/docs/tutorials/fst-gated-pipeline) — Aufbau einer Dekompositionspipeline
-- [MT-Evaluierung](/docs/eval/) — Wie die Evaluierungsumgebung und die Rangliste funktionieren
+- [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — OCAP-, CARE- und Māori-Prinzipien zur Datensouveränität
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — Die Herausforderung, mit der alles begann
+- [Kochbuch: FST-gesteuerte Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Aufbau einer Dekompositionspipeline
+- [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) — Wie die Evaluierungsumgebung und die Rangliste funktionieren
 - [Methoden-Rangliste](/leaderboard) — Live-Ergebnisse und Einreichungen

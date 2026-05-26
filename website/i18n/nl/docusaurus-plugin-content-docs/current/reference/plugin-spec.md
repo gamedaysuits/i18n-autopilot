@@ -243,6 +243,6 @@ De plugin is **alleen data**: configuratie, coaching-inhoud en benchmarkresultat
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke ingebouwde methode werkt
 - [Configuratie](/docs/getting-started/configuration) — configuratie per paar en per taal
 - [Een methode aanbieden via API](/docs/guides/serving-a-method) — methoden hosten als HTTP-services
-- [Kookboek: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — een pijplijn bouwen en verpakken
-- [MT-evaluatie](/docs/eval/) — methoden benchmarken voor indiening op het leaderboard
-- [Een taal met weinig bronnen ondersteunen](/docs/guides/low-resource-languages) — de use case voor community-plugins
+- [Kookboek: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — een pijplijn bouwen en verpakken
+- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — methoden benchmarken voor indiening op het leaderboard
+- [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — de use case voor community-plugins

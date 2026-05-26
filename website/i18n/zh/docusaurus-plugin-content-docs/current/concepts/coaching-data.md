@@ -132,7 +132,7 @@ mt-eval test eval/logs/run_*.json
 ## 另请参阅
 
 - [翻译方法](/docs/guides/translation-methods) —— llm-coached 方法
-- [支持低资源语言](/docs/guides/low-resource-languages) —— 辅导实践
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) —— 辅导实践
 - [插件规范](/docs/reference/plugin-spec) —— 在插件中打包辅导数据
 - [质量门禁](/docs/concepts/quality-gate) —— 如何验证辅导翻译
 - [配置](/docs/getting-started/configuration) —— 每个语言对的辅导配置

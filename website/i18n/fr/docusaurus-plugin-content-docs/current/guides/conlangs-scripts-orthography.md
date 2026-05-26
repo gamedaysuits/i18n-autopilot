@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Les voyelles longues utilisent un macron/circonflexe : ê, î, ô, â. Le convertisseur gère tous les signes diacritiques SRO et les associe aux caractères syllabiques corrects. Consultez [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) pour le pipeline complet du cri.
+Les voyelles longues utilisent un macron/circonflexe : ê, î, ô, â. Le convertisseur gère tous les signes diacritiques SRO et les associe aux caractères syllabiques corrects. Consultez [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour le pipeline complet du cri.
 
 #### Serbe : Latin → Cyrillique (`sr`)
 
@@ -257,4 +257,4 @@ Le LLM ne peut traduire que vers une langue construite qu'il a rencontrée dans 
 - [Convertisseurs de scripts](/docs/concepts/script-converters) — détails techniques du pipeline de conversion.
 - [Méthodes de traduction](/docs/guides/translation-methods) — fonctionnement de chaque méthode de traduction.
 - [Configuration](/docs/getting-started/configuration) — référence de configuration incluant la configuration des langues et des registres.
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — la même infrastructure appliquée aux véritables langues sous-représentées.
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — la même infrastructure appliquée aux véritables langues sous-représentées.

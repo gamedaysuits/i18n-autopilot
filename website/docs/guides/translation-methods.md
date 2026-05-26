@@ -106,7 +106,7 @@ Same as `llm`, but with grammar rules, term dictionaries, and style notes inject
 }
 ```
 
-See also: [Low-Resource Languages Guide](/docs/guides/low-resource-languages)
+See also: [Low-Resource Languages Guide](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -360,7 +360,7 @@ A thin HTTP client for community-hosted or IP-protected translation endpoints. R
 :::note OCAP-Compatible Community Translation
 The `api` method is the bridge to **OCAP-compatible community-hosted translation**. Indigenous and minority-language communities can host their own translation endpoints — keeping coaching data, fine-tuned models, and linguistic IP under community control — while Rosetta connects to them as a thin client.
 
-See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for the full community-hosting walkthrough, and [Serving a Method via API](/docs/guides/serving-a-method) for endpoint requirements.
+See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for the full community-hosting walkthrough, and [Serving a Method via API](/docs/guides/serving-a-method) for endpoint requirements.
 :::
 
 ---
@@ -389,7 +389,7 @@ This translates French via DeepL (glossary support), Japanese via OpenAI (qualit
 Plugins are pre-packaged translation recipes for specific language pairs. They're JSON manifests — not code — that tell rosetta which method to use, with what settings, and what quality has been benchmarked.
 
 :::tip From eval harness to production in one command
-Plugins developed and proven in the [eval harness](/docs/eval/harness) can be installed directly — the method you validate there deploys here with a single `plugin install` command. See [MT Evaluation](/docs/eval/) for the full evaluation workflow.
+Plugins developed and proven in the [eval harness](https://mtevalarena.org/docs/specifications/harness) can be installed directly — the method you validate there deploys here with a single `plugin install` command. See [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) for the full evaluation workflow.
 :::
 
 ```bash
@@ -481,7 +481,7 @@ Actual costs depend on your source text length, batch size, and provider pricing
 
 - [Supported Languages](/docs/reference/supported-languages)
 - [Coaching Data](/docs/concepts/coaching-data)
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages)
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plugin Specification](/docs/reference/plugin-spec)
 - [Serving a Method via API](/docs/guides/serving-a-method)
 - [Quality Gate](/docs/concepts/quality-gate)

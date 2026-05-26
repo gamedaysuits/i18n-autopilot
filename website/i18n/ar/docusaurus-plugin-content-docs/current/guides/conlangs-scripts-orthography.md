@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-تستخدم حروف العلة الطويلة علامات التشكيل (macron/circumflex): ê, î, ô, â. يتعامل المحول مع جميع علامات التشكيل الخاصة بـ SRO ويعينها إلى الأحرف المقطعية الصحيحة. راجع [دعم لغة ذات موارد محدودة](/docs/guides/low-resource-languages) للحصول على مسار Cree الكامل.
+تستخدم حروف العلة الطويلة علامات التشكيل (macron/circumflex): ê, î, ô, â. يتعامل المحول مع جميع علامات التشكيل الخاصة بـ SRO ويعينها إلى الأحرف المقطعية الصحيحة. راجع [دعم لغة ذات موارد محدودة](https://mtevalarena.org/docs/community/low-resource-languages) للحصول على مسار Cree الكامل.
 
 #### Serbian: اللاتينية → السيريلية (`sr`)
 
@@ -257,4 +257,4 @@ Output: [Kryptonian PUA] (requires Kryptonian font to render)
 - [محولات النصوص](/docs/concepts/script-converters) — التفاصيل الفنية لمسار التحويل
 - [طرق الترجمة](/docs/guides/translation-methods) — كيف تعمل كل طريقة ترجمة
 - [التكوين](/docs/getting-started/configuration) — مرجع التكوين بما في ذلك إعداد اللغة والسجل
-- [دعم لغة ذات موارد محدودة](/docs/guides/low-resource-languages) — نفس البنية التحتية المطبقة على اللغات الحقيقية غير المخدومة بشكل كافٍ
+- [دعم لغة ذات موارد محدودة](https://mtevalarena.org/docs/community/low-resource-languages) — نفس البنية التحتية المطبقة على اللغات الحقيقية غير المخدومة بشكل كافٍ

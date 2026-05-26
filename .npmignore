@@ -1,11 +1,16 @@
-# Exclude internal planning docs, tests, and development artifacts from npm
-docs/planning/
-docs/readme-src/
-docs/readme-locales/
-docs/readme-i18n.config.json
-docs/.i18n-rosetta.lock
-test/
+# Exclude non-npm content from the published package
+# Only the src/, bin/, and package.json should ship.
+
+# Documentation and websites
+docs/
 website/
+
+# Co-located ecosystem projects (separate repos)
+crk-translate/
+gds-mt-eval-harness/
+
+# Dev/test artifacts
+test/
 .vault/
 .github/
 .rosetta/

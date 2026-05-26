@@ -17,7 +17,7 @@ rosetta มาพร้อมกับ **Language Cards** — ไฟล์อ้
 | 🟢 | **Google Translate** | พื้นฐาน Neural MT รองรับ 130+ ภาษา เฉพาะสตริงแบบ Key-value เท่านั้น — ไม่สามารถแปลเนื้อหา Markdown ได้อย่างปลอดภัย | ~$20/1M ตัวอักษร |
 | 🔵 | **LLM (OpenRouter)** | ภาษาใดๆ ที่โมเดลรู้จัก ใช้พรอมต์ควบคุมระดับภาษา (Register-steered) จัดการได้ทั้ง Key-value และเนื้อหา Markdown | แตกต่างกันไปตามโมเดล |
 | 🟣 | **LLM-Coached** | LLM + พจนานุกรมไวยากรณ์ + ข้อมูลการสอน (coaching data) ที่แทรกในพรอมต์ เหมาะที่สุดสำหรับภาษาที่มีความซับซ้อนทางสัณฐานวิทยา | แตกต่างกันไปตามโมเดล |
-| 🟠 | **API (Plugin)** | ไปป์ไลน์การแปลที่โฮสต์โดยชุมชนและให้บริการผ่าน HTTP [รองรับ OCAP](/docs/guides/low-resource-languages) | แตกต่างกันไปตามผู้ให้บริการ |
+| 🟠 | **API (Plugin)** | ไปป์ไลน์การแปลที่โฮสต์โดยชุมชนและให้บริการผ่าน HTTP [รองรับ OCAP](https://mtevalarena.org/docs/community/low-resource-languages) | แตกต่างกันไปตามผู้ให้บริการ |
 
 ตั้งค่า `GOOGLE_TRANSLATE_API_KEY` สำหรับ Google Translate หรือ `OPENROUTER_API_KEY` สำหรับเมธอด LLM ดูรายละเอียดทั้งหมดได้ที่ [เมธอดการแปล](/docs/guides/translation-methods)
 
@@ -84,14 +84,14 @@ rosetta มาพร้อมกับ **Language Cards** — ไฟล์อ้
 
 ## ภาษาพื้นเมืองและภาษาที่มีทรัพยากรน้อย (Low-Resource Languages)
 
-ภาษาเหล่านี้ไม่ได้รับการรองรับโดยบริการ MT เชิงพาณิชย์ rosetta มีเครื่องมือสำหรับชุมชนภาษาในการสร้างเมธอดของตนเองภายใต้ [หลักการ OCAP](/docs/guides/low-resource-languages)
+ภาษาเหล่านี้ไม่ได้รับการรองรับโดยบริการ MT เชิงพาณิชย์ rosetta มีเครื่องมือสำหรับชุมชนภาษาในการสร้างเมธอดของตนเองภายใต้ [หลักการ OCAP](https://mtevalarena.org/docs/community/low-resource-languages)
 
 | | ภาษา | รหัส | Google | LLM | Coached | สคริปต์ | สถานะ |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 อยู่ระหว่างการพัฒนา |
 
 :::info Plains Cree อยู่ระหว่างการพัฒนาอย่างต่อเนื่อง
-ระดับภาษา, โครงสร้างพื้นฐานการสอน (coaching infrastructure), ตัวแปลงสคริปต์ และระบบประเมินผลสำหรับ Plains Cree นั้นสามารถใช้งานได้แล้ว แต่ไปป์ไลน์การแปล **ยังไม่เปิดตัว** เรากำลังทำงานร่วมกับชุมชนภาษาภายใต้ [หลักการ OCAP](/docs/guides/low-resource-languages) เพื่อให้มั่นใจในคุณภาพก่อนการเปิดตัว ดูเรื่องราวทั้งหมดได้ที่ [สนับสนุนภาษาที่มีทรัพยากรน้อย](/docs/guides/low-resource-languages) — และวิธีที่คุณสามารถมีส่วนร่วม
+ระดับภาษา, โครงสร้างพื้นฐานการสอน (coaching infrastructure), ตัวแปลงสคริปต์ และระบบประเมินผลสำหรับ Plains Cree นั้นสามารถใช้งานได้แล้ว แต่ไปป์ไลน์การแปล **ยังไม่เปิดตัว** เรากำลังทำงานร่วมกับชุมชนภาษาภายใต้ [หลักการ OCAP](https://mtevalarena.org/docs/community/low-resource-languages) เพื่อให้มั่นใจในคุณภาพก่อนการเปิดตัว ดูเรื่องราวทั้งหมดได้ที่ [สนับสนุนภาษาที่มีทรัพยากรน้อย](https://mtevalarena.org/docs/community/low-resource-languages) — และวิธีที่คุณสามารถมีส่วนร่วม
 :::
 
 :::tip การเพิ่มภาษาที่มีทรัพยากรน้อยอื่นๆ
@@ -206,4 +206,4 @@ Rosetta จะแปลงคีย์เป็นพรอมต์ระดั
 - [เมธอดการแปล](/docs/guides/translation-methods) — วิธีการทำงานของแต่ละเมธอด
 - [ตัวแปลงสคริปต์ (Script Converters)](/docs/concepts/script-converters) — ไปป์ไลน์การแปลงสคริปต์แบบ Deterministic
 - [ภาษาประดิษฐ์ สคริปต์ และอักขรวิธี](/docs/guides/conlangs-scripts-orthography) — ฟอนต์ PUA, Unicode, การเพิ่มภาษาประดิษฐ์
-- [สนับสนุนภาษาที่มีทรัพยากรน้อย](/docs/guides/low-resource-languages) — การสร้างเมธอดสำหรับภาษาที่ขาดแคลนทรัพยากร
+- [สนับสนุนภาษาที่มีทรัพยากรน้อย](https://mtevalarena.org/docs/community/low-resource-languages) — การสร้างเมธอดสำหรับภาษาที่ขาดแคลนทรัพยากร

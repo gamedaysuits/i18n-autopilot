@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Lange klinkers gebruiken een macron/circumflex: ê, î, ô, â. De converter verwerkt alle SRO-diakritische tekens en wijst deze toe aan de juiste syllabische tekens. Zie [Ondersteuning voor een low-resource taal](/docs/guides/low-resource-languages) voor de volledige Cree-pijplijn.
+Lange klinkers gebruiken een macron/circumflex: ê, î, ô, â. De converter verwerkt alle SRO-diakritische tekens en wijst deze toe aan de juiste syllabische tekens. Zie [Ondersteuning voor een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) voor de volledige Cree-pijplijn.
 
 #### Servisch: Latijn → Cyrillisch (`sr`)
 
@@ -257,4 +257,4 @@ De LLM kan alleen vertalen naar een conlang die het in de trainingsgegevens heef
 - [Script converters](/docs/concepts/script-converters) — technische details van de conversiepijplijn
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke vertaalmethode werkt
 - [Configuratie](/docs/getting-started/configuration) — configuratiereferentie inclusief taal- en registerinstellingen
-- [Ondersteuning voor een low-resource taal](/docs/guides/low-resource-languages) — dezelfde infrastructuur toegepast op echte, ondervertegenwoordigde talen
+- [Ondersteuning voor een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) — dezelfde infrastructuur toegepast op echte, ondervertegenwoordigde talen

@@ -142,6 +142,6 @@ rosetta sync
 
 - [翻译方法](/docs/guides/translation-methods) — 每个内置方法的工作原理
 - [插件规范](/docs/reference/plugin-spec) — method.json 清单格式
-- [Eval Harness](/docs/eval/harness) — 配套的研究工具
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — 配套的研究工具
 - [通过 API 提供方法服务](/docs/guides/serving-a-method) — 托管自定义翻译管道
-- [支持低资源语言](/docs/guides/low-resource-languages) — 推动此架构的用例
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 推动此架构的用例

@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ Le modèle de méthode `api` est entièrement ouvert — il n'y a aucune restric
 
 - [Méthodes de traduction](/docs/guides/translation-methods) — aperçu de toutes les méthodes intégrées (`openai`, `google`, `api`, etc.)
 - [Spécification des plugins](/docs/reference/plugin-spec) — schéma complet pour `i18n-rosetta.config.json` incluant les champs de la méthode `api`
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — guide de bout en bout pour les langues sous-dotées en ressources, incluant les principes OCAP
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — guide de bout en bout pour les langues sous-dotées en ressources, incluant les principes OCAP
 - [Architecture](/docs/concepts/architecture) — fonctionnement de la boucle de synchronisation, du traitement par lots et de la répartition des méthodes d'i18n-rosetta
-- [Évaluation de la traduction automatique (MT)](/docs/eval/) — méthodologie d'évaluation, métriques et processus de soumission au classement
+- [Évaluation de la traduction automatique (MT)](https://mtevalarena.org/docs/leaderboard/rules) — méthodologie d'évaluation, métriques et processus de soumission au classement
 - [Classement des méthodes](/leaderboard) — classements de qualité en direct pour les différentes méthodes et paires de langues

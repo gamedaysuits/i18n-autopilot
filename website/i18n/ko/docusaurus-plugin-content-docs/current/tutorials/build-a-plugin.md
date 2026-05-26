@@ -243,5 +243,5 @@ flowchart LR
 
 - **[Plugin Specification](/docs/reference/plugin-spec)** — 전체 매니페스트 형식 레퍼런스
 - **[Translation Methods](/docs/guides/translation-methods)** — 4가지 method 모두 비교하기
-- **[Low-Resource Languages](/docs/guides/low-resource-languages)** — API가 지원되지 않는 언어에 이 패턴 적용하기
+- **[Low-Resource Languages](https://mtevalarena.org/docs/community/low-resource-languages)** — API가 지원되지 않는 언어에 이 패턴 적용하기
 - **[Translate 30 Languages](/docs/tutorials/translate-30-languages)** — 글로벌 사용자를 대상으로 프로젝트 확장하기

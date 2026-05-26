@@ -142,6 +142,6 @@ Người dùng tự duy trì các quy tắc ngữ pháp và từ điển của r
 
 - [Các phương thức dịch thuật](/docs/guides/translation-methods) — cách hoạt động của từng phương thức tích hợp sẵn
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — định dạng manifest method.json
-- [Eval Harness](/docs/eval/harness) — công cụ nghiên cứu đồng hành
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — công cụ nghiên cứu đồng hành
 - [Phục vụ một phương thức qua API](/docs/guides/serving-a-method) — lưu trữ các pipeline dịch thuật tùy chỉnh
-- [Hỗ trợ ngôn ngữ ít tài nguyên (Low-Resource Language)](/docs/guides/low-resource-languages) — use case đã thúc đẩy kiến trúc này
+- [Hỗ trợ ngôn ngữ ít tài nguyên (Low-Resource Language)](https://mtevalarena.org/docs/community/low-resource-languages) — use case đã thúc đẩy kiến trúc này

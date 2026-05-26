@@ -52,9 +52,9 @@ Ang French ay gagamit ng Google Translate (fast, cheap). Ang Japanese ay gagamit
 
 Tingin mo ba kaya ng method mo na mag-translate ng English to Spanish? Turkish to Azerbaijani? English to Cree?
 
-**Patunayan mo.** Bini-benchmark ng kasamang [eval harness](/docs/eval/harness) ang anumang translation method na may reproducible at fingerprinted na scoring. Tinatrack ng [leaderboard](/leaderboard) ang bawat submission.
+**Patunayan mo.** Bini-benchmark ng kasamang [eval harness](https://mtevalarena.org/docs/specifications/harness) ang anumang translation method na may reproducible at fingerprinted na scoring. Tinatrack ng [leaderboard](/leaderboard) ang bawat submission.
 
-Nagshe-share ng parehong plugin interface ang eval harness at ang production CLI. Ang isang method na may magandang score sa harness ay puwedeng gamitin sa production — kung magbibigay ng consent ang community ng wikang sineserbisyuhan nito. Para sa mga Indigenous at low-resource languages, mahalaga po ang consent na iyon. Tingnan ang [Data Sovereignty](/docs/guides/data-sovereignty).
+Nagshe-share ng parehong plugin interface ang eval harness at ang production CLI. Ang isang method na may magandang score sa harness ay puwedeng gamitin sa production — kung magbibigay ng consent ang community ng wikang sineserbisyuhan nito. Para sa mga Indigenous at low-resource languages, mahalaga po ang consent na iyon. Tingnan ang [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Isa po itong open invitation. Kung nagtatrabaho ka gamit ang isang low-resource 
 - [Hugo Multilingual Site](/docs/tutorials/hugo-multilingual-site) — Markdown content translation
 
 **Going deeper:**
-- [Data Sovereignty](/docs/guides/data-sovereignty) — Mga prinsipyo ng OCAP, CARE, at Māori Data Sovereignty
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — Ang challenge na nagpasimula ng lahat
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Gumawa ng decomposition pipeline
-- [MT Evaluation](/docs/eval/) — Paano gumagana ang harness at leaderboard
+- [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Mga prinsipyo ng OCAP, CARE, at Māori Data Sovereignty
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — Ang challenge na nagpasimula ng lahat
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Gumawa ng decomposition pipeline
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — Paano gumagana ang harness at leaderboard
 - [Method Leaderboard](/leaderboard) — Live scores at submissions

@@ -105,7 +105,7 @@ flowchart TD
 }
 ```
 
-참고: [자원 부족 언어 가이드](/docs/guides/low-resource-languages)
+참고: [자원 부족 언어 가이드](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 :::note OCAP 호환 커뮤니티 번역
 `api` 방식은 **OCAP 호환 커뮤니티 호스팅 번역**으로 가는 가교 역할을 해요. 원주민 및 소수 민족 언어 커뮤니티는 자체 번역 엔드포인트를 호스팅하여 코칭 데이터, 미세 조정된 모델, 언어적 IP를 커뮤니티의 통제 하에 둘 수 있으며, Rosetta는 씬 클라이언트로 이에 연결돼요.
 
-전체 커뮤니티 호스팅 과정은 [자원 부족 언어 지원하기](/docs/guides/low-resource-languages)를, 엔드포인트 요구 사항은 [API를 통한 방식 제공](/docs/guides/serving-a-method)을 참고하세요.
+전체 커뮤니티 호스팅 과정은 [자원 부족 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages)를, 엔드포인트 요구 사항은 [API를 통한 방식 제공](/docs/guides/serving-a-method)을 참고하세요.
 :::
 
 ---
@@ -388,7 +388,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 플러그인은 특정 언어 쌍을 위해 미리 패키징된 번역 레시피예요. 코드가 아닌 JSON 매니페스트 형식이며, rosetta에 어떤 방식을 어떤 설정으로 사용할지, 그리고 벤치마크된 품질은 어느 정도인지 알려줘요.
 
 :::tip 평가 하네스에서 프로덕션까지 단일 명령어로
-[평가 하네스(eval harness)](/docs/eval/harness)에서 개발되고 검증된 플러그인은 직접 설치할 수 있어요. 그곳에서 검증한 방식을 단일 `plugin install` 명령어로 여기에 배포할 수 있답니다. 전체 평가 워크플로우는 [MT 평가](/docs/eval/)를 참고하세요.
+[평가 하네스(eval harness)](https://mtevalarena.org/docs/specifications/harness)에서 개발되고 검증된 플러그인은 직접 설치할 수 있어요. 그곳에서 검증한 방식을 단일 `plugin install` 명령어로 여기에 배포할 수 있답니다. 전체 평가 워크플로우는 [MT 평가](https://mtevalarena.org/docs/leaderboard/rules)를 참고하세요.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ i18n-rosetta plugin remove french-formal-v1
 
 - [지원 언어](/docs/reference/supported-languages)
 - [코칭 데이터](/docs/concepts/coaching-data)
-- [자원 부족 언어 지원하기](/docs/guides/low-resource-languages)
+- [자원 부족 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages)
 - [플러그인 사양](/docs/reference/plugin-spec)
 - [API를 통한 방식 제공](/docs/guides/serving-a-method)
 - [품질 게이트](/docs/concepts/quality-gate)

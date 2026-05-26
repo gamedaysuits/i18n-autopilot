@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 - [翻訳メソッド](/docs/guides/translation-methods) — すべての組み込みメソッド（`openai`、`google`、`api`など）の概要
 - [プラグイン仕様](/docs/reference/plugin-spec) — `api`メソッドのフィールドを含む、`i18n-rosetta.config.json`の完全なスキーマ
-- [低リソース言語のサポート](/docs/guides/low-resource-languages) — OCAP原則を含む、リソースが不足している言語向けのエンドツーエンドガイド
+- [低リソース言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages) — OCAP原則を含む、リソースが不足している言語向けのエンドツーエンドガイド
 - [アーキテクチャ](/docs/concepts/architecture) — i18n-rosettaの同期ループ、バッチ処理、メソッドディスパッチの仕組み
-- [機械翻訳（MT）の評価](/docs/eval/) — 評価手法、指標、およびリーダーボードへの提出プロセス
+- [機械翻訳（MT）の評価](https://mtevalarena.org/docs/leaderboard/rules) — 評価手法、指標、およびリーダーボードへの提出プロセス
 - [メソッドリーダーボード](/leaderboard) — メソッドおよび言語ペアごとのリアルタイムの品質ランキング

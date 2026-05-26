@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 - [翻译方法](/docs/guides/translation-methods) —— 所有内置方法的概述（`openai`、`google`、`api` 等）
 - [插件规范](/docs/reference/plugin-spec) —— `i18n-rosetta.config.json` 的完整模式（schema），包含 `api` 方法字段
-- [支持低资源语言](/docs/guides/low-resource-languages) —— 针对资源不足语言的端到端指南，包含 OCAP 原则
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) —— 针对资源不足语言的端到端指南，包含 OCAP 原则
 - [架构](/docs/concepts/architecture) —— i18n-rosetta 的同步循环、批处理和方法调度的运作方式
-- [机器翻译评估](/docs/eval/) —— 评估方法、指标以及排行榜提交流程
+- [机器翻译评估](https://mtevalarena.org/docs/leaderboard/rules) —— 评估方法、指标以及排行榜提交流程
 - [方法排行榜](/leaderboard) —— 跨方法和语言对的实时质量排名

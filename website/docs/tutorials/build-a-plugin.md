@@ -244,5 +244,5 @@ You now have:
 
 - **[Plugin Specification](/docs/reference/plugin-spec)** — Full manifest format reference
 - **[Translation Methods](/docs/guides/translation-methods)** — Compare all four methods
-- **[Low-Resource Languages](/docs/guides/low-resource-languages)** — Apply this pattern to languages without API coverage
+- **[Low-Resource Languages](https://mtevalarena.org/docs/community/low-resource-languages)** — Apply this pattern to languages without API coverage
 - **[Translate 30 Languages](/docs/tutorials/translate-30-languages)** — Scale your project to a global audience

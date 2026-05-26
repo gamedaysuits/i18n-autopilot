@@ -40,5 +40,27 @@
         }
       ]
     }
+  },
+  "resources": {
+    "fsts": [
+      {
+        "name": "GiellaLT Plains Cree FST (lang-crk)",
+        "url": "https://github.com/giellalt/lang-crk/releases",
+        "type": "morphological-analyzer"
+      }
+    ],
+    "corpora": [
+      {
+        "name": "EDTeKLA Cree Language Textbook Corpus",
+        "type": "parallel",
+        "pairs": ["en-crk"]
+      },
+      {
+        "name": "OPUS en-crk",
+        "type": "parallel",
+        "url": "https://opus.nlpl.eu/results/en&crk/corpus-result-table"
+      }
+    ],
+    "models": []
   }
 }

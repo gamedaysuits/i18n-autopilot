@@ -324,6 +324,113 @@ async function lookupGlottolog(iso639_3) {
   }
 }
 
+// ─── GiellaLT FST Discovery ───────────────────────────────────────
+
+/**
+ * Checks if a GiellaLT FST repo exists for the given ISO 639-3 code.
+ * Queries the GitHub API to find lang-{code} repos with FST releases.
+ *
+ * Returns a resource entry for the language card, or null if no FST found.
+ *
+ * GiellaLT FST repos follow two patterns:
+ *   - Legacy: fst-vYYYY.M.D tags with standalone .hfstol zips
+ *   - Divvun: speller-XXX/vN.N.N tags with .drb/.pkt.tar.zst packages
+ *
+ * Both are reported — the language card documents what exists,
+ * the eval harness decides what it can auto-install.
+ */
+async function checkGiellaLTRepo(iso639_3, englishName) {
+  if (!iso639_3) return null;
+
+  const repoName = `giellalt/lang-${iso639_3}`;
+
+  try {
+    // Step 1: Check if the repo exists
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const repoResp = await fetch(`https://api.github.com/repos/${repoName}`, {
+      signal: controller.signal,
+      headers: { 'Accept': 'application/vnd.github.v3+json' },
+    });
+    clearTimeout(timeout);
+
+    if (!repoResp.ok) {
+      if (repoResp.status === 404) {
+        console.log(`  [GIELLALT] No repo found: ${repoName}`);
+        return null;
+      }
+      console.warn(`  [GIELLALT] HTTP ${repoResp.status} for ${repoName}`);
+      return null;
+    }
+
+    // Step 2: Check releases for FST-tagged versions
+    const controller2 = new AbortController();
+    const timeout2 = setTimeout(() => controller2.abort(), 8000);
+
+    const releasesResp = await fetch(
+      `https://api.github.com/repos/${repoName}/releases?per_page=10`,
+      {
+        signal: controller2.signal,
+        headers: { 'Accept': 'application/vnd.github.v3+json' },
+      }
+    );
+    clearTimeout(timeout2);
+
+    if (!releasesResp.ok) {
+      console.log(`  [GIELLALT] Repo exists but can't fetch releases`);
+      // Repo exists but no releases — still worth noting
+      return {
+        name: `GiellaLT ${englishName} FST (lang-${iso639_3})`,
+        url: `https://github.com/${repoName}`,
+        type: 'morphological-analyzer',
+      };
+    }
+
+    const releases = await releasesResp.json();
+
+    // Check for legacy FST releases (standalone .hfstol zips)
+    const fstRelease = releases.find(r => r.tag_name.startsWith('fst-'));
+    if (fstRelease) {
+      console.log(`  [GIELLALT] ✓ Found FST release: ${fstRelease.tag_name}`);
+      return {
+        name: `GiellaLT ${englishName} FST (lang-${iso639_3})`,
+        url: `https://github.com/${repoName}/releases`,
+        type: 'morphological-analyzer',
+      };
+    }
+
+    // Check for Divvun-packaged releases (speller, grammar)
+    const divvunRelease = releases.find(
+      r => r.tag_name.startsWith('speller-') || r.tag_name.startsWith('grammar-')
+    );
+    if (divvunRelease) {
+      console.log(`  [GIELLALT] ✓ Found Divvun release: ${divvunRelease.tag_name}`);
+      return {
+        name: `GiellaLT ${englishName} FST (lang-${iso639_3}, Divvun-packaged)`,
+        url: `https://github.com/${repoName}`,
+        type: 'morphological-analyzer',
+      };
+    }
+
+    // Repo exists but no relevant releases
+    console.log(`  [GIELLALT] Repo exists but no FST/speller releases`);
+    return {
+      name: `GiellaLT ${englishName} FST (lang-${iso639_3}, no releases yet)`,
+      url: `https://github.com/${repoName}`,
+      type: 'morphological-analyzer',
+    };
+
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      console.warn(`  [GIELLALT] Timeout checking ${repoName}`);
+    } else {
+      console.warn(`  [GIELLALT] Error: ${err.message}`);
+    }
+    return null;
+  }
+}
+
 // ─── Card Generation ───────────────────────────────────────────────
 
 /**
@@ -440,6 +547,10 @@ async function generateCards(code) {
 
   // ── Build the Reference Card ─────────────────────────────────────
 
+  // Step 6.5: Check for GiellaLT FST repo
+  console.log(`  [GIELLALT] Checking for FST repo: lang-${iso639_3}...`);
+  const giellaltFST = await checkGiellaLTRepo(iso639_3, englishName);
+
   const referenceCard = {
     code,
     name: englishName,
@@ -458,6 +569,7 @@ async function generateCards(code) {
       },
     },
     resources: {
+      fsts: giellaltFST ? [giellaltFST] : [],
       corpora: [
         ...(nllbCode
           ? [{ name: `NLLB-200 (${nllbCode})`, type: 'nmt', url: 'https://huggingface.co/facebook/nllb-200-distilled-600M' }]
@@ -465,12 +577,12 @@ async function generateCards(code) {
         { name: `OPUS en-${code.split('-')[0]}`, type: 'parallel', url: `https://opus.nlpl.eu/results/en&${code.split('-')[0]}/corpus-result-table` },
       ],
       models: [],
-      tools: [],
     },
   };
 
   return { runtime: runtimeCard, reference: referenceCard };
 }
+
 
 // ─── Main ──────────────────────────────────────────────────────────
 

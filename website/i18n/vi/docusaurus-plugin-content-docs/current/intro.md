@@ -52,9 +52,9 @@ Tiếng Pháp dùng Google Translate (nhanh, rẻ). Tiếng Nhật dùng một L
 
 Bạn nghĩ phương thức của mình có thể dịch từ tiếng Anh sang tiếng Tây Ban Nha? Tiếng Thổ Nhĩ Kỳ sang tiếng Azerbaijan? Tiếng Anh sang tiếng Cree?
 
-**Hãy chứng minh điều đó.** Công cụ đi kèm [eval harness](/docs/eval/harness) sẽ benchmark bất kỳ phương thức dịch nào với điểm số có thể tái tạo và được fingerprinted. Bảng xếp hạng ([leaderboard](/leaderboard)) theo dõi mọi bài nộp.
+**Hãy chứng minh điều đó.** Công cụ đi kèm [eval harness](https://mtevalarena.org/docs/specifications/harness) sẽ benchmark bất kỳ phương thức dịch nào với điểm số có thể tái tạo và được fingerprinted. Bảng xếp hạng ([leaderboard](/leaderboard)) theo dõi mọi bài nộp.
 
-Eval harness và production CLI dùng chung một giao diện plugin. Một phương thức đạt điểm cao trong harness có thể được sử dụng trong production — nếu cộng đồng sử dụng ngôn ngữ đó đồng ý. Đối với các ngôn ngữ bản địa và ngôn ngữ ít tài nguyên (low-resource languages), sự đồng ý đó rất quan trọng. Xem [Chủ quyền Dữ liệu](/docs/guides/data-sovereignty).
+Eval harness và production CLI dùng chung một giao diện plugin. Một phương thức đạt điểm cao trong harness có thể được sử dụng trong production — nếu cộng đồng sử dụng ngôn ngữ đó đồng ý. Đối với các ngôn ngữ bản địa và ngôn ngữ ít tài nguyên (low-resource languages), sự đồng ý đó rất quan trọng. Xem [Chủ quyền Dữ liệu](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Fine-tune các model. Triển khai các thuật toán tiến hóa (evolutionary 
 - [Trang web đa ngôn ngữ Hugo](/docs/tutorials/hugo-multilingual-site) — Dịch nội dung Markdown
 
 **Tìm hiểu sâu hơn:**
-- [Chủ quyền Dữ liệu](/docs/guides/data-sovereignty) — Các nguyên tắc OCAP, CARE và Chủ quyền Dữ liệu của người Māori
-- [Hỗ trợ ngôn ngữ ít tài nguyên](/docs/guides/low-resource-languages) — Thử thách khởi nguồn cho tất cả
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Xây dựng một decomposition pipeline
-- [Đánh giá MT](/docs/eval/) — Cách thức hoạt động của harness và leaderboard
+- [Chủ quyền Dữ liệu](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Các nguyên tắc OCAP, CARE và Chủ quyền Dữ liệu của người Māori
+- [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — Thử thách khởi nguồn cho tất cả
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Xây dựng một decomposition pipeline
+- [Đánh giá MT](https://mtevalarena.org/docs/leaderboard/rules) — Cách thức hoạt động của harness và leaderboard
 - [Method Leaderboard](/leaderboard) — Điểm số trực tiếp và các bài nộp

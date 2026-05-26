@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ El patrón del método `api` es completamente abierto: no hay restricciones de l
 
 - [Métodos de traducción](/docs/guides/translation-methods) — descripción general de cada método incorporado (`openai`, `google`, `api`, etc.)
 - [Especificación de plugins](/docs/reference/plugin-spec) — esquema completo para `i18n-rosetta.config.json`, incluyendo los campos del método `api`
-- [Soporte para un idioma de bajos recursos](/docs/guides/low-resource-languages) — guía de principio a fin para idiomas con pocos recursos, incluyendo los principios OCAP
+- [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — guía de principio a fin para idiomas con pocos recursos, incluyendo los principios OCAP
 - [Arquitectura](/docs/concepts/architecture) — cómo funcionan el bucle de sincronización, el procesamiento por lotes y el despacho de métodos de i18n-rosetta
-- [Evaluación de MT](/docs/eval/) — metodología de evaluación, métricas y el proceso de envío a la tabla de clasificación (leaderboard)
+- [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) — metodología de evaluación, métricas y el proceso de envío a la tabla de clasificación (leaderboard)
 - [Tabla de clasificación de métodos](/leaderboard) — clasificaciones de calidad en vivo en todos los métodos y pares de idiomas

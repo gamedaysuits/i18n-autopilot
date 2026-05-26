@@ -142,6 +142,6 @@ Ang user mismo ang nagme-maintain ng sarili nilang grammar rules at dictionary s
 
 - [Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat built-in method
 - [Plugin Specification](/docs/reference/plugin-spec) — ang method.json manifest format
-- [Eval Harness](/docs/eval/harness) — ang companion research tool
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — ang companion research tool
 - [Serving a Method via API](/docs/guides/serving-a-method) — pag-host ng custom translation pipelines
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — ang use case na nag-drive sa architecture na ito
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — ang use case na nag-drive sa architecture na ito

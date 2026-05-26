@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Lange Vokale verwenden Makron/Zirkumflex: ê, î, ô, â. Der Konverter verarbeitet alle SRO-Diakritika und ordnet sie den korrekten Silbenzeichen zu. Siehe [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) für die vollständige Cree-Pipeline.
+Lange Vokale verwenden Makron/Zirkumflex: ê, î, ô, â. Der Konverter verarbeitet alle SRO-Diakritika und ordnet sie den korrekten Silbenzeichen zu. Siehe [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständige Cree-Pipeline.
 
 #### Serbisch: Lateinisch → Kyrillisch (`sr`)
 
@@ -257,4 +257,4 @@ Das LLM kann nur in eine konstruierte Sprache übersetzen, die es in den Trainin
 - [Schriftkonverter](/docs/concepts/script-converters) — technische Details der Konvertierungs-Pipeline
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede Übersetzungsmethode funktioniert
 - [Konfiguration](/docs/getting-started/configuration) — Konfigurationsreferenz einschließlich Sprach- und Registereinrichtung
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — dieselbe Infrastruktur angewendet auf echte, unterrepräsentierte Sprachen
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — dieselbe Infrastruktur angewendet auf echte, unterrepräsentierte Sprachen

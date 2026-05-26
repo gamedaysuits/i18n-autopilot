@@ -132,7 +132,7 @@ mt-eval test eval/logs/run_*.json
 ## 関連項目
 
 - [翻訳メソッド](/docs/guides/translation-methods) — llm-coached メソッド
-- [低リソース言語のサポート](/docs/guides/low-resource-languages) — コーチングの実践
+- [低リソース言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages) — コーチングの実践
 - [プラグイン仕様](/docs/reference/plugin-spec) — プラグインへのコーチングデータのパッケージ化
 - [品質ゲート](/docs/concepts/quality-gate) — コーチングされた翻訳の検証方法
 - [設定](/docs/getting-started/configuration) — ペアごとのコーチング設定

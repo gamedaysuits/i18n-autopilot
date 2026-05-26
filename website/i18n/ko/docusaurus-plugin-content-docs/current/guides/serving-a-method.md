@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 - [번역 메서드](/docs/guides/translation-methods) — 모든 내장 메서드(`openai`, `google`, `api` 등)에 대한 개요
 - [플러그인 사양](/docs/reference/plugin-spec) — `api` 메서드 필드를 포함한 `i18n-rosetta.config.json`의 전체 스키마
-- [자원이 부족한 언어 지원하기](/docs/guides/low-resource-languages) — OCAP 원칙을 포함하여 자원이 부족한 언어를 위한 엔드투엔드 가이드
+- [자원이 부족한 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages) — OCAP 원칙을 포함하여 자원이 부족한 언어를 위한 엔드투엔드 가이드
 - [아키텍처](/docs/concepts/architecture) — i18n-rosetta의 동기화 루프, 일괄 처리(batching) 및 메서드 디스패치 작동 방식
-- [MT 평가](/docs/eval/) — 평가 방법론, 지표 및 리더보드 제출 프로세스
+- [MT 평가](https://mtevalarena.org/docs/leaderboard/rules) — 평가 방법론, 지표 및 리더보드 제출 프로세스
 - [메서드 리더보드](/leaderboard) — 메서드 및 언어 쌍 전반에 걸친 실시간 품질 순위

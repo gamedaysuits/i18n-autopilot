@@ -243,5 +243,5 @@ flowchart LR
 
 - **[Plugin Specification](/docs/reference/plugin-spec)** — ข้อมูลอ้างอิงรูปแบบ manifest ฉบับเต็ม
 - **[Translation Methods](/docs/guides/translation-methods)** — เปรียบเทียบวิธีการแปลทั้งสี่วิธี
-- **[Low-Resource Languages](/docs/guides/low-resource-languages)** — นำรูปแบบนี้ไปใช้กับภาษาที่ไม่มี API รองรับ
+- **[Low-Resource Languages](https://mtevalarena.org/docs/community/low-resource-languages)** — นำรูปแบบนี้ไปใช้กับภาษาที่ไม่มี API รองรับ
 - **[Translate 30 Languages](/docs/tutorials/translate-30-languages)** — ขยายสเกลโปรเจกต์ของคุณสู่กลุ่มผู้ชมทั่วโลก

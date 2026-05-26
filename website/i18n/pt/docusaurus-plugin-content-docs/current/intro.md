@@ -52,9 +52,9 @@ O francês usa o Google Translate (rápido, barato). O japonês usa um LLM premi
 
 Acha que o seu método consegue traduzir de inglês para espanhol? De turco para azerbaijano? De inglês para Cree?
 
-**Prove.** O [eval harness](/docs/eval/harness) complementar avalia qualquer método de tradução com pontuações reproduzíveis e com fingerprint. O [leaderboard](/leaderboard) rastreia cada envio.
+**Prove.** O [eval harness](https://mtevalarena.org/docs/specifications/harness) complementar avalia qualquer método de tradução com pontuações reproduzíveis e com fingerprint. O [leaderboard](/leaderboard) rastreia cada envio.
 
-O eval harness e a CLI de produção compartilham a mesma interface de plugin. Um método que pontua bem no harness pode ser usado em produção — se a comunidade cujo idioma ele atende der consentimento. Para idiomas indígenas e de poucos recursos (low-resource languages), esse consentimento é importante. Veja [Data Sovereignty](/docs/guides/data-sovereignty).
+O eval harness e a CLI de produção compartilham a mesma interface de plugin. Um método que pontua bem no harness pode ser usado em produção — se a comunidade cujo idioma ele atende der consentimento. Para idiomas indígenas e de poucos recursos (low-resource languages), esse consentimento é importante. Veja [Data Sovereignty](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Este é um convite aberto. Se você trabalha com um idioma de poucos recursos (l
 - [Site Multilíngue Hugo](/docs/tutorials/hugo-multilingual-site) — Tradução de conteúdo Markdown
 
 **Indo mais fundo:**
-- [Soberania de Dados](/docs/guides/data-sovereignty) — Princípios OCAP, CARE e Soberania de Dados Māori
-- [Apoie um Idioma de Poucos Recursos](/docs/guides/low-resource-languages) — O desafio que começou tudo
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Crie um pipeline de decomposição
-- [Avaliação de MT](/docs/eval/) — Como o harness e o leaderboard funcionam
+- [Soberania de Dados](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Princípios OCAP, CARE e Soberania de Dados Māori
+- [Apoie um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — O desafio que começou tudo
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Crie um pipeline de decomposição
+- [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) — Como o harness e o leaderboard funcionam
 - [Method Leaderboard](/leaderboard) — Pontuações ao vivo e envios

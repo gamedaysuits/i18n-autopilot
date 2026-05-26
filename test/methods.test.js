@@ -140,18 +140,11 @@ describe('METHOD_REGISTRY', () => {
     assert.equal(method.name, 'llm-coached');
   });
 
-  it('getMethod falls back to LLMMethod for unknown methods', () => {
-    const warnings = [];
-    const origError = console.error;
-    console.error = (msg) => warnings.push(msg);
-
-    try {
-      const method = getMethod('nonexistent');
-      assert.equal(method.name, 'llm');
-      assert.ok(warnings.some(w => w.includes('Unknown translation method')));
-    } finally {
-      console.error = origError;
-    }
+  it('getMethod throws descriptive error for unknown methods', () => {
+    assert.throws(
+      () => getMethod('nonexistent'),
+      /Unknown translation method "nonexistent"/,
+    );
   });
 });
 

@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [Conlangs, schriften & orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-fonts, Unicode, nieuwe converters toevoegen
 - [Quality Gate](/docs/concepts/quality-gate) — validatie die wordt uitgevoerd vóór de scriptconversie
 - [Ondersteunde talen](/docs/reference/supported-languages) — welke talen scriptconverters hebben
-- [Een low-resource taal ondersteunen](/docs/guides/low-resource-languages) — SRO→Syllabics in context
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — scriptconversie in een meertraps pijplijn
+- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics in context
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — scriptconversie in een meertraps pijplijn

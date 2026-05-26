@@ -417,9 +417,11 @@ describe('integration: method resolution', () => {
     }
   });
 
-  it('falls back to LLM for unregistered methods', () => {
-    const method = getMethod('nonexistent-method-xyz');
-    assert.equal(method.name, 'llm');
+  it('throws descriptive error for unregistered methods', () => {
+    assert.throws(
+      () => getMethod('nonexistent-method-xyz'),
+      /Unknown translation method "nonexistent-method-xyz"/,
+    );
   });
 
   it('API method receives plugin context', () => {

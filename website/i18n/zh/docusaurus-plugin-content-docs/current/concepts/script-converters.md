@@ -170,5 +170,5 @@ SCRIPT_CONVERTERS['chr'] = {
 - [人造语言、文字与正字法](/docs/guides/conlangs-scripts-orthography) — PUA 字体、Unicode、添加新转换器
 - [质量门禁](/docs/concepts/quality-gate) — 在文字转换前运行的验证
 - [支持的语言](/docs/reference/supported-languages) — 哪些语言具有文字转换器
-- [支持低资源语言](/docs/guides/low-resource-languages) — 上下文中的 SRO→音节文字
-- [实战指南：FST 门禁流水线](/docs/tutorials/fst-gated-pipeline) — 多阶段流水线中的文字转换
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 上下文中的 SRO→音节文字
+- [实战指南：FST 门禁流水线](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 多阶段流水线中的文字转换

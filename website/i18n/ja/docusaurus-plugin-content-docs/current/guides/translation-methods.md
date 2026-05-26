@@ -105,7 +105,7 @@ flowchart TD
 }
 ```
 
-関連情報: [リソースの少ない言語向けガイド](/docs/guides/low-resource-languages)
+関連情報: [リソースの少ない言語向けガイド](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 :::note OCAP互換のコミュニティ翻訳
 `api`メソッドは、**OCAP互換のコミュニティホスト型翻訳**への架け橋となります。先住民や少数言語のコミュニティは、独自の翻訳エンドポイントをホストし、コーチングデータ、ファインチューニングされたモデル、言語的IPをコミュニティの管理下に置きながら、Rosettaをシンクライアントとして接続させることができます。
 
-コミュニティホスティングの完全なチュートリアルについては[リソースの少ない言語のサポート](/docs/guides/low-resource-languages)を、エンドポイントの要件については[API経由でのメソッドの提供](/docs/guides/serving-a-method)を参照してください。
+コミュニティホスティングの完全なチュートリアルについては[リソースの少ない言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages)を、エンドポイントの要件については[API経由でのメソッドの提供](/docs/guides/serving-a-method)を参照してください。
 :::
 
 ---
@@ -388,7 +388,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 プラグインは、特定の言語ペア向けに事前にパッケージ化された翻訳レシピです。これらはコードではなくJSONマニフェストであり、どのメソッドをどのような設定で使用するか、またベンチマークされた品質はどの程度かをrosettaに指示します。
 
 :::tip 評価ハーネスから本番環境へ1つのコマンドで移行
-[評価ハーネス](/docs/eval/harness)で開発および検証されたプラグインは、直接インストールできます。そこで検証したメソッドは、1つの`plugin install`コマンドでここにデプロイされます。評価ワークフローの全体像については、[MT評価](/docs/eval/)を参照してください。
+[評価ハーネス](https://mtevalarena.org/docs/specifications/harness)で開発および検証されたプラグインは、直接インストールできます。そこで検証したメソッドは、1つの`plugin install`コマンドでここにデプロイされます。評価ワークフローの全体像については、[MT評価](https://mtevalarena.org/docs/leaderboard/rules)を参照してください。
 :::
 
 ```bash
@@ -480,7 +480,7 @@ i18n-rosetta plugin remove french-formal-v1
 
 - [サポートされている言語](/docs/reference/supported-languages)
 - [コーチングデータ](/docs/concepts/coaching-data)
-- [リソースの少ない言語のサポート](/docs/guides/low-resource-languages)
+- [リソースの少ない言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages)
 - [プラグイン仕様](/docs/reference/plugin-spec)
 - [API経由でのメソッドの提供](/docs/guides/serving-a-method)
 - [品質ゲート](/docs/concepts/quality-gate)

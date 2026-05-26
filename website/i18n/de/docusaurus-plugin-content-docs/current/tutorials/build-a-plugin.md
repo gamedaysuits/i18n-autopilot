@@ -243,5 +243,5 @@ Sie verfügen nun über:
 
 - **[Plugin-Spezifikation](/docs/reference/plugin-spec)** — Vollständige Referenz des Manifest-Formats
 - **[Übersetzungsmethoden](/docs/guides/translation-methods)** — Vergleichen Sie alle vier Methoden
-- **[Ressourcenarme Sprachen](/docs/guides/low-resource-languages)** — Wenden Sie dieses Muster auf Sprachen ohne API-Abdeckung an
+- **[Ressourcenarme Sprachen](https://mtevalarena.org/docs/community/low-resource-languages)** — Wenden Sie dieses Muster auf Sprachen ohne API-Abdeckung an
 - **[30 Sprachen übersetzen](/docs/tutorials/translate-30-languages)** — Skalieren Sie Ihr Projekt für ein globales Publikum

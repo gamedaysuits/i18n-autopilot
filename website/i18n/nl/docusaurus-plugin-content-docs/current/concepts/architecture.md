@@ -142,6 +142,6 @@ De gebruiker beheert zijn eigen grammaticaregels en woordenboek in `.rosetta/coa
 
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke ingebouwde methode werkt
 - [Plugin-specificatie](/docs/reference/plugin-spec) — het method.json-manifestformaat
-- [Eval Harness](/docs/eval/harness) — de begeleidende onderzoekstool
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — de begeleidende onderzoekstool
 - [Een methode aanbieden via API](/docs/guides/serving-a-method) — het hosten van aangepaste vertaalpijplijnen
-- [Een taal met weinig bronnen ondersteunen](/docs/guides/low-resource-languages) — de use case die de drijfveer was voor deze architectuur
+- [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — de use case die de drijfveer was voor deze architectuur

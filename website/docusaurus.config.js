@@ -120,7 +120,7 @@ const config = {
             label: 'Docs',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
-          {to: '/docs/eval', label: 'Eval', position: 'left'},
+          {href: 'https://mtevalarena.org', label: 'Arena', position: 'left'},
           {to: '/leaderboard', label: 'Leaderboard', position: 'left'},
           {
             type: 'localeDropdown',
@@ -151,7 +151,7 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/getting-started/installation',
+                to: '/docs/getting-started/quick-start',
               },
               {
                 label: 'CLI Reference',
@@ -168,7 +168,7 @@ const config = {
             items: [
               {
                 label: 'Build a Pipeline',
-                to: '/docs/tutorials/fst-gated-pipeline',
+                href: 'https://mtevalarena.org/docs/tutorials/fst-gated-pipeline',
               },
               {
                 label: 'Translate 30 Languages',
@@ -204,8 +204,8 @@ const config = {
                 href: 'https://www.npmjs.com/package/i18n-rosetta',
               },
               {
-                label: 'Eval Harness',
-                href: 'https://github.com/gamedaysuits/gds-mt-eval-harness',
+                label: 'MT Eval Arena',
+                href: 'https://mtevalarena.org',
               },
             ],
           },

@@ -243,5 +243,5 @@ flowchart LR
 
 - **[プラグインの仕様](/docs/reference/plugin-spec)** — マニフェスト形式の完全なリファレンス
 - **[翻訳メソッド](/docs/guides/translation-methods)** — 4つのメソッドすべての比較
-- **[低リソース言語](/docs/guides/low-resource-languages)** — APIがサポートしていない言語にこのパターンを適用する
+- **[低リソース言語](https://mtevalarena.org/docs/community/low-resource-languages)** — APIがサポートしていない言語にこのパターンを適用する
 - **[30言語の翻訳](/docs/tutorials/translate-30-languages)** — プロジェクトをグローバルな対象者向けにスケールさせる

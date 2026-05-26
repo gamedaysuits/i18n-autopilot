@@ -243,6 +243,6 @@ Le plugin est **uniquement composé de données** : configuration, contenu de co
 - [Méthodes de traduction](/docs/guides/translation-methods) — comment fonctionne chaque méthode intégrée
 - [Configuration](/docs/getting-started/configuration) — configuration par paire et par langue
 - [Servir une méthode via API](/docs/guides/serving-a-method) — héberger des méthodes en tant que services HTTP
-- [Livre de recettes : Pipeline contrôlé par FST](/docs/tutorials/fst-gated-pipeline) — construction et empaquetage d'un pipeline
-- [Évaluation de la traduction automatique (MT)](/docs/eval/) — évaluation des méthodes pour soumission au classement
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — le cas d'utilisation des plugins communautaires
+- [Livre de recettes : Pipeline contrôlé par FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — construction et empaquetage d'un pipeline
+- [Évaluation de la traduction automatique (MT)](https://mtevalarena.org/docs/leaderboard/rules) — évaluation des méthodes pour soumission au classement
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — le cas d'utilisation des plugins communautaires

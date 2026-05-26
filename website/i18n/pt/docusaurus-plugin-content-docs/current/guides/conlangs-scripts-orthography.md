@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Vogais longas usam mácron/circunflexo: ê, î, ô, â. O conversor lida com todos os diacríticos SRO e os mapeia para os caracteres silábicos corretos. Consulte [Suporte a um Idioma de Poucos Recursos](/docs/guides/low-resource-languages) para ver o pipeline completo do Cree.
+Vogais longas usam mácron/circunflexo: ê, î, ô, â. O conversor lida com todos os diacríticos SRO e os mapeia para os caracteres silábicos corretos. Consulte [Suporte a um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para ver o pipeline completo do Cree.
 
 #### Sérvio: Latino → Cirílico (`sr`)
 
@@ -257,4 +257,4 @@ O LLM só pode traduzir para uma conlang que ele tenha visto nos dados de treina
 - [Conversores de Sistemas de Escrita](/docs/concepts/script-converters) — detalhes técnicos do pipeline de conversão
 - [Métodos de Tradução](/docs/guides/translation-methods) — como cada método de tradução funciona
 - [Configuração](/docs/getting-started/configuration) — referência de configuração, incluindo configuração de idioma e registro
-- [Suporte a um Idioma de Poucos Recursos](/docs/guides/low-resource-languages) — a mesma infraestrutura aplicada a idiomas reais sub-representados
+- [Suporte a um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — a mesma infraestrutura aplicada a idiomas reais sub-representados

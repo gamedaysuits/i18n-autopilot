@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ Mẫu phương thức `api` hoàn toàn mở — không có hạn chế cấp ph
 
 - [Các phương thức dịch thuật](/docs/guides/translation-methods) — tổng quan về mọi phương thức tích hợp sẵn (`openai`, `google`, `api`, v.v.)
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — schema đầy đủ cho `i18n-rosetta.config.json` bao gồm các trường phương thức `api`
-- [Hỗ trợ ngôn ngữ ít tài nguyên](/docs/guides/low-resource-languages) — hướng dẫn toàn diện (end-to-end) cho các ngôn ngữ thiếu tài nguyên, bao gồm các nguyên tắc OCAP
+- [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — hướng dẫn toàn diện (end-to-end) cho các ngôn ngữ thiếu tài nguyên, bao gồm các nguyên tắc OCAP
 - [Kiến trúc](/docs/concepts/architecture) — cách thức hoạt động của vòng lặp đồng bộ (sync loop), xử lý hàng loạt (batching) và điều phối phương thức (method dispatch) của i18n-rosetta
-- [Đánh giá MT](/docs/eval/) — phương pháp đánh giá, số liệu (metrics) và quy trình gửi lên bảng xếp hạng
+- [Đánh giá MT](https://mtevalarena.org/docs/leaderboard/rules) — phương pháp đánh giá, số liệu (metrics) và quy trình gửi lên bảng xếp hạng
 - [Bảng xếp hạng phương thức](/leaderboard) — xếp hạng chất lượng trực tiếp trên các phương thức và cặp ngôn ngữ

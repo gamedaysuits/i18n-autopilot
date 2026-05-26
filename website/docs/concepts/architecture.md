@@ -164,6 +164,6 @@ Both tiers are generated from authoritative sources (IANA, CLDR, Glottolog) usin
 
 - [Translation Methods](/docs/guides/translation-methods) — how each built-in method works
 - [Plugin Specification](/docs/reference/plugin-spec) — the method.json manifest format
-- [Eval Harness](/docs/eval/harness) — the companion research tool
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — the companion research tool
 - [Serving a Method via API](/docs/guides/serving-a-method) — hosting custom translation pipelines
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — the use case that drove this architecture
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — the use case that drove this architecture

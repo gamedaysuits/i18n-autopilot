@@ -243,6 +243,6 @@ i18n-rosetta plugin install ./french-formal-v1/
 - [طرق الترجمة](/docs/guides/translation-methods) — كيف تعمل كل طريقة مدمجة
 - [التكوين](/docs/getting-started/configuration) — التكوين لكل زوج ولكل لغة
 - [تقديم طريقة عبر API](/docs/guides/serving-a-method) — استضافة الطرق كخدمات HTTP
-- [كتاب الوصفات: مسار عمل FST-Gated](/docs/tutorials/fst-gated-pipeline) — بناء وتعبئة مسار العمل (pipeline)
-- [تقييم الترجمة الآلية (MT Evaluation)](/docs/eval/) — قياس أداء الطرق لتقديمها إلى لوحة الصدارة
-- [دعم لغة منخفضة الموارد](/docs/guides/low-resource-languages) — حالة الاستخدام للمكونات الإضافية المجتمعية
+- [كتاب الوصفات: مسار عمل FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — بناء وتعبئة مسار العمل (pipeline)
+- [تقييم الترجمة الآلية (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) — قياس أداء الطرق لتقديمها إلى لوحة الصدارة
+- [دعم لغة منخفضة الموارد](https://mtevalarena.org/docs/community/low-resource-languages) — حالة الاستخدام للمكونات الإضافية المجتمعية

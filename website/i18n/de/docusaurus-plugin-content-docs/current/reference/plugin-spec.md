@@ -243,6 +243,6 @@ Das Plugin besteht **nur aus Daten**: Konfiguration, Coaching-Inhalten und Bench
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede integrierte Methode funktioniert
 - [Konfiguration](/docs/getting-started/configuration) — Konfiguration pro Paar und pro Sprache
 - [Bereitstellen einer Methode via API](/docs/guides/serving-a-method) — Hosting von Methoden als HTTP-Dienste
-- [Kochbuch: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — Erstellen und Paketieren einer Pipeline
-- [MT-Evaluation](/docs/eval/) — Benchmarking von Methoden für die Einreichung in die Rangliste
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — der Anwendungsfall für Community-Plugins
+- [Kochbuch: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Erstellen und Paketieren einer Pipeline
+- [MT-Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — Benchmarking von Methoden für die Einreichung in die Rangliste
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — der Anwendungsfall für Community-Plugins

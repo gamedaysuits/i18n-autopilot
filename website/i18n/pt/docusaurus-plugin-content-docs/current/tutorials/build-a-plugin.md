@@ -243,5 +243,5 @@ Agora você tem:
 
 - **[Especificação do Plugin](/docs/reference/plugin-spec)** — Referência completa do formato do manifesto
 - **[Métodos de Tradução](/docs/guides/translation-methods)** — Compare todos os quatro métodos
-- **[Idiomas com Poucos Recursos](/docs/guides/low-resource-languages)** — Aplique este padrão a idiomas sem cobertura de API
+- **[Idiomas com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages)** — Aplique este padrão a idiomas sem cobertura de API
 - **[Traduza 30 Idiomas](/docs/tutorials/translate-30-languages)** — Escale seu projeto para um público global

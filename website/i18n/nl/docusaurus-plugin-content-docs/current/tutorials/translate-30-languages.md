@@ -52,7 +52,7 @@ Niet alle 30 talen vereisen dezelfde aanpak. Groepeer ze op basis van de beschik
 **Opmerking:** Talen die niet in `pairs` worden vermeld, erven `defaultMethod: "google-translate"`. U hoeft niet alle 30 talen te vermelden.
 
 :::info
-De ondersteuning voor `crk` is in ontwikkeling — zie [Een low-resource taal ondersteunen](/docs/guides/low-resource-languages) voor de status en richtlijnen voor bijdragen.
+De ondersteuning voor `crk` is in ontwikkeling — zie [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor de status en richtlijnen voor bijdragen.
 :::
 
 ## Stap 3: API-sleutels instellen
@@ -163,4 +163,4 @@ Incrementele synchronisaties (5–20 gewijzigde sleutels) kosten een fractie van
 - [CI/CD-gids](/docs/guides/ci-cd) — Geavanceerde CI-patronen inclusief PR-preview builds
 - [Quality Gate](/docs/concepts/quality-gate) — Hoe Rosetta elke vertaling valideert voordat deze wordt weggeschreven
 - [Ondersteunde talen](/docs/reference/supported-languages) — Volledige lijst van taalcodes en compatibiliteit van methoden
-- [Een low-resource taal ondersteunen](/docs/guides/low-resource-languages) — Voeg coachingdata toe voor talen zonder brede MT-dekking
+- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — Voeg coachingdata toe voor talen zonder brede MT-dekking

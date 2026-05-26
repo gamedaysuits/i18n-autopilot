@@ -52,9 +52,9 @@ rosetta هو إصدار الإنتاج (production version) من ذلك النص
 
 هل تعتقد أن طريقتك يمكنها ترجمة الإنجليزية إلى الإسبانية؟ أو التركية إلى الأذربيجانية؟ أو الإنجليزية إلى Cree؟
 
-**أثبت ذلك.** تقوم [أداة التقييم (eval harness)](/docs/eval/harness) المرافقة بقياس أداء أي طريقة ترجمة بنتائج قابلة للتكرار وموثقة ببصمة. وتتتبع [لوحة المتصدرين](/leaderboard) كل إرسال.
+**أثبت ذلك.** تقوم [أداة التقييم (eval harness)](https://mtevalarena.org/docs/specifications/harness) المرافقة بقياس أداء أي طريقة ترجمة بنتائج قابلة للتكرار وموثقة ببصمة. وتتتبع [لوحة المتصدرين](/leaderboard) كل إرسال.
 
-تشترك أداة التقييم وواجهة سطر الأوامر (CLI) الخاصة بالإنتاج في نفس واجهة المكونات الإضافية. الطريقة التي تسجل درجات جيدة في التقييم يمكن استخدامها في الإنتاج — إذا وافق المجتمع الذي تخدم لغته على ذلك. بالنسبة للغات الأصلية واللغات ذات الموارد المحدودة، هذه الموافقة مهمة. راجع [سيادة البيانات (Data Sovereignty)](/docs/guides/data-sovereignty).
+تشترك أداة التقييم وواجهة سطر الأوامر (CLI) الخاصة بالإنتاج في نفس واجهة المكونات الإضافية. الطريقة التي تسجل درجات جيدة في التقييم يمكن استخدامها في الإنتاج — إذا وافق المجتمع الذي تخدم لغته على ذلك. بالنسبة للغات الأصلية واللغات ذات الموارد المحدودة، هذه الموافقة مهمة. راجع [سيادة البيانات (Data Sovereignty)](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ npx i18n-rosetta sync
 - [موقع Hugo متعدد اللغات](/docs/tutorials/hugo-multilingual-site) — ترجمة محتوى Markdown
 
 **التعمق أكثر:**
-- [سيادة البيانات](/docs/guides/data-sovereignty) — مبادئ OCAP و CARE وسيادة بيانات Māori
-- [دعم لغة ذات موارد محدودة](/docs/guides/low-resource-languages) — التحدي الذي بدأ كل شيء
-- [كتاب الوصفات: مسار عمل ببوابة FST](/docs/tutorials/fst-gated-pipeline) — بناء مسار عمل للتحليل
-- [تقييم الترجمة الآلية (MT Evaluation)](/docs/eval/) — كيف تعمل أداة التقييم ولوحة المتصدرين
+- [سيادة البيانات](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — مبادئ OCAP و CARE وسيادة بيانات Māori
+- [دعم لغة ذات موارد محدودة](https://mtevalarena.org/docs/community/low-resource-languages) — التحدي الذي بدأ كل شيء
+- [كتاب الوصفات: مسار عمل ببوابة FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — بناء مسار عمل للتحليل
+- [تقييم الترجمة الآلية (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) — كيف تعمل أداة التقييم ولوحة المتصدرين
 - [لوحة متصدري الطرق](/leaderboard) — الدرجات والإرسالات المباشرة

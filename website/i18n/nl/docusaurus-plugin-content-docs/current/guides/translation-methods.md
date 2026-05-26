@@ -105,7 +105,7 @@ Hetzelfde als `llm`, maar met grammaticaregels, terminologiewoordenboeken en sti
 }
 ```
 
-Zie ook: [Gids voor talen met weinig bronnen](/docs/guides/low-resource-languages)
+Zie ook: [Gids voor talen met weinig bronnen](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ Een thin HTTP-client voor door de community gehoste of IP-beschermde vertaaleind
 :::note OCAP-compatibele community-vertaling
 De `api`-methode vormt de brug naar **OCAP-compatibele, door de community gehoste vertaling**. Inheemse en minderheidstaalgemeenschappen kunnen hun eigen vertaaleindpunten hosten — waardoor coachinggegevens, gefinetunede modellen en taalkundig IP onder controle van de community blijven — terwijl Rosetta hiermee verbinding maakt als een thin client.
 
-Zie [Een taal met weinig bronnen ondersteunen](/docs/guides/low-resource-languages) voor de volledige handleiding over community-hosting, en [Een methode aanbieden via API](/docs/guides/serving-a-method) voor de vereisten van eindpunten.
+Zie [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor de volledige handleiding over community-hosting, en [Een methode aanbieden via API](/docs/guides/serving-a-method) voor de vereisten van eindpunten.
 :::
 
 ---
@@ -388,7 +388,7 @@ Dit vertaalt Frans via DeepL (glossary-ondersteuning), Japans via OpenAI (kwalit
 Plug-ins zijn vooraf verpakte vertaalrecepten voor specifieke talenparen. Het zijn JSON-manifesten — geen code — die rosetta vertellen welke methode moet worden gebruikt, met welke instellingen, en welke kwaliteit is gebenchmarkt.
 
 :::tip Van eval harness naar productie in één commando
-Plug-ins die zijn ontwikkeld en bewezen in de [eval harness](/docs/eval/harness) kunnen direct worden geïnstalleerd — de methode die u daar valideert, wordt hier geïmplementeerd met een enkel `plugin install`-commando. Zie [MT-evaluatie](/docs/eval/) voor de volledige evaluatieworkflow.
+Plug-ins die zijn ontwikkeld en bewezen in de [eval harness](https://mtevalarena.org/docs/specifications/harness) kunnen direct worden geïnstalleerd — de methode die u daar valideert, wordt hier geïmplementeerd met een enkel `plugin install`-commando. Zie [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) voor de volledige evaluatieworkflow.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ De werkelijke kosten zijn afhankelijk van de lengte van uw brontekst, de batchgr
 
 - [Ondersteunde talen](/docs/reference/supported-languages)
 - [Coachinggegevens](/docs/concepts/coaching-data)
-- [Een taal met weinig bronnen ondersteunen](/docs/guides/low-resource-languages)
+- [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plug-in specificatie](/docs/reference/plugin-spec)
 - [Een methode aanbieden via API](/docs/guides/serving-a-method)
 - [Quality gate](/docs/concepts/quality-gate)

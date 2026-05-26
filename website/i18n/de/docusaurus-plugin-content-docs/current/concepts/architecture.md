@@ -142,6 +142,6 @@ Der Benutzer pflegt seine eigenen Grammatikregeln und sein eigenes Wörterbuch i
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede integrierte Methode funktioniert
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — das method.json-Manifestformat
-- [Eval Harness](/docs/eval/harness) — das begleitende Forschungstool
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — das begleitende Forschungstool
 - [Bereitstellung einer Methode via API](/docs/guides/serving-a-method) — Hosting benutzerdefinierter Übersetzungs-Pipelines
-- [Unterstützung einer ressourcenarmen Sprache](/docs/guides/low-resource-languages) — der Anwendungsfall, der diese Architektur vorangetrieben hat
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — der Anwendungsfall, der diese Architektur vorangetrieben hat

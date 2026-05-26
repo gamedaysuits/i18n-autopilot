@@ -243,6 +243,6 @@ Ang plugin ay **data only** lamang po: configuration, coaching content, at bench
 - [Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat built-in method
 - [Configuration](/docs/getting-started/configuration) — per-pair at per-language config
 - [Serving a Method via API](/docs/guides/serving-a-method) — pag-host ng mga method bilang mga HTTP service
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — pag-build at pag-package ng isang pipeline
-- [MT Evaluation](/docs/eval/) — pag-benchmark ng mga method para sa leaderboard submission
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — ang use case para sa mga community plugin
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — pag-build at pag-package ng isang pipeline
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — pag-benchmark ng mga method para sa leaderboard submission
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — ang use case para sa mga community plugin

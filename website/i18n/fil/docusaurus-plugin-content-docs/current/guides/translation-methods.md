@@ -105,7 +105,7 @@ Kapareho ng `llm`, pero may grammar rules, term dictionaries, at style notes na 
 }
 ```
 
-Tingnan din: [Low-Resource Languages Guide](/docs/guides/low-resource-languages)
+Tingnan din: [Low-Resource Languages Guide](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ Isang thin HTTP client para sa mga community-hosted o IP-protected na translatio
 :::note OCAP-Compatible Community Translation
 Ang `api` method ay ang tulay patungo sa **OCAP-compatible community-hosted translation**. Ang mga indigenous at minority-language communities ay pwedeng mag-host ng kanilang sariling translation endpoints — pinapanatili ang coaching data, fine-tuned models, at linguistic IP sa ilalim ng community control — habang kumokonekta ang Rosetta sa kanila bilang isang thin client.
 
-Tingnan ang [Support a Low-Resource Language](/docs/guides/low-resource-languages) para sa buong community-hosting walkthrough, at ang [Serving a Method via API](/docs/guides/serving-a-method) para sa mga endpoint requirements.
+Tingnan ang [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong community-hosting walkthrough, at ang [Serving a Method via API](/docs/guides/serving-a-method) para sa mga endpoint requirements.
 :::
 
 ---
@@ -388,7 +388,7 @@ Nagta-translate ito ng French via DeepL (glossary support), Japanese via OpenAI 
 Ang mga plugins ay mga pre-packaged na translation recipes para sa mga specific na language pairs. Mga JSON manifests po ito — hindi code — na nagsasabi sa rosetta kung anong method ang gagamitin, anong settings, at anong quality ang na-benchmark.
 
 :::tip Mula eval harness hanggang production sa isang command
-Ang mga plugins na na-develop at napatunayan sa [eval harness](/docs/eval/harness) ay pwedeng i-install nang direkta — ang method na bini-validate ninyo doon ay nade-deploy dito gamit ang isang `plugin install` command. Tingnan ang [MT Evaluation](/docs/eval/) para sa buong evaluation workflow.
+Ang mga plugins na na-develop at napatunayan sa [eval harness](https://mtevalarena.org/docs/specifications/harness) ay pwedeng i-install nang direkta — ang method na bini-validate ninyo doon ay nade-deploy dito gamit ang isang `plugin install` command. Tingnan ang [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) para sa buong evaluation workflow.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ Ang aktwal na costs ay nakadepende sa haba ng inyong source text, batch size, at
 
 - [Supported Languages](/docs/reference/supported-languages)
 - [Coaching Data](/docs/concepts/coaching-data)
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages)
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plugin Specification](/docs/reference/plugin-spec)
 - [Serving a Method via API](/docs/guides/serving-a-method)
 - [Quality Gate](/docs/concepts/quality-gate)

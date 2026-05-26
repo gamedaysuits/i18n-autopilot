@@ -243,6 +243,6 @@ El plugin es **solo de datos**: configuración, contenido de guía (coaching) y 
 - [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método integrado
 - [Configuración](/docs/getting-started/configuration) — configuración por par y por idioma
 - [Servir un método mediante API](/docs/guides/serving-a-method) — alojar métodos como servicios HTTP
-- [Recetario: Pipeline controlado por FST](/docs/tutorials/fst-gated-pipeline) — cómo construir y empaquetar un pipeline
-- [Evaluación de MT](/docs/eval/) — evaluación de métodos para su envío a la tabla de clasificación
-- [Soporte para un idioma de bajos recursos](/docs/guides/low-resource-languages) — el caso de uso para los plugins de la comunidad
+- [Recetario: Pipeline controlado por FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — cómo construir y empaquetar un pipeline
+- [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) — evaluación de métodos para su envío a la tabla de clasificación
+- [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — el caso de uso para los plugins de la comunidad

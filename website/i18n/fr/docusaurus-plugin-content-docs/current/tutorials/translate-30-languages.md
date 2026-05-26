@@ -52,7 +52,7 @@ Les 30 langues ne nécessitent pas toutes la même approche. Regroupez-les selon
 **Remarque :** Les langues non répertoriées dans `pairs` héritent de `defaultMethod: "google-translate"`. Vous n'avez pas besoin de lister les 30.
 
 :::info
-La prise en charge de `crk` est en cours de développement — consultez [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) pour connaître l'état d'avancement et les directives de contribution.
+La prise en charge de `crk` est en cours de développement — consultez [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour connaître l'état d'avancement et les directives de contribution.
 :::
 
 ## Étape 3 : Configurer les clés API
@@ -163,4 +163,4 @@ Les synchronisations incrémentielles (5 à 20 clés modifiées) ne coûtent qu'
 - [Guide CI/CD](/docs/guides/ci-cd) — Modèles CI avancés, y compris les builds de prévisualisation de PR
 - [Porte de qualité](/docs/concepts/quality-gate) — Comment Rosetta valide chaque traduction avant de l'écrire
 - [Langues prises en charge](/docs/reference/supported-languages) — Liste complète des codes de langue et de la compatibilité des méthodes
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — Ajouter des données de guidage pour les langues ne bénéficiant pas d'une large couverture par traduction automatique (MT)
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — Ajouter des données de guidage pour les langues ne bénéficiant pas d'une large couverture par traduction automatique (MT)

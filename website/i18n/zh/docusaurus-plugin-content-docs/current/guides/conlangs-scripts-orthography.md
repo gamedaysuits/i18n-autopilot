@@ -98,7 +98,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-长元音使用长音符号/扬抑符：ê, î, ô, â。转换器会处理所有 SRO 变音符号，并将它们映射到正确的音节字符。有关完整的 Cree 流水线，请参阅[支持低资源语言](/docs/guides/low-resource-languages)。
+长元音使用长音符号/扬抑符：ê, î, ô, â。转换器会处理所有 SRO 变音符号，并将它们映射到正确的音节字符。有关完整的 Cree 流水线，请参阅[支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages)。
 
 #### 塞尔维亚语 (Serbian): 拉丁字母 → 西里尔字母 (`sr`)
 
@@ -257,4 +257,4 @@ LLM 只能翻译成它在训练数据中见过的 conlang。记录详尽的 conl
 - [书写系统转换器](/docs/concepts/script-converters) —— 转换流水线的技术细节
 - [翻译方法](/docs/guides/translation-methods) —— 每种翻译方法的工作原理
 - [配置](/docs/getting-started/configuration) —— 包含语言和 register 设置的配置参考
-- [支持低资源语言](/docs/guides/low-resource-languages) —— 应用于真实的资源匮乏语言的相同基础设施
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) —— 应用于真实的资源匮乏语言的相同基础设施

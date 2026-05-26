@@ -243,6 +243,6 @@ Plugin **chỉ chứa dữ liệu (data only)**: cấu hình, nội dung coachin
 - [Translation Methods](/docs/guides/translation-methods) — cách hoạt động của từng method tích hợp sẵn
 - [Configuration](/docs/getting-started/configuration) — cấu hình theo từng cặp và từng ngôn ngữ
 - [Serving a Method via API](/docs/guides/serving-a-method) — lưu trữ các method dưới dạng dịch vụ HTTP
-- [Cookbook: FST-Gated Pipeline](/docs/tutorials/fst-gated-pipeline) — xây dựng và đóng gói một pipeline
-- [MT Evaluation](/docs/eval/) — benchmark các method để gửi lên leaderboard
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — use case dành cho các plugin cộng đồng
+- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — xây dựng và đóng gói một pipeline
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — benchmark các method để gửi lên leaderboard
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — use case dành cho các plugin cộng đồng

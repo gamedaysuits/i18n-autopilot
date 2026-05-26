@@ -76,3 +76,12 @@ dfa.svg
 ast.svg
 arxiv_results.xml
 *.pdf
+
+# Generated images — not for public repo (keep in crk-translate or local)
+hero-art.png
+lovelace.jpg
+network.png
+revitalization.png
+schleicher.jpg
+teaching-art.png
+diagrams/

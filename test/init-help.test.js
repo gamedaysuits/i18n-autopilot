@@ -77,8 +77,8 @@ describe('parseLanguageInput', () => {
 // -----------------------------------------------------------------
 
 describe('buildDefaultConfig', () => {
-  it('produces v3 config with sensible defaults', () => {
-    const config = buildDefaultConfig({});
+  it('produces v3 config with sensible defaults', async () => {
+    const config = await buildDefaultConfig({});
     assert.equal(config.version, 3);
     assert.equal(config.inputLocale, 'en');
     assert.equal(config.localesDir, './locales');
@@ -88,8 +88,8 @@ describe('buildDefaultConfig', () => {
     assert.deepEqual(config.languages, []);
   });
 
-  it('respects CLI arg overrides', () => {
-    const config = buildDefaultConfig({
+  it('respects CLI arg overrides', async () => {
+    const config = await buildDefaultConfig({
       source: 'fr',
       dir: './i18n',
       model: 'anthropic/claude-3',

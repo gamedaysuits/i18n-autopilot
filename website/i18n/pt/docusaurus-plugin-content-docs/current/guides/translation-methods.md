@@ -105,7 +105,7 @@ Igual ao `llm`, mas com regras gramaticais, dicionários de termos e notas de es
 }
 ```
 
-Veja também: [Guia de Idiomas com Poucos Recursos](/docs/guides/low-resource-languages)
+Veja também: [Guia de Idiomas com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ Um cliente HTTP leve (thin client) para endpoints de tradução hospedados pela 
 :::note Tradução Comunitária Compatível com OCAP
 O método `api` é a ponte para a **tradução hospedada pela comunidade compatível com OCAP**. Comunidades indígenas e de idiomas minoritários podem hospedar seus próprios endpoints de tradução — mantendo dados de coaching, modelos ajustados e a propriedade intelectual linguística sob controle da comunidade — enquanto o Rosetta se conecta a eles como um cliente leve.
 
-Veja [Apoiar um Idioma com Poucos Recursos](/docs/guides/low-resource-languages) para o passo a passo completo de hospedagem comunitária, e [Servindo um Método via API](/docs/guides/serving-a-method) para os requisitos do endpoint.
+Veja [Apoiar um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para o passo a passo completo de hospedagem comunitária, e [Servindo um Método via API](/docs/guides/serving-a-method) para os requisitos do endpoint.
 :::
 
 ---
@@ -388,7 +388,7 @@ Isso traduz o francês via DeepL (suporte a glossário), o japonês via OpenAI (
 Plugins são receitas de tradução pré-empacotadas para pares de idiomas específicos. Eles são manifestos em JSON — não código — que dizem ao rosetta qual método usar, com quais configurações e qual qualidade foi avaliada.
 
 :::tip Do ambiente de avaliação (eval harness) para a produção em um comando
-Plugins desenvolvidos e comprovados no [ambiente de avaliação](/docs/eval/harness) podem ser instalados diretamente — o método que você valida lá é implantado aqui com um único comando `plugin install`. Veja [Avaliação de MT](/docs/eval/) para o fluxo de trabalho de avaliação completo.
+Plugins desenvolvidos e comprovados no [ambiente de avaliação](https://mtevalarena.org/docs/specifications/harness) podem ser instalados diretamente — o método que você valida lá é implantado aqui com um único comando `plugin install`. Veja [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) para o fluxo de trabalho de avaliação completo.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ Os custos reais dependem do tamanho do texto de origem, do tamanho do lote e das
 
 - [Idiomas Suportados](/docs/reference/supported-languages)
 - [Dados de Coaching](/docs/concepts/coaching-data)
-- [Apoiar um Idioma com Poucos Recursos](/docs/guides/low-resource-languages)
+- [Apoiar um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Especificação de Plugin](/docs/reference/plugin-spec)
 - [Servindo um Método via API](/docs/guides/serving-a-method)
 - [Quality Gate](/docs/concepts/quality-gate)

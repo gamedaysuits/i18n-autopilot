@@ -17,7 +17,7 @@ Elke taal kan een of meer van deze vertaalmethoden gebruiken:
 | 🟢 | **Google Translate** | Neurale MT-basislijn. 130+ talen. Alleen key-value strings — kan Markdown-content niet veilig vertalen. | ~$20/1M tekens |
 | 🔵 | **LLM (OpenRouter)** | Elke taal die het model kent. Register-gestuurde prompts. Verwerkt key-value + Markdown-content. | Varieert per model |
 | 🟣 | **LLM-Coached** | LLM + grammaticewoordenboeken + coaching-data geïnjecteerd in prompts. Het beste voor morfologisch complexe talen. | Varieert per model |
-| 🟠 | **API (Plugin)** | Door de community gehoste vertaalpijplijnen die via HTTP worden aangeboden. [OCAP-compatibel](/docs/guides/low-resource-languages). | Varieert per provider |
+| 🟠 | **API (Plugin)** | Door de community gehoste vertaalpijplijnen die via HTTP worden aangeboden. [OCAP-compatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Varieert per provider |
 
 Stel `GOOGLE_TRANSLATE_API_KEY` in voor Google Translate, of `OPENROUTER_API_KEY` voor LLM-methoden. Zie [Vertaalmethoden](/docs/guides/translation-methods) voor volledige details.
 
@@ -84,14 +84,14 @@ Dit zijn de meest gevraagde locales voor web- en mobiele applicaties, vermeld in
 
 ## Inheemse en low-resource talen
 
-Deze talen worden niet ondersteund door commerciële MT-diensten. rosetta biedt de tooling voor taalgemeenschappen om hun eigen methoden te bouwen volgens de [OCAP-principes](/docs/guides/low-resource-languages).
+Deze talen worden niet ondersteund door commerciële MT-diensten. rosetta biedt de tooling voor taalgemeenschappen om hun eigen methoden te bouwen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages).
 
 | | Taal | Code | Google | LLM | Coached | Script | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 In ontwikkeling |
 
 :::info Plains Cree is actief in ontwikkeling
-Het register, de coaching-infrastructuur, de script-converter en het evaluatieharnas voor Plains Cree zijn allemaal functioneel, maar de vertaalpijplijn is **nog niet vrijgegeven**. Wij werken samen met taalgemeenschappen volgens de [OCAP-principes](/docs/guides/low-resource-languages) om de kwaliteit te waarborgen vóór de release. Zie [Een low-resource taal ondersteunen](/docs/guides/low-resource-languages) voor het volledige verhaal — en hoe u kunt bijdragen.
+Het register, de coaching-infrastructuur, de script-converter en het evaluatieharnas voor Plains Cree zijn allemaal functioneel, maar de vertaalpijplijn is **nog niet vrijgegeven**. Wij werken samen met taalgemeenschappen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages) om de kwaliteit te waarborgen vóór de release. Zie [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor het volledige verhaal — en hoe u kunt bijdragen.
 :::
 
 :::tip Meer low-resource talen toevoegen
@@ -206,4 +206,4 @@ Zie [Bijdragen aan een Language Card](https://github.com/nicholasgriffintn/i18n-
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke methode werkt
 - [Script-converters](/docs/concepts/script-converters) — deterministische scriptconversiepijplijn
 - [Conlangs, Scripts & Orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-lettertypen, Unicode, conlangs toevoegen
-- [Een low-resource taal ondersteunen](/docs/guides/low-resource-languages) — methoden bouwen voor onderbediende talen
+- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — methoden bouwen voor onderbediende talen

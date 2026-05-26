@@ -142,6 +142,6 @@ rosetta sync
 
 - [翻訳メソッド](/docs/guides/translation-methods) — 各組み込みメソッドの仕組み
 - [プラグイン仕様](/docs/reference/plugin-spec) — method.jsonマニフェストの形式
-- [Eval Harness](/docs/eval/harness) — 関連する研究ツール
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — 関連する研究ツール
 - [API経由でのメソッドの提供](/docs/guides/serving-a-method) — カスタム翻訳パイプラインのホスティング
-- [低リソース言語のサポート](/docs/guides/low-resource-languages) — このアーキテクチャを推進したユースケース
+- [低リソース言語のサポート](https://mtevalarena.org/docs/community/low-resource-languages) — このアーキテクチャを推進したユースケース

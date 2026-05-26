@@ -142,6 +142,6 @@ L'utilisateur maintient ses propres règles de grammaire et son dictionnaire dan
 
 - [Méthodes de traduction](/docs/guides/translation-methods) — comment fonctionne chaque méthode intégrée
 - [Spécification du plugin](/docs/reference/plugin-spec) — le format du manifeste method.json
-- [Eval Harness](/docs/eval/harness) — l'outil de recherche compagnon
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — l'outil de recherche compagnon
 - [Servir une méthode via API](/docs/guides/serving-a-method) — héberger des pipelines de traduction personnalisés
-- [Prendre en charge une langue à faibles ressources](/docs/guides/low-resource-languages) — le cas d'utilisation qui a motivé cette architecture
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — le cas d'utilisation qui a motivé cette architecture

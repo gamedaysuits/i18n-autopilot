@@ -132,7 +132,7 @@ mt-eval test eval/logs/run_*.json
 ## 참고 항목
 
 - [번역 메서드](/docs/guides/translation-methods) — llm-coached 메서드
-- [로우 리소스 언어 지원하기](/docs/guides/low-resource-languages) — 실제 코칭 적용
+- [로우 리소스 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages) — 실제 코칭 적용
 - [플러그인 사양](/docs/reference/plugin-spec) — 플러그인에 코칭 데이터 패키징하기
 - [품질 게이트](/docs/concepts/quality-gate) — 코칭된 번역이 검증되는 방법
 - [구성](/docs/getting-started/configuration) — 페어별 코칭 구성

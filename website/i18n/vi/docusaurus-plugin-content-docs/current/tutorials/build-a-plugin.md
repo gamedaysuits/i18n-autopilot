@@ -243,5 +243,5 @@ Bây giờ bạn đã có:
 
 - **[Đặc tả Plugin](/docs/reference/plugin-spec)** — Tham chiếu đầy đủ về định dạng manifest
 - **[Các phương pháp dịch thuật](/docs/guides/translation-methods)** — So sánh cả bốn phương pháp
-- **[Ngôn ngữ ít tài nguyên](/docs/guides/low-resource-languages)** — Áp dụng mô hình này cho các ngôn ngữ không được API hỗ trợ
+- **[Ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages)** — Áp dụng mô hình này cho các ngôn ngữ không được API hỗ trợ
 - **[Dịch 30 ngôn ngữ](/docs/tutorials/translate-30-languages)** — Mở rộng quy mô dự án của bạn đến với khán giả toàn cầu

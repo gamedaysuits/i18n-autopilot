@@ -17,7 +17,7 @@ Cada idioma puede usar uno o más de estos métodos de traducción:
 | 🟢 | **Google Translate** | Base de traducción automática neuronal (Neural MT). Más de 130 idiomas. Solo cadenas de clave-valor — no puede traducir de forma segura contenido en Markdown. | ~$20/1M de caracteres |
 | 🔵 | **LLM (OpenRouter)** | Cualquier idioma que el modelo conozca. Prompts guiados por registro. Maneja contenido de clave-valor + Markdown. | Varía según el modelo |
 | 🟣 | **LLM-Coached** | LLM + diccionarios de gramática + datos de entrenamiento (coaching) inyectados en los prompts. Ideal para idiomas morfológicamente complejos. | Varía según el modelo |
-| 🟠 | **API (Plugin)** | Pipelines de traducción alojados por la comunidad y servidos a través de HTTP. [Compatible con OCAP](/docs/guides/low-resource-languages). | Varía según el proveedor |
+| 🟠 | **API (Plugin)** | Pipelines de traducción alojados por la comunidad y servidos a través de HTTP. [Compatible con OCAP](https://mtevalarena.org/docs/community/low-resource-languages). | Varía según el proveedor |
 
 Configure `GOOGLE_TRANSLATE_API_KEY` para Google Translate, o `OPENROUTER_API_KEY` para los métodos LLM. Consulte [Métodos de traducción](/docs/guides/translation-methods) para obtener todos los detalles.
 
@@ -84,14 +84,14 @@ Estas son las configuraciones regionales (locales) más solicitadas para aplicac
 
 ## Idiomas indígenas y de bajos recursos
 
-Estos idiomas no son compatibles con los servicios comerciales de traducción automática (MT). rosetta proporciona las herramientas para que las comunidades lingüísticas construyan sus propios métodos bajo los [principios OCAP](/docs/guides/low-resource-languages).
+Estos idiomas no son compatibles con los servicios comerciales de traducción automática (MT). rosetta proporciona las herramientas para que las comunidades lingüísticas construyan sus propios métodos bajo los [principios OCAP](https://mtevalarena.org/docs/community/low-resource-languages).
 
 | | Idioma | Código | Google | LLM | Coached | Escritura | Estado |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Cree de las llanuras | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Silábico | 🚧 En desarrollo |
 
 :::info El cree de las llanuras está en desarrollo activo
-El registro, la infraestructura de entrenamiento (coaching), el convertidor de escritura y el entorno de evaluación para el cree de las llanuras son completamente funcionales, pero el pipeline de traducción **aún no se ha lanzado**. Estamos trabajando con comunidades lingüísticas bajo los [principios OCAP](/docs/guides/low-resource-languages) para garantizar la calidad antes del lanzamiento. Consulte [Apoyar un idioma de bajos recursos](/docs/guides/low-resource-languages) para conocer la historia completa — y cómo puede contribuir.
+El registro, la infraestructura de entrenamiento (coaching), el convertidor de escritura y el entorno de evaluación para el cree de las llanuras son completamente funcionales, pero el pipeline de traducción **aún no se ha lanzado**. Estamos trabajando con comunidades lingüísticas bajo los [principios OCAP](https://mtevalarena.org/docs/community/low-resource-languages) para garantizar la calidad antes del lanzamiento. Consulte [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) para conocer la historia completa — y cómo puede contribuir.
 :::
 
 :::tip Agregar más idiomas de bajos recursos
@@ -206,4 +206,4 @@ Consulte [Contribuir con una Language Card](https://github.com/nicholasgriffintn
 - [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método
 - [Convertidores de escritura](/docs/concepts/script-converters) — pipeline de conversión de escritura determinista
 - [Idiomas construidos, escrituras y ortografía](/docs/guides/conlangs-scripts-orthography) — fuentes PUA, Unicode, cómo agregar idiomas construidos
-- [Apoyar un idioma de bajos recursos](/docs/guides/low-resource-languages) — creación de métodos para idiomas desatendidos
+- [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — creación de métodos para idiomas desatendidos

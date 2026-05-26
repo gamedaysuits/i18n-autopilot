@@ -207,6 +207,7 @@ See [docs/METHOD_PLUGIN_SPEC.md](https://github.com/gamedaysuits/i18n-rosetta/bl
 | `fonts` | Download web fonts for PUA script converters |
 | `tm` | Manage Translation Memory cache (stats, clear, per-locale) |
 | `xliff` | Export/import XLIFF 1.2 for professional translator review |
+| `models` | List available models for a provider (`--method gemini`) |
 
 Run `i18n-rosetta <command> --help` for detailed help on any command.
 
@@ -235,7 +236,7 @@ Create `i18n-rosetta.config.json` or run `i18n-rosetta init`:
 | `localesDir` | `"./locales"` | Path to locale files |
 | `contentDir` | `null` | Hugo content directory (enables Markdown translation) |
 | `format` | `"auto"` | File format: `json`, `toml`, `yaml`, or `auto` |
-| `model` | `"google/gemini-3.5-flash"` | Default OpenRouter model |
+| `model` | `"google/gemini-3.5-flash"` | Default model (OpenRouter slug). Direct providers resolve their own default at runtime. Run `rosetta models --method gemini` to discover available models. |
 | `defaultMethod` | `"llm"` | Default translation method (overridden by `--method` flag) |
 | `batchSize` | `30` | Keys per translation batch |
 | `pairs` | `{}` | Per-pair method, model, and quality overrides |

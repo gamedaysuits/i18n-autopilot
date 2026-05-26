@@ -105,7 +105,7 @@ flowchart TD
 }
 ```
 
-انظر أيضاً: [دليل اللغات ذات الموارد المحدودة](/docs/guides/low-resource-languages)
+انظر أيضاً: [دليل اللغات ذات الموارد المحدودة](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
@@ -359,7 +359,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 :::note ترجمة مجتمعية متوافقة مع OCAP
 طريقة `api` هي الجسر إلى **الترجمة المستضافة مجتمعياً والمتوافقة مع OCAP**. يمكن لمجتمعات الشعوب الأصلية ولغات الأقليات استضافة نقاط نهاية الترجمة الخاصة بهم — مع إبقاء بيانات التوجيه، والنماذج المضبوطة بدقة، والملكية الفكرية اللغوية تحت سيطرة المجتمع — بينما تتصل Rosetta بها كعميل خفيف.
 
-انظر [دعم لغة ذات موارد محدودة](/docs/guides/low-resource-languages) للحصول على إرشادات الاستضافة المجتمعية الكاملة، و [تقديم طريقة عبر API](/docs/guides/serving-a-method) لمتطلبات نقطة النهاية.
+انظر [دعم لغة ذات موارد محدودة](https://mtevalarena.org/docs/community/low-resource-languages) للحصول على إرشادات الاستضافة المجتمعية الكاملة، و [تقديم طريقة عبر API](/docs/guides/serving-a-method) لمتطلبات نقطة النهاية.
 :::
 
 ---
@@ -388,7 +388,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 الإضافات عبارة عن وصفات ترجمة معبأة مسبقاً لأزواج لغوية محددة. إنها بيانات JSON — وليست أكواد برمجية — تخبر rosetta بالطريقة التي يجب استخدامها، وبأي إعدادات، وما هي الجودة التي تم قياسها.
 
 :::tip من بيئة التقييم (eval harness) إلى الإنتاج بأمر واحد
-يمكن تثبيت الإضافات التي تم تطويرها وإثباتها في [بيئة التقييم](/docs/eval/harness) مباشرة — الطريقة التي تتحقق من صحتها هناك يتم نشرها هنا بأمر `plugin install` واحد. انظر [تقييم الترجمة الآلية (MT Evaluation)](/docs/eval/) للحصول على سير عمل التقييم الكامل.
+يمكن تثبيت الإضافات التي تم تطويرها وإثباتها في [بيئة التقييم](https://mtevalarena.org/docs/specifications/harness) مباشرة — الطريقة التي تتحقق من صحتها هناك يتم نشرها هنا بأمر `plugin install` واحد. انظر [تقييم الترجمة الآلية (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) للحصول على سير عمل التقييم الكامل.
 :::
 
 ```bash
@@ -480,7 +480,7 @@ i18n-rosetta plugin remove french-formal-v1
 
 - [اللغات المدعومة](/docs/reference/supported-languages)
 - [بيانات التوجيه](/docs/concepts/coaching-data)
-- [دعم لغة ذات موارد محدودة](/docs/guides/low-resource-languages)
+- [دعم لغة ذات موارد محدودة](https://mtevalarena.org/docs/community/low-resource-languages)
 - [مواصفات الإضافة](/docs/reference/plugin-spec)
 - [تقديم طريقة عبر API](/docs/guides/serving-a-method)
 - [بوابة الجودة](/docs/concepts/quality-gate)

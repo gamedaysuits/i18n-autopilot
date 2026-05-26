@@ -52,7 +52,7 @@ description: "دليل عملي: توسيع نطاق مشروع من 3 لغات 
 **ملاحظة:** اللغات غير المدرجة في `pairs` ترث `defaultMethod: "google-translate"`. لا تحتاج إلى إدراج جميع اللغات الثلاثين.
 
 :::info
-دعم `crk` قيد التطوير — راجع [دعم لغة ذات موارد منخفضة](/docs/guides/low-resource-languages) لمعرفة الحالة وإرشادات المساهمة.
+دعم `crk` قيد التطوير — راجع [دعم لغة ذات موارد منخفضة](https://mtevalarena.org/docs/community/low-resource-languages) لمعرفة الحالة وإرشادات المساهمة.
 :::
 
 ## الخطوة 3: إعداد مفاتيح واجهة برمجة التطبيقات (API Keys)
@@ -163,4 +163,4 @@ jobs:
 - [دليل CI/CD](/docs/guides/ci-cd) — أنماط CI المتقدمة بما في ذلك إنشاءات معاينة طلبات السحب (PR preview builds)
 - [بوابة الجودة](/docs/concepts/quality-gate) — كيف يتحقق Rosetta من صحة كل ترجمة قبل كتابتها
 - [اللغات المدعومة](/docs/reference/supported-languages) — القائمة الكاملة لرموز اللغات وتوافق الطرق
-- [دعم لغة ذات موارد منخفضة](/docs/guides/low-resource-languages) — إضافة بيانات توجيه للغات التي لا تحظى بتغطية واسعة في الترجمة الآلية (MT)
+- [دعم لغة ذات موارد منخفضة](https://mtevalarena.org/docs/community/low-resource-languages) — إضافة بيانات توجيه للغات التي لا تحظى بتغطية واسعة في الترجمة الآلية (MT)

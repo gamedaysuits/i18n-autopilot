@@ -218,10 +218,10 @@ The `api` method is particularly important for **Indigenous language communities
 - **Linguistic resources** — curated dictionaries, FST grammars, and elder-verified translations remain under community ownership.
 - **Access policies** — the community decides who can call the endpoint and under what terms.
 
-This aligns with [OCAP® principles](/docs/guides/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
+This aligns with [OCAP® principles](https://mtevalarena.org/docs/community/low-resource-languages#ocap-principles) (Ownership, Control, Access, Possession), ensuring that sensitive language data is governed by the community rather than a third-party platform.
 
 :::tip
-Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](/docs/guides/low-resource-languages) for a full walkthrough.
+Combine the `api` method with a private deployment (e.g., a community-hosted VM or on-prem server) for the strongest data-sovereignty posture. See [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) for a full walkthrough.
 :::
 
 ## Cost Estimation
@@ -257,7 +257,7 @@ Fully open po ang `api` method pattern — walang licensing restrictions sa pag-
 
 - [Translation Methods](/docs/guides/translation-methods) — overview ng bawat built-in method (`openai`, `google`, `api`, atbp.)
 - [Plugin Specification](/docs/reference/plugin-spec) — buong schema para sa `i18n-rosetta.config.json` kasama ang `api` method fields
-- [Support a Low-Resource Language](/docs/guides/low-resource-languages) — end-to-end guide para sa mga under-resourced languages, kasama ang OCAP principles
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — end-to-end guide para sa mga under-resourced languages, kasama ang OCAP principles
 - [Architecture](/docs/concepts/architecture) — kung paano gumagana ang sync loop, batching, at method dispatch ng i18n-rosetta
-- [MT Evaluation](/docs/eval/) — evaluation methodology, metrics, at ang leaderboard submission process
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — evaluation methodology, metrics, at ang leaderboard submission process
 - [Method Leaderboard](/leaderboard) — live quality rankings sa iba't ibang methods at language pairs

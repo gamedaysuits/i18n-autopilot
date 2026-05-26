@@ -52,9 +52,9 @@ El francés obtiene Google Translate (rápido, económico). El japonés obtiene 
 
 ¿Cree que su método puede traducir del inglés al español? ¿Del turco al azerbaiyano? ¿Del inglés al cree?
 
-**Demuéstrelo.** El [entorno de evaluación (eval harness)](/docs/eval/harness) complementario evalúa cualquier método de traducción con una puntuación reproducible y con huella digital (fingerprinted). La [tabla de clasificación (leaderboard)](/leaderboard) rastrea cada envío.
+**Demuéstrelo.** El [entorno de evaluación (eval harness)](https://mtevalarena.org/docs/specifications/harness) complementario evalúa cualquier método de traducción con una puntuación reproducible y con huella digital (fingerprinted). La [tabla de clasificación (leaderboard)](/leaderboard) rastrea cada envío.
 
-El entorno de evaluación y la CLI de producción comparten la misma interfaz de plugins. Un método que obtiene una buena puntuación en la evaluación puede usarse en producción, siempre que la comunidad cuyo idioma atiende dé su consentimiento. Para los idiomas indígenas y de bajos recursos, ese consentimiento es importante. Consulte [Soberanía de datos](/docs/guides/data-sovereignty).
+El entorno de evaluación y la CLI de producción comparten la misma interfaz de plugins. Un método que obtiene una buena puntuación en la evaluación puede usarse en producción, siempre que la comunidad cuyo idioma atiende dé su consentimiento. Para los idiomas indígenas y de bajos recursos, ese consentimiento es importante. Consulte [Soberanía de datos](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -129,8 +129,8 @@ Esta es una invitación abierta. Si trabaja con un idioma de bajos recursos (ya 
 - [Sitio multilingüe en Hugo](/docs/tutorials/hugo-multilingual-site) — Traducción de contenido Markdown
 
 **Para profundizar:**
-- [Soberanía de datos](/docs/guides/data-sovereignty) — Principios OCAP, CARE y de Soberanía de Datos Maorí
-- [Apoyar un idioma de bajos recursos](/docs/guides/low-resource-languages) — El desafío que lo inició todo
-- [Recetario: Pipeline controlado por FST](/docs/tutorials/fst-gated-pipeline) — Construya un pipeline de descomposición
-- [Evaluación de MT](/docs/eval/) — Cómo funcionan el entorno de evaluación y la tabla de clasificación
+- [Soberanía de datos](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — Principios OCAP, CARE y de Soberanía de Datos Maorí
+- [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — El desafío que lo inició todo
+- [Recetario: Pipeline controlado por FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Construya un pipeline de descomposición
+- [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) — Cómo funcionan el entorno de evaluación y la tabla de clasificación
 - [Tabla de clasificación de métodos](/leaderboard) — Puntuaciones en vivo y envíos
