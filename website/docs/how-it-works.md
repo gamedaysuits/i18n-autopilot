@@ -95,24 +95,39 @@ The platform inverts the traditional approach: instead of one team building one 
 
 ### 3.1 The Full Loop
 
-```mermaid
-graph TD
-    A["1. DEVELOP\nAnyone builds a translation method\n(coached LLM, FST pipeline, hybrid, anything)"] --> B["2. BENCHMARK\nEval harness scores it\nAutomated metrics: chrF++, FST acceptance, exact match"]
-    B --> C["3. PROVE\nLeaderboard ranks methods\nReproducible, fingerprinted, comparable"]
-    C --> D{"Meets Deployable\nthreshold?"}
-    D -->|"Not yet"| A
-    D -->|"Yes + Human Review"| E["4. TRANSFER\nCode ownership → governance org\nCommunity controls the method"]
-    E --> F["5. DEPLOY\nMethod exported as rosetta plugin\nDevelopers consume via API"]
-    F --> G["6. SUSTAIN\n90% revenue → community\n10% → infrastructure"]
-    G -->|"Funds more research"| A
-
-    style A fill:#1a1a2e,stroke:#e94560,color:#fff
-    style B fill:#1a1a2e,stroke:#e94560,color:#fff
-    style C fill:#1a1a2e,stroke:#e94560,color:#fff
-    style D fill:#2d2d44,stroke:#ffcc00,color:#fff
-    style E fill:#0f3460,stroke:#16c79a,color:#fff
-    style F fill:#0f3460,stroke:#16c79a,color:#fff
-    style G fill:#0f3460,stroke:#16c79a,color:#fff
+```
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                                                                     │
+  │   1. DEVELOP                          2. BENCHMARK                  │
+  │   ─────────                           ────────────                  │
+  │   Anyone builds a translation         Eval harness scores it.       │
+  │   method — coached LLM, FST           Automated metrics: chrF++,    │
+  │   pipeline, hybrid, anything.         FST acceptance, exact match.  │
+  │                                                                     │
+  │           │                                    │                     │
+  │           ▼                                    ▼                     │
+  │                                                                     │
+  │   3. PROVE                            4. TRANSFER                   │
+  │   ────────                            ───────────                   │
+  │   Leaderboard ranks methods.          Code ownership → governance   │
+  │   Reproducible, fingerprinted,        org. Community controls the   │
+  │   comparable.                         method.                       │
+  │                                                                     │
+  │           │                                    │                     │
+  │           ▼                                    ▼                     │
+  │                                                                     │
+  │   5. DEPLOY                           6. SUSTAIN                    │
+  │   ─────────                           ──────────                    │
+  │   Method exported as rosetta          90% revenue → community.      │
+  │   plugin. Developers consume          10% → infrastructure.         │
+  │   via API.                            Funds more research. ──┐      │
+  │                                                              │      │
+  └──────────────────────────────────────────────────────────────┘      │
+                                                                        │
+  ┌─ Meets deployable threshold? ───────────────────────────────────────┘
+  │  YES + Human Review → TRANSFER → DEPLOY → SUSTAIN → loops back
+  │  NOT YET → back to DEVELOP
+  └─────────────────────────────────────────────────────────────────────
 ```
 
 Each stage has a specific function:
