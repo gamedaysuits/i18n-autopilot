@@ -13,6 +13,7 @@ const sidebars = {
       items: [
         'getting-started/quick-start',
         'getting-started/configuration',
+        'guides/agent-guide',
       ],
     },
     {
