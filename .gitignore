@@ -71,6 +71,8 @@ marketing/
 
 # Local-only research/presentation assets — never commit
 pitch-deck.html
+rosetta-homepage-mock.html
+arena-homepage-mock.html
 automata.svg
 dfa.svg
 ast.svg
