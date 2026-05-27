@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 个项目|{count} 个项目",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "完全可定制的",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "国际化",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "一条命令即可翻译你的本地化文件。每种翻译方法（Google Translate、LLMs、自定义 API、经过指导的流水线）都只是一个配置选项。为每种语言选择最合适的方案。",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "开始使用 →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "查看翻译方法",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "测试",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "依赖",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "脚本转换器",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "语言语域",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "为每个语言对混合使用不同方法",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "每个“源语言→目标语言”对都有独立的翻译方法、模型和质量配置。为每种语言选择最合适的方案，拒绝一刀切。",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "了解翻译方法 →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "专为以下场景打造",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "不是又一个 TMS 平台",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin、Phrase 和 Locize 都是需要账号、控制台和按月付费的云平台。Rosetta 是一个运行在你的项目中的 CLI 工具——无需账号，无需控制台，没有供应商锁定。",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "查看完整对比 →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "竞技场",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "认为你拥有最好的",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "翻译方法？",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "证明它。",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "7,000 多种语言。只有约 130 种拥有机器翻译。其余的都是未解决的难题——也是一份公开的邀请。rosetta 的评估测试工具通过带有指纹的、可复现的评分来对任何方法进行基准测试。排行榜会记录每一次提交。",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "这是一个全世界所有人都可以参与解决的难题。",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "构建方法。进行评分。回馈社区。",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 方法排行榜",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "按 chrF++ 分数排名的顶级翻译方法。",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "觉得你能击败它们？",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "运行测试工具",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "完整排行榜 →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "方法",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "模型",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "语言对",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "完全可定制的国际化",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "一个将每种翻译方法都作为配置选项的 i18n 框架。Google Translate、LLMs、自定义流水线——一条命令，逐对控制，质量把关。",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "一条命令",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "自动检测你的本地化文件、格式和目标语言。只翻译更改的内容，跳过未更改的部分。",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "按语言对配置方法",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "法语使用 Google Translate，日语使用 LLM，平原克里语使用经过指导的插件——全部都在同一个配置中。",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "语域与指导",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "通过针对每种语言的语气指令来引导 LLM。德语的正式 Sie 称呼，菲律宾语的 Taglish 语码转换，克林贡语的战士荣誉。",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "内容感知",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "代码块、短代码、插值变量和原始 HTML 在翻译过程中会受到保护。LLM 永远不会看到你的代码。",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "零依赖",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "仅使用 Node.js 内置模块。没有 SDK，没有原生模块，没有构建步骤。在任何运行 Node 20+ 的地方都能工作。",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "质量门禁",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "每次翻译在写入前都会经过验证。错误脚本输出、源文本回显、长度膨胀和占位符损坏都会被捕获并拒绝。",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS 国际化",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "将你的 Next.js、Hugo 或 React 应用翻译成 30 多种语言，并具有针对每个语言对的质量控制。",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "翻译 30 种语言 →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "构建自定义流水线",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "将 LLMs 与 FST 验证器、字典和后处理器链接起来。将其打包为插件。",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline 指南 →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "语言保护",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "为没有 API 支持的语言（如原住民语言、濒危语言和人造语言）提供辅导式 LLM 翻译。",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "低资源语言指南 →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "即插即测",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "在标准化基准上运行你的方法。chrF++、完全匹配、FST 接受度——全部由同一测试框架计算。",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "评估框架 →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "获取你的分数",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "每次提交都会绑定到一个 Git commit 指纹，并在相同的数据集上进行评分。提交 PR 即可参与。",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "排行榜 →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "尊重数据",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "原住民语言属于其社区。rosetta 支持 OCAP、CARE 和毛利人数据主权原则。",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "数据主权 →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "将你的整个网站构建为",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "，只需一条命令，或进行无限的自定义配置",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "种语言",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "种支持的语言",
+    "description": "Languages supported button label"
   }
 }

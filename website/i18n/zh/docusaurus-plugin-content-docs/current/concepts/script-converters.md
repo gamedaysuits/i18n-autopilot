@@ -10,27 +10,27 @@ title: "脚本转换器"
 
 有些语言的同一种口语会使用多种书写系统：
 
-- **Plains Cree**（平原克里语）：使用 SRO（拉丁字母）进行编辑 → 使用音节文字（ᓀᐦᐃᔭᐍᐏᐣ）进行显示
-- **Serbian**（塞尔维亚语）：国际通用拉丁字母 → 国内使用西里尔字母
-- **Klingon**（克林贡语）：使用罗马音进行输入 → 使用 pIqaD (  ) 进行显示
+- **Plains Cree**：用于编辑的 SRO（拉丁字母） → 用于显示的音节文字（ᓀᐦᐃᔭᐍᐏᐣ）
+- **Serbian**：用于国际交流的拉丁字母 → 用于国内的西里尔字母
+- **Klingon**：用于输入的罗马拼音 → 用于显示的 pIqaD (  )
 
-直接翻译成非拉丁文字会带来一些问题：LLM 会产生字符幻觉，JSON 文件变得难以进行版本控制，且 diff 工具无法比较更改。文字转换器通过将翻译保留在对版本控制友好的文字中，并在同步时进行确定性转换，从而解决了这个问题。
+直接翻译成非拉丁文字会带来一些问题：LLM 会产生字符幻觉，JSON 文件变得难以进行版本控制，且 diff 工具无法比较更改。文字转换器通过将翻译保留在对版本控制友好的书写系统中，并在同步时进行确定性转换，从而解决了这个问题。
 
 ## 可用的转换器
 
-Rosetta 内置了五个文字转换器：
+Rosetta 附带五个内置的文字转换器：
 
 | Locale | 从 | 到 | 类型 | 是否需要字体？ |
 |--------|------|----|------|----------------|
-| `crk` | SRO（标准罗马正字法） | 克里语音节文字 | 确定性 | 否 — 原生 Unicode |
+| `crk` | SRO（标准罗马正字法） | Cree 音节文字 | 确定性 | 否 — 原生 Unicode |
 | `sr` | 拉丁字母 | 西里尔字母 | 确定性 | 否 — 原生 Unicode |
-| `tlh` | 罗马化拼写 | pIqaD | 确定性 | 是 — PUA U+F8D0–F8FF |
-| `x-elvish-s` | 拉丁字母 | Tengwar（贝尔兰模式） | 确定性 | 是 — PUA U+E000–E07F |
+| `tlh` | 罗马拼音 | pIqaD | 确定性 | 是 — PUA U+F8D0–F8FF |
+| `x-elvish-s` | 拉丁字母 | Tengwar（Beleriand 模式） | 确定性 | 是 — PUA U+E000–E07F |
 | `x-kryptonian` | 拉丁字母 | Kryptonian | 基于字体的密码 | 是 — PUA U+E100–E119 |
 
-### 确定性转换与基于字体的转换
+### 确定性与基于字体
 
-- **确定性转换器**（克里语、塞尔维亚语、克林贡语、Tengwar）使用语言学规则执行真实的字符到字符映射。输出包含实际的 Unicode 字符。
+- **确定性转换器**（Cree、Serbian、Klingon、Tengwar）使用语言学规则执行真正的字符到字符映射。输出包含实际的 Unicode 字符。
 - **基于字体的转换器**（Kryptonian）是 1:1 的替换密码，其输出为 Unicode PUA 字符，只有在加载特定字体时才能正确渲染。
 
 ## 工作原理
@@ -41,23 +41,23 @@ Rosetta 内置了五个文字转换器：
 Source (English) → LLM Translation → Working Script → Script Converter → Display Script
 ```
 
-以 Plains Cree（平原克里语）为例：
+以 Plains Cree 为例：
 ```
 "Welcome" → LLM → "tānisi" (SRO) → Converter → "ᑖᓂᓯ" (Syllabics)
 ```
 
 ### 贪婪的从左到右匹配
 
-所有转换器都使用相同的算法：在每个字符位置，首先尝试可能的最长匹配，然后逐渐尝试较短的匹配。不匹配任何模式的字符（空格、标点符号、数字）将保持不变直接通过。
+所有转换器都使用相同的算法：在每个字符位置，首先尝试可能的最长匹配，然后尝试逐渐缩短的匹配。不匹配任何模式的字符（空格、标点符号、数字）将保持不变直接通过。
 
-这能正确处理二合字母和三合字母：
+这样可以正确处理二合字母和三合字母：
 - Klingon：`tlh` → 单个 pIqaD 字符（而不是 `t` + `l` + `h`）
 - Serbian：`nj` → `њ`（而不是 `н` + `ј`）
 - Cree：`twê` → 单个音节字符（而不是 `t` + `w` + `ê`）
 
 ## 使用文字转换器
 
-当 locale 代码与已注册的转换器匹配时，文字转换器会自动激活。无需配置——只需设置你的目标 locale：
+当 locale 代码与已注册的转换器匹配时，文字转换器会自动激活。无需任何配置——只需设置你的目标 locale 即可：
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -78,7 +78,7 @@ Source (English) → LLM Translation → Working Script → Script Converter →
 npx i18n-rosetta status
 ```
 
-状态输出会显示哪些语言对激活了文字转换器，以及它们执行了什么转换。
+状态输出会显示哪些语言对启用了文字转换器，以及它们执行什么转换。
 
 ## Web 字体要求
 
@@ -133,7 +133,7 @@ npx i18n-rosetta status
 ```
 
 :::tip Kryptonian 的替代方案
-由于 Kryptonian 是纯粹的 A-Z 密码，你可以完全跳过文字转换器，通过 CSS 将字体直接应用于拉丁文本。这对于 Web 部署通常更简单——只需提供 Kryptonian 字体并在相关元素上设置 `font-family` 即可。
+由于 Kryptonian 是纯粹的 A-Z 密码，你可以完全跳过文字转换器，并通过 CSS 将字体应用于拉丁文本。这对于 Web 部署通常更简单——只需提供 Kryptonian 字体并在相关元素上设置 `font-family`。
 :::
 
 ## 添加自定义转换器
@@ -142,8 +142,8 @@ npx i18n-rosetta status
 
 1. **创建转换映射** —— 一个包含 `[from, to]` 键值对的有序数组，最长的序列排在前面
 2. **创建转换器函数** —— 一个贪婪的从左到右扫描器（使用 `sroToSyllabics` 作为模板）
-3. **注册转换器** —— 在 `SCRIPT_CONVERTERS` 对象中将其注册，使用 locale 代码作为键
-4. **添加 `script` 字段** —— 添加到 `registers.js` 中该语言的注册条目里
+3. **将其注册**到 `SCRIPT_CONVERTERS` 对象中，使用 locale 代码作为键
+4. **添加 `script` 字段**到 `registers.js` 中的语言注册条目里
 
 ```javascript
 // Example: adding a converter for Cherokee (chr)
@@ -168,7 +168,7 @@ SCRIPT_CONVERTERS['chr'] = {
 ## 另请参阅
 
 - [人造语言、文字与正字法](/docs/guides/conlangs-scripts-orthography) — PUA 字体、Unicode、添加新转换器
-- [质量门禁](/docs/concepts/quality-gate) — 在文字转换前运行的验证
+- [质量门禁](/docs/concepts/quality-gate) — 在文字转换之前运行的验证
 - [支持的语言](/docs/reference/supported-languages) — 哪些语言具有文字转换器
-- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 上下文中的 SRO→音节文字
-- [实战指南：FST 门禁流水线](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 多阶段流水线中的文字转换
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 语境中的 SRO→音节文字
+- [Cookbook：FST 门禁流水线](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — 多阶段流水线中的文字转换

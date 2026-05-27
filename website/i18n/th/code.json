@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 รายการ|{count} รายการ",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "ปรับแต่งได้เต็มรูปแบบ",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "Internationalization",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "คำสั่งเดียวแปลไฟล์ locale ของคุณได้ทั้งหมด ทุกวิธีการแปล — Google Translate, LLMs, custom APIs, coached pipelines — สามารถตั้งค่าได้ เลือกใช้วิธีที่เหมาะสมที่สุดสำหรับแต่ละภาษา",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "เริ่มต้นใช้งาน →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "ดูวิธีการแปล",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "การทดสอบ",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Dependencies",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Script converters",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Language registers",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "ผสมผสานวิธีการแปลสำหรับแต่ละคู่ภาษา",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "แต่ละคู่ภาษาต้นทาง→ปลายทาง จะมีวิธีการแปล โมเดล และการตั้งค่าคุณภาพเป็นของตัวเอง เลือกใช้วิธีที่เหมาะสมที่สุดสำหรับแต่ละภาษา — ไม่จำเป็นต้องใช้วิธีเดียวสำหรับทุกภาษา",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "เรียนรู้วิธีการแปลเพิ่มเติม →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "สร้างมาเพื่อ",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "ไม่ใช่แค่แพลตฟอร์ม TMS ทั่วไป",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase และ Locize เป็นแพลตฟอร์มคลาวด์ที่ต้องสร้างบัญชี มีแดชบอร์ด และมีค่าใช้จ่ายรายเดือน Rosetta เป็นเครื่องมือ CLI ที่ทำงานในโปรเจกต์ของคุณ — ไม่ต้องมีบัญชี ไม่มีแดชบอร์ด และไม่มี vendor lock-in",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "ดูการเปรียบเทียบแบบเต็ม →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "THE ARENA",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "คิดว่าคุณมีวิธีการแปล",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "ที่ดีที่สุดใช่ไหม",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "พิสูจน์เลย",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "กว่า 7,000 ภาษา มีเพียงประมาณ 130 ภาษาที่มี machine translation ส่วนที่เหลือยังคงเป็นปัญหาที่รอการแก้ไข — และเป็นความท้าทายที่เปิดกว้าง evaluation harness ของ rosetta จะทำการ benchmark ทุกวิธีการแปลด้วยการให้คะแนนแบบ fingerprinted ที่สามารถทำซ้ำได้ โดยมี leaderboard ติดตามทุกผลงานที่ส่งเข้ามา",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "นี่คือปัญหาที่ยังไม่มีใครแก้ได้ ซึ่งทุกคนบนโลกสามารถมีส่วนร่วมได้",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "สร้างวิธีการแปล ทดสอบคะแนน และแบ่งปันให้ชุมชน",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Leaderboard วิธีการแปล",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "วิธีการแปลที่ดีที่สุด จัดอันดับตามคะแนน chrF++",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "คิดว่าคุณทำคะแนนได้ดีกว่านี้ไหม?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "รัน harness",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "ดู Leaderboard ทั้งหมด →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "วิธีการแปล",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "โมเดล",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "คู่ภาษา",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Internationalization ที่ปรับแต่งได้เต็มรูปแบบ",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "เฟรมเวิร์ก i18n ที่ทุกวิธีการแปลสามารถตั้งค่าได้ ไม่ว่าจะเป็น Google Translate, LLMs หรือ custom pipelines — สั่งงานได้ในคำสั่งเดียว ควบคุมได้รายคู่ภาษา พร้อมระบบตรวจสอบคุณภาพ",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "คำสั่งเดียว",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "ตรวจจับไฟล์ locale รูปแบบไฟล์ และภาษาปลายทางของคุณโดยอัตโนมัติ แปลเฉพาะส่วนที่มีการเปลี่ยนแปลง และข้ามส่วนที่เหมือนเดิม",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "กำหนดวิธีแปลรายคู่ภาษา",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "ใช้ Google Translate สำหรับภาษาฝรั่งเศส, LLM สำหรับภาษาญี่ปุ่น และ coached plugin สำหรับภาษา Plains Cree — ทั้งหมดนี้ตั้งค่าได้ในไฟล์เดียว",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Registers & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "ควบคุม LLM ด้วยคำสั่งกำหนดน้ำเสียงสำหรับแต่ละภาษา เช่น รูปแบบทางการ (Sie-form) สำหรับภาษาเยอรมัน, การสลับภาษา Taglish สำหรับภาษาฟิลิปปินส์ หรือเกียรติยศนักรบสำหรับภาษา Klingon",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "รับรู้บริบทของเนื้อหา",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Code blocks, shortcodes, interpolation variables และ raw HTML จะถูกปกป้องไว้ระหว่างการแปล LLM จะไม่เห็นโค้ดของคุณเลย",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Zero Dependencies",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "ใช้เพียงโมดูลพื้นฐานของ Node.js เท่านั้น ไม่มี SDKs ไม่มี native modules และไม่มี build step ทำงานได้ทุกที่ที่รัน Node 20+ ได้",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "ทุกการแปลจะถูกตรวจสอบก่อนบันทึก ผลลัพธ์ที่ผิดสคริปต์, การคัดลอกข้อความต้นทาง, ความยาวที่มากเกินไป และ placeholder ที่เสียหาย จะถูกตรวจจับและปฏิเสธทันที",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS Internationalization",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "แปลแอปพลิเคชัน Next.js, Hugo หรือ React ของคุณเป็นกว่า 30 ภาษา พร้อมการควบคุมคุณภาพรายคู่ภาษา",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "แปลกว่า 30 ภาษา →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "สร้าง Custom Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "เชื่อมต่อ LLMs เข้ากับ FST validators, พจนานุกรม และ post-processors พร้อมแพ็กเกจให้เป็น plugin",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline Cookbook →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "การอนุรักษ์ภาษา",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "การแปลด้วย LLM แบบมีผู้ช่วยสำหรับภาษาที่ไม่มี API รองรับ — ภาษาพื้นเมือง ภาษาที่ใกล้สูญพันธุ์ และภาษาประดิษฐ์",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "คู่มือสำหรับ Low-Resource →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "เชื่อมต่อและทดสอบ",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "รันวิธีการของคุณกับ standardized benchmarks ทั้ง chrF++, exact match และ FST acceptance — ซึ่งทั้งหมดคำนวณโดย harness เดียวกัน",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "ยืนยันคะแนนของคุณ",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "ทุกการส่งข้อมูลจะถูกผูกกับ Git commit และให้คะแนนโดยใช้ dataset เดียวกัน เปิด PR เพื่อส่งข้อมูล",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Leaderboard →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "เคารพข้อมูล",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "ภาษาพื้นเมืองเป็นของชุมชนเจ้าของภาษา rosetta รองรับหลักการ OCAP, CARE และ Māori Data Sovereignty",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Data Sovereignty →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "สร้างเว็บไซต์ทั้งหมดของคุณเป็นภาษา",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "ด้วยคำสั่งเดียว หรือปรับแต่งได้อย่างไร้ขีดจำกัด",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "ภาษา",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "ภาษาที่รองรับ",
+    "description": "Languages supported button label"
   }
 }

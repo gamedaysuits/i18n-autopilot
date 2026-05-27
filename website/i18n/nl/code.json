@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 item|{count} items",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "Volledig aanpasbare",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "internationalisatie",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "Eén commando vertaalt uw locale-bestanden. Elke vertaalmethode — Google Translate, LLMs, custom API's, coached pipelines — is een configuratieoptie. Gebruik wat werkt voor elke taal.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "Aan de slag →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "Bekijk methoden",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "Tests",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Dependencies",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Script converters",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Taalregisters",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "Combineer methoden per talenpaar",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "Elk bron→doel-paar krijgt zijn eigen vertaalmethode, model en kwaliteitsconfiguratie. Gebruik wat werkt voor elke taal — geen one-size-fits-all.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "Meer over methoden →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "Gebouwd voor",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "Niet het zoveelste TMS-platform",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase en Locize zijn cloudplatforms die accounts, dashboards en maandelijkse kosten vereisen. Rosetta is een CLI-tool die in uw project draait — geen accounts, geen dashboards, geen vendor lock-in.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "Bekijk de volledige vergelijking →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "DE ARENA",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "Denkt u dat u de beste methode heeft",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "om te vertalen",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "Bewijs het.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "Meer dan 7.000 talen. ~130 hebben machine translation. De rest is een onopgelost probleem — en een open uitnodiging. Rosetta's evaluation harness benchmarkt elke methode met gevingerafdrukte, reproduceerbare scores. Het leaderboard houdt elke inzending bij.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "Dit is een onopgelost probleem waaraan iedereen ter wereld kan bijdragen.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "Bouw een methode. Bepaal de score. Deel het.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Methoden Leaderboard",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "Top vertaalmethoden gerangschikt op chrF++ score.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "Denkt u dat u ze kunt verslaan?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "Voer de harness uit",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "Volledig Leaderboard →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "Methode",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "Model",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "Paar",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Volledig aanpasbare internationalisatie",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "Een i18n-framework waarbij elke vertaalmethode een configuratieoptie is. Google Translate, LLMs, custom pipelines — één commando, controle per paar, quality-gated.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "Eén commando",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "Detecteer automatisch uw locale-bestanden, formaat en doeltalen. Vertaal wat is gewijzigd. Sla over wat hetzelfde is gebleven.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "Methoden per paar",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "Google Translate voor Frans, een LLM voor Japans, een gecoachte plugin voor Plains Cree — allemaal in dezelfde configuratie.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Registers & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "Stuur de LLM aan met tooninstructies per taal. Formele Sie-vorm voor Duits, Taglish code-switching voor Filipijns, krijgerseer voor Klingon.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "Content Aware",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Codeblokken, shortcodes, interpolatievariabelen en ruwe HTML worden afgeschermd tijdens de vertaling. De LLM ziet uw code nooit.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Geen dependencies",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Alleen Node.js built-ins. Geen SDK's, geen native modules, geen build step. Werkt overal waar Node 20+ draait.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "Elke vertaling wordt gevalideerd voor het schrijven. Verkeerde script-output, source echoes, lengte-inflatie en placeholder-corruptie worden opgevangen en geweigerd.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS Internationalisatie",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "Vertaal uw Next.js, Hugo of React app naar meer dan 30 talen met kwaliteitscontrole per paar.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "Vertaal 30 talen →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "Bouw een Custom Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "Koppel LLMs aan FST validators, woordenboeken en post-processors. Verpak het als een plugin.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline Cookbook →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "Taalbehoud",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "Gecoachte LLM-vertaling voor talen zonder API-dekking — inheemse, bedreigde en geconstrueerde talen.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "Low-Resource Guide →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "Plug and Test",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "Voer uw methode uit tegen gestandaardiseerde benchmarks. chrF++, exact match, FST acceptance — allemaal berekend door hetzelfde harness.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "Claim uw score",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "Elke inzending wordt gekoppeld aan een Git commit en gescoord tegen dezelfde dataset. Open een PR om in te dienen.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Leaderboard →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "Respecteer de data",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "Inheemse talen behoren toe aan hun gemeenschappen. rosetta ondersteunt de principes van OCAP, CARE en Māori Data Sovereignty.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Datasoevereiniteit →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "Bouw uw volledige website in",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "met één commando, of met oneindige aanpassingsmogelijkheden",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "talen",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "ondersteunde talen",
+    "description": "Languages supported button label"
   }
 }

@@ -1,23 +1,23 @@
 ---
 sidebar_position: 8
 title: "Cung cấp phương thức tùy chỉnh dưới dạng API"
-description: "Đóng gói các pipeline dịch thuật phức tạp (FST gates, multi-step LLM chains) thành một HTTP service và tích hợp chúng vào i18n-rosetta thông qua phương thức api."
+description: "Đóng gói các pipeline dịch thuật phức tạp (FST gates, multi-step LLM chains) dưới dạng dịch vụ HTTP và tích hợp chúng vào i18n-rosetta thông qua phương thức api."
 ---
-# Phục vụ một Phương thức tùy chỉnh dưới dạng API
+# Phục vụ một Custom Method dưới dạng API
 
-**Phương thức `api`** của i18n-rosetta cho phép bạn trỏ bất kỳ cặp dịch thuật nào đến một HTTP endpoint bên ngoài. Đây là cách bạn tích hợp các pipeline quá phức tạp đối với một LLM prompt đơn lẻ — morphological analyzers (trình phân tích hình thái), finite-state transducers (FSTs), multi-step LLM chains (chuỗi LLM nhiều bước), hoặc bất kỳ phương thức nghiên cứu tùy chỉnh nào mà bạn đã xây dựng.
+**Phương thức `api`** của i18n-rosetta cho phép bạn trỏ bất kỳ cặp dịch thuật nào đến một HTTP endpoint bên ngoài. Đây là cách bạn tích hợp các pipeline quá phức tạp đối với một prompt LLM đơn lẻ — morphological analyzers (trình phân tích hình thái), finite-state transducers (FSTs), multi-step LLM chains (chuỗi LLM nhiều bước), hoặc bất kỳ phương pháp nghiên cứu tùy chỉnh nào mà bạn đã xây dựng.
 
 ## Tại sao lại là một API Service?
 
-Một số translation pipeline không thể chạy trong một chu kỳ prompt-response (nhắc-phản hồi) đơn giản:
+Một số translation pipeline không thể chạy trong một chu kỳ prompt-response đơn giản:
 
 | Bước trong pipeline | Ví dụ |
 |---|---|
-| **Phân rã hình thái** | Tách các từ đa tổng hợp thành các hình vị trước khi dịch |
-| **Xác thực FST** | Loại bỏ các kết quả vi phạm các quy tắc âm vị học hoặc hình thái học |
-| **Chuỗi LLM nhiều bước** | Các chu kỳ tạo → xác minh → sửa lỗi với các mô hình khác nhau |
-| **Tra cứu từ điển** | Đối chiếu chéo với một từ điển song ngữ được tinh tuyển ở giữa pipeline |
-| **Human-in-the-loop** | Đưa các bản dịch không chắc chắn vào hàng đợi để chuyên gia xem xét |
+| **Morphological decomposition** | Tách các từ đa tổng hợp thành các hình vị trước khi dịch |
+| **FST validation** | Loại bỏ các kết quả đầu ra vi phạm các quy tắc âm vị học hoặc hình thái học |
+| **Multi-step LLM chains** | Các chu kỳ tạo (Generate) → xác minh (verify) → sửa lỗi (correct) với các model khác nhau |
+| **Dictionary lookup** | Đối chiếu chéo với một từ điển song ngữ được chọn lọc ở giữa pipeline |
+| **Human-in-the-loop** | Đưa các bản dịch không chắc chắn vào hàng đợi để chuyên gia đánh giá |
 
 Phương thức `api` coi pipeline của bạn như một hộp đen (black box) — i18n-rosetta gửi các chuỗi nguồn, service của bạn trả về các bản dịch. Những gì diễn ra bên trong hoàn toàn do bạn quyết định.
 
@@ -243,15 +243,15 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Các phương pháp hay nhất
 
-1. **Trả về chuỗi rỗng khi thất bại** — Đừng trả về chuỗi nguồn như một "bản dịch". Hãy trả về `""` và để cơ chế tiền tố dự phòng (fallback prefix) của i18n-rosetta xử lý.
+1. **Trả về chuỗi rỗng khi thất bại** — Đừng trả về chuỗi nguồn như một "bản dịch". Hãy trả về `""` và để cơ chế fallback prefix của i18n-rosetta xử lý.
 2. **Bao gồm điểm tin cậy (confidence scores)** — Nếu pipeline của bạn có thể ước tính chất lượng, hãy trả về nó trong metadata. Điều này giúp ích cho việc kiểm toán chất lượng.
-3. **Triển khai health checks** — Thêm một endpoint `GET /health` để i18n-rosetta có thể xác minh kết nối trước khi bắt đầu một đợt đồng bộ lớn.
-4. **Xử lý giới hạn tốc độ (rate limit) một cách khéo léo** — Nếu pipeline của bạn có giới hạn thông lượng, hãy trả về mã trạng thái `429`. Hệ thống xử lý hàng loạt (batch system) của i18n-rosetta sẽ tự động lùi lại (back off).
-5. **Ghi log mọi thứ** — Các pipeline nhiều bước có thể thất bại trong im lặng. Hãy ghi log đầu vào/đầu ra của từng bước để gỡ lỗi (debugging).
+3. **Triển khai health checks** — Thêm một endpoint `GET /health` để i18n-rosetta có thể xác minh kết nối trước khi bắt đầu một đợt đồng bộ (sync) lớn.
+4. **Xử lý rate limit một cách khéo léo** — Nếu pipeline của bạn có giới hạn thông lượng (throughput limits), hãy trả về mã trạng thái `429`. Hệ thống batch của i18n-rosetta sẽ tự động lùi lại (back off).
+5. **Ghi log mọi thứ** — Các multi-step pipeline có thể gặp lỗi ngầm (fail silently). Hãy ghi log đầu vào/đầu ra của từng bước để phục vụ việc gỡ lỗi (debugging).
 
 ## Cấp phép
 
-Mẫu phương thức `api` hoàn toàn mở — không có hạn chế cấp phép nào đối với việc bọc translation pipeline của riêng bạn thành một HTTP service. `gds-mt-eval-harness` được cung cấp theo giấy phép MIT cho các triển khai tham chiếu.
+Mô hình phương thức `api` hoàn toàn mở — không có hạn chế nào về giấy phép khi đóng gói translation pipeline của riêng bạn thành một HTTP service. `gds-mt-eval-harness` được cung cấp theo giấy phép MIT cho các bản triển khai tham chiếu (reference implementations).
 
 ## Xem thêm
 
@@ -259,5 +259,5 @@ Mẫu phương thức `api` hoàn toàn mở — không có hạn chế cấp ph
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — schema đầy đủ cho `i18n-rosetta.config.json` bao gồm các trường phương thức `api`
 - [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — hướng dẫn toàn diện (end-to-end) cho các ngôn ngữ thiếu tài nguyên, bao gồm các nguyên tắc OCAP
 - [Kiến trúc](/docs/concepts/architecture) — cách thức hoạt động của vòng lặp đồng bộ (sync loop), xử lý hàng loạt (batching) và điều phối phương thức (method dispatch) của i18n-rosetta
-- [Đánh giá MT](https://mtevalarena.org/docs/leaderboard/rules) — phương pháp đánh giá, số liệu (metrics) và quy trình gửi lên bảng xếp hạng
+- [Đánh giá MT](https://mtevalarena.org/docs/leaderboard/rules) — phương pháp đánh giá, các chỉ số (metrics) và quy trình gửi kết quả lên bảng xếp hạng (leaderboard)
 - [Bảng xếp hạng phương thức](/leaderboard) — xếp hạng chất lượng trực tiếp trên các phương thức và cặp ngôn ngữ

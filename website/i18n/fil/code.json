@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 item|{count} na items",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "Fully customizable na",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "internationalization",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "Isang command lang para i-translate ang inyong locale files. Bawat translation method — Google Translate, LLMs, custom APIs, coached pipelines — ay isang config option. Gamitin kung ano ang epektibo para sa bawat language.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "Magsimula →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "Tingnan ang Methods",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "Tests",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Dependencies",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Script converters",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Language registers",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "I-mix ang methods per language pair",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "Ang bawat source→target pair ay may sariling translation method, model, at quality configuration. Gamitin kung ano ang epektibo para sa bawat language — hindi one-size-fits-all.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "Alamin ang tungkol sa methods →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "Ginawa Para Sa",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "Hindi lang isa pang TMS platform",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Ang Crowdin, Phrase, at Locize ay mga cloud platforms na nangangailangan ng accounts, dashboards, at monthly fees. Ang Rosetta ay isang CLI tool na nag-rurun mismo sa project niyo — walang accounts, walang dashboards, at walang vendor lock-in.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "Tingnan ang full comparison →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "THE ARENA",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "Tingin niyo ba kayo ang may pinakamagandang method",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "para sa pag-translate",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "Patunayan niyo.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "7,000+ languages. ~130 lang ang may machine translation. Ang natitira ay isa pang unsolved problem — at isang open invitation. Bine-benchmark ng evaluation harness ng rosetta ang kahit anong method gamit ang fingerprinted at reproducible scoring. Tinu-track ng leaderboard ang bawat submission.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "Isa itong unsolved problem kung saan pwedeng mag-contribute ang kahit sino sa mundo.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "Bumuo ng method. I-score ito. I-share pabalik.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Method Leaderboard",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "Top translation methods na naka-rank base sa chrF++ score.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "Kaya niyo bang talunin 'to?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "I-run ang harness",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "Full Leaderboard →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "Method",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "Model",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "Pair",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Fully customizable na internationalization",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "Isang i18n framework kung saan ang bawat translation method ay isang config option. Google Translate, LLMs, custom pipelines — isang command lang, may per-pair control, at quality-gated.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "One Command",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "I-auto-detect ang inyong locale files, format, at target languages. I-translate lang kung ano ang nagbago. I-skip ang mga hindi.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "Per-Pair Methods",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "Google Translate para sa French, isang LLM para sa Japanese, isang coached plugin para sa Plains Cree — lahat sa iisang config.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Registers & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "I-steer ang LLM gamit ang per-language tone instructions. Formal Sie-form para sa German, Taglish code-switching para sa Filipino, warrior's honor para sa Klingon.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "Content Aware",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Naka-shield ang code blocks, shortcodes, interpolation variables, at raw HTML habang nagta-translate. Hindi makikita ng LLM ang code ninyo.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Zero Dependencies",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Node.js built-ins lang. Walang SDKs, walang native modules, walang build step. Gumagana kahit saan nagra-run ang Node 20+.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "Bina-validate ang bawat translation bago i-write. Ang wrong-script output, source echoes, length inflation, at placeholder corruption ay nahuhuli at nire-reject.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS Internationalization",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "I-translate ang inyong Next.js, Hugo, o React app sa 30+ languages na may per-pair quality control.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "I-translate sa 30 Languages →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "Bumuo ng Custom Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "I-chain ang LLMs kasama ang FST validators, dictionaries, at post-processors. I-package ito bilang isang plugin.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline Cookbook →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "Language Preservation",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "Coached LLM translation para sa mga languages na walang API coverage — Indigenous, endangered, o constructed.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "Low-Resource Guide →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "Plug and Test",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "I-run ang inyong method laban sa standardized benchmarks. chrF++, exact match, FST acceptance — lahat ay computed gamit ang parehong harness.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "I-claim ang Inyong Score",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "Bawat submission ay naka-fingerprint sa isang Git commit at naka-score laban sa parehong dataset. Mag-open ng PR para mag-submit.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Leaderboard →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "Respetuhin ang Data",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "Ang mga Indigenous languages ay pagmamay-ari ng kanilang communities. Sinu-support ng rosetta ang OCAP, CARE, at Māori Data Sovereignty principles.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Data Sovereignty →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "I-build ang inyong buong website sa",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "gamit ang isang command, o may infinite customization",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "languages",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "languages supported",
+    "description": "Languages supported button label"
   }
 }

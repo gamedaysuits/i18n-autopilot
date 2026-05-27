@@ -1,13 +1,13 @@
 ---
 sidebar_position: 3
-title: "Conlangs, Scripts, at Orthography"
+title: "Mga Conlang, Script & Orthography"
 ---
 # Conlangs, Scripts & Orthography
 
-May first-class support ang rosetta para sa mga constructed languages (conlangs) via LLM registers at deterministic script converters. Iko-cover ng guide na ito kung paano gumagana ang conlang support, anong mga fonts ang kailangan niyo, at kung paano mag-add ng sarili ninyong conlang.
+May first-class support ang rosetta para sa mga constructed languages (conlangs) via LLM registers at deterministic script converters. Iko-cover po ng guide na ito kung paano gumagana ang conlang support, anong mga fonts ang kailangan ninyo, at kung paano mag-add ng sarili ninyo.
 
-:::tip Bakit mahalaga ang mga conlangs
-Hindi lang novelty ang mga conlangs — ginagamit nila ang exact same infrastructure na ginagamit para sa mga totoong underserved languages. Ang quality gate, coaching system, at script conversion pipeline ay nagwo-work identically para sa Klingon at Plains Cree. Kung gumagana ang inyong conlang pipeline, gagana rin po ang inyong low-resource language pipeline.
+:::tip Bakit mahalaga ang conlangs
+Hindi lang po novelty ang mga conlangs — ine-exercise ng mga ito ang exact same infrastructure na ginagamit para sa mga totoong underserved languages. Ang quality gate, coaching system, at script conversion pipeline ay gumagana nang pareho para sa Klingon at Plains Cree. Kung gumagana ang inyong conlang pipeline, gagana rin po ang inyong low-resource language pipeline.
 :::
 
 ---
@@ -16,14 +16,14 @@ Hindi lang novelty ang mga conlangs — ginagamit nila ang exact same infrastruc
 
 | Language | Code | Script Converter | Font Required |
 |----------|------|:----------------:|:-------------:|
-| Klingon | `tlh` | ✅ Romanization → pIqaD | PUA font (e.g., pIqaD qolqoS) |
+| Klingon | `tlh` | ✅ Romanization → pIqaD | PUA font (hal., pIqaD qolqoS) |
 | Sindarin (Tolkien Elvish) | `x-elvish-s` | ✅ Latin → Tengwar | CSUR PUA font |
 | Kryptonian | `x-kryptonian` | ✅ Latin → Kryptonian | PUA font |
-| Pirate English | `x-pirate` | ❌ register only | Wala |
-| Shakespearean English | `x-shakespeare` | ❌ register only | Wala |
-| Yoda-speak | `x-yoda` | ❌ register only | Wala |
+| Pirate English | `x-pirate` | ❌ register lang | Wala |
+| Shakespearean English | `x-shakespeare` | ❌ register lang | Wala |
+| Yoda-speak | `x-yoda` | ❌ register lang | Wala |
 
-Gumagamit ang mga conlang codes ng `x-` prefix ayon sa BCP-47 private-use convention, maliban sa Klingon (`tlh`) na may naka-assign na [ISO 639-3](https://iso639-3.sil.org/code/tlh) code mula sa SIL International.
+Gumagamit po ang mga conlang codes ng `x-` prefix base sa BCP-47 private-use convention, maliban sa Klingon (`tlh`) na may [ISO 639-3](https://iso639-3.sil.org/code/tlh) code na in-assign ng SIL International.
 
 ---
 
@@ -33,41 +33,64 @@ Gumagamit ang mga conlang codes ng `x-` prefix ayon sa BCP-47 private-use conven
 
 Ang Klingon (pIqaD), Sindarin (Tengwar), at Kryptonian ay gumagamit ng mga Unicode **Private Use Area (PUA)** characters. Ang PUA ay ang range na U+E000–U+F8FF — ang mga codepoints na ito ay **walang standard assignment**. Minemaintain ng [ConScript Unicode Registry (CSUR)](https://www.evertype.com/standards/csur/) ang mga community-agreed mappings para sa mga fictional scripts, pero hindi po ito part ng Unicode standard.
 
-Ang ibig sabihin nito in practice:
+Ano ang ibig sabihin nito in practice:
 
 - Magre-render ang PUA text bilang mga **empty boxes** (□□□) kapag walang naka-load na tamang font
-- Pwedeng mag-map ang iba't ibang fonts ng magkakaibang glyphs sa parehong PUA codepoints
-- HINDI naka-bundle sa rosetta ang mga PUA fonts — kailangan niyo po itong i-load mismo
+- Maaaring mag-map ang iba't ibang fonts ng magkakaibang glyphs sa parehong PUA codepoints
+- HINDI po naka-bundle ang mga PUA fonts sa rosetta — kailangan ninyo itong i-load mismo
 - Hindi kailanman ire-render ng mga system fonts ang mga characters na ito
 
-### Mga PUA Ranges per Script
+### PUA Ranges by Script
 
 | Script | PUA Range | CSUR Reference |
 |--------|-----------|---------------|
 | Klingon (pIqaD) | U+F8D0–U+F8FF | [CSUR Klingon](https://www.evertype.com/standards/csur/klingon.html) |
 | Tengwar (Elvish) | U+E000–U+E07F | [CSUR Tengwar](https://www.evertype.com/standards/csur/tengwar.html) |
-| Kryptonian | Nag-iiba per font | Walang CSUR standard |
+| Kryptonian | Nag-iiba depende sa font | Walang CSUR standard |
 
 ### Pag-load ng mga PUA Web Fonts
 
-Para ma-display ang PUA-based conlang text sa inyong web application, i-load ang tamang font via CSS:
+May kasamang built-in command ang rosetta para mag-download at mag-manage ng mga PUA web fonts:
+
+```bash
+# See which fonts are needed for your configured languages
+i18n-rosetta fonts list
+
+# Download all needed fonts (auto-detects project type for output directory)
+i18n-rosetta fonts install
+
+# Also generate a CSS snippet with @font-face declarations
+i18n-rosetta fonts install --css
+```
+
+Nagda-download ang `fonts install` command mula sa mga verified open-source repositories:
+
+| Font | Script | License | Source |
+|------|--------|---------|--------|
+| pIqaD qolqoS | Klingon | SIL Open Font License 1.1 | [GitHub](https://github.com/dadap/pIqaD-fonts) |
+| FreeMonoTengwar | Tengwar | GNU GPL v3 (with font exception) | [SourceForge](https://sourceforge.net/projects/freetengwar/) |
+| *(user-provided)* | Kryptonian | Nag-iiba | Walang available na open-source PUA font |
+
+Naka-auto-detect po ang output directory mula sa inyong project structure (Docusaurus → `static/fonts/`, Hugo → `static/fonts/`, default → `public/fonts/`). I-override ito gamit ang `--dir`.
+
+Kung mas gusto ninyong i-manage ang mga fonts manually, mag-add po ng `@font-face` rules sa inyong CSS:
 
 ```css
-/* Load a Klingon PUA font */
 @font-face {
   font-family: 'pIqaD';
-  src: url('/fonts/piqad.woff2') format('woff2');
-  unicode-range: U+F8D0-U+F8FF;
+  src: url('/fonts/pIqaDqolqoS.ttf') format('truetype');
+  font-display: swap;
+  unicode-range: U+F8D0-F8FF;
 }
 
 /* Apply to Klingon text elements */
-[lang="tlh"] {
+[lang="tlh"], [data-script="piqad"] {
   font-family: 'pIqaD', sans-serif;
 }
 ```
 
 :::warning HINDI guaranteed ang Unicode support
-[Explicitly declined](https://www.unicode.org/faq/private_use.html) ng Unicode Consortium na i-encode ang mga fictional scripts sa standard. Ang mga PUA assignments ay community-maintained at pwedeng mag-conflict sa iba't ibang font implementations. Palaging i-specify ang exact font na ginagamit ng project ninyo, at i-test ang rendering across browsers.
+[Explicitly na tinanggihan](https://www.unicode.org/faq/private_use.html) ng Unicode Consortium na i-encode ang mga fictional scripts sa standard. Ang mga PUA assignments ay community-maintained at maaaring mag-conflict sa iba't ibang font implementations. Palagi pong i-specify ang exact font na ginagamit ng inyong project, at i-test ang rendering across browsers.
 :::
 
 ---
@@ -78,12 +101,12 @@ Para ma-display ang PUA-based conlang text sa inyong web application, i-load ang
 
 Ang script conversion ng rosetta ay isang **post-translation hook**:
 
-1. Itra-translate ng LLM ang text sa isang **working script** (kadalasan Latin o SRO)
-2. Iva-validate ng [quality gate](/docs/concepts/quality-gate) ang output
-3. Ita-transform ng deterministic converter ang validated text papunta sa **display script**
-4. Isusulat sa disk ang na-convert na text
+1. Tinu-translate ng LLM ang text sa isang **working script** (kadalasang Latin o SRO)
+2. Bini-validate ng [quality gate](/docs/concepts/quality-gate) ang output
+3. Tinu-transform ng deterministic converter ang validated text papunta sa **display script**
+4. Sinu-sulat ang converted text sa disk
 
-Nagwo-work ang two-step approach na ito dahil mas maganda ang pino-produce na output ng mga LLMs kapag nagwo-work sa mga Latin-based scripts. Gini-guarantee ng deterministic converter ang tamang script output nang hindi umaasa sa (kadalasan ay unreliable na) script knowledge ng model.
+Gumagana po ang two-step approach na ito dahil nagpo-produce ng mas magandang output ang mga LLMs kapag nagwo-work sa mga Latin-based scripts. Gini-guarantee ng deterministic converter ang tamang script output nang hindi umaasa sa (madalas ay unreliable na) script knowledge ng model.
 
 ### Ang Limang Converters
 
@@ -98,7 +121,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Gumagamit ng macron/circumflex ang mga long vowels: ê, î, ô, â. Hina-handle ng converter ang lahat ng SRO diacritics at mina-map ang mga ito sa tamang syllabic characters. Tingnan ang [Mag-support ng Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong Cree pipeline.
+Gumagamit ang mga long vowels ng macron/circumflex: ê, î, ô, â. Hina-handle ng converter ang lahat ng SRO diacritics at minamap ang mga ito sa tamang syllabic characters. Tingnan po ang [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong Cree pipeline.
 
 #### Serbian: Latin → Cyrillic (`sr`)
 
@@ -138,9 +161,9 @@ Input:  "Kal-El"
 Output: [Kryptonian PUA] (requires Kryptonian font to render)
 ```
 
-### Pag-trigger ng Converter
+### Pagt-trigger ng Converter
 
-I-set ang `scripts` field sa inyong language config. Para sa mga built-in converters, auto-detected na ito mula sa language code:
+I-set po ang `scripts` field sa inyong language config. Para sa mga built-in converters, naka-auto-detect ito mula sa language code:
 
 ```json
 {
@@ -151,7 +174,7 @@ I-set ang `scripts` field sa inyong language config. Para sa mga built-in conver
 }
 ```
 
-Auto-detect ang Plains Cree (`crk`) — hindi niyo na kailangang i-set ang `scripts` explicitly.
+Naka-auto-detect ang Plains Cree (`crk`) — hindi ninyo na kailangang i-set ang `scripts` explicitly.
 
 ---
 
@@ -164,13 +187,13 @@ May mga totoong languages na gumagamit ng multiple active scripts:
 | Serbian | Latin + Cyrillic | Script converter (`sr`) — i-translate sa Latin, i-convert sa Cyrillic |
 | Chinese | Simplified + Traditional | Separate locale codes (`zh` vs `zh-TW`) na may distinct registers |
 
-Para sa mga languages kung saan parehong nagse-serve sa iisang audience ang mga scripts (Serbian), gumamit ng script converter. Para sa mga languages kung saan magkaiba ang sineserve na audience ng mga scripts (Chinese Simplified para sa mainland China, Traditional para sa Taiwan/HK), gumamit ng separate locale codes.
+Para sa mga languages kung saan parehong nagse-serve sa iisang audience ang mga scripts (Serbian), gumamit po ng script converter. Para sa mga languages kung saan nagse-serve sa magkaibang audiences ang mga scripts (Chinese Simplified para sa mainland China, Traditional para sa Taiwan/HK), gumamit ng separate locale codes.
 
 ---
 
 ## Mga Orthography Notes
 
-Hindi lang tone ang mga registers — nagdadala rin sila ng mga **orthographic instructions** na nagga-guide sa LLM papunta sa mga tamang writing conventions.
+Hindi lang tone ang mga registers — nagdadala rin ang mga ito ng **orthographic instructions** na nagga-guide sa LLM papunta sa mga tamang writing conventions.
 
 ### Mga Formal Address Forms
 
@@ -188,21 +211,21 @@ Kasama sa mga built-in registers ng rosetta ang culturally appropriate na formal
 
 ### Gender-Inclusive Writing
 
-Ang bawat language card ay may `gender.inclusiveGuidance` field na may language-specific advice. Ini-inject ito sa LLM translation prompt nang hiwalay sa register preset, kaya nag-aapply ito consistently kahit anong formality preset pa ang piliin ng user:
+Bawat language card ay may `gender.inclusiveGuidance` field na may language-specific advice. Ini-inject po ito sa LLM translation prompt nang hiwalay sa register preset, kaya nag-a-apply ito consistently kahit ano pa ang piliing formality preset ng user:
 
-- **French**: Écriture inclusive na may interpunct notation (e.g., "Connecté·e")
-- **German**: Doppelpunkt notation (e.g., "Benutzer:innen")
-- **Spanish**: Preferred ang gender-neutral restructuring; slash notation (e.g., "usuario/a") bilang fallback
+- **French**: Écriture inclusive na may interpunct notation (hal., "Connecté·e")
+- **German**: Doppelpunkt notation (hal., "Benutzer:innen")
+- **Spanish**: Mas preferred ang gender-neutral restructuring; slash notation (hal., "usuario/a") bilang fallback
 
-Para sa mga languages na walang specific guidance sa kanilang card (e.g., Korean, conlangs), magfo-fallback ang system sa isang generic rule: *"prefer gender-neutral forms or the most inclusive option available."*
+Para sa mga languages na walang specific guidance sa kanilang card (hal., Korean, conlangs), magfo-fallback ang system sa isang generic rule: *"prefer gender-neutral forms or the most inclusive option available."*
 
 ### Mga RTL Script Requirements
 
-Naka-note sa lahat ng Arabic, Hebrew, Persian, at Urdu registers ang mga right-to-left requirements: `Ensure text reads naturally in RTL layout contexts.`
+Ang mga Arabic, Hebrew, Persian, at Urdu registers ay lahat nagno-note ng right-to-left requirements: `Ensure text reads naturally in RTL layout contexts.`
 
-### Pag-override ng Kahit Anong Register
+### Pag-override sa Kahit Anong Register
 
-Ang bawat register ay isang config value — i-override ito para mag-match sa voice ng project ninyo:
+Bawat register ay isang config value — i-override po ito para mag-match sa voice ng inyong project:
 
 ```json
 {
@@ -217,7 +240,7 @@ Ang bawat register ay isang config value — i-override ito para mag-match sa vo
 }
 ```
 
-Tingnan ang [Configuration](/docs/getting-started/configuration) para sa buong config reference.
+Tingnan po ang [Configuration](/docs/getting-started/configuration) para sa buong config reference.
 
 ---
 
@@ -225,7 +248,7 @@ Tingnan ang [Configuration](/docs/getting-started/configuration) para sa buong c
 
 ### Step-by-step
 
-1. **Pumili ng BCP-47 private-use code**: Gamitin ang `x-` prefix (e.g., `x-dothraki`, `x-valyrian`).
+1. **Pumili ng BCP-47 private-use code**: Gamitin ang `x-` prefix (hal., `x-dothraki`, `x-valyrian`).
 
 2. **I-add sa inyong config**:
 
@@ -243,18 +266,18 @@ Tingnan ang [Configuration](/docs/getting-started/configuration) para sa buong c
 
 4. **I-test**: I-run ang `i18n-rosetta sync --dry` para ma-preview ang mga translations nang hindi nagsusulat ng files.
 
-5. **I-check ang quality gate**: Baka kailanganing i-tune ang [quality gate](/docs/concepts/quality-gate) para sa inyong conlang — lalo na ang `requireNonLatin` check kung gumagamit ng PUA characters ang conlang ninyo.
+5. **I-check ang quality gate**: Baka kailanganing i-tune ang [quality gate](/docs/concepts/quality-gate) para sa inyong conlang — lalo na ang `requireNonLatin` check kung gumagamit ng PUA characters ang inyong conlang.
 
-:::note Nakadepende ang conlang quality sa LLM knowledge
-Kaya lang i-translate ng LLM ang text papunta sa isang conlang kung nakita na niya ito sa training data. Nagwo-work nang maayos ang mga well-documented na conlangs (Klingon, Sindarin, Dothraki). Pwedeng mag-produce ng inconsistent results ang mga obscure o bagong imbento na conlangs. Gumamit ng [coaching data](/docs/concepts/coaching-data) para ma-improve ang quality.
+:::note Nakadepende sa LLM knowledge ang quality ng conlang
+Kaya lang i-translate ng LLM ang text papunta sa isang conlang na nakita na nito sa training data. Maganda ang resulta ng mga well-documented na conlangs (Klingon, Sindarin, Dothraki). Maaaring mag-produce ng inconsistent results ang mga obscure o newly invented na conlangs. Gumamit po ng [coaching data](/docs/concepts/coaching-data) para ma-improve ang quality.
 :::
 
 ---
 
 ## Tingnan Din
 
-- [Mga Supported na Languages](/docs/reference/supported-languages) — buong language table kasama ang method availability
-- [Mga Script Converters](/docs/concepts/script-converters) — technical details ng conversion pipeline
-- [Mga Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat translation method
+- [Supported Languages](/docs/reference/supported-languages) — buong language table kasama ang method availability
+- [Script Converters](/docs/concepts/script-converters) — technical details ng conversion pipeline
+- [Translation Methods](/docs/guides/translation-methods) — kung paano gumagana ang bawat translation method
 - [Configuration](/docs/getting-started/configuration) — config reference kasama ang language at register setup
-- [Mag-support ng Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — ang parehong infrastructure na in-apply sa mga totoong underserved languages
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — ang parehong infrastructure na in-apply sa mga totoong underserved languages

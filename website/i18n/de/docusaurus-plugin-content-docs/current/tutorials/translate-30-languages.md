@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: "30 Sprachen übersetzen"
-description: "Leitfaden: Skalieren Sie ein Projekt von 3 auf 30 Sprachen durch Methodenmischung pro Sprachpaar, Stapelverarbeitung und CI-Integration."
+description: "Leitfaden: Skalieren Sie ein Projekt von 3 auf 30 Sprachen durch einen Methoden-Mix pro Sprachpaar, Stapelverarbeitung und CI-Integration."
 ---
 # Cookbook: 30 Sprachen übersetzen
 
-Skalieren Sie ein Projekt von einer Handvoll Sprachversionen zu globaler Abdeckung. Dieses Cookbook führt Sie durch die Methodenauswahl, Kostenoptimierung und CI-Integration für eine reale mehrsprachige Bereitstellung.
+Skalieren Sie ein Projekt von einer Handvoll Lokalisierungen zu globaler Abdeckung. Dieses Cookbook führt Sie durch die Methodenauswahl, Kostenoptimierung und CI-Integration für eine reale mehrsprachige Bereitstellung.
 
 **Szenario:** Sie haben eine SaaS-App mit `en`, `fr`, `es`. Sie müssen 27 weitere Sprachen über drei Stufen von Qualitätsanforderungen hinweg hinzufügen.
 
@@ -13,15 +13,15 @@ Skalieren Sie ein Projekt von einer Handvoll Sprachversionen zu globaler Abdecku
 
 ## Schritt 1: Kategorisieren Sie Ihre Sprachen
 
-Nicht alle 30 Sprachen erfordern denselben Ansatz. Gruppieren Sie diese nach der Qualität der verfügbaren Methode:
+Nicht alle 30 Sprachen benötigen denselben Ansatz. Gruppieren Sie diese nach der Qualität der verfügbaren Methode:
 
 | Stufe | Sprachen | Methode | Warum |
 |------|-----------|--------|-----|
-| **Stufe 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Kaufkräftige Märkte, nuancierte Grammatik |
-| **Stufe 2 — Standard** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Hohes Volumen, gut unterstützt von Google |
-| **Stufe 3 — Gecoacht** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + Plugins | Ressourcenarm, erfordern die Durchsetzung von Terminologie |
+| **Stufe 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Hochwertige Märkte, nuancierte Grammatik |
+| **Stufe 2 — Standard** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Hohes Volumen, gut von Google unterstützt |
+| **Stufe 3 — Coached** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + Plugins | Ressourcenarm, erfordern Durchsetzung von Terminologie |
 
-## Schritt 2: Konfigurieren Sie pro Sprachpaar
+## Schritt 2: Pro Sprachpaar konfigurieren
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -52,10 +52,10 @@ Nicht alle 30 Sprachen erfordern denselben Ansatz. Gruppieren Sie diese nach der
 **Hinweis:** Sprachen, die nicht in `pairs` aufgeführt sind, erben `defaultMethod: "google-translate"`. Sie müssen nicht alle 30 auflisten.
 
 :::info
-Die Unterstützung für `crk` befindet sich in der Entwicklung — siehe [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) für den Status und Richtlinien zur Mitwirkung.
+Die Unterstützung für `crk` befindet sich in der Entwicklung — siehe [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) für den Status und Richtlinien zur Mitwirkung.
 :::
 
-## Schritt 3: Richten Sie die API-Schlüssel ein
+## Schritt 3: API-Schlüssel einrichten
 
 Sie benötigen beide API-Schlüssel für diese Konfiguration:
 
@@ -64,39 +64,39 @@ export OPENROUTER_API_KEY="sk-or-v1-..."
 export GOOGLE_TRANSLATE_API_KEY="AIza..."
 ```
 
-## Schritt 4: Führen Sie zuerst einen Probelauf durch
+## Schritt 4: Zuerst ein Testlauf
 
-Sehen Sie sich immer eine Vorschau an, bevor Sie 30 Sprachen übersetzen:
+Führen Sie immer eine Vorschau durch, bevor Sie 30 Sprachen übersetzen:
 
 ```bash
 npx i18n-rosetta sync --dry
 ```
 
 Überprüfen Sie die Ausgabe. Sie wird Folgendes anzeigen:
-- Welche Sprachpaare welche Methode verwenden
-- Wie viele Schlüssel pro Lokalisierung neu/geändert sind
+- Welche Paare welche Methode verwenden
+- Wie viele Schlüssel pro Lokalisierung neu oder geändert sind
 - Geschätzte API-Aufrufe pro Stufe
 
-## Schritt 5: Führen Sie die Synchronisation aus
+## Schritt 5: Führen Sie die Synchronisierung aus
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-Rosetta verarbeitet jedes Sprachpaar unabhängig voneinander. Die Sprachpaare der Stufe 2, die Google Translate verwenden, werden schnell sein. LLM-Sprachpaare der Stufe 1 werden langsamer sein, bieten aber eine höhere Qualität. Gecoachte Sprachpaare der Stufe 3 verwenden die Coaching-Daten des Plugins.
+Rosetta verarbeitet jedes Paar unabhängig. Die Paare der Stufe 2, die Google Translate verwenden, werden schnell sein. LLM-Paare der Stufe 1 werden langsamer sein, bieten aber eine höhere Qualität. Die gecoachten Paare der Stufe 3 verwenden die Coaching-Daten des Plugins.
 
 ### Inkrementelle Aktualisierungen
 
-Nach der anfänglichen Synchronisation übersetzen nachfolgende Durchläufe nur **geänderte oder neue** Schlüssel:
+Nach der anfänglichen Synchronisierung übersetzen nachfolgende Durchläufe nur **geänderte oder neue** Schlüssel:
 
 ```bash
 # Only keys that changed since last sync
 npx i18n-rosetta sync
 ```
 
-Die Sperrdatei (`.i18n-rosetta.lock`) protokolliert, was bereits übersetzt wurde, sodass Sie stabile Inhalte niemals neu übersetzen.
+Die Sperrdatei (`.i18n-rosetta.lock`) verfolgt, was übersetzt wurde, sodass Sie stabile Inhalte niemals neu übersetzen.
 
-## Schritt 6: Überprüfen Sie die Qualität
+## Schritt 6: Qualität prüfen
 
 Überprüfen Sie den Status aller Sprachpaare:
 
@@ -104,11 +104,11 @@ Die Sperrdatei (`.i18n-rosetta.lock`) protokolliert, was bereits übersetzt wurd
 npx i18n-rosetta status
 ```
 
-Dies gibt eine Tabelle aus, die für jedes Sprachpaar die Methode, das Modell, die Qualitätsstufe und die Information anzeigt, ob Coaching-Daten oder Benchmark-Ergebnisse verfügbar sind.
+Dies gibt eine Tabelle aus, die die Methode, das Modell, die Qualitätsstufe jedes Paares anzeigt und ob Coaching-Daten oder Benchmark-Werte verfügbar sind.
 
 ## Schritt 7: CI-Integration
 
-Fügen Sie dies zu Ihrem GitHub Actions-Workflow hinzu, damit die Übersetzungen bei jedem Push aktuell bleiben:
+Fügen Sie dies Ihrem GitHub Actions-Workflow hinzu, damit die Übersetzungen bei jedem Push aktuell bleiben:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync Translations
@@ -149,18 +149,18 @@ Für ein Projekt mit 500 Quellschlüsseln in 30 Sprachen:
 
 | Stufe | Sprachen | Methode | Ungefähre Kosten |
 |------|-----------|--------|-----------------|
-| Stufe 1 (5 Sprachen) | ja, ko, zh, de, pt | GPT-4o | ~$2,50/vollständige Synchronisation |
-| Stufe 2 (18 Sprachen) | it, nl, pl, etc. | Google Translate | ~$0,90/vollständige Synchronisation |
-| Stufe 3 (4 Sprachen) | crk, oj, mi, haw | GPT-4o-mini gecoacht | ~$0,40/vollständige Synchronisation |
-| **Gesamt** | **30 Sprachen** | **Gemischt** | **~$3,80/vollständige Synchronisation** |
+| Stufe 1 (5 Sprachen) | ja, ko, zh, de, pt | GPT-4o | ~$2.50/vollständige Synchronisierung |
+| Stufe 2 (18 Sprachen) | it, nl, pl, etc. | Google Translate | ~$0.90/vollständige Synchronisierung |
+| Stufe 3 (4 Sprachen) | crk, oj, mi, haw | GPT-4o-mini coached | ~$0.40/vollständige Synchronisierung |
+| **Gesamt** | **30 Sprachen** | **Gemischt** | **~$3.80/vollständige Synchronisierung** |
 
-Inkrementelle Synchronisationen (5–20 geänderte Schlüssel) kosten nur einen Bruchteil einer vollständigen Synchronisation.
+Inkrementelle Synchronisierungen (5–20 geänderte Schlüssel) kosten nur einen Bruchteil einer vollständigen Synchronisierung.
 
 ## Siehe auch
 
-- [Übersetzungsmethoden](/docs/guides/translation-methods) — Wie jede Übersetzungsmethode funktioniert und wann sie eingesetzt wird
+- [Übersetzungsmethoden](/docs/guides/translation-methods) — Wie jede Übersetzungsmethode funktioniert und wann sie verwendet werden sollte
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — Erstellen Sie Coaching-Daten für jede Ihrer Sprachen der Stufe 3
 - [CI/CD-Leitfaden](/docs/guides/ci-cd) — Fortgeschrittene CI-Muster einschließlich PR-Vorschau-Builds
-- [Quality Gate](/docs/concepts/quality-gate) — Wie Rosetta jede Übersetzung vor dem Schreiben validiert
+- [Quality Gate](/docs/concepts/quality-gate) — Wie Rosetta jede Übersetzung validiert, bevor sie geschrieben wird
 - [Unterstützte Sprachen](/docs/reference/supported-languages) — Vollständige Liste der Sprachcodes und Methodenkompatibilität
-- [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) — Fügen Sie Coaching-Daten für Sprachen ohne breite Abdeckung durch maschinelle Übersetzung hinzu
+- [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — Fügen Sie Coaching-Daten für Sprachen ohne breite MT-Abdeckung hinzu

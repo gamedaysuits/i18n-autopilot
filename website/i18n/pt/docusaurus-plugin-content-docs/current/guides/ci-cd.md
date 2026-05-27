@@ -67,7 +67,7 @@ Se você estiver usando o método integrado do Google Translate em vez do OpenRo
   run: npx i18n-rosetta sync
 ```
 
-## Provedores de LLM Diretos
+## Provedores Diretos de LLM
 
 Se você estiver usando os métodos `openai`, `anthropic` ou `gemini` diretamente:
 
@@ -111,9 +111,9 @@ Se você estiver usando um endpoint de tradução remota (por exemplo, um servi�
   run: npx i18n-rosetta sync
 ```
 
-## Pipeline de CI de Três Camadas
+## Pipeline de CI em Três Camadas
 
-Para obter a máxima cobertura de i18n, valide seu pipeline com todas as três ferramentas:
+Para máxima cobertura de i18n, valide seu pipeline com todas as três ferramentas:
 
 ```yaml
 jobs:
@@ -138,7 +138,19 @@ jobs:
 |-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | Bloquear commits com strings hardcoded |
 | **Sync** | `sync` | Post-commit / CI | Traduzir chaves ausentes e alteradas |
-| **Audit** | `audit` | Etapa de build | Falhar o deploy se alguma localidade estiver incompleta |
+| **Audit** | `audit` | Etapa de build | Falhar o deploy se algum idioma estiver incompleto |
+
+:::tip Translation Memory no CI
+Se o seu runner de CI tiver um workspace persistente (ou fizer cache de `.rosetta/`), a Translation Memory entra em ação automaticamente — as sincronizações subsequentes traduzem apenas as chaves cujo texto de origem realmente mudou. Para runners efêmeros, considere fazer cache de `.rosetta/tm.json` entre as execuções:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
 
 ---
 
@@ -146,6 +158,7 @@ jobs:
 
 - [Referência da CLI](/docs/reference/cli) — referência completa de comandos
 - [Como o Sync Funciona](/docs/concepts/how-sync-works) — entendendo a sincronização incremental
+- [Translation Memory](/docs/concepts/translation-memory) — cache e economia de custos
 - [Métodos de Tradução](/docs/guides/translation-methods) — seleção de método por par
 - [Quality Gate](/docs/concepts/quality-gate) — o que acontece quando as traduções falham
 - [Configuração](/docs/getting-started/configuration) — referência de configuração

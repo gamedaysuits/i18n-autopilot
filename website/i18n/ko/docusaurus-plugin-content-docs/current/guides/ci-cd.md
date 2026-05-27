@@ -6,7 +6,7 @@ title: "CI/CD"
 
 빌드 파이프라인에서 번역을 자동화해 보세요.
 
-## GitHub Actions: 푸시 시 동기화
+## GitHub Actions: Push 시 동기화
 
 기존 빌드 파이프라인에 번역 동기화를 추가해 보세요:
 
@@ -23,9 +23,9 @@ jobs:
       - run: npm run build
 ```
 
-## GitHub Actions: 예약 동기화
+## GitHub Actions: 예약된 동기화
 
-정해진 일정에 따라 번역을 실행하고 자동 커밋해 보세요:
+정해진 일정에 따라 번역을 실행하고 자동으로 커밋해 보세요:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync translations
@@ -67,7 +67,7 @@ OpenRouter 대신 내장된 Google Translate 방식을 사용하는 경우:
   run: npx i18n-rosetta sync
 ```
 
-## Direct LLM 제공자
+## 직접 LLM 제공자
 
 `openai`, `anthropic` 또는 `gemini` 방식을 직접 사용하는 경우:
 
@@ -102,7 +102,7 @@ OpenRouter 대신 내장된 Google Translate 방식을 사용하는 경우:
 
 ## 원격 번역 API
 
-원격 번역 엔드포인트를 사용하는 경우(예: 호스팅되는 번역 서비스):
+원격 번역 엔드포인트(예: 호스팅된 번역 서비스)를 사용하는 경우:
 
 ```yaml
 - name: Sync translations
@@ -113,7 +113,7 @@ OpenRouter 대신 내장된 Google Translate 방식을 사용하는 경우:
 
 ## 3계층 CI 파이프라인
 
-i18n 커버리지를 극대화하려면, 세 가지 도구를 모두 사용하여 파이프라인을 검증해 보세요:
+i18n 커버리지를 극대화하려면, 세 가지 도구를 모두 사용하여 파이프라인을 제어해 보세요:
 
 ```yaml
 jobs:
@@ -138,14 +138,27 @@ jobs:
 |-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | 하드코딩된 문자열이 포함된 커밋 차단 |
 | **Sync** | `sync` | Post-commit / CI | 누락되거나 변경된 키 번역 |
-| **Audit** | `audit` | 빌드 단계 | 불완전한 로케일이 있는 경우 배포 실패 처리 |
+| **Audit** | `audit` | Build 단계 | 불완전한 로케일이 있는 경우 배포 실패 처리 |
+
+:::tip CI에서의 Translation Memory
+CI 러너에 영구적인 작업 공간이 있거나(또는 `.rosetta/`를 캐시하는 경우), Translation Memory가 자동으로 작동해요. 즉, 이후의 동기화에서는 원본 텍스트가 실제로 변경된 키만 번역해요. 임시(ephemeral) 러너의 경우, 실행 간에 `.rosetta/tm.json`를 캐시하는 것을 고려해 보세요:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
 
 ---
 
-## 참고 자료
+## 함께 보기
 
 - [CLI 레퍼런스](/docs/reference/cli) — 전체 명령어 레퍼런스
 - [Sync 작동 방식](/docs/concepts/how-sync-works) — 점진적 동기화 이해하기
+- [Translation Memory](/docs/concepts/translation-memory) — 캐싱 및 비용 절감
 - [번역 방식](/docs/guides/translation-methods) — 언어 쌍별 방식 선택
 - [Quality Gate](/docs/concepts/quality-gate) — 번역 실패 시 발생하는 일
 - [설정](/docs/getting-started/configuration) — 설정 레퍼런스

@@ -47,12 +47,18 @@ yarn add --dev i18n-rosetta
 
 ## APIキーの取得
 
-Rosettaには翻訳バックエンドが必要です。以下から1つ選択してください。
+Rosettaには翻訳バックエンドが必要です。以下から1つ選択してください:
 
 | プロバイダー | 環境変数 | 最適な用途 |
 |----------|---------------------|----------|
-| **OpenRouter** (推奨) | `OPENROUTER_API_KEY` | コンテンツが多いプロジェクト、Markdown、200以上のモデル |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 大量のキー・バリューのペア (130以上の言語) |
+| **OpenRouter** (推奨) | `OPENROUTER_API_KEY` | コンテンツの多いプロジェクト、Markdown、200以上のモデル |
+| **Gemini** (無料枠) | `GEMINI_API_KEY` | 無料で開始、高品質 |
+| **OpenAI** | `OPENAI_API_KEY` | GPT-4oへの直接アクセス |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Claudeへの直接アクセス、ニュアンスのあるテキスト |
+| **DeepL** | `DEEPL_API_KEY` | ヨーロッパ言語、丁寧さの指定機能 |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 大量のキーバリューペア、130以上の言語 |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure、100以上の言語 |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | セルフホスト、プライバシー重視 |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -64,13 +70,13 @@ Rosettaには翻訳バックエンドが必要です。以下から1つ選択し
 export OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
-または、`.env.local`に追加します。
+または、`.env.local`に追加します:
 
 ```bash
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-最適な用途: コンテンツが多いプロジェクト、Markdownの翻訳、およびコンテンツを認識した保護（コードブロック、ショートコード、補間変数など）が必要なプロジェクト。
+最適な用途: コンテンツの多いプロジェクト、Markdownの翻訳、およびコンテンツを認識した保護（コードブロック、ショートコード、補間変数など）が必要なプロジェクト。
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ OPENROUTER_API_KEY=sk-or-v1-your-key-here
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-最適な用途: 大量のキー・バリューの文字列ペア（130以上の言語）。Markdownコンテンツには**推奨されません**。Google Translateはコードブロック、ショートコード、補間変数を認識しません。
+最適な用途: 大量のキーバリュー文字列ペア（130以上の言語）。Markdownコンテンツには**推奨されません** — Google Translateはコードブロック、ショートコード、補間変数を認識しません。
 
 :::tip スマート検出
-`GOOGLE_TRANSLATE_API_KEY`のみが設定されている場合（OpenRouterキーがない場合）、rosettaは自動的にGoogle Translateに切り替わります。設定を変更する必要はありません。
+`GOOGLE_TRANSLATE_API_KEY`のみが設定されている場合（OpenRouterキーがない場合）、rosettaは自動的にGoogle Translateに切り替わります。設定の変更は必要ありません。
 :::
 
   </TabItem>

@@ -6,9 +6,9 @@ title: "Início Rápido"
 
 Traduza seu primeiro arquivo de localização em 60 segundos.
 
-## 1. Configure Seus Arquivos de Localização
+## 1. Configure seus arquivos de localização
 
-Crie um arquivo de localização de origem. O Rosetta suporta JSON, TOML e YAML:
+Crie um arquivo de localização de origem. O Rosetta tem suporte para JSON, TOML e YAML:
 
 ```json title="locales/en.json"
 {
@@ -24,7 +24,7 @@ Crie um arquivo de localização de origem. O Rosetta suporta JSON, TOML e YAML:
 }
 ```
 
-## 2. Configure Sua Chave de API
+## 2. Configure sua chave de API
 
 Escolha um provedor e configure a chave:
 
@@ -38,7 +38,7 @@ export GEMINI_API_KEY=AI...
 
 Obtenha uma chave gratuita do Gemini em [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Obtenha uma chave do OpenRouter em [openrouter.ai](https://openrouter.ai).
 
-## 3. Execute a Sincronização
+## 3. Execute a sincronização
 
 ```bash
 npx i18n-rosetta sync
@@ -51,14 +51,14 @@ npx i18n-rosetta sync --method gemini
 ```
 :::
 
-O Rosetta irá:
+O Rosetta vai:
 1. Detectar automaticamente `locales/en.json` como a origem
 2. Encontrar (ou solicitar) os idiomas de destino
 3. Traduzir todas as chaves
 4. Escrever `locales/fr.json`, `locales/ja.json`, etc.
 5. Criar `.i18n-rosetta.lock` para rastrear o que foi traduzido
 
-## 4. Verifique os Resultados
+## 4. Verifique os resultados
 
 ```bash
 cat locales/fr.json
@@ -78,9 +78,9 @@ cat locales/fr.json
 }
 ```
 
-## O Que Acontece a Seguir?
+## O que acontece em seguida?
 
-Quando você altera uma string de origem, o rosetta detecta a alteração através do rastreamento de hash SHA-256 e traduz novamente apenas essa chave na próxima sincronização:
+Quando você altera uma string de origem, o rosetta detecta a alteração por meio do rastreamento de hash SHA-256 e traduz novamente apenas essa chave na próxima sincronização:
 
 ```json title="locales/en.json (updated)"
 {
@@ -96,16 +96,18 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
-## Opcional: Crie um Arquivo de Configuração
+A chave inalterada (`hero.subtitle`) é servida a partir do cache da **Translation Memory** do rosetta — sem chamada de API, sem custo. O cache é construído automaticamente durante cada sincronização e armazenado em `.rosetta/tm.json`.
 
-Para mais controle, gere um arquivo de configuração:
+## Opcional: Crie um arquivo de configuração
+
+Para ter mais controle, gere um arquivo de configuração:
 
 ```bash
 npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-O assistente guiado orienta você por cada um dos **register presets** do idioma — instruções pré-construídas de tom/formalidade ajustadas ao seu sistema linguístico. O francês possui predefinições T-V (vouvoiement vs tutoiement), o coreano possui níveis de fala (해요체 vs 합쇼체 vs 해체), o japonês possui opções de keigo (です/ます vs 丁寧語).
+O assistente guiado orienta você através dos **register presets** de cada idioma — instruções pré-construídas de tom/formalidade ajustadas ao seu sistema linguístico. O francês possui predefinições T-V (vouvoiement vs tutoiement), o coreano possui níveis de fala (해요체 vs 합쇼체 vs 해체), o japonês possui opções de keigo (です/ます vs 丁寧語).
 
 Ou crie uma configuração manualmente com chaves predefinidas:
 
@@ -123,19 +125,22 @@ Ou crie uma configuração manualmente com chaves predefinidas:
 }
 ```
 
-Execute `npx i18n-rosetta init` para navegar pelos presets disponíveis para cada idioma.
+Execute `npx i18n-rosetta init` para navegar pelas predefinições disponíveis para cada idioma.
 
 ## Opcional: Watch Mode
 
-Traduza automaticamente quando seu arquivo de origem for alterado:
+Traduz automaticamente quando seu arquivo de origem é alterado:
 
 ```bash
 npx i18n-rosetta watch
 ```
 
-## Próximos Passos
+## Próximos passos
 
 - **[Configuração](/docs/getting-started/configuration)** — Referência completa de configuração
-- **[Métodos de Tradução](/docs/guides/translation-methods)** — Escolha o método certo
-- **[Integração com Frameworks](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
+- **[Métodos de Tradução](/docs/guides/translation-methods)** — Escolha o método certo por par de idiomas
+- **[Translation Memory](/docs/concepts/translation-memory)** — Como o cache economiza seu dinheiro em reexecuções
+- **[Trabalhando com Tradutores Profissionais](/docs/guides/professional-translators)** — Exporte em XLIFF para revisão humana
+- **[Integração de Frameworks](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
 - **[CI/CD](/docs/guides/ci-cd)** — Automatize traduções no seu pipeline
+- **[Solução de Problemas](/docs/guides/troubleshooting)** — Problemas comuns e soluções

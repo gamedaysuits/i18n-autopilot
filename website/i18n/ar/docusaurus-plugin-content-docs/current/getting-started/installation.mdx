@@ -47,12 +47,18 @@ yarn add --dev i18n-rosetta
 
 ## الحصول على مفتاح API
 
-تحتاج Rosetta إلى واجهة خلفية للترجمة. اختر واحدة:
+يحتاج Rosetta إلى واجهة خلفية للترجمة. اختر واحدة:
 
 | المزود | متغير البيئة | الأفضل لـ |
 |----------|---------------------|----------|
 | **OpenRouter** (موصى به) | `OPENROUTER_API_KEY` | المشاريع المليئة بالمحتوى، Markdown، أكثر من 200 نموذج |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | أزواج المفتاح والقيمة (key-value) بحجم كبير (أكثر من 130 لغة) |
+| **Gemini** (باقة مجانية) | `GEMINI_API_KEY` | بداية بدون تكلفة، جودة جيدة |
+| **OpenAI** | `OPENAI_API_KEY` | وصول مباشر إلى GPT-4o |
+| **Anthropic** | `ANTHROPIC_API_KEY` | وصول مباشر إلى Claude، نصوص دقيقة |
+| **DeepL** | `DEEPL_API_KEY` | اللغات الأوروبية، صيغة رسمية مدمجة |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | أزواج المفتاح والقيمة (key-value) بحجم كبير، أكثر من 130 لغة |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure، أكثر من 100 لغة |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | استضافة ذاتية، الأولوية للخصوصية |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -70,7 +76,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-الأفضل لـ: المشاريع المليئة بالمحتوى، وترجمة Markdown، والمشاريع التي تحتاج إلى حماية واعية بالمحتوى (كتل الأكواد، الأكواد القصيرة، متغيرات الاستيفاء).
+الأفضل لـ: المشاريع المليئة بالمحتوى، وترجمة Markdown، والمشاريع التي تحتاج إلى حماية مدركة للمحتوى (كتل الأكواد، الأكواد القصيرة (shortcodes)، متغيرات الاستيفاء (interpolation variables)).
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ OPENROUTER_API_KEY=sk-or-v1-your-key-here
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-الأفضل لـ: أزواج المفتاح والقيمة (key-value) النصية بحجم كبير (أكثر من 130 لغة). **غير موصى به** لمحتوى Markdown — لا يمتلك Google Translate أي وعي بكتل الأكواد، أو الأكواد القصيرة، أو متغيرات الاستيفاء.
+الأفضل لـ: أزواج المفتاح والقيمة (key-value) النصية بحجم كبير (أكثر من 130 لغة). **غير موصى به** لمحتوى Markdown — حيث أن Google Translate ليس لديه إدراك بكتل الأكواد، أو الأكواد القصيرة (shortcodes)، أو متغيرات الاستيفاء (interpolation variables).
 
 :::tip اكتشاف ذكي
-إذا تم تعيين `GOOGLE_TRANSLATE_API_KEY` فقط (بدون مفتاح OpenRouter)، ستقوم rosetta بالتبديل تلقائيًا إلى Google Translate. لا حاجة لتغيير الإعدادات.
+إذا تم تعيين `GOOGLE_TRANSLATE_API_KEY` فقط (بدون مفتاح OpenRouter)، سيقوم rosetta بالتبديل تلقائيًا إلى Google Translate. لا حاجة لتغيير الإعدادات.
 :::
 
   </TabItem>

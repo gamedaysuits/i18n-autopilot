@@ -8,7 +8,7 @@ I-automate ang mga translations sa inyong build pipeline.
 
 ## GitHub Actions: Sync on Push
 
-Idagdag ang translation sync sa inyong existing na build pipeline:
+Mag-add po ng translation sync sa inyong existing na build pipeline:
 
 ```yaml title=".github/workflows/deploy.yml"
 jobs:
@@ -58,7 +58,7 @@ jobs:
 
 ## Google Translate Method
 
-Kung ginagamit ang built-in na Google Translate method sa halip na OpenRouter:
+Kung gagamitin po ang built-in na Google Translate method imbes na OpenRouter:
 
 ```yaml
 - name: Sync translations
@@ -69,7 +69,7 @@ Kung ginagamit ang built-in na Google Translate method sa halip na OpenRouter:
 
 ## Direct LLM Providers
 
-Kung direktang ginagamit ang `openai`, `anthropic`, o `gemini` methods:
+Kung gagamitin directly ang `openai`, `anthropic`, o `gemini` methods:
 
 ```yaml
 # OpenAI
@@ -102,7 +102,7 @@ Kung direktang ginagamit ang `openai`, `anthropic`, o `gemini` methods:
 
 ## Remote Translation API
 
-Kung gumagamit ng remote translation endpoint (halimbawa, isang hosted translation service):
+Kung gagamit po ng remote translation endpoint (halimbawa, isang hosted translation service):
 
 ```yaml
 - name: Sync translations
@@ -138,7 +138,19 @@ jobs:
 |-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | I-block ang mga commits na may hardcoded strings |
 | **Sync** | `sync` | Post-commit / CI | I-translate ang mga missing at changed keys |
-| **Audit** | `audit` | Build step | I-fail ang deployment kung may incomplete na locale |
+| **Audit** | `audit` | Build step | I-fail ang deployment kung may locale na incomplete |
+
+:::tip Translation Memory sa CI
+Kung ang inyong CI runner ay may persistent workspace (o naka-cache ang `.rosetta/`), awtomatikong gagana ang Translation Memory — ang mga susunod na syncs ay magta-translate lang ng mga keys kung saan nagbago talaga ang source text. Para sa mga ephemeral runners, i-consider po na i-cache ang `.rosetta/tm.json` between runs:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
 
 ---
 
@@ -146,6 +158,7 @@ jobs:
 
 - [CLI Reference](/docs/reference/cli) — buong command reference
 - [How Sync Works](/docs/concepts/how-sync-works) — pag-intindi sa incremental sync
+- [Translation Memory](/docs/concepts/translation-memory) — caching at cost savings
 - [Translation Methods](/docs/guides/translation-methods) — pagpili ng method per pair
 - [Quality Gate](/docs/concepts/quality-gate) — ano ang mangyayari kapag nag-fail ang translations
 - [Configuration](/docs/getting-started/configuration) — config reference

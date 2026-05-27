@@ -47,17 +47,23 @@ yarn add --dev i18n-rosetta
 
 ## Kumuha ng API Key
 
-Kailangan po ng Rosetta ng translation backend. Pumili po ng isa:
+Kailangan po ng Rosetta ng translation backend. Pumili ng isa:
 
 | Provider | Environment Variable | Best For |
 |----------|---------------------|----------|
-| **OpenRouter** (recommended) | `OPENROUTER_API_KEY` | Mga content-heavy project, Markdown, 200+ models |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs (130+ na language) |
+| **OpenRouter** (inirerekomenda) | `OPENROUTER_API_KEY` | Mga content-heavy project, Markdown, 200+ models |
+| **Gemini** (free tier) | `GEMINI_API_KEY` | Zero-cost na simula, magandang quality |
+| **OpenAI** | `OPENAI_API_KEY` | Direct GPT-4o access |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Direct Claude access, nuanced na text |
+| **DeepL** | `DEEPL_API_KEY` | Mga European language, built-in formality |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | High-volume key-value pairs, 130+ na language |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, 100+ na language |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Self-hosted, privacy-first |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
 
-Ang [OpenRouter](https://openrouter.ai) ay nagpo-provide ng unified API para sa 200+ na LLM models. May available po na free tier.
+Nagpo-provide po ang [OpenRouter](https://openrouter.ai) ng unified API para sa 200+ LLM models. May available na free tier.
 
 ```bash
 # Sign up at https://openrouter.ai, then:
@@ -70,7 +76,7 @@ O kaya i-add sa `.env.local`:
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-Best for: mga content-heavy project, Markdown translation, at mga project na kailangan ng content-aware shielding (code blocks, shortcodes, interpolation variables).
+Best for: mga content-heavy project, Markdown translation, at mga project na nangangailangan ng content-aware shielding (code blocks, shortcodes, interpolation variables).
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ Best for: mga content-heavy project, Markdown translation, at mga project na kai
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-Best for: high-volume key-value string pairs (130+ na language). **Not recommended** po para sa Markdown content — walang awareness ang Google Translate sa mga code block, shortcode, o interpolation variable.
+Best for: high-volume key-value string pairs (130+ na language). **Hindi inirerekomenda** para sa Markdown content — walang awareness ang Google Translate sa mga code block, shortcode, o interpolation variable.
 
 :::tip Smart detection
-Kung `GOOGLE_TRANSLATE_API_KEY` lang ang naka-set (walang OpenRouter key), mag-a-auto-switch po ang rosetta sa Google Translate. No config change needed na po.
+Kung `GOOGLE_TRANSLATE_API_KEY` lang ang naka-set (walang OpenRouter key), mag-a-auto-switch po ang rosetta sa Google Translate. Wala nang kailangang baguhin sa config.
 :::
 
   </TabItem>

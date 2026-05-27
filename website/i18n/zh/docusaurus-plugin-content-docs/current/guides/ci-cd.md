@@ -67,7 +67,7 @@ jobs:
   run: npx i18n-rosetta sync
 ```
 
-## 直连 LLM 提供商
+## 直接 LLM 提供商
 
 如果直接使用 `openai`、`anthropic` 或 `gemini` 方法：
 
@@ -113,7 +113,7 @@ jobs:
 
 ## 三层 CI 流水线
 
-为了获得最大的 i18n 覆盖率，请使用所有三个工具为你的流水线设置关卡：
+为了获得最大的 i18n 覆盖率，请使用这三个工具为你的流水线把关：
 
 ```yaml
 jobs:
@@ -140,12 +140,25 @@ jobs:
 | **Sync** | `sync` | 提交后 / CI | 翻译缺失和更改的键 |
 | **Audit** | `audit` | 构建步骤 | 如果任何语言环境不完整，则使部署失败 |
 
+:::tip CI 中的翻译记忆库
+如果你的 CI 运行器具有持久化工作区（或缓存了 `.rosetta/`），翻译记忆库将自动生效——后续的同步只会翻译源文本实际发生更改的键。对于临时运行器，请考虑在运行之间缓存 `.rosetta/tm.json`：
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
+
 ---
 
 ## 另请参阅
 
 - [CLI 参考](/docs/reference/cli) — 完整的命令参考
-- [Sync 工作原理](/docs/concepts/how-sync-works) — 了解增量同步
+- [同步工作原理](/docs/concepts/how-sync-works) — 了解增量同步
+- [翻译记忆库](/docs/concepts/translation-memory) — 缓存与节省成本
 - [翻译方法](/docs/guides/translation-methods) — 每对语言的方法选择
-- [质量关卡](/docs/concepts/quality-gate) — 翻译失败时会发生什么
+- [质量门禁](/docs/concepts/quality-gate) — 翻译失败时会发生什么
 - [配置](/docs/getting-started/configuration) — 配置参考

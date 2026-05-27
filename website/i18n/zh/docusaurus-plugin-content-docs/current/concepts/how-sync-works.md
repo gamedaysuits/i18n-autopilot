@@ -6,23 +6,28 @@ title: "同步工作原理"
 
 `sync` 命令是 rosetta 的核心操作。以下是你运行 `npx i18n-rosetta sync` 时发生的过程。
 
-## 流程概述
+## 流程概览
 
 ```mermaid
 flowchart TD
     A["Load config\n+ resolve pairs"] --> B["Scan source locale\n(flatten nested keys)"]
     B --> C["Load lock file\n(.i18n-rosetta.lock)"]
     C --> D["Diff: find missing,\nstale, and fallback keys"]
-    D --> E{"Keys to translate?"}
+    D --> TM{"TM lookup"}
+    TM -->|Hits| TC["Serve from cache"]
+    TM -->|Misses| E{"Keys to translate?"}
     E -->|No| F["Done ✓"]
     E -->|Yes| G["Batch keys\n(default 30/batch)"]
     G --> H["Translate batch\n(method-specific)"]
     H --> I["Quality gate\n(validate each key)"]
-    I --> J{"All pass?"}
+    I --> TERM["Terminology check\n(coached pairs)"]
+    TERM --> J{"All pass?"}
     J -->|Yes| K["Write to locale file"]
     J -->|Failures| L["Retry cascade:\nfull → half → individual"]
     L --> H
-    K --> M["Update lock file\n(SHA-256 hashes)"]
+    TC --> I
+    K --> TMS["Store new entries\nin TM"]
+    TMS --> M["Update lock file\n(SHA-256 hashes)"]
     M --> N["Next pair"]
 ```
 
@@ -32,12 +37,12 @@ flowchart TD
 
 Rosetta 会加载 `i18n-rosetta.config.json`（或自动检测设置）。它会解析：
 - 源语言和目标语言
-- 语言对图（要处理哪些源语言→目标语言的组合）
+- 语言对图谱（要处理哪些源语言→目标语言组合）
 - 每个语言对的翻译方法、模型和质量设置
 
 ### 2. 扫描源文件
 
-加载源语言文件并将其展平为键值对（key→value）映射：
+加载源语言文件并将其展平为键值对 (key→value) 映射：
 
 ```json
 // Input (nested)
@@ -49,51 +54,75 @@ Rosetta 会加载 `i18n-rosetta.config.json`（或自动检测设置）。它会
 
 ### 3. 变更检测
 
-Rosetta 会读取 `.i18n-rosetta.lock`，其中存储了先前已翻译的源值的 SHA-256 哈希值。对于每个键，它会检查：
+Rosetta 会读取 `.i18n-rosetta.lock`，该文件存储了先前已翻译源值的 SHA-256 哈希值。对于每个键，它会检查：
 
 | 条件 | 操作 |
 |-----------|--------|
 | 目标文件中缺少该键 | **翻译** |
-| 自上次同步后源哈希值已更改 | **重新翻译**（已过期） |
-| 目标值以 `[EN]` 开头 | **重新翻译**（后备占位符） |
+| 源哈希值自上次同步后发生变化 | **重新翻译** (已过期) |
+| 目标值以 `[EN]` 开头 | **重新翻译** (回退占位符) |
 | 源哈希值未变，且键存在 | **跳过** |
 
-这就是为什么 rosetta 只翻译发生更改的内容——它不会在每次同步时重新翻译整个文件。
+这就是为什么 rosetta 只翻译发生变更的内容——它不会在每次同步时重新翻译整个文件。
 
 ### 4. 批量处理
 
-键会被分组为多个批次（默认：LLM 为 30 个键/批次，Google Translate 为 128 个键/批次）。批量处理可减少 API 的往返次数，同时保持提示词（prompts）在可控范围内。
+键会被分组为批次（默认：LLM 为 30 个键/批次，Google Translate 为 128 个键/批次）。批量处理可减少 API 请求往返次数，同时保持提示词 (prompts) 处于可控状态。
+
+### 4b. 翻译记忆库
+
+在批量处理之前，rosetta 会检查翻译记忆库缓存 (`.rosetta/tm.json`)。如果某个键的源文本 + 语言 + 翻译方法与之前的翻译匹配，则会直接从缓存中即时提供——无需调用 API。
+
+```
+  [TM] 142 key(s) served from cache
+  Translating 3 key(s) to French (llm)... [OK]
+```
+
+翻译记忆库 (TM) 是主要的节省成本机制。在单个键发生更改后重新运行同步，只会翻译该键，而不是整个文件。详情请参阅[翻译记忆库](/docs/concepts/translation-memory)。
+
+如果要在单次运行中绕过缓存：`i18n-rosetta sync --no-tm`
 
 ### 5. 翻译
 
 每个批次都会发送到配置的翻译方法：
 
-- **`llm`**：向 OpenRouter 发送结构化提示词，包含语气（register）和性别指导说明
+- **`llm`**：向 OpenRouter 发送结构化提示词，包含语域和性别指导说明
 - **`llm-coached`**：同上，但注入了语法规则、词典和样式说明
 - **`google-translate`**：Google Cloud Translation API v2 批量请求
 - **`api`**：向远程端点发送 HTTP POST 请求
 
-对于特定的语言，系统消息（语气、性别指导、规则）在各个批次中是相同的，这启用了**提示词缓存（prompt caching）**——像 Anthropic 和 Google 这样的提供商会缓存重复的系统消息，从而降低 token 成本。
+对于特定语言，跨批次的系统消息（语域、性别指导、规则）是完全相同的，这启用了**提示词缓存 (prompt caching)**——Anthropic 和 Google 等提供商会缓存重复的系统消息，从而降低 token 成本。
 
 ### 6. 质量门禁
 
-每次翻译在写入磁盘之前都会经过验证。将运行五项检查：
+每条翻译在写入磁盘之前都会经过验证。系统会运行五项检查：
 
 | 检查项 | 捕获内容 | 示例 |
 |-------|----------------|---------|
 | **空值/空白** | 模型未返回任何内容 | `""` |
-| **源文本回显** | 模型返回了输入的英文 | 针对日语的 `"Welcome"` |
-| **幻觉循环** | 重复的三元组（trigrams） | `"Qo' Qo' Qo' Qo'"` |
-| **长度膨胀** | 输出比源文本长 4 倍以上 | 10 个字符的源文本 → 50 个字符的输出 |
-| **书写系统合规性** | 语言的书写系统错误 | 阿拉伯语使用了拉丁文本 |
+| **源文本回显** | 模型返回了输入的英文 | 针对日语返回 `"Welcome"` |
+| **幻觉循环** | 重复的三元组 (trigrams) | `"Qo' Qo' Qo' Qo'"` |
+| **长度膨胀** | 输出比源文本长 4 倍以上 | 10 字符源文本 → 50 字符输出 |
+| **字符集规范** | 语言使用了错误的字符集 | 阿拉伯语使用了拉丁文本 |
 
-失败项会以 `[GATE]` 前缀记录在日志中。没有静默降级（silent fallbacks）。
+失败项会记录并带有 `[GATE]` 前缀。没有静默回退。
 
-详情请参阅 [质量门禁](/docs/concepts/quality-gate)。
+详情请参阅[质量门禁](/docs/concepts/quality-gate)。
+
+### 6b. 术语验证
+
+对于配置了词典的 coached 语言对，rosetta 会在翻译后检查 LLM 是否实际使用了要求的术语。违规情况会被记录为 `[TERM]` 警告：
+
+```
+[TERM] en→fr: 2 term violation(s)
+  • "dashboard" → expected "tableau de bord" but got "panneau"
+```
+
+这些只是警告，并非阻塞性错误——翻译结果仍会被写入。
 
 ### 7. 级联重试
 
-当 JSON 解析失败或出现批次级别的错误时，rosetta 会使用逐渐缩小的批次进行重试：
+当 JSON 解析失败或出现批次级错误时，rosetta 会使用逐渐减小的批次进行重试：
 
 ```
 Full batch (30 keys) → Failed
@@ -101,27 +130,78 @@ Half batch (15 keys) → Failed
 Individual keys (1 each) → Isolates the problem key
 ```
 
-重试次数上限由 `maxRetries` 控制（默认：3），以防止 token 消耗失控。
+重试次数受 `maxRetries` 限制（默认：3），以防止 token 消耗失控。
 
 ### 8. 写入与锁定
 
-通过验证的翻译将被写入目标语言文件，并保留原始的嵌套结构。锁定文件（lock file）将更新为新的 SHA-256 哈希值。
+通过验证的翻译会被写入目标语言文件，并保留原始的嵌套结构。锁定文件会更新为新的 SHA-256 哈希值。
+
+## 内容翻译（第 2 阶段）
+
+对于 Docusaurus 和 Hugo 项目，`sync` 会在 JSON 键翻译完成后运行第二个阶段。此阶段使用相同的翻译方法和质量门禁来翻译 Markdown 和 MDX 文件（文档、博客文章、教程）。
+
+### 工作原理
+
+1. Rosetta 通过遍历 content/docs 目录来发现所有源内容文件（`.md`、`.mdx`）
+2. 对于每个 文件 × 语言 对，它会检查单独的内容锁定文件 (`.i18n-rosetta-content.lock`) 以查看 SHA-256 哈希值是否发生变化
+3. 发生变更或缺失的文件会被收集到一个扁平的工作项池中
+4. 该工作池会通过**并行并发**进行处理（默认：同时进行 12 个 API 调用）
+
+```
+Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
+
+    [1/79] (1%)  docs/concepts/security.md → ja [RE-TRANSLATE] (~3328s left)
+    [2/79] (3%)  docs/concepts/security.md → th [RE-TRANSLATE] (~1821s left)
+    ...
+    [79/79] (100%) blog/v3-2-quality.md → de [OK]
+
+  [OK] Created 79 content file(s), 341 unchanged
+```
+
+### 扁平池并行处理
+
+与第 1 阶段（JSON 键，按语言顺序处理）不同，第 2 阶段将所有 文件×语言 组合作为一个扁平列表进行处理。这意味着不同的文件和不同的语言会同时进行翻译：
+
+- `docs/configuration.md → fr` 和 `docs/cli.md → ja` 会同时运行
+- 在并发数为 12 的情况下，包含 420 篇翻译的语料库大约需要 11 分钟即可完成
+- 每完成 10 个任务就会增量写入一次清单，以防止进程被终止时丢失进度
+
+使用 `--concurrency` 或 `concurrency` 配置字段来控制并发数：
+
+```bash
+# Faster (more parallel calls, higher API load)
+npx i18n-rosetta sync --concurrency 20
+
+# Slower (gentler on rate limits)
+npx i18n-rosetta sync --concurrency 4
+```
+
+### 内容保护
+
+在翻译过程中，rosetta 会屏蔽不可翻译的内容：
+
+- **代码块**（围栏式和缩进式）会被替换为占位符
+- 不在 `translatableFields` 列表中的 **Frontmatter** 字段会保持原样
+- **链接**、图片路径和 HTML 标签会受到保护
+- **短代码 (Shortcodes)** 和插值变量（例如 `{count}`、`{{.Params.title}}`）会被屏蔽
+
+翻译完成后，所有占位符都会被还原并进行验证。如果存在任何缺失或损坏，该翻译将被拒绝并重试。
 
 ## 部分成功
 
-一个批次失败不会阻塞其余批次。如果 10 个批次中有 9 个成功，这 9 个将被写入。失败的批次会被记录，你可以重新运行 `sync` 进行重试。
+一个批次失败不会阻塞其余批次。如果 10 个批次中有 9 个成功，这 9 个批次将被写入。失败的批次会被记录，你可以重新运行 `sync` 进行重试。
 
 ## 试运行
 
-预览将要更改的内容，而不写入任何文件：
+预览将要发生的变更，而不写入任何文件：
 
 ```bash
-npx i18n-rosetta sync --dry
+npx i18n-rosetta sync --dry-run
 ```
 
 ## 强制重新翻译
 
-强制重新翻译特定的键，即使它们未发生更改：
+强制重新翻译特定的键，即使它们未发生变更：
 
 ```bash
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
@@ -129,7 +209,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## 成本估算
 
-在翻译之前，rosetta 会生成一份**同步前成本报告**，显示每个语言对的估算成本。这会在每次执行 `sync` 时自动运行——你会在任何 API 调用发生之前看到它。
+在翻译之前，rosetta 会生成一份**同步前成本报告**，显示每个语言对的估算成本。这会在每次执行 `sync` 时自动运行——你会在进行任何 API 调用之前看到它。
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -145,13 +225,13 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ### 估算内容
 
-每种翻译方法都提供自己的成本估算：
+每种翻译方法都提供其自身的成本估算：
 
-| 方法 | 成本依据 | 精度 |
+| 方法 | 成本基准 | 精度 |
 |--------|-----------|-----------|
-| `google-translate` | Google 公布的费率（20 美元/百万字符） | 准确 |
+| `google-translate` | Google 公布的费率（$20/百万字符） | 准确 |
 | `llm` | 因 OpenRouter 模型而异 | 取决于模型——请查看 [OpenRouter 定价](https://openrouter.ai/models) |
-| `llm-coached` | 与 `llm` 相同，加上指导上下文的 token | 取决于模型 |
+| `llm-coached` | 与 `llm` 相同，外加 coaching 上下文 token | 取决于模型 |
 | `api` | 由服务器决定 | 未知——不查询端点则无法估算 |
 
 当某种方法无法确定成本时（LLM 方法、远程 API），rosetta 会报告 `—` 而不是进行猜测。使用 `--dry` 可以在不实际执行翻译的情况下查看成本估算。
@@ -161,7 +241,9 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 ## 另请参阅
 
 - [CLI 参考 — sync](/docs/reference/cli#sync) — 命令标志和选项
-- [质量门禁](/docs/concepts/quality-gate) — 翻译是如何验证的
+- [翻译记忆库](/docs/concepts/translation-memory) — 缓存和成本节省
+- [质量门禁](/docs/concepts/quality-gate) — 翻译是如何被验证的
 - [翻译方法](/docs/guides/translation-methods) — 每种方法的工作原理
+- [与专业译者合作](/docs/guides/professional-translators) — XLIFF 工作流
 - [配置](/docs/getting-started/configuration) — 配置参考
-- [CI/CD 指南](/docs/guides/ci-cd) — 在你的流水线中自动化同步
+- [CI/CD 指南](/docs/guides/ci-cd) — 在流水线中自动执行同步

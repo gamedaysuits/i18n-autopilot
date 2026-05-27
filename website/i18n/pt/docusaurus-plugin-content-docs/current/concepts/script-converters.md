@@ -6,15 +6,15 @@ title: "Conversores de Script"
 
 Os conversores de script são hooks pós-tradução determinísticos e sem LLM que convertem texto de um sistema de escrita para outro. Eles permitem um fluxo de trabalho "traduza uma vez, renderize em vários scripts" — você traduz para um script de trabalho (geralmente latino) e, em seguida, converte para o script de exibição automaticamente.
 
-## Por que usar Conversores de Script?
+## Por que Conversores de Script?
 
-Algumas línguas usam vários scripts para o mesmo idioma falado:
+Alguns idiomas usam vários scripts para o mesmo idioma falado:
 
-- **Plains Cree**: SRO (Latino) para edição → Silabários (ᓀᐦᐃᔭᐍᐏᐣ) para exibição
-- **Sérvio**: Latino para uso internacional → Cirílico para uso doméstico
+- **Plains Cree**: SRO (Latino) para edição → Syllabics (ᓀᐦᐃᔭᐍᐏᐣ) para exibição
+- **Serbian**: Latino para uso internacional → Cirílico para uso doméstico
 - **Klingon**: Romanização para digitação → pIqaD (  ) para exibição
 
-Traduzir diretamente para scripts não latinos cria problemas: LLMs alucinam caracteres, arquivos JSON tornam-se difíceis de controlar a versão e ferramentas de diff não conseguem comparar as alterações. Os conversores de script resolvem isso mantendo as traduções em um script amigável para controle de versão e convertendo de forma determinística no momento da sincronização.
+Traduzir diretamente para scripts não latinos cria problemas: os LLMs alucinam caracteres, os arquivos JSON tornam-se difíceis de controlar a versão e as ferramentas de diff não conseguem comparar as alterações. Os conversores de script resolvem isso mantendo as traduções em um script amigável ao controle de versão e convertendo-as de forma determinística no momento da sincronização.
 
 ## Conversores Disponíveis
 
@@ -22,20 +22,20 @@ O Rosetta vem com cinco conversores de script integrados:
 
 | Locale | De | Para | Tipo | Fonte Necessária? |
 |--------|------|----|------|----------------|
-| `crk` | SRO (Standard Roman Orthography) | Silabários Cree | Determinístico | Não — Unicode nativo |
+| `crk` | SRO (Standard Roman Orthography) | Cree Syllabics | Determinístico | Não — Unicode nativo |
 | `sr` | Latino | Cirílico | Determinístico | Não — Unicode nativo |
 | `tlh` | Romanização | pIqaD | Determinístico | Sim — PUA U+F8D0–F8FF |
-| `x-elvish-s` | Latino | Tengwar (Modo de Beleriand) | Determinístico | Sim — PUA U+E000–E07F |
-| `x-kryptonian` | Latino | Kryptoniano | Cifra baseada em fonte | Sim — PUA U+E100–E119 |
+| `x-elvish-s` | Latino | Tengwar (Mode of Beleriand) | Determinístico | Sim — PUA U+E000–E07F |
+| `x-kryptonian` | Latino | Kryptonian | Cifra baseada em fonte | Sim — PUA U+E100–E119 |
 
 ### Determinístico vs. Baseado em Fonte
 
-- **Conversores determinísticos** (Cree, Sérvio, Klingon, Tengwar) realizam um mapeamento real de caractere para caractere usando regras linguísticas. A saída contém caracteres Unicode reais.
-- **Conversores baseados em fonte** (Kryptoniano) são cifras de substituição 1:1 onde a saída são caracteres Unicode PUA que só são renderizados corretamente com uma fonte específica carregada.
+- **Conversores determinísticos** (Cree, Serbian, Klingon, Tengwar) realizam o mapeamento real de caractere para caractere usando regras linguísticas. A saída contém caracteres Unicode reais.
+- **Conversores baseados em fonte** (Kryptonian) são cifras de substituição 1:1 onde a saída são caracteres Unicode PUA que só são renderizados corretamente com uma fonte específica carregada.
 
 ## Como Eles Funcionam
 
-Os conversores de script são executados **após** a tradução, como uma etapa de pós-processamento. O pipeline é:
+Os conversores de script são executados **após** a tradução como uma etapa de pós-processamento. O pipeline é:
 
 ```
 Source (English) → LLM Translation → Working Script → Script Converter → Display Script
@@ -48,16 +48,16 @@ Por exemplo, Plains Cree:
 
 ### Correspondência Gulosa da Esquerda para a Direita
 
-Todos os conversores usam o mesmo algoritmo: em cada posição de caractere, tenta-se primeiro a correspondência mais longa possível e, em seguida, correspondências progressivamente mais curtas. Caracteres que não correspondem a nenhum padrão (espaços, pontuação, números) passam inalterados.
+Todos os conversores usam o mesmo algoritmo: em cada posição de caractere, tente a correspondência mais longa possível primeiro e, em seguida, correspondências progressivamente mais curtas. Caracteres que não correspondem a nenhum padrão (espaços, pontuação, números) passam inalterados.
 
 Isso lida com dígrafos e trígrafos corretamente:
 - Klingon: `tlh` → único caractere pIqaD (não `t` + `l` + `h`)
-- Sérvio: `nj` → `њ` (não `н` + `ј`)
-- Cree: `twê` → único silabário (não `t` + `w` + `ê`)
+- Serbian: `nj` → `њ` (não `н` + `ј`)
+- Cree: `twê` → único silábico (não `t` + `w` + `ê`)
 
 ## Usando Conversores de Script
 
-Os conversores de script são ativados automaticamente quando o código de localidade (locale) corresponde a um conversor registrado. Nenhuma configuração é necessária — basta definir seu locale de destino:
+Os conversores de script são ativados automaticamente quando o código de locale corresponde a um conversor registrado. Nenhuma configuração é necessária — basta definir seu locale de destino:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -70,7 +70,7 @@ Os conversores de script são ativados automaticamente quando o código de local
 }
 ```
 
-Quando o rosetta sincroniza o par `en:crk`, as traduções são produzidas primeiro em SRO e, em seguida, convertidas automaticamente para Silabários antes de serem gravadas em `crk.json`.
+Quando o rosetta sincroniza o par `en:crk`, as traduções são produzidas primeiro em SRO e, em seguida, convertidas automaticamente para Syllabics antes de gravar em `crk.json`.
 
 ### Verificando o Status do Conversor
 
@@ -116,9 +116,9 @@ Instale uma fonte Tengwar compatível com CSUR (por exemplo, "Tengwar Formal CSU
 }
 ```
 
-### Kryptoniano
+### Kryptonian
 
-Instale uma fonte Kryptoniana mapeada para os codepoints PUA U+E100–E119:
+Instale uma fonte Kryptonian mapeada para os codepoints PUA U+E100–E119:
 
 ```css
 @font-face {
@@ -132,8 +132,8 @@ Instale uma fonte Kryptoniana mapeada para os codepoints PUA U+E100–E119:
 }
 ```
 
-:::tip Abordagem alternativa para Kryptoniano
-Como o Kryptoniano é uma cifra pura de A-Z, você pode ignorar totalmente o conversor de script e aplicar a fonte ao texto latino via CSS. Isso geralmente é mais simples para implantações web — basta servir a fonte Kryptoniana e definir `font-family` nos elementos relevantes.
+:::tip Abordagem alternativa para Kryptonian
+Como Kryptonian é uma cifra A-Z pura, você pode ignorar totalmente o conversor de script e aplicar a fonte ao texto latino via CSS. Isso geralmente é mais simples para implantações web — basta servir a fonte Kryptonian e definir `font-family` nos elementos relevantes.
 :::
 
 ## Adicionando um Conversor Personalizado
@@ -142,7 +142,7 @@ Para adicionar um conversor para um novo idioma, edite `lib/scripts.js`:
 
 1. **Crie o mapa de conversão** — um array ordenado de pares `[from, to]`, com as sequências mais longas primeiro
 2. **Crie a função do conversor** — um scanner guloso da esquerda para a direita (use `sroToSyllabics` como modelo)
-3. **Registre-o** no objeto `SCRIPT_CONVERTERS` com o código de localidade como chave
+3. **Registre-o** no objeto `SCRIPT_CONVERTERS` com o código de locale como chave
 4. **Adicione o campo `script`** à entrada de registro do idioma em `registers.js`
 
 ```javascript
@@ -168,7 +168,7 @@ SCRIPT_CONVERTERS['chr'] = {
 ## Veja Também
 
 - [Conlangs, Scripts e Ortografia](/docs/guides/conlangs-scripts-orthography) — Fontes PUA, Unicode, adição de novos conversores
-- [Quality Gate](/docs/concepts/quality-gate) — validação que é executada antes da conversão de script
+- [Quality Gate](/docs/concepts/quality-gate) — validação executada antes da conversão de script
 - [Idiomas Suportados](/docs/reference/supported-languages) — quais idiomas possuem conversores de script
-- [Suporte a um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Silabários no contexto
-- [Cookbook: Pipeline com FST-Gate](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — conversão de script em um pipeline de vários estágios
+- [Apoie um Idioma de Baixos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics no contexto
+- [Cookbook: Pipeline com FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — conversão de script em um pipeline de vários estágios

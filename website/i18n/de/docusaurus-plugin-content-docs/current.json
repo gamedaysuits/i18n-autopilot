@@ -26,5 +26,17 @@
   "sidebar.docsSidebar.category.Evaluation": {
     "message": "Evaluierung",
     "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Use Cases": {
+    "message": "Anwendungsfälle",
+    "description": "The label for category 'Use Cases' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Core Concepts": {
+    "message": "Kernkonzepte",
+    "description": "The label for category 'Core Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.For MT Researchers": {
+    "message": "Für MT-Forscher:innen",
+    "description": "The label for category 'For MT Researchers' in sidebar 'docsSidebar'"
   }
 }

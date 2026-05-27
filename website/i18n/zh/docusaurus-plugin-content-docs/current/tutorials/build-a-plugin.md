@@ -1,26 +1,26 @@
 ---
 sidebar_position: 1
 title: "构建翻译插件"
-description: "端到端教程：开发 coaching 数据、使用 eval harness 进行基准测试、导出插件，并使用 rosetta 进行部署。"
+description: "端到端教程：开发 coaching data、使用 eval harness 进行基准测试、导出插件，并使用 rosetta 进行部署。"
 ---
 # 教程：构建翻译插件
 
-从头开始构建自定义翻译方法，对其进行基准测试，并将其部署为 rosetta 插件。这是添加没有现成 API 支持的新语言对的完整工作流程。
+从零开始构建自定义翻译方法，对其进行基准测试，并将其部署为 rosetta 插件。这是添加现成 API 不支持的新语言对的完整工作流程。
 
-**你将构建什么：** 一个针对正式法语的指导式翻译插件，包含强制术语、语法规则和基准测试分数。
+**你将构建的内容：** 一个针对正式法语的辅导式翻译插件，包含强制术语、语法规则和基准测试分数。
 
 **时间：** 30–45 分钟
 
 **先决条件：**
 - 已安装 i18n-rosetta (`npm install --save-dev i18n-rosetta`)
 - OpenRouter API 密钥 (`OPENROUTER_API_KEY`)
-- Python 3.10+（用于评估工具）
+- Python 3.10+（用于 eval harness）
 
 ---
 
-## 第 1 步：确定问题
+## 第一步：确认问题
 
-你正在将一个 SaaS 仪表板翻译成法语。默认的 `llm` 方法生成的翻译虽然正确，但不一致：
+你正在将一个 SaaS dashboard 翻译成法语。默认的 `llm` 方法生成的翻译虽然正确，但不一致：
 
 - 有时 "dashboard" 被翻译成 "tableau de bord"，有时又变成 "panneau de contrôle"
 - 语气在 `tu` 和 `vous` 形式之间交替
@@ -28,9 +28,9 @@ description: "端到端教程：开发 coaching 数据、使用 eval harness 进
 
 你需要通用 LLM 提示词无法提供的**术语强制执行**和**语域控制**。
 
-## 第 2 步：创建指导数据
+## 第二步：创建辅导数据
 
-创建一个包含你语言要求的指导文件：
+创建一个包含你语言要求的辅导文件：
 
 ```bash
 mkdir -p .rosetta/coaching
@@ -63,9 +63,9 @@ mkdir -p .rosetta/coaching
 **各个字段的作用：**
 - **`grammar_rules`** — 作为明确的约束条件注入到 LLM 系统提示词中
 - **`dictionary`** — 与源键值进行匹配；当出现字典术语时，它会作为“必需术语”注入到提示词中
-- **`style_notes`** — 附加到系统提示词中作为通用样式指南
+- **`style_notes`** — 附加到系统提示词中，作为一般风格指南
 
-## 第 3 步：配置语言对
+## 第三步：配置语言对
 
 告诉 rosetta 对法语使用 `llm-coached`：
 
@@ -89,14 +89,14 @@ mkdir -p .rosetta/coaching
 }
 ```
 
-## 第 4 步：进行测试
+## 第四步：进行测试
 
 ```bash
 npx i18n-rosetta sync --dry
 ```
 
-查看试运行输出。检查以下内容：
-- ✅ 字典术语使用一致（使用 "tableau de bord"，而不是 "panneau de contrôle"）
+查看 dry-run 输出。检查是否：
+- ✅ 字典术语使用一致（是 "tableau de bord"，而不是 "panneau de contrôle"）
 - ✅ 全程使用 `vous` 形式
 - ✅ 专业术语与你的字典匹配
 
@@ -106,11 +106,11 @@ npx i18n-rosetta sync --dry
 npx i18n-rosetta sync
 ```
 
-## 第 5 步：使用评估工具进行基准测试（可选）
+## 第五步：使用 Eval Harness 进行基准测试（可选）
 
-如果你需要质量分数（你肯定需要，因为插件会附带基准测试数据），请使用配套的评估工具。
+如果你想要质量分数——你肯定想，因为插件会附带基准测试数据——请使用配套的 eval harness。
 
-### 安装评估工具
+### 安装 Harness
 
 ```bash
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
@@ -154,14 +154,14 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-评估工具输出：
-- **chrF++** — 字符级 F 分数（0–100）。高于 70 分表现优异。
-- **BLEU** — N-gram 重叠度（0–100）。对于指导式翻译，高于 40 分即为可靠。
-- **精确匹配率** — 与参考翻译完全匹配的翻译比例。
+harness 输出内容：
+- **chrF++** — 字符级 F-score (0–100)。高于 70 表示表现强劲。
+- **BLEU** — N-gram 重叠度 (0–100)。对于辅导式翻译，高于 40 算是不错的结果。
+- **完全匹配率** — 与参考翻译完全匹配的翻译比例。
 
 ### 导出插件
 
-当你对分数感到满意后：
+一旦你对分数感到满意：
 
 ```bash
 python harness.py export \
@@ -178,7 +178,7 @@ french-formal-v1/
     └── fr.json          # Your coaching data
 ```
 
-## 第 6 步：在 Rosetta 中安装插件
+## 第六步：在 Rosetta 中安装插件
 
 ```bash
 npx i18n-rosetta plugin install ./french-formal-v1/
@@ -198,7 +198,7 @@ npx i18n-rosetta plugin install ./french-formal-v1/
 }
 ```
 
-## 第 7 步：验证
+## 第七步：验证
 
 ```bash
 # Check plugin is installed and shows benchmark scores
@@ -233,13 +233,13 @@ flowchart LR
     D --> E["rosetta sync\n(production)"]
 ```
 
-你现在拥有：
-1. **指导数据** — 强制保持一致性的语法规则和术语
-2. **基准测试分数** — 随插件提供的量化质量指标
-3. **便携式插件** — `method.json` + 指导数据，可安装在任何机器上
+你现在拥有了：
+1. **辅导数据** — 强制保持一致性的语法规则和术语
+2. **基准测试分数** — 随插件附带的量化质量指标
+3. **便携式插件** — `method.json` + 辅导数据，可安装在任何机器上
 4. **生产部署** — 已集成到你的同步管道中
 
-## 后续步骤
+## 下一步
 
 - **[插件规范](/docs/reference/plugin-spec)** — 完整的清单格式参考
 - **[翻译方法](/docs/guides/translation-methods)** — 比较所有四种方法

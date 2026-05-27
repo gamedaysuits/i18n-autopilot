@@ -1,29 +1,29 @@
 ---
 sidebar_position: 3
-title: "Kunsttalen, Schriften & Orthografie"
+title: "Kunsttalen, schriftsystemen & orthografie"
 ---
-# Conlangs, scripts & orthografie
+# Kunsttalen, schriften & orthografie
 
-rosetta biedt eersteklas ondersteuning voor geconstrueerde talen (conlangs) via LLM-registers en deterministische script converters. Deze gids behandelt hoe de ondersteuning voor conlangs werkt, welke lettertypen u nodig hebt en hoe u uw eigen conlangs kunt toevoegen.
+rosetta biedt uitstekende ondersteuning voor kunsttalen via LLM-registers en deterministische scriptconverters. Deze gids behandelt hoe de ondersteuning voor kunsttalen werkt, welke lettertypen u nodig hebt en hoe u uw eigen kunsttaal kunt toevoegen.
 
-:::tip Waarom conlangs belangrijk zijn
-Conlangs zijn niet zomaar een nieuwigheid — ze maken gebruik van exact dezelfde infrastructuur die wordt gebruikt voor echte, ondervertegenwoordigde talen. De quality gate, het coaching system en de script conversion pipeline werken identiek voor het Klingon en het Plains Cree. Als uw conlang-pijplijn werkt, zal uw pijplijn voor low-resource talen dat ook doen.
+:::tip Waarom kunsttalen belangrijk zijn
+Kunsttalen zijn niet slechts een noviteit — ze maken gebruik van exact dezelfde infrastructuur die wordt gebruikt voor echte, ondervertegenwoordigde talen. De quality gate, het coachingsysteem en de scriptconversiepijplijn werken identiek voor Klingon en Plains Cree. Als uw pijplijn voor kunsttalen werkt, zal uw pijplijn voor talen met weinig bronnen dat ook doen.
 :::
 
 ---
 
-## Ondersteunde geconstrueerde talen
+## Ondersteunde kunsttalen
 
-| Taal | Code | Script converter | Lettertype vereist |
+| Taal | Code | Scriptconverter | Lettertype vereist |
 |----------|------|:----------------:|:-------------:|
 | Klingon | `tlh` | ✅ Romanisatie → pIqaD | PUA-lettertype (bijv. pIqaD qolqoS) |
-| Sindarin (Tolkien-Elfs) | `x-elvish-s` | ✅ Latijn → Tengwar | CSUR PUA-lettertype |
+| Sindarin (Tolkien-elfen) | `x-elvish-s` | ✅ Latijn → Tengwar | CSUR PUA-lettertype |
 | Kryptoniaans | `x-kryptonian` | ✅ Latijn → Kryptoniaans | PUA-lettertype |
 | Piraten-Engels | `x-pirate` | ❌ alleen register | Geen |
 | Shakespeareaans Engels | `x-shakespeare` | ❌ alleen register | Geen |
-| Yoda-spraak | `x-yoda` | ❌ alleen register | Geen |
+| Yoda-taal | `x-yoda` | ❌ alleen register | Geen |
 
-Conlang-codes gebruiken het voorvoegsel `x-` volgens de BCP-47 private-use conventie, met uitzondering van het Klingon (`tlh`), dat een [ISO 639-3](https://iso639-3.sil.org/code/tlh)-code heeft toegewezen gekregen door SIL International.
+Codes voor kunsttalen gebruiken het voorvoegsel `x-` volgens de BCP-47-conventie voor privégebruik, met uitzondering van Klingon (`tlh`), dat een [ISO 639-3](https://iso639-3.sil.org/code/tlh)-code heeft toegewezen gekregen van SIL International.
 
 ---
 
@@ -31,65 +31,88 @@ Conlang-codes gebruiken het voorvoegsel `x-` volgens de BCP-47 private-use conve
 
 ### De Private Use Area
 
-Klingon (pIqaD), Sindarin (Tengwar) en Kryptoniaans gebruiken Unicode **Private Use Area (PUA)**-tekens. PUA is het bereik U+E000–U+F8FF — deze codepoints hebben **geen standaardtoewijzing**. De [ConScript Unicode Registry (CSUR)](https://www.evertype.com/standards/csur/) beheert door de gemeenschap overeengekomen toewijzingen voor fictieve scripts, maar deze maken geen deel uit van de Unicode-standaard.
+Klingon (pIqaD), Sindarin (Tengwar) en Kryptoniaans gebruiken Unicode **Private Use Area (PUA)**-tekens. PUA is het bereik U+E000–U+F8FF — deze codepunten hebben **geen standaardtoewijzing**. De [ConScript Unicode Registry (CSUR)](https://www.evertype.com/standards/csur/) onderhoudt door de gemeenschap overeengekomen toewijzingen voor fictieve schriften, maar deze maken geen deel uit van de Unicode-standaard.
 
 Wat dit in de praktijk betekent:
 
 - PUA-tekst wordt weergegeven als **lege vakjes** (□□□) als het juiste lettertype niet is geladen
-- Verschillende lettertypen kunnen verschillende glyphs toewijzen aan dezelfde PUA-codepoints
+- Verschillende lettertypen kunnen verschillende tekens (glyphs) toewijzen aan dezelfde PUA-codepunten
 - rosetta bundelt GEEN PUA-lettertypen — u dient deze zelf te laden
 - Systeemlettertypen zullen deze tekens nooit weergeven
 
-### PUA-bereiken per script
+### PUA-bereiken per schrift
 
-| Script | PUA-bereik | CSUR-referentie |
+| Schrift | PUA-bereik | CSUR-referentie |
 |--------|-----------|---------------|
 | Klingon (pIqaD) | U+F8D0–U+F8FF | [CSUR Klingon](https://www.evertype.com/standards/csur/klingon.html) |
-| Tengwar (Elfs) | U+E000–U+E07F | [CSUR Tengwar](https://www.evertype.com/standards/csur/tengwar.html) |
+| Tengwar (Elfen) | U+E000–U+E07F | [CSUR Tengwar](https://www.evertype.com/standards/csur/tengwar.html) |
 | Kryptoniaans | Varieert per lettertype | Geen CSUR-standaard |
 
 ### PUA-weblettertypen laden
 
-Om op PUA gebaseerde conlang-tekst in uw webapplicatie weer te geven, laadt u het juiste lettertype via CSS:
+rosetta bevat een ingebouwde opdracht om PUA-weblettertypen te downloaden en te beheren:
+
+```bash
+# See which fonts are needed for your configured languages
+i18n-rosetta fonts list
+
+# Download all needed fonts (auto-detects project type for output directory)
+i18n-rosetta fonts install
+
+# Also generate a CSS snippet with @font-face declarations
+i18n-rosetta fonts install --css
+```
+
+De opdracht `fonts install` downloadt vanuit geverifieerde open-source repositories:
+
+| Lettertype | Schrift | Licentie | Bron |
+|------|--------|---------|--------|
+| pIqaD qolqoS | Klingon | SIL Open Font License 1.1 | [GitHub](https://github.com/dadap/pIqaD-fonts) |
+| FreeMonoTengwar | Tengwar | GNU GPL v3 (met lettertype-uitzondering) | [SourceForge](https://sourceforge.net/projects/freetengwar/) |
+| *(door gebruiker verstrekt)* | Kryptoniaans | Varieert | Geen open-source PUA-lettertype beschikbaar |
+
+De uitvoermap wordt automatisch gedetecteerd op basis van uw projectstructuur (Docusaurus → `static/fonts/`, Hugo → `static/fonts/`, standaard → `public/fonts/`). U kunt dit overschrijven met `--dir`.
+
+Als u er de voorkeur aan geeft om lettertypen handmatig te beheren, voeg dan `@font-face`-regels toe in uw CSS:
 
 ```css
-/* Load a Klingon PUA font */
 @font-face {
   font-family: 'pIqaD';
-  src: url('/fonts/piqad.woff2') format('woff2');
-  unicode-range: U+F8D0-U+F8FF;
+  src: url('/fonts/pIqaDqolqoS.ttf') format('truetype');
+  font-display: swap;
+  unicode-range: U+F8D0-F8FF;
 }
 
 /* Apply to Klingon text elements */
-[lang="tlh"] {
+[lang="tlh"], [data-script="piqad"] {
   font-family: 'pIqaD', sans-serif;
 }
 ```
 
 :::warning Unicode-ondersteuning is NIET gegarandeerd
-Het Unicode Consortium heeft [expliciet geweigerd](https://www.unicode.org/faq/private_use.html) om fictieve scripts in de standaard te coderen. PUA-toewijzingen worden door de gemeenschap beheerd en kunnen conflicteren tussen verschillende lettertype-implementaties. Specificeer altijd het exacte lettertype dat uw project gebruikt en test de weergave in verschillende browsers.
+Het Unicode Consortium heeft [expliciet geweigerd](https://www.unicode.org/faq/private_use.html) om fictieve schriften in de standaard te coderen. PUA-toewijzingen worden door de gemeenschap onderhouden en kunnen conflicteren tussen verschillende lettertype-implementaties. Specificeer altijd het exacte lettertype dat uw project gebruikt en test de weergave in verschillende browsers.
 :::
 
 ---
 
-## Script converters
+## Scriptconverters
 
 ### Hoe ze werken
 
 De scriptconversie van rosetta is een **post-translation hook**:
 
-1. De LLM vertaalt tekst naar een **werkscript** (meestal Latijn of SRO)
+1. De LLM vertaalt tekst naar een **werkschrift** (meestal Latijn of SRO)
 2. De [quality gate](/docs/concepts/quality-gate) valideert de uitvoer
-3. De deterministische converter transformeert de gevalideerde tekst naar het **weergavescript**
+3. De deterministische converter transformeert de gevalideerde tekst naar het **weergaveschrift**
 4. De geconverteerde tekst wordt naar de schijf geschreven
 
-Deze tweestapsbenadering werkt omdat LLM's betere uitvoer produceren wanneer ze in op het Latijn gebaseerde scripts werken. De deterministische converter garandeert een correcte scriptuitvoer zonder te vertrouwen op de (vaak onbetrouwbare) scriptkennis van het model.
+Deze tweestapsbenadering werkt omdat LLM's betere uitvoer produceren wanneer ze in op het Latijn gebaseerde schriften werken. De deterministische converter garandeert een correcte scriptuitvoer zonder te vertrouwen op de (vaak onbetrouwbare) scriptkennis van het model.
 
 ### Alle vijf converters
 
-rosetta wordt geleverd met vijf ingebouwde script converters:
+rosetta wordt geleverd met vijf ingebouwde scriptconverters:
 
-#### Plains Cree: SRO → Syllabics (`crk`)
+#### Plains Cree: SRO → Syllabenschrift (`crk`)
 
 Standard Roman Orthography naar Canadian Aboriginal Syllabics.
 
@@ -98,7 +121,7 @@ Input:  "tawâw"
 Output: "ᑕᐚᐤ"
 ```
 
-Lange klinkers gebruiken een macron/circumflex: ê, î, ô, â. De converter verwerkt alle SRO-diakritische tekens en wijst deze toe aan de juiste syllabische tekens. Zie [Ondersteuning voor een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) voor de volledige Cree-pijplijn.
+Lange klinkers gebruiken een macron/circumflex: ê, î, ô, â. De converter verwerkt alle SRO-diakritische tekens en wijst deze toe aan de juiste syllabische tekens. Zie [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor de volledige Cree-pijplijn.
 
 #### Servisch: Latijn → Cyrillisch (`sr`)
 
@@ -122,7 +145,7 @@ Output: [pIqaD PUA] (requires pIqaD font to render)
 
 #### Sindarin: Latijn → Tengwar (`x-elvish-s`)
 
-De Tengwar-toewijzing volgens Tolkiens Sindarin-modus.
+Tolkiens Sindarin-modus Tengwar-toewijzing.
 
 ```
 Input:  "elen síla"  (Latin Sindarin)
@@ -131,7 +154,7 @@ Output: [Tengwar PUA] (requires Tengwar font to render)
 
 #### Kryptoniaans: Latijn → Kryptoniaans (`x-kryptonian`)
 
-Kryptoniaanse scripttoewijzing volgens het fan-lexicon.
+Fan-lexicon Kryptoniaanse scripttoewijzing.
 
 ```
 Input:  "Kal-El"
@@ -140,7 +163,7 @@ Output: [Kryptonian PUA] (requires Kryptonian font to render)
 
 ### Een converter activeren
 
-Stel het veld `scripts` in uw taalconfiguratie in. Voor ingebouwde converters wordt dit automatisch gedetecteerd aan de hand van de taalcode:
+Stel het veld `scripts` in uw taalconfiguratie in. Voor ingebouwde converters wordt dit automatisch gedetecteerd op basis van de taalcode:
 
 ```json
 {
@@ -155,16 +178,16 @@ Plains Cree (`crk`) wordt automatisch gedetecteerd — u hoeft `scripts` niet ex
 
 ---
 
-## Talen met meerdere scripts
+## Talen met meerdere schriften
 
-Sommige echte talen gebruiken meerdere actieve scripts:
+Sommige echte talen gebruiken meerdere actieve schriften:
 
-| Taal | Scripts | rosetta-benadering |
+| Taal | Schriften | rosetta-benadering |
 |----------|---------|-----------------|
-| Servisch | Latijn + Cyrillisch | Script converter (`sr`) — vertaal in het Latijn, converteer naar het Cyrillisch |
-| Chinees | Vereenvoudigd + Traditioneel | Afzonderlijke localecodes (`zh` vs `zh-TW`) met verschillende registers |
+| Servisch | Latijn + Cyrillisch | Scriptconverter (`sr`) — vertaal in het Latijn, converteer naar Cyrillisch |
+| Chinees | Vereenvoudigd + Traditioneel | Afzonderlijke locale-codes (`zh` vs `zh-TW`) met verschillende registers |
 
-Voor talen waarbij beide scripts dezelfde doelgroep bedienen (Servisch), gebruikt u een script converter. Voor talen waarbij de scripts verschillende doelgroepen bedienen (Vereenvoudigd Chinees voor het vasteland van China, Traditioneel voor Taiwan/HK), gebruikt u afzonderlijke localecodes.
+Voor talen waarbij beide schriften dezelfde doelgroep bedienen (Servisch), gebruikt u een scriptconverter. Voor talen waarbij de schriften verschillende doelgroepen bedienen (Vereenvoudigd Chinees voor het vasteland van China, Traditioneel voor Taiwan/HK), gebruikt u afzonderlijke locale-codes.
 
 ---
 
@@ -192,13 +215,13 @@ Elke taalkaart heeft een veld `gender.inclusiveGuidance` met taalspecifiek advie
 
 - **Frans**: Écriture inclusive met interpunct-notatie (bijv. "Connecté·e")
 - **Duits**: Doppelpunkt-notatie (bijv. "Benutzer:innen")
-- **Spaans**: Genderneutrale herstructurering heeft de voorkeur; slash-notatie (bijv. "usuario/a") als terugvaloptie
+- **Spaans**: Voorkeur voor genderneutrale herstructurering; slash-notatie (bijv. "usuario/a") als terugvaloptie
 
-Voor talen zonder specifieke richtlijnen in hun kaart (bijv. Koreaans, conlangs), valt het systeem terug op een algemene regel: *"geef de voorkeur aan genderneutrale vormen of de meest inclusieve optie die beschikbaar is."*
+Voor talen zonder specifieke richtlijnen in hun kaart (bijv. Koreaans, kunsttalen), valt het systeem terug op een algemene regel: *"geef de voorkeur aan genderneutrale vormen of de meest inclusieve optie die beschikbaar is."*
 
-### Vereisten voor RTL-scripts
+### Vereisten voor RTL-schriften
 
-De registers voor het Arabisch, Hebreeuws, Perzisch en Urdu vermelden allemaal de vereisten voor rechts-naar-links (RTL): `Ensure text reads naturally in RTL layout contexts.`
+De registers voor Arabisch, Hebreeuws, Perzisch en Urdu vermelden allemaal de vereisten voor rechts-naar-links: `Ensure text reads naturally in RTL layout contexts.`
 
 ### Een register overschrijven
 
@@ -221,11 +244,11 @@ Zie [Configuratie](/docs/getting-started/configuration) voor de volledige config
 
 ---
 
-## Een nieuwe conlang toevoegen
+## Een nieuwe kunsttaal toevoegen
 
-### Stap voor stap
+### Stapsgewijs
 
-1. **Kies een BCP-47 private-use code**: Gebruik het voorvoegsel `x-` (bijv. `x-dothraki`, `x-valyrian`).
+1. **Kies een BCP-47-code voor privégebruik**: Gebruik het voorvoegsel `x-` (bijv. `x-dothraki`, `x-valyrian`).
 
 2. **Voeg toe aan uw configuratie**:
 
@@ -239,14 +262,14 @@ Zie [Configuratie](/docs/getting-started/configuration) voor de volledige config
 }
 ```
 
-3. **(Optioneel) Voeg een script converter toe**: Als uw conlang een niet-Latijns weergavescript gebruikt, voeg dan een converter toe in `lib/scripts.js` en registreer deze in `SCRIPT_CONVERTERS`.
+3. **(Optioneel) Voeg een scriptconverter toe**: Als uw kunsttaal een niet-Latijns weergaveschrift gebruikt, voeg dan een converter toe in `lib/scripts.js` en registreer deze in `SCRIPT_CONVERTERS`.
 
-4. **Testen**: Voer `i18n-rosetta sync --dry` uit om een voorbeeld van vertalingen te bekijken zonder bestanden weg te schrijven.
+4. **Testen**: Voer `i18n-rosetta sync --dry` uit om een voorbeeld van vertalingen te bekijken zonder bestanden te schrijven.
 
-5. **Controleer de quality gate**: De [quality gate](/docs/concepts/quality-gate) moet mogelijk worden afgestemd op uw conlang — in het bijzonder de controle `requireNonLatin` als uw conlang PUA-tekens gebruikt.
+5. **Controleer de quality gate**: De [quality gate](/docs/concepts/quality-gate) moet mogelijk worden afgestemd op uw kunsttaal — in het bijzonder de controle `requireNonLatin` als uw kunsttaal PUA-tekens gebruikt.
 
-:::note Conlang-kwaliteit is afhankelijk van LLM-kennis
-De LLM kan alleen vertalen naar een conlang die het in de trainingsgegevens heeft gezien. Goed gedocumenteerde conlangs (Klingon, Sindarin, Dothraki) werken goed. Obscure of nieuw uitgevonden conlangs kunnen inconsistente resultaten opleveren. Gebruik [coaching data](/docs/concepts/coaching-data) om de kwaliteit te verbeteren.
+:::note Kwaliteit van kunsttalen is afhankelijk van LLM-kennis
+De LLM kan alleen vertalen naar een kunsttaal die deze in de trainingsgegevens heeft gezien. Goed gedocumenteerde kunsttalen (Klingon, Sindarin, Dothraki) werken goed. Obscure of nieuw uitgevonden kunsttalen kunnen inconsistente resultaten opleveren. Gebruik [coachingsgegevens](/docs/concepts/coaching-data) om de kwaliteit te verbeteren.
 :::
 
 ---
@@ -254,7 +277,7 @@ De LLM kan alleen vertalen naar een conlang die het in de trainingsgegevens heef
 ## Zie ook
 
 - [Ondersteunde talen](/docs/reference/supported-languages) — volledige taaltabel met beschikbaarheid van methoden
-- [Script converters](/docs/concepts/script-converters) — technische details van de conversiepijplijn
+- [Scriptconverters](/docs/concepts/script-converters) — technische details van de conversiepijplijn
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke vertaalmethode werkt
 - [Configuratie](/docs/getting-started/configuration) — configuratiereferentie inclusief taal- en registerinstellingen
-- [Ondersteuning voor een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) — dezelfde infrastructuur toegepast op echte, ondervertegenwoordigde talen
+- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — dezelfde infrastructuur toegepast op echte, ondervertegenwoordigde talen

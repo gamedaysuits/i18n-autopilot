@@ -62,5 +62,9 @@
   "copyright": {
     "message": "Copyright © 2026 Curtis Forbes. Binuo gamit ang Docusaurus.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "Gumawa ng Pipeline",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

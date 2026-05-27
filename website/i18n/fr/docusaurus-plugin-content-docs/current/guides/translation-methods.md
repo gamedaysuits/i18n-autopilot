@@ -10,9 +10,9 @@ Rosetta prend en charge dix méthodes de traduction. Chaque paire de langues peu
 
 ### Fournisseurs de LLM
 
-Axés sur la qualité, compatibles avec Markdown, compatibles avec l'encadrement (coaching). Idéaux pour les projets riches en contenu.
+Axés sur la qualité, compatibles avec Markdown, compatibles avec l'encadrement (coaching). Idéals pour les projets riches en contenu.
 
-| Méthode | Clé | Ce qu'elle fait |
+| Méthode | Clé | Fonction |
 |--------|-----|-------------|
 | `llm` (par défaut) | `OPENROUTER_API_KEY` | LLM via OpenRouter — plus de 200 modèles, routage automatique |
 | `llm-coached` | `OPENROUTER_API_KEY` | LLM + règles de grammaire, dictionnaires, notes de style |
@@ -22,9 +22,9 @@ Axés sur la qualité, compatibles avec Markdown, compatibles avec l'encadrement
 
 ### Traduction automatique (MT) traditionnelle
 
-Axée sur la vitesse et les coûts. Idéale pour les paires clé-valeur à fort volume.
+Axée sur la rapidité et les coûts. Idéale pour les paires clé-valeur en grand volume.
 
-| Méthode | Clé | Ce qu'elle fait |
+| Méthode | Clé | Fonction |
 |--------|-----|-------------|
 | `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | API Google Cloud Translation v2 (plus de 130 langues) |
 | `deepl` | `DEEPL_API_KEY` | API DeepL avec prise en charge des glossaires (plus de 30 langues) |
@@ -33,7 +33,7 @@ Axée sur la vitesse et les coûts. Idéale pour les paires clé-valeur à fort 
 
 ### Infrastructure
 
-| Méthode | Clé | Ce qu'elle fait |
+| Méthode | Clé | Fonction |
 |--------|-----|-------------|
 | `api` | *(par fournisseur)* | Client HTTP léger pour tout point de terminaison de traduction REST |
 
@@ -62,10 +62,10 @@ Traduit via n'importe quel LLM sur [OpenRouter](https://openrouter.ai). Il s'agi
 1. Regroupe les clés par lots (30 par lot par défaut) avec des instructions de registre et de contexte
 2. Envoie à OpenRouter sous forme d'invite (prompt) structurée
 3. Analyse la réponse JSON
-4. Valide chaque traduction via la [passerelle de qualité](/docs/concepts/quality-gate)
+4. Valide chaque traduction via la [barrière de qualité (quality gate)](/docs/concepts/quality-gate)
 5. Écrit les traductions validées, réessaie ou rejette les échecs
 
-**Quand l'utiliser :** Pour la plupart des projets. Particulièrement pour les sites riches en contenu avec du Markdown, où les blocs de code et les codes courts (shortcodes) doivent être protégés.
+**Cas d'utilisation :** La plupart des projets. Particulièrement les sites riches en contenu utilisant Markdown, où les blocs de code et les shortcodes doivent être protégés.
 
 **Configuration :**
 
@@ -81,12 +81,12 @@ Traduit via n'importe quel LLM sur [OpenRouter](https://openrouter.ai). Il s'agi
 Identique à `llm`, mais avec des règles de grammaire, des dictionnaires de termes et des notes de style injectés dans chaque invite.
 
 **Fonctionnement :**
-1. Charge les données d'encadrement à partir de `.rosetta/coaching/<locale>.json` ou du répertoire `coaching/` d'un plugin
+1. Charge les données d'encadrement depuis `.rosetta/coaching/<locale>.json` ou depuis le répertoire `coaching/` d'un plugin
 2. Injecte les règles de grammaire, les termes du dictionnaire et les notes de style dans l'invite système
 3. Les termes du dictionnaire correspondant aux clés sources sont inclus en tant que terminologie requise
 4. La traduction se déroule comme avec `llm`, les données d'encadrement apportant une précision supplémentaire
 
-**Quand l'utiliser :** Pour les langues à faibles ressources, la terminologie spécifique à un domaine (juridique, médical), les registres formels, ou tout cas où la sortie générique du LLM n'est pas suffisamment précise.
+**Cas d'utilisation :** Langues dotées de peu de ressources, terminologie spécifique à un domaine (juridique, médical), registres formels, ou tout cas où la production générique du LLM n'est pas suffisamment précise.
 
 **Format des données d'encadrement :**
 
@@ -105,21 +105,21 @@ Identique à `llm`, mais avec des règles de grammaire, des dictionnaires de ter
 }
 ```
 
-Voir aussi : [Guide des langues à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)
+Voir aussi : [Guide des langues dotées de peu de ressources](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
 ## `openai` — API OpenAI directe
 
-Traduit directement via l'API OpenAI Chat Completions. Aucun intermédiaire OpenRouter — votre clé, votre compte, votre tableau de bord d'utilisation.
+Traduit directement via l'API Chat Completions d'OpenAI. Aucun intermédiaire OpenRouter — votre clé, votre compte, votre tableau de bord d'utilisation.
 
 **Modèles :** `gpt-4o` (par défaut), `gpt-4o-mini`
 
 **Fonctionnalités :**
 - ✅ Prise en charge de Markdown (traduction de contenu)
-- ✅ Prise en charge de l'encadrement (règles de grammaire, remplacements de dictionnaire, notes de style)
+- ✅ Prise en charge de l'encadrement (règles de grammaire, substitutions de dictionnaire, notes de style)
 - ✅ Mode JSON pour une sortie structurée clé-valeur
-- ✅ Retrait exponentiel (exponential backoff) avec réessais
+- ✅ Retrait exponentiel (exponential backoff) avec nouvelle tentative
 
 **Configuration :**
 
@@ -139,15 +139,15 @@ Obtenez votre clé sur [platform.openai.com/api-keys](https://platform.openai.co
 
 ## `anthropic` — API Anthropic directe
 
-Traduit directement via l'API Anthropic Messages. Utilise le paramètre `system` pour les données d'encadrement, permettant la mise en cache des invites (prompt caching) d'Anthropic.
+Traduit directement via l'API Messages d'Anthropic. Utilise le paramètre `system` pour les données d'encadrement, permettant la mise en cache des invites (prompt caching) d'Anthropic.
 
 **Modèles :** `claude-sonnet-4-6` (par défaut), `claude-haiku-4-5`, `claude-opus-4-7`
 
 **Fonctionnalités :**
 - ✅ Prise en charge de Markdown (traduction de contenu)
-- ✅ Prise en charge de l'encadrement (règles de grammaire, remplacements de dictionnaire, notes de style)
-- ✅ Mise en cache des invites système (amortit le coût de l'encadrement sur l'ensemble des lots)
-- ✅ Retrait exponentiel avec réessais
+- ✅ Prise en charge de l'encadrement (règles de grammaire, substitutions de dictionnaire, notes de style)
+- ✅ Mise en cache de l'invite système (amortit le coût de l'encadrement sur l'ensemble des lots)
+- ✅ Retrait exponentiel avec nouvelle tentative
 
 **Configuration :**
 
@@ -173,10 +173,10 @@ Traduit directement via l'API Google Gemini `generateContent`. **Niveau gratuit 
 
 **Fonctionnalités :**
 - ✅ Prise en charge de Markdown (traduction de contenu)
-- ✅ Prise en charge de l'encadrement (règles de grammaire, remplacements de dictionnaire, notes de style)
+- ✅ Prise en charge de l'encadrement (règles de grammaire, substitutions de dictionnaire, notes de style)
 - ✅ Mode de réponse JSON via `responseMimeType`
 - ✅ Niveau gratuit (quota quotidien généreux)
-- ✅ Retrait exponentiel avec réessais
+- ✅ Retrait exponentiel avec nouvelle tentative
 
 **Configuration :**
 
@@ -206,7 +206,7 @@ Les fournisseurs de LLM directs (`openai`, `anthropic`, `gemini`) valident votre
        To use OpenRouter models, set method to 'llm' instead.
 ```
 
-**Mauvais fournisseur** — Utilisation d'un modèle provenant d'un tout autre fournisseur :
+**Fournisseur incorrect** — Utilisation d'un modèle provenant d'un tout autre fournisseur :
 
 ```
 [WARN] Gemini: model "claude-sonnet-4-6" is an Anthropic model.
@@ -214,7 +214,7 @@ Les fournisseurs de LLM directs (`openai`, `anthropic`, `gemini`) valident votre
        Use --method anthropic or set "method": "anthropic" in config.
 ```
 
-**Modèle obsolète ou mal orthographié** — Lors du premier appel à l'API, rosetta récupère la liste des modèles actifs du fournisseur et vérifie votre modèle par rapport à celle-ci :
+**Modèle obsolète ou mal orthographié** — Lors du premier appel à l'API, rosetta récupère la liste des modèles actifs du fournisseur et y vérifie votre modèle :
 
 ```
 [WARN] Gemini: model "gemini-1.5-flash" not found in available models.
@@ -222,36 +222,36 @@ Les fournisseurs de LLM directs (`openai`, `anthropic`, `gemini`) valident votre
        The API call will proceed — the provider will give the final verdict.
 ```
 
-:::note Il s'agit d'avertissements, non d'erreurs
-La validation du modèle consigne des avertissements mais ne bloque pas l'appel à l'API. L'API du fournisseur rend le verdict final — un futur nom de modèle pourrait correspondre à un modèle différent, et nous ne souhaitons pas bloquer sur la base d'heuristiques.
+:::note Il s'agit d'avertissements, et non d'erreurs
+La validation des modèles consigne des avertissements mais ne bloque pas l'appel à l'API. L'API du fournisseur rend le verdict final — un futur nom de modèle pourrait correspondre à un modèle différent, et nous ne souhaitons pas bloquer sur la base d'heuristiques.
 :::
 
 ---
 
 ## `google-translate` — API Google Cloud Translation
 
-Intégration directe avec l'API Google Cloud Translation v2. Utilise l'API REST — aucun SDK, aucun compte de service. Uniquement la clé API.
+Intégration directe avec l'API Google Cloud Translation v2. Utilise l'API REST — aucun SDK, aucun compte de service. Uniquement la clé d'API.
 
-**Quand l'utiliser :** Pour les paires de chaînes clé-valeur à fort volume où la vitesse et le coût importent plus que la nuance. Prend en charge plus de 130 langues de manière native.
+**Cas d'utilisation :** Paires de chaînes clé-valeur en grand volume, où la rapidité et le coût priment sur la nuance. Prend en charge plus de 130 langues de manière native.
 
 **Limites :**
-- ⚠️ **Aucune prise en charge de Markdown.** Corrompra les blocs de code, les codes courts et les variables d'interpolation.
+- ⚠️ **Aucune prise en charge de Markdown.** Corrompra les blocs de code, les shortcodes et les variables d'interpolation.
 - Aucun contrôle du registre ou du ton
-- Aucun encadrement ni application de la terminologie
+- Aucun encadrement ni application de terminologie
 
 ```bash
 npx i18n-rosetta sync --method google-translate
 ```
 
 :::tip Détection automatique
-Si seule `GOOGLE_TRANSLATE_API_KEY` est configurée (aucune clé OpenRouter), rosetta bascule automatiquement vers Google Translate. Aucune modification de configuration n'est nécessaire.
+Si seule `GOOGLE_TRANSLATE_API_KEY` est définie (aucune clé OpenRouter), rosetta bascule automatiquement sur Google Translate. Aucune modification de configuration n'est nécessaire.
 :::
 
 ## `deepl` — API DeepL
 
 Intégration directe avec l'API de traduction DeepL. Prend en charge les glossaires pour une terminologie cohérente.
 
-**Quand l'utiliser :** Pour les langues européennes où DeepL excelle (allemand, français, espagnol, néerlandais, polonais, etc.). La prise en charge des glossaires garantit une terminologie cohérente sans données d'encadrement.
+**Cas d'utilisation :** Langues européennes dans lesquelles DeepL excelle (allemand, français, espagnol, néerlandais, polonais, etc.). La prise en charge des glossaires garantit une terminologie cohérente sans données d'encadrement.
 
 **Fonctionnalités :**
 - ✅ Détection automatique du point de terminaison gratuit/pro (suffixe `:fx` sur les clés gratuites)
@@ -279,7 +279,7 @@ Obtenez votre clé sur [deepl.com/pro-api](https://www.deepl.com/pro-api).
 
 Intégration directe avec l'API Microsoft Translator Text v3.
 
-**Quand l'utiliser :** Dans les environnements d'entreprise disposant d'une infrastructure Azure existante. Prend en charge plus de 100 langues, y compris de nombreuses langues non couvertes par Google Translate.
+**Cas d'utilisation :** Environnements d'entreprise disposant d'une infrastructure Azure existante. Prend en charge plus de 100 langues, y compris plusieurs que Google Translate ne couvre pas.
 
 **Fonctionnalités :**
 - ✅ Jusqu'à 100 segments par requête (débit élevé)
@@ -308,7 +308,7 @@ Obtenez votre clé depuis le [Portail Azure](https://portal.azure.com) → Cogni
 
 Traduction open source auto-hébergée utilisant LibreTranslate. S'exécute localement ou sur votre propre infrastructure — aucun coût d'API, souveraineté totale des données.
 
-**Quand l'utiliser :** Pour les projets nécessitant une traduction hors ligne, la conformité à la confidentialité des données (RGPD) ou un fonctionnement sans frais. Particulièrement utile pour les pipelines CI qui ne doivent pas dépendre d'API externes.
+**Cas d'utilisation :** Projets nécessitant une traduction hors ligne, une conformité en matière de confidentialité des données (RGPD) ou un fonctionnement sans frais. Particulièrement utile pour les pipelines CI qui ne doivent pas dépendre d'API externes.
 
 **Fonctionnalités :**
 - ✅ Auto-hébergé — aucun appel d'API externe
@@ -340,9 +340,9 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — API de traduction distante
 
-Un client HTTP léger pour les points de terminaison de traduction hébergés par la communauté ou protégés par la propriété intellectuelle (IP). Rosetta envoie les clés et reçoit les traductions en retour — il ne contient aucune logique de traduction.
+Un client HTTP léger pour les points de terminaison de traduction hébergés par la communauté ou protégés par la propriété intellectuelle. Rosetta envoie les clés et reçoit les traductions en retour — il ne contient aucune logique de traduction.
 
-**Quand l'utiliser :** Lorsque les méthodes de traduction sont hébergées côté serveur (par exemple, données d'encadrement propriétaires, modèles affinés, pipelines FST qui ne peuvent pas être distribués).
+**Cas d'utilisation :** Lorsque les méthodes de traduction sont hébergées côté serveur (par exemple, données d'encadrement propriétaires, modèles affinés (fine-tuned), pipelines FST ne pouvant être distribués).
 
 ```json
 {
@@ -357,9 +357,9 @@ Un client HTTP léger pour les points de terminaison de traduction hébergés pa
 ```
 
 :::note Traduction communautaire compatible OCAP
-La méthode `api` constitue la passerelle vers une **traduction hébergée par la communauté et compatible OCAP**. Les communautés autochtones et de langues minoritaires peuvent héberger leurs propres points de terminaison de traduction — en gardant le contrôle communautaire sur les données d'encadrement, les modèles affinés et la propriété intellectuelle linguistique — tandis que Rosetta s'y connecte en tant que client léger.
+La méthode `api` constitue la passerelle vers **la traduction hébergée par la communauté et compatible OCAP**. Les communautés autochtones et de langues minoritaires peuvent héberger leurs propres points de terminaison de traduction — conservant ainsi les données d'encadrement, les modèles affinés et la propriété intellectuelle linguistique sous le contrôle de la communauté — tandis que Rosetta s'y connecte en tant que client léger.
 
-Consultez [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour la procédure complète d'hébergement communautaire, et [Servir une méthode via API](/docs/guides/serving-a-method) pour les exigences relatives aux points de terminaison.
+Consultez [Soutenir une langue dotée de peu de ressources](https://mtevalarena.org/docs/community/low-resource-languages) pour la procédure complète d'hébergement communautaire, et [Servir une méthode via API](/docs/guides/serving-a-method) pour les exigences relatives aux points de terminaison.
 :::
 
 ---
@@ -381,13 +381,13 @@ La véritable puissance réside dans la combinaison des méthodes par paire de l
 }
 ```
 
-Cela permet de traduire le français via DeepL (prise en charge des glossaires), le japonais via OpenAI (qualité), le coréen via Gemini (niveau gratuit), l'arabe via Microsoft Translator (couverture) et le cri des plaines via un plugin encadré (spécialisé).
+Ceci traduit le français via DeepL (prise en charge des glossaires), le japonais via OpenAI (qualité), le coréen via Gemini (niveau gratuit), l'arabe via Microsoft Translator (couverture) et le cri des plaines via un plugin encadré (spécialisé).
 
 ## Plugins
 
 Les plugins sont des recettes de traduction pré-emballées pour des paires de langues spécifiques. Ce sont des manifestes JSON — et non du code — qui indiquent à rosetta quelle méthode utiliser, avec quels paramètres, et quelle qualité a été évaluée.
 
-:::tip Du harnais d'évaluation à la production en une seule commande
+:::tip Du harnais d'évaluation (eval harness) à la production en une seule commande
 Les plugins développés et éprouvés dans le [harnais d'évaluation](https://mtevalarena.org/docs/specifications/harness) peuvent être installés directement — la méthode que vous y validez se déploie ici avec une seule commande `plugin install`. Consultez [Évaluation MT](https://mtevalarena.org/docs/leaderboard/rules) pour le flux de travail d'évaluation complet.
 :::
 
@@ -453,15 +453,15 @@ Vous passez d'une méthode à l'autre ? Le format du modèle et la variable d'en
 
 ## Comparaison des coûts
 
-Coût approximatif pour 1 000 clés traduites (en supposant environ 10 jetons par clé, 30 clés par lot) :
+Coût approximatif pour 1 000 clés traduites (en supposant environ 10 jetons (tokens) par clé, 30 clés par lot) :
 
-| Méthode | Coût / 1K Clés | Vitesse | Qualité | Idéale pour |
+| Méthode | Coût / 1K Clés | Vitesse | Qualité | Idéal pour |
 |--------|----------------|-------|---------|----------|
 | `gemini` (Flash) | **Gratuit** (dans la limite du niveau) | Rapide | Bonne | Démarrage, projets personnels |
-| `google-translate` | ~0,02 $ | Très rapide | Adéquate | Fort volume, langues européennes |
+| `google-translate` | ~0,02 $ | Très rapide | Adéquate | Grand volume, langues européennes |
 | `deepl` | ~0,02 $ | Rapide | Bonne | Langues européennes, terminologie |
 | `microsoft-translator` | ~0,01 $ | Rapide | Adéquate | Environnements Azure, large couverture linguistique |
-| `libretranslate` | **Gratuit** (auto-hébergé) | Variable | Passable | Environnements isolés (air-gapped), RGPD, pipelines CI |
+| `libretranslate` | **Gratuit** (auto-hébergé) | Variable | Passable | Systèmes isolés (air-gapped), RGPD, pipelines CI |
 | `gemini` (Pro) | ~0,07 $ | Moyenne | Très bonne | Sensible à la qualité, quota gratuit |
 | `openai` (GPT-4o-mini) | ~0,01 $ | Rapide | Bonne | LLM économique |
 | `openai` (GPT-4o) | ~0,10 $ | Moyenne | Très bonne | Sensible à la qualité |
@@ -480,9 +480,9 @@ Les coûts réels dépendent de la longueur de votre texte source, de la taille 
 
 - [Langues prises en charge](/docs/reference/supported-languages)
 - [Données d'encadrement](/docs/concepts/coaching-data)
-- [Soutenir une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)
+- [Soutenir une langue dotée de peu de ressources](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Spécification des plugins](/docs/reference/plugin-spec)
 - [Servir une méthode via API](/docs/guides/serving-a-method)
-- [Passerelle de qualité](/docs/concepts/quality-gate)
+- [Barrière de qualité](/docs/concepts/quality-gate)
 - [Architecture](/docs/concepts/architecture)
 - [Dépannage](/docs/guides/troubleshooting) — erreurs de modèle, problèmes d'API

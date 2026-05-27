@@ -4,11 +4,11 @@ title: "Quick Start"
 ---
 # Quick Start
 
-I-translate ang iyong unang locale file sa loob ng 60 seconds.
+I-translate po ang inyong unang locale file sa loob ng 60 seconds.
 
-## 1. I-set Up ang Iyong Locale Files
+## 1. I-set Up ang Inyong Locale Files
 
-Gumawa ng source locale file. Sinusuportahan ng Rosetta ang JSON, TOML, at YAML:
+Gumawa po ng source locale file. Sinusuportahan ng Rosetta ang JSON, TOML, at YAML:
 
 ```json title="locales/en.json"
 {
@@ -24,9 +24,9 @@ Gumawa ng source locale file. Sinusuportahan ng Rosetta ang JSON, TOML, at YAML:
 }
 ```
 
-## 2. I-set ang Iyong API Key
+## 2. I-set ang Inyong API Key
 
-Pumili ng provider at i-set ang key:
+Pumili po ng provider at i-set ang key:
 
 ```bash
 # Option A: OpenRouter (200+ models, recommended)
@@ -36,7 +36,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 export GEMINI_API_KEY=AI...
 ```
 
-Kumuha ng libreng Gemini key sa [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Kumuha ng OpenRouter key sa [openrouter.ai](https://openrouter.ai).
+Kumuha po ng libreng Gemini key sa [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Kumuha naman ng OpenRouter key sa [openrouter.ai](https://openrouter.ai).
 
 ## 3. I-run ang Sync
 
@@ -51,12 +51,12 @@ npx i18n-rosetta sync --method gemini
 ```
 :::
 
-Gagawin ng Rosetta ang mga sumusunod:
+Ang gagawin po ng Rosetta ay:
 1. I-auto-detect ang `locales/en.json` bilang source
-2. Hahanapin (o magpo-prompt para sa) mga target language
+2. Hanapin (o mag-prompt para sa) mga target language
 3. I-translate ang lahat ng keys
-4. Isusulat ang `locales/fr.json`, `locales/ja.json`, atbp.
-5. Gagawa ng `.i18n-rosetta.lock` para i-track kung ano na ang na-translate
+4. I-write ang `locales/fr.json`, `locales/ja.json`, atbp.
+5. Gumawa ng `.i18n-rosetta.lock` para i-track kung ano na ang na-translate
 
 ## 4. I-check ang Results
 
@@ -80,7 +80,7 @@ cat locales/fr.json
 
 ## Ano ang Susunod na Mangyayari?
 
-Kapag pinalitan niyo po ang isang source string, ide-detect ng rosetta ang pagbabago via SHA-256 hash tracking at ire-retranslate lang ang key na iyon sa susunod na sync:
+Kapag pinalitan niyo po ang isang source string, ide-detect ng rosetta ang pagbabago gamit ang SHA-256 hash tracking at ire-re-translate lang ang key na iyon sa susunod na sync:
 
 ```json title="locales/en.json (updated)"
 {
@@ -96,16 +96,18 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+Ang unchanged key (`hero.subtitle`) ay ise-serve mula sa **Translation Memory** cache ng rosetta — walang API call, walang cost. Ang cache ay awtomatikong bini-build sa bawat sync at naka-store sa `.rosetta/tm.json`.
+
 ## Optional: Gumawa ng Config File
 
-Para sa mas maraming control, mag-generate ng config file:
+Para sa higit na control, mag-generate po ng config file:
 
 ```bash
 npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-Iga-guide kayo ng wizard sa **register presets** ng bawat language — mga pre-built na tone/formality instructions na naka-tune sa linguistic system nito. Ang French ay may T-V presets (vouvoiement vs tutoiement), ang Korean ay may speech levels (해요체 vs 합쇼체 vs 해체), at ang Japanese ay may keigo options (です/ます vs 丁寧語).
+Iga-guide po kayo ng wizard sa mga **register presets** ng bawat language — mga pre-built na tone/formality instructions na naka-tune sa linguistic system nito. Ang French ay may T-V presets (vouvoiement vs tutoiement), ang Korean ay may speech levels (해요체 vs 합쇼체 vs 해체), at ang Japanese ay may keigo options (です/ます vs 丁寧語).
 
 O kaya ay gumawa ng config nang manual gamit ang preset keys:
 
@@ -123,11 +125,11 @@ O kaya ay gumawa ng config nang manual gamit ang preset keys:
 }
 ```
 
-I-run ang `npx i18n-rosetta init` para i-browse ang mga available na presets para sa bawat language.
+I-run po ang `npx i18n-rosetta init` para i-browse ang mga available na presets para sa bawat language.
 
 ## Optional: Watch Mode
 
-Mag-auto-translate kapag nagbago ang inyong source file:
+Mag-auto-translate kapag may nagbago sa inyong source file:
 
 ```bash
 npx i18n-rosetta watch
@@ -136,6 +138,9 @@ npx i18n-rosetta watch
 ## Next Steps
 
 - **[Configuration](/docs/getting-started/configuration)** — Buong config reference
-- **[Translation Methods](/docs/guides/translation-methods)** — Piliin ang tamang method
+- **[Translation Methods](/docs/guides/translation-methods)** — Piliin ang tamang method per pair
+- **[Translation Memory](/docs/concepts/translation-memory)** — Paano nakakatipid ng pera ang caching sa mga re-run
+- **[Working with Professional Translators](/docs/guides/professional-translators)** — Mag-export ng XLIFF para sa human review
 - **[Framework Integration](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
-- **[CI/CD](/docs/guides/ci-cd)** — I-automate ang translations sa inyong pipeline
+- **[CI/CD](/docs/guides/ci-cd)** — I-automate ang mga translation sa inyong pipeline
+- **[Troubleshooting](/docs/guides/troubleshooting)** — Mga common na issue at solution

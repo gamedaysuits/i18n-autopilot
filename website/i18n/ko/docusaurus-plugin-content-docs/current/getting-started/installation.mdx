@@ -47,12 +47,18 @@ yarn add --dev i18n-rosetta
 
 ## API 키 발급받기
 
-Rosetta는 번역 백엔드가 필요해요. 다음 중 하나를 선택해 주세요:
+Rosetta는 번역 백엔드가 필요해요. 하나를 선택해 주세요:
 
 | 제공자 | 환경 변수 | 추천 대상 |
 |----------|---------------------|----------|
 | **OpenRouter** (권장) | `OPENROUTER_API_KEY` | 콘텐츠가 많은 프로젝트, Markdown, 200개 이상의 모델 |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 대량의 키-값 쌍 (130개 이상의 언어) |
+| **Gemini** (무료 티어) | `GEMINI_API_KEY` | 비용 없이 시작, 좋은 품질 |
+| **OpenAI** | `OPENAI_API_KEY` | GPT-4o 직접 액세스 |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Claude 직접 액세스, 미묘한 뉘앙스의 텍스트 |
+| **DeepL** | `DEEPL_API_KEY` | 유럽어, 내장된 경어체 기능 |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 대량의 키-값 쌍, 130개 이상의 언어 |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, 100개 이상의 언어 |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | 자체 호스팅, 개인정보 보호 우선 |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -70,7 +76,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-추천 대상: 콘텐츠가 많은 프로젝트, Markdown 번역, 그리고 콘텐츠를 인식하는 보호 기능(코드 블록, 숏코드, 보간 변수 등)이 필요한 프로젝트에 적합해요.
+추천 대상: 콘텐츠가 많은 프로젝트, Markdown 번역, 콘텐츠 인식 보호(코드 블록, 숏코드, 보간 변수)가 필요한 프로젝트에 적합해요.
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,16 +85,16 @@ OPENROUTER_API_KEY=sk-or-v1-your-key-here
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-추천 대상: 대량의 키-값 문자열 쌍(130개 이상의 언어)에 적합해요. Markdown 콘텐츠에는 **권장하지 않아요**. Google Translate는 코드 블록, 숏코드 또는 보간 변수를 인식하지 못하기 때문이에요.
+추천 대상: 대량의 키-값 문자열 쌍(130개 이상의 언어). Markdown 콘텐츠에는 **권장하지 않아요** — Google Translate는 코드 블록, 숏코드 또는 보간 변수를 인식하지 못해요.
 
 :::tip 스마트 감지
-`GOOGLE_TRANSLATE_API_KEY`만 설정되어 있고 OpenRouter 키가 없다면, Rosetta는 자동으로 Google Translate로 전환해요. 별도의 설정 변경은 필요하지 않아요.
+`GOOGLE_TRANSLATE_API_KEY`만 설정되어 있고 OpenRouter 키가 없는 경우, Rosetta는 자동으로 Google Translate로 전환해요. 별도의 설정 변경이 필요하지 않아요.
 :::
 
   </TabItem>
 </Tabs>
 
-## 설치 확인하기
+## 설치 확인
 
 ```bash
 npx i18n-rosetta --help

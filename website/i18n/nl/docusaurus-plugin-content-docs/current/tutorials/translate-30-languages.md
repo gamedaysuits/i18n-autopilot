@@ -1,27 +1,27 @@
 ---
 sidebar_position: 2
-title: "30 talen vertalen"
-description: "Cookbook: een project opschalen van 3 naar 30 talen met behulp van per-pair method mixing, batching en CI-integratie."
+title: "Vertaal 30 talen"
+description: "Cookbook: schaal een project op van 3 naar 30 talen met behulp van methodemixing per talenpaar, batching en CI-integratie."
 ---
-# Cookbook: 30 talen vertalen
+# Kookboek: 30 talen vertalen
 
-Schaal een project van een handvol locales naar wereldwijde dekking. Dit cookbook leidt u door de selectie van methoden, kostenoptimalisatie en CI-integratie voor een echte meertalige implementatie.
+Schaal een project van een handvol locales naar wereldwijde dekking. Dit kookboek leidt u door de selectie van methoden, kostenoptimalisatie en CI-integratie voor een echte meertalige implementatie.
 
-**Scenario:** U heeft een SaaS-app met `en`, `fr`, `es`. U moet 27 extra talen toevoegen, verdeeld over drie niveaus van kwaliteitsvereisten.
+**Scenario:** U heeft een SaaS-app met `en`, `fr`, `es`. U moet nog 27 talen toevoegen, verdeeld over drie niveaus van kwaliteitsvereisten.
 
 ---
 
 ## Stap 1: Categoriseer uw talen
 
-Niet alle 30 talen vereisen dezelfde aanpak. Groepeer ze op basis van de beschikbare kwaliteit van de methode:
+Niet alle 30 talen vereisen dezelfde aanpak. Groepeer ze op basis van de beschikbare methodekwaliteit:
 
-| Niveau | Talen | Methode | Reden |
+| Niveau | Talen | Methode | Waarom |
 |------|-----------|--------|-----|
 | **Niveau 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Waardevolle markten, genuanceerde grammatica |
-| **Niveau 2 — Standaard** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Groot volume, goed ondersteund door Google |
-| **Niveau 3 — Gecoacht** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Low-resource, vereist handhaving van terminologie |
+| **Niveau 2 — Standaard** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Hoog volume, goed ondersteund door Google |
+| **Niveau 3 — Gecoacht** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plug-ins | Low-resource, vereisen handhaving van terminologie |
 
-## Stap 2: Configureer per talenpaar
+## Stap 2: Configureer per paar
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -49,13 +49,13 @@ Niet alle 30 talen vereisen dezelfde aanpak. Groepeer ze op basis van de beschik
 }
 ```
 
-**Opmerking:** Talen die niet in `pairs` worden vermeld, erven `defaultMethod: "google-translate"`. U hoeft niet alle 30 talen te vermelden.
+**Opmerking:** Talen die niet in `pairs` staan vermeld, erven `defaultMethod: "google-translate"`. U hoeft niet alle 30 talen te vermelden.
 
 :::info
-De ondersteuning voor `crk` is in ontwikkeling — zie [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor de status en richtlijnen voor bijdragen.
+Ondersteuning voor `crk` is in ontwikkeling — zie [Ondersteun een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) voor de status en richtlijnen voor bijdragen.
 :::
 
-## Stap 3: API-sleutels instellen
+## Stap 3: Stel API-sleutels in
 
 U heeft beide API-sleutels nodig voor deze configuratie:
 
@@ -64,7 +64,7 @@ export OPENROUTER_API_KEY="sk-or-v1-..."
 export GOOGLE_TRANSLATE_API_KEY="AIza..."
 ```
 
-## Stap 4: Eerst proefdraaien
+## Stap 4: Voer eerst een dry run uit
 
 Bekijk altijd een voorbeeld voordat u 30 talen vertaalt:
 
@@ -72,9 +72,9 @@ Bekijk altijd een voorbeeld voordat u 30 talen vertaalt:
 npx i18n-rosetta sync --dry
 ```
 
-Controleer de uitvoer. Deze toont:
-- Welke talenparen welke methode gebruiken
-- Hoeveel sleutels nieuw/gewijzigd zijn per locale
+Controleer de uitvoer. Deze zal het volgende tonen:
+- Welke paren welke methode gebruiken
+- Hoeveel keys nieuw of gewijzigd zijn per locale
 - Geschatte API-aanroepen per niveau
 
 ## Stap 5: Voer de synchronisatie uit
@@ -83,18 +83,18 @@ Controleer de uitvoer. Deze toont:
 npx i18n-rosetta sync
 ```
 
-Rosetta verwerkt elk talenpaar onafhankelijk. De Niveau 2-paren die Google Translate gebruiken, zullen snel zijn. Niveau 1 LLM-paren zullen langzamer zijn, maar van hogere kwaliteit. Niveau 3 gecoachte paren gebruiken de coachingdata van de plug-in.
+Rosetta verwerkt elk paar onafhankelijk. De Niveau 2-paren die Google Translate gebruiken, zullen snel zijn. Niveau 1 LLM-paren zullen langzamer zijn, maar van hogere kwaliteit. Niveau 3 gecoachte paren gebruiken de coachingdata van de plug-in.
 
 ### Incrementele updates
 
-Na de initiële synchronisatie vertalen volgende uitvoeringen alleen **gewijzigde of nieuwe** sleutels:
+Na de initiële synchronisatie vertalen volgende uitvoeringen alleen **gewijzigde of nieuwe** keys:
 
 ```bash
 # Only keys that changed since last sync
 npx i18n-rosetta sync
 ```
 
-Het lockbestand (`.i18n-rosetta.lock`) houdt bij wat er is vertaald, zodat u stabiele inhoud nooit opnieuw vertaalt.
+Het lock-bestand (`.i18n-rosetta.lock`) houdt bij wat er is vertaald, zodat u stabiele inhoud nooit opnieuw vertaalt.
 
 ## Stap 6: Controleer de kwaliteit
 
@@ -145,7 +145,7 @@ jobs:
 
 ## Kostenraming
 
-Voor een project met 500 bronsleutels verdeeld over 30 talen:
+Voor een project met 500 bron-keys verdeeld over 30 talen:
 
 | Niveau | Talen | Methode | Geschatte kosten |
 |------|-----------|--------|-----------------|
@@ -154,13 +154,13 @@ Voor een project met 500 bronsleutels verdeeld over 30 talen:
 | Niveau 3 (4 talen) | crk, oj, mi, haw | GPT-4o-mini gecoacht | ~$0,40/volledige sync |
 | **Totaal** | **30 talen** | **Gemengd** | **~$3,80/volledige sync** |
 
-Incrementele synchronisaties (5–20 gewijzigde sleutels) kosten een fractie van een volledige synchronisatie.
+Incrementele synchronisaties (5–20 gewijzigde keys) kosten een fractie van een volledige synchronisatie.
 
 ## Zie ook
 
 - [Vertaalmethoden](/docs/guides/translation-methods) — Hoe elke vertaalmethode werkt en wanneer u deze moet gebruiken
-- [Plug-in specificatie](/docs/reference/plugin-spec) — Maak coachingdata aan voor al uw Niveau 3-talen
-- [CI/CD-gids](/docs/guides/ci-cd) — Geavanceerde CI-patronen inclusief PR-preview builds
+- [Plug-inspecificatie](/docs/reference/plugin-spec) — Maak coachingdata aan voor elk van uw Niveau 3-talen
+- [CI/CD-gids](/docs/guides/ci-cd) — Geavanceerde CI-patronen, inclusief PR-preview-builds
 - [Quality Gate](/docs/concepts/quality-gate) — Hoe Rosetta elke vertaling valideert voordat deze wordt weggeschreven
-- [Ondersteunde talen](/docs/reference/supported-languages) — Volledige lijst van taalcodes en compatibiliteit van methoden
-- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — Voeg coachingdata toe voor talen zonder brede MT-dekking
+- [Ondersteunde talen](/docs/reference/supported-languages) — Volledige lijst met taalcodes en methodecompatibiliteit
+- [Ondersteun een low-resource taal](https://mtevalarena.org/docs/community/low-resource-languages) — Voeg coachingdata toe voor talen zonder brede MT-dekking

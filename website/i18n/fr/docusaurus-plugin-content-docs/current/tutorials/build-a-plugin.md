@@ -1,20 +1,20 @@
 ---
 sidebar_position: 1
 title: "Créer un plugin de traduction"
-description: "Tutoriel de bout en bout : développez des coaching data, effectuez un benchmark avec l'eval harness, exportez un plugin et déployez-le avec rosetta."
+description: "Tutoriel de bout en bout : développez des coaching data, réalisez un benchmark avec l'eval harness, exportez un plugin et déployez-le avec rosetta."
 ---
 # Tutoriel : Créer un plugin de traduction
 
-Concevez une méthode de traduction personnalisée de A à Z, évaluez ses performances et déployez-la en tant que plugin rosetta. Ceci constitue le flux de travail complet permettant d'ajouter une nouvelle paire de langues qu'aucune API prête à l'emploi ne prend en charge.
+Créez une méthode de traduction personnalisée à partir de zéro, évaluez ses performances (benchmark) et déployez-la en tant que plugin rosetta. Ceci constitue le flux de travail complet pour ajouter une nouvelle paire de langues qu'aucune API prête à l'emploi ne prend en charge.
 
-**Ce que vous allez concevoir :** Un plugin de traduction encadrée pour le français formel, intégrant une terminologie stricte, des règles grammaticales et des scores d'évaluation.
+**Ce que vous allez créer :** Un plugin de traduction encadrée pour le français formel, avec une terminologie imposée, des règles de grammaire et des scores d'évaluation.
 
 **Durée :** 30 à 45 minutes
 
 **Prérequis :**
 - i18n-rosetta installé (`npm install --save-dev i18n-rosetta`)
 - Une clé API OpenRouter (`OPENROUTER_API_KEY`)
-- Python 3.10+ (pour l'environnement d'évaluation)
+- Python 3.10+ (pour le eval harness)
 
 ---
 
@@ -22,7 +22,7 @@ Concevez une méthode de traduction personnalisée de A à Z, évaluez ses perfo
 
 Vous traduisez un tableau de bord SaaS en français. La méthode `llm` par défaut produit des traductions correctes mais incohérentes :
 
-- Parfois, "dashboard" est traduit par "tableau de bord", d'autres fois par "panneau de contrôle"
+- Parfois, "dashboard" devient "tableau de bord", d'autres fois "panneau de contrôle"
 - Le ton alterne entre les formes `tu` et `vous`
 - Les termes techniques sont anglicisés de manière incohérente
 
@@ -30,7 +30,7 @@ Vous avez besoin d'une **application stricte de la terminologie** et d'un **cont
 
 ## Étape 2 : Créer les données d'encadrement
 
-Créez un fichier de directives qui encode vos exigences linguistiques :
+Créez un fichier d'encadrement qui encode vos exigences linguistiques :
 
 ```bash
 mkdir -p .rosetta/coaching
@@ -89,7 +89,7 @@ Indiquez à rosetta d'utiliser `llm-coached` pour le français :
 }
 ```
 
-## Étape 4 : Effectuer un test
+## Étape 4 : Tester la configuration
 
 ```bash
 npx i18n-rosetta sync --dry
@@ -100,17 +100,17 @@ Examinez la sortie de l'exécution à blanc. Vérifiez que :
 - ✅ La forme `vous` est utilisée de bout en bout
 - ✅ Les termes techniques correspondent à votre dictionnaire
 
-Ensuite, lancez la synchronisation réelle :
+Ensuite, exécutez la synchronisation réelle :
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-## Étape 5 : Évaluer avec l'environnement d'évaluation (Facultatif)
+## Étape 5 : Évaluer les performances avec le eval harness (Facultatif)
 
-Si vous souhaitez obtenir des scores de qualité — et c'est le cas, car les plugins sont fournis avec des données d'évaluation —, utilisez l'environnement d'évaluation associé.
+Si vous souhaitez obtenir des scores de qualité — et c'est le cas, car les plugins sont fournis avec des données d'évaluation — utilisez le eval harness compagnon.
 
-### Installer l'environnement d'évaluation
+### Installer le harness
 
 ```bash
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 ### Créer un corpus de référence
 
-Créez un fichier contenant les chaînes sources et des traductions validées :
+Créez un fichier contenant des chaînes sources et des traductions reconnues comme correctes :
 
 ```json title="corpus/french-formal.json"
 [
@@ -143,7 +143,7 @@ Créez un fichier contenant les chaînes sources et des traductions validées :
 ]
 ```
 
-### Exécuter l'évaluation
+### Exécuter le benchmark
 
 ```bash
 python harness.py eval \
@@ -154,10 +154,10 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-L'environnement génère les résultats suivants :
-- **chrF++** — Score F au niveau des caractères (0–100). Un score supérieur à 70 est excellent.
-- **BLEU** — Chevauchement de n-grammes (0–100). Un score supérieur à 40 est solide pour une traduction encadrée.
-- **Taux de correspondance exacte** — Proportion de traductions correspondant exactement à la référence.
+Le harness produit les résultats suivants :
+- **chrF++** — Score F au niveau des caractères (0–100). Un score supérieur à 70 est considéré comme solide.
+- **BLEU** — Chevauchement de N-grammes (0–100). Un score supérieur à 40 est satisfaisant pour une traduction encadrée.
+- **Exact match rate** — Proportion de traductions correspondant exactement à la référence.
 
 ### Exporter le plugin
 
@@ -178,13 +178,13 @@ french-formal-v1/
     └── fr.json          # Your coaching data
 ```
 
-## Étape 6 : Installer le plugin dans Rosetta
+## Étape 6 : Installer le plugin dans rosetta
 
 ```bash
 npx i18n-rosetta plugin install ./french-formal-v1/
 ```
 
-Cela copie le plugin dans `.rosetta/methods/french-formal-v1/`.
+Cela copie le plugin vers `.rosetta/methods/french-formal-v1/`.
 
 Mettez à jour votre configuration pour l'utiliser :
 
@@ -223,7 +223,7 @@ en → fr
   Exact:     42%
 ```
 
-## Ce que vous avez accompli
+## Ce que vous avez créé
 
 ```mermaid
 flowchart LR
@@ -234,8 +234,8 @@ flowchart LR
 ```
 
 Vous disposez désormais de :
-1. **Données d'encadrement** — Règles grammaticales et terminologie garantissant la cohérence
-2. **Scores d'évaluation** — Qualité quantifiée intégrée au plugin
+1. **Données d'encadrement** — Règles de grammaire et terminologie qui garantissent la cohérence
+2. **Scores d'évaluation** — Qualité quantifiée incluse avec le plugin
 3. **Un plugin portable** — `method.json` + données d'encadrement, installable sur n'importe quelle machine
 4. **Déploiement en production** — Intégré à votre pipeline de synchronisation
 
@@ -243,5 +243,5 @@ Vous disposez désormais de :
 
 - **[Spécification du plugin](/docs/reference/plugin-spec)** — Référence complète du format du manifeste
 - **[Méthodes de traduction](/docs/guides/translation-methods)** — Comparaison des quatre méthodes
-- **[Langues à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)** — Appliquer ce modèle aux langues non couvertes par les API
-- **[Traduire en 30 langues](/docs/tutorials/translate-30-languages)** — Faire évoluer votre projet pour un public mondial
+- **[Langues à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages)** — Appliquer ce modèle aux langues dépourvues de couverture API
+- **[Traduire 30 langues](/docs/tutorials/translate-30-languages)** — Faire évoluer votre projet pour un public mondial

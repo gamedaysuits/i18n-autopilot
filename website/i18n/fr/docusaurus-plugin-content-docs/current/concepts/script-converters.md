@@ -4,7 +4,7 @@ title: "Convertisseurs de scripts"
 ---
 # Convertisseurs de scripts
 
-Les convertisseurs de scripts sont des hooks de post-traduction déterministes et sans LLM qui convertissent le texte d'un système d'écriture à un autre. Ils permettent un flux de travail de type « traduire une fois, afficher dans plusieurs scripts » — vous traduisez dans un script de travail (généralement latin), puis convertissez automatiquement vers le script d'affichage.
+Les convertisseurs de scripts sont des hooks de post-traduction déterministes, sans LLM, qui convertissent le texte d'un système d'écriture à un autre. Ils permettent un flux de travail de type « traduire une fois, afficher dans plusieurs scripts » — vous traduisez dans un script de travail (généralement latin), puis convertissez automatiquement vers le script d'affichage.
 
 ## Pourquoi des convertisseurs de scripts ?
 
@@ -14,13 +14,13 @@ Certaines langues utilisent plusieurs scripts pour la même langue parlée :
 - **Serbe** : latin pour un usage international → cyrillique pour un usage national
 - **Klingon** : romanisation pour la saisie → pIqaD (  ) pour l'affichage
 
-Traduire directement vers des scripts non latins crée des problèmes : les LLM hallucinent des caractères, les fichiers JSON deviennent difficiles à gérer en contrôle de version, et les outils de diff ne peuvent pas comparer les modifications. Les convertisseurs de scripts résolvent ce problème en conservant les traductions dans un script adapté au contrôle de version et en les convertissant de manière déterministe au moment de la synchronisation.
+Traduire directement dans des scripts non latins pose des problèmes : les LLM hallucinent des caractères, les fichiers JSON deviennent difficiles à gérer en contrôle de version, et les outils de comparaison (diff) ne peuvent pas comparer les modifications. Les convertisseurs de scripts résolvent ce problème en conservant les traductions dans un script adapté au contrôle de version et en les convertissant de manière déterministe au moment de la synchronisation.
 
 ## Convertisseurs disponibles
 
 Rosetta est fourni avec cinq convertisseurs de scripts intégrés :
 
-| Locale | De | Vers | Type | Police requise ? |
+| Paramètre régional | De | Vers | Type | Police requise ? |
 |--------|------|----|------|----------------|
 | `crk` | SRO (Standard Roman Orthography) | Syllabique cri | Déterministe | Non — Unicode natif |
 | `sr` | Latin | Cyrillique | Déterministe | Non — Unicode natif |
@@ -30,7 +30,7 @@ Rosetta est fourni avec cinq convertisseurs de scripts intégrés :
 
 ### Déterministe vs Basé sur la police
 
-- **Les convertisseurs déterministes** (Cree, Serbe, Klingon, Tengwar) effectuent un véritable mappage caractère par caractère en utilisant des règles linguistiques. La sortie contient de vrais caractères Unicode.
+- **Les convertisseurs déterministes** (Cree, Serbe, Klingon, Tengwar) effectuent un véritable mappage caractère par caractère en utilisant des règles linguistiques. La sortie contient de véritables caractères Unicode.
 - **Les convertisseurs basés sur la police** (Kryptonian) sont des chiffrements de substitution 1:1 où la sortie est constituée de caractères Unicode PUA qui ne s'affichent correctement qu'avec une police spécifique chargée.
 
 ## Comment ils fonctionnent
@@ -48,16 +48,16 @@ Par exemple, pour le Plains Cree :
 
 ### Correspondance gloutonne de gauche à droite
 
-Tous les convertisseurs utilisent le même algorithme : à chaque position de caractère, ils essaient d'abord la correspondance la plus longue possible, puis des correspondances progressivement plus courtes. Les caractères qui ne correspondent à aucun modèle (espaces, ponctuation, chiffres) sont transmis sans modification.
+Tous les convertisseurs utilisent le même algorithme : à chaque position de caractère, il recherche d'abord la correspondance la plus longue possible, puis des correspondances progressivement plus courtes. Les caractères qui ne correspondent à aucun modèle (espaces, ponctuation, chiffres) sont transmis sans modification.
 
-Cela gère correctement les digrammes et les trigrammes :
+Cela permet de traiter correctement les digrammes et les trigrammes :
 - Klingon : `tlh` → un seul caractère pIqaD (et non `t` + `l` + `h`)
 - Serbe : `nj` → `њ` (et non `н` + `ј`)
 - Cree : `twê` → un seul caractère syllabique (et non `t` + `w` + `ê`)
 
 ## Utilisation des convertisseurs de scripts
 
-Les convertisseurs de scripts s'activent automatiquement lorsque le code de la locale correspond à un convertisseur enregistré. Aucune configuration n'est nécessaire — il vous suffit de définir votre locale cible :
+Les convertisseurs de scripts s'activent automatiquement lorsque le code du paramètre régional correspond à un convertisseur enregistré. Aucune configuration n'est nécessaire — il vous suffit de définir votre paramètre régional cible :
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -70,7 +70,7 @@ Les convertisseurs de scripts s'activent automatiquement lorsque le code de la l
 }
 ```
 
-Lorsque rosetta synchronise la paire `en:crk`, les traductions sont d'abord produites en SRO, puis automatiquement converties en caractères syllabiques avant d'être écrites dans `crk.json`.
+Lorsque Rosetta synchronise la paire `en:crk`, les traductions sont d'abord produites en SRO, puis automatiquement converties en caractères syllabiques avant d'être écrites dans `crk.json`.
 
 ### Vérification de l'état du convertisseur
 
@@ -82,7 +82,7 @@ La sortie d'état indique quelles paires ont des convertisseurs de scripts actif
 
 ## Exigences relatives aux polices Web
 
-Trois convertisseurs génèrent des caractères de la zone à usage privé (PUA) d'Unicode qui nécessitent des polices Web personnalisées :
+Trois convertisseurs produisent des caractères de la zone à usage privé (PUA) d'Unicode qui nécessitent des polices Web personnalisées :
 
 ### Klingon (pIqaD)
 
@@ -133,16 +133,16 @@ Installez une police Kryptonian mappée sur les points de code PUA U+E100–E119
 ```
 
 :::tip Approche alternative pour le Kryptonian
-Étant donné que le Kryptonian est un pur chiffrement de A à Z, vous pouvez ignorer entièrement le convertisseur de scripts et appliquer la police au texte latin via CSS. Cela est souvent plus simple pour les déploiements Web — il suffit de servir la police Kryptonian et de définir `font-family` sur les éléments pertinents.
+Étant donné que le Kryptonian est un pur chiffrement de A à Z, vous pouvez ignorer complètement le convertisseur de scripts et appliquer la police au texte latin via CSS. Cela est souvent plus simple pour les déploiements Web — il suffit de servir la police Kryptonian et de définir `font-family` sur les éléments pertinents.
 :::
 
 ## Ajout d'un convertisseur personnalisé
 
 Pour ajouter un convertisseur pour une nouvelle langue, modifiez `lib/scripts.js` :
 
-1. **Créez la carte de conversion** — un tableau ordonné de paires `[from, to]`, les séquences les plus longues en premier
+1. **Créez la carte de conversion** — un tableau ordonné de paires `[from, to]`, en commençant par les séquences les plus longues
 2. **Créez la fonction du convertisseur** — un analyseur glouton de gauche à droite (utilisez `sroToSyllabics` comme modèle)
-3. **Enregistrez-le** dans l'objet `SCRIPT_CONVERTERS` avec le code de la locale comme clé
+3. **Enregistrez-le** dans l'objet `SCRIPT_CONVERTERS` avec le code du paramètre régional comme clé
 4. **Ajoutez le champ `script`** à l'entrée de registre de la langue dans `registers.js`
 
 ```javascript

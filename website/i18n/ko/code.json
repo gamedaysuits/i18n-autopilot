@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "항목 1개|항목 {count}개",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "완벽하게 커스터마이징 가능한",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "국제화",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "명령어 하나로 로케일 파일을 번역해 보세요. Google Translate, LLM, 커스텀 API, 코칭 파이프라인 등 모든 번역 방식을 설정 옵션으로 제공합니다. 각 언어에 가장 적합한 방식을 사용해 보세요.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "시작하기 →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "번역 방식 보기",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "테스트",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "의존성",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "스크립트 변환기",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "언어 레지스터",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "언어 쌍마다 다양한 방식 조합하기",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "각 출발어→도착어 쌍마다 고유한 번역 방식, 모델, 품질 설정을 지정할 수 있습니다. 일괄적인 방식이 아닌, 각 언어에 가장 잘 맞는 방식을 사용해 보세요.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "번역 방식 알아보기 →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "활용 분야",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "흔한 TMS 플랫폼이 아닙니다",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase, Locize는 계정, 대시보드, 월 구독료가 필요한 클라우드 플랫폼입니다. Rosetta는 프로젝트 내에서 실행되는 CLI 도구로, 계정이나 대시보드가 필요 없으며 특정 벤더에 종속되지 않습니다.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "전체 비교 보기 →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "아레나",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "번역을 위한",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "최고의 방식을 알고 계신가요?",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "증명해 보세요.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "7,000개 이상의 언어 중 기계 번역이 지원되는 언어는 약 130개뿐입니다. 나머지는 아직 해결되지 않은 과제이자 모두에게 열려있는 기회입니다. rosetta의 평가 하네스(evaluation harness)는 핑거프린트가 적용된 재현 가능한 점수 산정 방식으로 모든 번역 방식을 벤치마킹합니다. 리더보드에서 모든 제출 결과를 확인할 수 있습니다.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "이는 전 세계 누구나 기여할 수 있는 미해결 과제입니다.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "번역 방식을 구축하고, 점수를 측정하고, 커뮤니티에 공유해 보세요.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 번역 방식 리더보드",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "chrF++ 점수 기준 최고의 번역 방식 순위입니다.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "순위를 깰 수 있다고 생각하시나요?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "하네스 실행하기",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "전체 리더보드 →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "방식",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "모델",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "언어 쌍",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "완벽하게 커스터마이징 가능한 국제화",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "모든 번역 방식을 설정 옵션으로 제공하는 i18n 프레임워크입니다. Google Translate, LLM, 커스텀 파이프라인 등을 명령어 하나로 실행하고, 언어 쌍별로 제어하며, 품질을 검증해 보세요.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "단일 명령어",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "로케일 파일, 포맷, 도착어를 자동으로 감지합니다. 변경된 내용만 번역하고 변경되지 않은 부분은 건너뜁니다.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "언어 쌍별 번역 방식",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "프랑스어는 Google Translate, 일본어는 LLM, 평원 크리어(Plains Cree)는 코칭 플러그인 등 모든 설정을 하나의 구성 파일에서 관리할 수 있습니다.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "레지스터 및 코칭",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "언어별 어조 지침을 통해 LLM을 제어해 보세요. 독일어의 정중한 Sie 형태, 필리핀어의 타글리시(Taglish) 코드 스위칭, 클링온어의 전사다운 명예로운 어조 등을 설정할 수 있습니다.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "콘텐츠 인식",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "코드 블록, 숏코드, 보간 변수, 원시 HTML은 번역 과정에서 보호됩니다. LLM은 코드를 전혀 볼 수 없습니다.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "의존성 제로",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Node.js 내장 모듈만 사용합니다. SDK, 네이티브 모듈, 빌드 단계가 필요 없습니다. Node 20 이상이 실행되는 곳이라면 어디서든 작동합니다.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "퀄리티 게이트",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "모든 번역은 저장되기 전에 검증을 거칩니다. 잘못된 스크립트 출력, 원문 반복, 비정상적인 길이 증가, 플레이스홀더 손상 등을 감지하고 차단합니다.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS 국제화",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "언어 쌍별 품질 관리 기능을 통해 Next.js, Hugo, React 앱을 30개 이상의 언어로 번역해 보세요.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "30개 언어 번역하기 →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "커스텀 파이프라인 구축",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "LLM을 FST 검증기, 사전, 후처리기와 연결해 보세요. 이를 플러그인으로 패키징할 수 있습니다.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST 파이프라인 쿡북 →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "언어 보존",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "API 지원이 없는 언어(토착어, 소멸 위기 언어, 인공어)를 위한 코칭 기반 LLM 번역을 제공해요.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "로우 리소스 가이드 →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "플러그 앤 테스트",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "표준화된 벤치마크로 모델을 테스트해 보세요. chrF++, exact match, FST acceptance 모두 동일한 하네스에서 계산돼요.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "평가 하네스 →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "점수 등록하기",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "모든 제출물은 Git 커밋으로 핑거프린트되며 동일한 데이터셋을 기준으로 점수가 매겨져요. PR을 열어 제출해 보세요.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "리더보드 →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "데이터 존중",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "토착어는 해당 커뮤니티의 소유예요. rosetta는 OCAP, CARE 및 Māori 데이터 주권 원칙을 지원해요.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "데이터 주권 →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "단 한 번의 명령어 또는 무한한 커스터마이징으로 전체 웹사이트를 ",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "(으)로 구축해 보세요",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "개 언어",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "지원 언어",
+    "description": "Languages supported button label"
   }
 }

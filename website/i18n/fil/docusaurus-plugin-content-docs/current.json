@@ -26,5 +26,17 @@
   "sidebar.docsSidebar.category.Evaluation": {
     "message": "Ebalwasyon",
     "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Use Cases": {
+    "message": "Mga Use Case",
+    "description": "The label for category 'Use Cases' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Core Concepts": {
+    "message": "Mga Core Concept",
+    "description": "The label for category 'Core Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.For MT Researchers": {
+    "message": "Para sa mga MT Researcher",
+    "description": "The label for category 'For MT Researchers' in sidebar 'docsSidebar'"
   }
 }

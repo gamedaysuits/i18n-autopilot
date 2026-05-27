@@ -1,27 +1,27 @@
 ---
 sidebar_position: 2
 title: "Dịch 30 ngôn ngữ"
-description: "Cẩm nang: mở rộng quy mô dự án từ 3 lên 30 ngôn ngữ thông qua việc kết hợp phương pháp theo từng cặp, xử lý hàng loạt và tích hợp CI."
+description: "Cookbook: mở rộng dự án từ 3 lên 30 ngôn ngữ bằng cách kết hợp phương pháp theo từng cặp, xử lý hàng loạt và tích hợp CI."
 ---
 # Cookbook: Dịch 30 ngôn ngữ
 
-Mở rộng quy mô dự án từ một vài khu vực sang phạm vi toàn cầu. Cookbook này hướng dẫn chi tiết về việc lựa chọn phương pháp, tối ưu hóa chi phí và tích hợp CI cho một đợt triển khai đa ngôn ngữ thực tế.
+Mở rộng dự án từ một vài ngôn ngữ sang phạm vi toàn cầu. Cookbook này sẽ hướng dẫn bạn cách chọn phương pháp, tối ưu chi phí và tích hợp CI cho một đợt triển khai đa ngôn ngữ thực tế.
 
-**Kịch bản:** Bạn có một ứng dụng SaaS với `en`, `fr`, `es`. Bạn cần thêm 27 ngôn ngữ nữa qua ba cấp độ yêu cầu chất lượng.
+**Tình huống:** Bạn có một ứng dụng SaaS với `en`, `fr`, `es`. Bạn cần thêm 27 ngôn ngữ nữa với ba cấp độ yêu cầu chất lượng khác nhau.
 
 ---
 
 ## Bước 1: Phân loại ngôn ngữ của bạn
 
-Không phải tất cả 30 ngôn ngữ đều cần cùng một cách tiếp cận. Hãy nhóm chúng theo chất lượng của phương pháp có sẵn:
+Không phải cả 30 ngôn ngữ đều cần cùng một cách tiếp cận. Hãy nhóm chúng lại dựa trên chất lượng của phương pháp có sẵn:
 
 | Cấp độ | Ngôn ngữ | Phương pháp | Lý do |
 |------|-----------|--------|-----|
-| **Cấp độ 1 — Cao cấp** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Thị trường giá trị cao, ngữ pháp nhiều sắc thái |
+| **Cấp độ 1 — Cao cấp** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Thị trường giá trị cao, ngữ pháp phức tạp |
 | **Cấp độ 2 — Tiêu chuẩn** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Khối lượng lớn, được Google hỗ trợ tốt |
-| **Cấp độ 3 — Có hướng dẫn** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Ít tài nguyên, yêu cầu tuân thủ thuật ngữ |
+| **Cấp độ 3 — Có hướng dẫn** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Ít tài nguyên, cần tuân thủ thuật ngữ |
 
-## Bước 2: Cấu hình theo từng cặp
+## Bước 2: Cấu hình cho từng cặp ngôn ngữ
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -72,10 +72,10 @@ Luôn xem trước khi dịch 30 ngôn ngữ:
 npx i18n-rosetta sync --dry
 ```
 
-Xem lại kết quả đầu ra. Nó sẽ hiển thị:
-- Cặp nào sử dụng phương pháp nào
-- Có bao nhiêu key mới/đã thay đổi cho mỗi khu vực (locale)
-- Ước tính số lượt gọi API theo từng cấp độ
+Hãy xem lại kết quả đầu ra. Nó sẽ hiển thị:
+- Cặp ngôn ngữ nào sử dụng phương pháp nào
+- Có bao nhiêu key mới/thay đổi cho mỗi ngôn ngữ
+- Ước tính số lượt gọi API cho mỗi cấp độ
 
 ## Bước 5: Chạy đồng bộ (Sync)
 
@@ -83,18 +83,18 @@ Xem lại kết quả đầu ra. Nó sẽ hiển thị:
 npx i18n-rosetta sync
 ```
 
-Rosetta xử lý từng cặp một cách độc lập. Các cặp Cấp độ 2 sử dụng Google Translate sẽ rất nhanh. Các cặp LLM Cấp độ 1 sẽ chậm hơn nhưng chất lượng cao hơn. Các cặp có hướng dẫn Cấp độ 3 sử dụng dữ liệu hướng dẫn (coaching data) của plugin.
+Rosetta xử lý từng cặp ngôn ngữ một cách độc lập. Các cặp Cấp độ 2 sử dụng Google Translate sẽ rất nhanh. Các cặp LLM Cấp độ 1 sẽ chậm hơn nhưng chất lượng cao hơn. Các cặp có hướng dẫn Cấp độ 3 sử dụng dữ liệu hướng dẫn (coaching data) của plugin.
 
-### Cập nhật tăng dần
+### Cập nhật tăng dần (Incremental Updates)
 
-Sau lần đồng bộ đầu tiên, các lần chạy tiếp theo chỉ dịch các key **đã thay đổi hoặc mới**:
+Sau lần đồng bộ đầu tiên, các lần chạy tiếp theo sẽ chỉ dịch các key **bị thay đổi hoặc mới thêm**:
 
 ```bash
 # Only keys that changed since last sync
 npx i18n-rosetta sync
 ```
 
-Tệp khóa (`.i18n-rosetta.lock`) theo dõi những gì đã được dịch, vì vậy bạn không bao giờ phải dịch lại các nội dung đã ổn định.
+Tệp khóa (lock file) (`.i18n-rosetta.lock`) theo dõi những gì đã được dịch, vì vậy bạn sẽ không bao giờ phải dịch lại các nội dung đã ổn định.
 
 ## Bước 6: Kiểm tra chất lượng
 
@@ -104,11 +104,11 @@ Kiểm tra trạng thái của tất cả các cặp ngôn ngữ:
 npx i18n-rosetta status
 ```
 
-Lệnh này xuất ra một bảng hiển thị phương pháp, model, cấp độ chất lượng của từng cặp, và liệu có sẵn dữ liệu hướng dẫn hoặc điểm chuẩn (benchmark scores) hay không.
+Lệnh này xuất ra một bảng hiển thị phương pháp, model, cấp độ chất lượng của từng cặp ngôn ngữ và liệu có sẵn dữ liệu hướng dẫn hay điểm chuẩn (benchmark scores) hay không.
 
 ## Bước 7: Tích hợp CI
 
-Thêm vào workflow GitHub Actions của bạn để các bản dịch luôn được cập nhật trên mỗi lần push:
+Thêm vào workflow GitHub Actions của bạn để các bản dịch luôn được cập nhật trên mỗi lượt push:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync Translations
@@ -145,7 +145,7 @@ jobs:
 
 ## Ước tính chi phí
 
-Đối với một dự án có 500 source keys trên 30 ngôn ngữ:
+Đối với một dự án có 500 source key trên 30 ngôn ngữ:
 
 | Cấp độ | Ngôn ngữ | Phương pháp | Chi phí ước tính |
 |------|-----------|--------|-----------------|
@@ -158,9 +158,9 @@ Các lần đồng bộ tăng dần (5–20 key thay đổi) chỉ tốn một p
 
 ## Xem thêm
 
-- [Phương pháp dịch](/docs/guides/translation-methods) — Cách mỗi phương pháp dịch hoạt động và khi nào nên sử dụng
+- [Phương pháp dịch](/docs/guides/translation-methods) — Cách hoạt động của từng phương pháp dịch và khi nào nên sử dụng
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — Tạo dữ liệu hướng dẫn cho bất kỳ ngôn ngữ Cấp độ 3 nào của bạn
-- [Hướng dẫn CI/CD](/docs/guides/ci-cd) — Các pattern CI nâng cao bao gồm các bản build xem trước cho PR
+- [Hướng dẫn CI/CD](/docs/guides/ci-cd) — Các pattern CI nâng cao bao gồm cả build bản xem trước cho PR
 - [Cổng chất lượng (Quality Gate)](/docs/concepts/quality-gate) — Cách Rosetta xác thực mọi bản dịch trước khi ghi lại
 - [Ngôn ngữ được hỗ trợ](/docs/reference/supported-languages) — Danh sách đầy đủ các mã ngôn ngữ và khả năng tương thích của phương pháp
-- [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — Thêm dữ liệu hướng dẫn cho các ngôn ngữ không có độ phủ MT (Dịch máy) rộng rãi
+- [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — Thêm dữ liệu hướng dẫn cho các ngôn ngữ không được MT (Dịch máy) hỗ trợ rộng rãi

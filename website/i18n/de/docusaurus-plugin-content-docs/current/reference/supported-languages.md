@@ -4,47 +4,47 @@ title: "Unterstützte Sprachen"
 ---
 # Unterstützte Sprachen
 
-rosetta wird mit **Sprachkarten** (Language Cards) ausgeliefert — strukturierten Referenzdateien für mehr als 42 Sprachen. Jede Karte enthält Register-Voreinstellungen, Metadaten zum Höflichkeitssystem, Indikatoren zur Methodenunterstützung und Informationen zur Schrift. Jede Sprache, die Ihr LLM beherrscht, kann mit einer einzigen Konfigurationszeile hinzugefügt werden — die hier aufgeführten verfügen über kuratierte, produktionsreife Register.
+rosetta wird mit **Language Cards** ausgeliefert — strukturierten Konfigurationsdateien für 50 Sprachen. Jede Karte enthält Register-Voreinstellungen, Metadaten zum Höflichkeitssystem, Flags zur Methodenunterstützung, Typografieregeln und Schriftinformationen. Jede Sprache, die Ihr LLM kennt, kann mit einer einzigen Konfigurationszeile hinzugefügt werden — dies sind diejenigen mit kuratierten, produktionsbereiten Registern.
 
 ---
 
 ## Übersetzungsmethoden
 
-Für jede Sprache können Sie eine oder mehrere dieser Übersetzungsmethoden verwenden:
+Jede Sprache kann eine oder mehrere dieser Übersetzungsmethoden verwenden:
 
 | Symbol | Methode | Funktionsweise | Kosten |
 |------|--------|-------------|------|
-| 🟢 | **Google Translate** | Neuronale MT-Basis. Über 130 Sprachen. Nur Schlüssel-Wert-Zeichenfolgen (Key-Value) — kann Markdown-Inhalte nicht sicher übersetzen. | ~$20/1 Mio. Zeichen |
-| 🔵 | **LLM (OpenRouter)** | Jede Sprache, die das Modell beherrscht. Registergesteuerte Prompts. Verarbeitet Schlüssel-Wert-Paare und Markdown-Inhalte. | Variiert je nach Modell |
-| 🟣 | **LLM-Coached** | LLM + Grammatikwörterbücher + Coaching-Daten, die in Prompts injiziert werden. Am besten für morphologisch komplexe Sprachen geeignet. | Variiert je nach Modell |
-| 🟠 | **API (Plugin)** | Von der Community gehostete Übersetzungspipelines, die über HTTP bereitgestellt werden. [OCAP-kompatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Variiert je nach Anbieter |
+| 🟢 | **Google Translate** | Neuronale MT-Basis. Über 130 Sprachen. Nur Schlüssel-Wert-Zeichenfolgen — kann Markdown-Inhalte nicht sicher übersetzen. | ~$20/1 Mio. Zeichen |
+| 🔵 | **LLM (OpenRouter)** | Jede Sprache, die das Modell kennt. Registergesteuerte Prompts. Verarbeitet Schlüssel-Wert- + Markdown-Inhalte. | Variiert je nach Modell |
+| 🟣 | **LLM-Coached** | LLM + Grammatikwörterbücher + in Prompts injizierte Coaching-Daten. Am besten für morphologisch komplexe Sprachen geeignet. | Variiert je nach Modell |
+| 🟠 | **API (Plugin)** | Von der Community gehostete Übersetzungs-Pipelines, die über HTTP bereitgestellt werden. [OCAP-kompatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Variiert je nach Anbieter |
 
-Setzen Sie `GOOGLE_TRANSLATE_API_KEY` für Google Translate oder `OPENROUTER_API_KEY` für LLM-Methoden. Weitere Einzelheiten finden Sie unter [Übersetzungsmethoden](/docs/guides/translation-methods).
+Legen Sie `GOOGLE_TRANSLATE_API_KEY` für Google Translate oder `OPENROUTER_API_KEY` für LLM-Methoden fest. Weitere Details finden Sie unter [Übersetzungsmethoden](/docs/guides/translation-methods).
 
 ---
 
 ## Priorisierte Sprachen
 
-Dies sind die am häufigsten nachgefragten Gebietsschemas (Locales) für Web- und Mobilanwendungen, aufgelistet in der von rosetta empfohlenen, auf Barrierefreiheit ausgerichteten Reihenfolge.
+Dies sind die am häufigsten angeforderten Gebietsschemas (Locales) für Web- und Mobilanwendungen, aufgelistet in der von rosetta empfohlenen Reihenfolge, bei der Barrierefreiheit an erster Stelle steht.
 
 | Flagge | Sprache | Code | Google | LLM | Coached | Schrift | Anmerkungen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
 | 🇸🇦 | Arabisch | `ar` | ✅ | ✅ | ✅ | — | RTL. Modernes Standardarabisch (فصحى). |
 | 🇵🇭 | Filipino (Taglish) | `tl` | ✅ | ✅ | ✅ | — | Code-Switching: Tagalog primär, Fachbegriffe auf Englisch. |
-| 🇫🇷 | Französisch | `fr` | ✅ | ✅ | ✅ | — | Vous-Form. Geschlechterinklusiv (Connecté·e). |
+| 🇫🇷 | Französisch | `fr` | ✅ | ✅ | ✅ | — | Vous-Form. Geschlechtergerecht (Connecté·e). |
 | 🇪🇸 | Spanisch | `es` | ✅ | ✅ | ✅ | — | Neutrales Lateinamerikanisch. |
-| 🇩🇪 | Deutsch | `de` | ✅ | ✅ | ✅ | — | Sie-Form. Geschlechterinklusiv (Benutzer:innen). |
+| 🇩🇪 | Deutsch | `de` | ✅ | ✅ | ✅ | — | Sie-Form. Geschlechtergerecht (Benutzer:innen). |
 | 🇯🇵 | Japanisch | `ja` | ✅ | ✅ | ✅ | — | です/ます für Fließtext, する für UI-Beschriftungen. |
 | 🇨🇳 | Chinesisch (Vereinfacht) | `zh` | ✅ | ✅ | ✅ | — | 简体中文. |
 | 🇮🇹 | Italienisch | `it` | ✅ | ✅ | ✅ | — | Lei-Form. |
 | 🇧🇷 | Portugiesisch (BR) | `pt` | ✅ | ✅ | ✅ | — | Brasilianisches Portugiesisch. |
-| 🇰🇷 | Koreanisch | `ko` | ✅ | ✅ | ✅ | — | Höfliches Register (해요체). |
+| 🇰🇷 | Koreanisch | `ko` | ✅ | ✅ | ✅ | — | 해요체 höfliches Register. |
 
 ## Wichtige Weltsprachen
 
 | Flagge | Sprache | Code | Google | LLM | Coached | Schrift | Anmerkungen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
-| 🇧🇩 | Bengalisch | `bn` | ✅ | ✅ | ✅ | — | Präferenz für শুদ্ধ ভাষা. |
+| 🇧🇩 | Bengalisch | `bn` | ✅ | ✅ | ✅ | — | শুদ্ধ ভাষা Präferenz. |
 | 🇧🇬 | Bulgarisch | `bg` | ✅ | ✅ | ✅ | — | |
 | 🇨🇿 | Tschechisch | `cs` | ✅ | ✅ | ✅ | — | Vykání (Vy-Form). |
 | 🇩🇰 | Dänisch | `da` | ✅ | ✅ | ✅ | — | |
@@ -66,60 +66,63 @@ Dies sind die am häufigsten nachgefragten Gebietsschemas (Locales) für Web- un
 | 🇷🇸 | Serbisch | `sr` | ✅ | ✅ | ✅ | 🔤 Lateinisch→Kyrillisch | Deterministischer Schriftkonverter. |
 | 🇸🇪 | Schwedisch | `sv` | ✅ | ✅ | ✅ | — | |
 | 🇰🇪 | Swahili | `sw` | ✅ | ✅ | ✅ | — | |
-| 🇹🇭 | Thai | `th` | ✅ | ✅ | ✅ | — | Höflichkeitspartikel ครับ/ค่ะ. |
+| 🇹🇭 | Thai | `th` | ✅ | ✅ | ✅ | — | ครับ/ค่ะ Höflichkeitspartikel. |
 | 🇹🇷 | Türkisch | `tr` | ✅ | ✅ | ✅ | — | Siz-Form. |
 | 🇺🇦 | Ukrainisch | `uk` | ✅ | ✅ | ✅ | — | Ви-Form. |
 | 🇵🇰 | Urdu | `ur` | ✅ | ✅ | ✅ | — | RTL. آپ-Form. |
 | 🇻🇳 | Vietnamesisch | `vi` | ✅ | ✅ | ✅ | — | |
 | 🇹🇼 | Chinesisch (Traditionell) | `zh-TW` | ✅ | ✅ | ✅ | — | 繁體中文. |
+| 🇬🇪 | Georgisch | `ka` | ✅ | ✅ | — | — | ქართული. Südkaukasische Sprachfamilie. |
+| 🇳🇬 | Yoruba | `yo` | ✅ | ✅ | — | — | Èdè Yorùbá. Tonal (3 Töne). |
 
 ## Regionale Varianten
 
 | Flagge | Sprache | Code | Google | LLM | Coached | Schrift | Anmerkungen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
-| 🇲🇽 | Mexikanisches Spanisch | `es-MX` | ✅ | ✅ | ✅ | — | Tú-Form. Herzliches Register. |
-| 🇨🇦 | Kanadisches Französisch | `fr-CA` | ✅ | ✅ | ✅ | — | Québécois-Redewendungen. |
+| 🇲🇽 | Mexikanisches Spanisch | `es-MX` | ✅ | ✅ | ✅ | — | Tú-Form. Warmes Register. |
+| 🇨🇦 | Kanadisches Französisch | `fr-CA` | ✅ | ✅ | ✅ | — | Québécois-Idiome. |
 
 ---
 
 ## Indigene & ressourcenarme Sprachen
 
-Diese Sprachen werden von kommerziellen MT-Diensten (maschinelle Übersetzung) nicht unterstützt. rosetta stellt die Werkzeuge bereit, damit Sprachgemeinschaften ihre eigenen Methoden nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) entwickeln können.
+Diese Sprachen werden von kommerziellen MT-Diensten nicht unterstützt. rosetta stellt die Werkzeuge für Sprachgemeinschaften bereit, um ihre eigenen Methoden nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) zu entwickeln.
 
 | | Sprache | Code | Google | LLM | Coached | Schrift | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Silbenschrift | 🚧 In Entwicklung |
+| 🌄 | Quechua | `qu` | ✅ | ✅ | — | — | Runasimi. Evidentielle Suffixe. |
 
 :::info Plains Cree befindet sich in aktiver Entwicklung
-Das Register, die Coaching-Infrastruktur, der Schriftkonverter und die Evaluierungsumgebung für Plains Cree sind alle funktionsfähig, aber die Übersetzungspipeline wurde **noch nicht veröffentlicht**. Wir arbeiten mit Sprachgemeinschaften nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) zusammen, um die Qualität vor der Veröffentlichung sicherzustellen. Lesen Sie [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständigen Hintergründe — und wie Sie dazu beitragen können.
+Das Register, die Coaching-Infrastruktur, der Schriftkonverter und die Evaluierungsumgebung für Plains Cree sind alle funktionsfähig, aber die Übersetzungs-Pipeline wurde **noch nicht veröffentlicht**. Wir arbeiten mit Sprachgemeinschaften nach den [OCAP-Prinzipien](https://mtevalarena.org/docs/community/low-resource-languages) zusammen, um die Qualität vor der Veröffentlichung sicherzustellen. Unter [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) finden Sie die vollständige Geschichte — und wie Sie dazu beitragen können.
 :::
 
 :::tip Weitere ressourcenarme Sprachen hinzufügen
-Das Methoden-Plugin-System von rosetta ist genau dafür konzipiert. Eine Sprachgemeinschaft kann eine benutzerdefinierte Übersetzungsmethode entwickeln, sie unter eigener Kontrolle hosten und über die [API-Methode](/docs/guides/serving-a-method) bereitstellen. Die [Methoden-Rangliste](/leaderboard) erfasst die Punktzahlen für jedes Sprachpaar — entwickeln Sie eine Methode, führen Sie die Evaluierungsumgebung aus und sichern Sie sich die höchste Punktzahl.
+Das Methoden-Plugin-System von rosetta ist genau dafür konzipiert. Eine Sprachgemeinschaft kann eine benutzerdefinierte Übersetzungsmethode entwickeln, diese unter eigener Kontrolle hosten und über die [API-Methode](/docs/guides/serving-a-method) bereitstellen. Die [Methoden-Rangliste](/leaderboard) verfolgt die Punktzahlen für jedes Sprachpaar — entwickeln Sie eine Methode, führen Sie die Evaluierungsumgebung aus und sichern Sie sich die höchste Punktzahl.
 :::
 
 ---
 
 ## Konstruierte Sprachen (Conlangs)
 
-Conlangs werden über LLM-Register und optionale Schriftkonverter unterstützt. Sie nutzen dieselbe Infrastruktur wie natürliche Sprachen — das Quality Gate, das Coaching-System und die Schriftkonvertierungspipeline funktionieren identisch.
+Conlangs werden über LLM-Register und optionale Schriftkonverter unterstützt. Sie nutzen dieselbe Infrastruktur wie natürliche Sprachen — das Quality Gate, das Coaching-System und die Schriftkonvertierungs-Pipeline funktionieren identisch.
 
 | | Sprache | Code | Google | LLM | Schrift | Anmerkungen |
 |---|----------|------|:------:|:---:|--------|-------|
-| 🖖 | Klingonisch | `tlh` | ❌ | ✅ | 🔤 Romanisierung→pIqaD | PUA-Schriftart erforderlich. Vokabular nach Marc Okrand. |
+| 🖖 | Klingonisch | `tlh` | ❌ | ✅ | 🔤 Romanisierung→pIqaD | PUA-Schriftart erforderlich. Marc-Okrand-Vokabular. |
 | 🧝 | Sindarin (Tolkiens Elbisch) | `x-elvish-s` | ❌ | ✅ | 🔤 Lateinisch→Tengwar | CSUR-PUA-Schriftart erforderlich. |
 | 🏴‍☠️ | Piraten-Englisch | `x-pirate` | ❌ | ✅ | — | Nur Register. Nautische Metaphern. |
 | 🦸 | Kryptonisch | `x-kryptonian` | ❌ | ✅ | 🔤 Lateinisch→Kryptonisch | PUA-Schriftart erforderlich. |
 | 🎭 | Shakespeare-Englisch | `x-shakespeare` | ❌ | ✅ | — | Nur Register. Thee/thou, -eth/-est-Formen. |
 | 🐸 | Yoda-Sprache | `x-yoda` | ❌ | ✅ | — | Nur Register. OSV-Wortstellung. |
 
-Weitere Informationen zu den Anforderungen an PUA-Schriftarten, Unicode-Einschränkungen und zum Hinzufügen eigener Sprachen finden Sie unter [Conlangs, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography).
+Siehe [Conlangs, Schriften & Orthografie](/docs/guides/conlangs-scripts-orthography) für PUA-Schriftart-Anforderungen, Unicode-Einschränkungen und Informationen dazu, wie Sie Ihre eigenen hinzufügen können.
 
 ---
 
-## Sprachvoreinstellungen
+## Sprach-Voreinstellungen
 
-Der Assistent `init` unterstützt Voreinstellungsnamen für eine schnelle Einrichtung. Sie können Voreinstellungen mit individuellen Codes mischen.
+Der `init`-Assistent unterstützt Voreinstellungsnamen für eine schnelle Einrichtung. Sie können Voreinstellungen mit individuellen Codes mischen.
 
 | Voreinstellung | Erweitert zu |
 |--------|-----------|
@@ -137,9 +140,9 @@ i18n-rosetta init
 
 ---
 
-## Beliebige Sprachen hinzufügen
+## Jede beliebige Sprache hinzufügen
 
-rosetta kann in **jede Sprache übersetzen, die Ihr LLM beherrscht** — die obige Tabelle listet lediglich Sprachen mit integrierten Register-Voreinstellungen auf. Um eine nicht aufgeführte Sprache hinzuzufügen, fügen Sie deren BCP-47-Code in Ihre Konfiguration ein:
+rosetta kann in **jede Sprache übersetzen, die Ihr LLM kennt** — die obige Tabelle listet lediglich Sprachen mit integrierten Register-Voreinstellungen auf. Um eine nicht aufgeführte Sprache hinzuzufügen, fügen Sie deren BCP-47-Code in Ihre Konfiguration ein:
 
 ```json
 {
@@ -152,24 +155,61 @@ rosetta kann in **jede Sprache übersetzen, die Ihr LLM beherrscht** — die obi
 }
 ```
 
-Das LLM übersetzt unter Verwendung seines Trainingswissens über die Sprache. Durch das Festlegen eines `register` erhalten Sie die Kontrolle über Tonfall, Höflichkeitsform und orthographische Konventionen. Weitere Einzelheiten finden Sie unter [Konfiguration](/docs/getting-started/configuration).
+Das LLM übersetzt unter Verwendung seines Trainingswissens über die Sprache. Durch das Festlegen eines `register` erhalten Sie die Kontrolle über Tonfall, Formalität und orthografische Konventionen. Weitere Details finden Sie unter [Konfiguration](/docs/getting-started/configuration).
 
 ---
 
-## Sprachkarten
+## Language Cards
 
-Jede integrierte Sprache verfügt über eine **Sprachkarte** (Language Card) — eine JSON-Datei in `lib/data/language-cards/`, die Folgendes enthält:
+Jede integrierte Sprache verfügt über eine **Language Card** — eine strukturierte JSON-Konfiguration, die aus Leistungsgründen in zwei Ebenen unterteilt ist:
+
+### Zwei-Ebenen-Architektur
+
+| Ebene | Verzeichnis | Geladen | Zweck |
+|------|-----------|--------|--------|
+| **Laufzeit (Runtime)** | `lib/data/language-cards/` | Sofort (eager) bei `import` | Übersetzungs-Engine: Register, Formalität, Regeln, Methodenunterstützung |
+| **Referenz** | `lib/data/language-reference/` | Verzögert (lazy) bei Bedarf | Entwicklerdokumentation: linguistische Herausforderungen, enzyklopädische Daten, NLP-Ressourcen |
+
+Die Laufzeitebene bleibt klein (~2 KB/Karte), damit beim Importieren von rosetta keine Megabytes an Dokumentationsdaten geladen werden. Die Referenzebene ist über `getLanguageReference(code)` für Tools, die Website und die Evaluierungsumgebung verfügbar.
+
+### Felder der Laufzeit-Karte
 
 | Feld | Inhalt |
 |-------|------------------|
-| **Höflichkeitssystem** | T-V-Distinktion, Sprachebenen, Keigo, Partikel usw. |
-| **Register-Voreinstellungen** | Benannte Voreinstellungen, die spezifisch für den Charakter der Sprache sind |
+| **`nativeName`** | Endonym — die Eigenbezeichnung der Sprache in ihrer eigenen Schrift (z. B. ქართული, Runasimi) |
+| **Höflichkeitssystem (Formality system)** | T-V-Distinktion, Sprachebenen, Keigo, Partikel usw. |
+| **Register-Voreinstellungen** | Benannte LLM-Prompt-Voreinstellungen, die spezifisch für den Charakter der Sprache sind |
 | **Methodenunterstützung** | Welche Übersetzungs-APIs diese Sprache unterstützen |
-| **Leitfaden zum Geschlecht** | Grammatikalische Geschlechterregeln und Tipps zum inklusiven Schreiben |
+| **Leitfaden zum Geschlecht (Gender guidance)** | Grammatikalische Geschlechterregeln und Tipps für inklusives Schreiben |
 | **Schrift/Richtung** | ISO-15924-Schriftcode und RTL/LTR |
+| **Regeln** | Typografie (Anführungszeichen, Abstände), Groß-/Kleinschreibung, Pluralkategorien |
 | **Evaluierungsdatensätze** | Welche Benchmarks diese Sprache abdecken |
+| **`glottocode`** | Kanonischer Glottolog-Identifikator für Querverweise |
+| **`humanReviewed`** | Ob die Karte von einem Muttersprachler überprüft wurde |
 
-### Verwendung von Voreinstellungsschlüsseln
+### Felder der Referenz-Karte
+
+| Feld | Inhalt |
+|-------|------------------|
+| **Linguistische Herausforderungen** | MT-spezifische Fallstricke (z. B. Evidentialität, tonale Diakritika, Agglutination) |
+| **Enzyklopädisch** | Sprachfamilie, Klassifikation, Sprecherzahl, Regionen |
+| **Ressourcen** | NLP-Tools, parallele Korpora, vortrainierte Modelle |
+
+### Eine neue Language Card generieren (Scaffolding)
+
+Verwenden Sie den Generator, um das Grundgerüst beider Ebenen aus maßgeblichen Datenquellen (IANA, CLDR, Glottolog) zu erstellen:
+
+```bash
+# Preview what would be generated
+node scripts/generate-language-card.mjs sw --dry-run
+
+# Generate both runtime + reference cards
+node scripts/generate-language-card.mjs sw
+```
+
+Der Generator füllt Metadaten (Codes, Schrift, Richtung, Plurale, Anführungszeichen, Methodenunterstützung, Sprachfamilie) automatisch aus und markiert Felder für linguistische Beurteilungen als TODO für die menschliche Kuratierung.
+
+### Verwendung von Voreinstellungsschlüsseln (Preset Keys)
 
 Anstatt den vollständigen Registertext zu schreiben, können Sie den Namen eines Voreinstellungsschlüssels verwenden:
 
@@ -196,7 +236,7 @@ Rosetta löst den Schlüssel in den vollständigen Register-Prompt auf. Führen 
 | Thai | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
 | Spanisch | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
 
-Unter [Eine Sprachkarte beisteuern](https://github.com/nicholasgriffintn/i18n-rosetta/blob/main/docs/planning/LANGUAGE_CARD_SPEC.md) erfahren Sie, wie Sie Voreinstellungen hinzufügen oder verbessern können.
+Siehe [Eine Language Card beisteuern](https://github.com/gamedaysuits/i18n-rosetta) für die vollständige Spezifikation, einschließlich Feldvalidierung und PR-Checkliste.
 
 ---
 
@@ -204,6 +244,6 @@ Unter [Eine Sprachkarte beisteuern](https://github.com/nicholasgriffintn/i18n-ro
 
 - [Konfiguration](/docs/getting-started/configuration) — vollständige Konfigurationsreferenz einschließlich Spracheinrichtung
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede Methode funktioniert
-- [Schriftkonverter](/docs/concepts/script-converters) — deterministische Schriftkonvertierungspipeline
-- [Conlangs, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) — PUA-Schriftarten, Unicode, Hinzufügen von Conlangs
+- [Schriftkonverter](/docs/concepts/script-converters) — deterministische Schriftkonvertierungs-Pipeline
+- [Conlangs, Schriften & Orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-Schriftarten, Unicode, Hinzufügen von Conlangs
 - [Eine ressourcenarme Sprache unterstützen](https://mtevalarena.org/docs/community/low-resource-languages) — Entwicklung von Methoden für unterversorgte Sprachen

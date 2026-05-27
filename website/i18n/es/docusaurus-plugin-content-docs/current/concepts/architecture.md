@@ -4,7 +4,7 @@ title: "Arquitectura"
 ---
 # Arquitectura
 
-El ecosistema de traducción de Rosetta consta de tres herramientas independientes que trabajan juntas a través de contratos bien definidos. Ninguna de ellas depende de las otras en el momento de la compilación. Se comunican a través de un **formato de plugin de método** compartido y un **contrato de API REST**.
+El ecosistema de traducción de Rosetta consiste en tres herramientas independientes que trabajan juntas a través de contratos bien definidos. Ninguna de ellas depende de las otras en el momento de compilación. Se comunican a través de un **formato de plugin de método** compartido y un **contrato de API REST**.
 
 ## Las tres piezas
 
@@ -26,7 +26,7 @@ graph TB
 
 ### i18n-rosetta (este proyecto)
 
-La herramienta de código abierto para desarrolladores. Traduce archivos de configuración regional utilizando métodos conectables. Cero dependencias, configuración opcional, funciona de forma inmediata.
+La herramienta de código abierto para desarrolladores. Traduce archivos de localización utilizando métodos conectables (pluggable). Cero dependencias, configuración opcional, funciona de inmediato.
 
 **Métodos integrados:**
 - `llm` → OpenRouter / cualquier LLM (más de 200 modelos)
@@ -38,11 +38,11 @@ La herramienta de código abierto para desarrolladores. Traduce archivos de conf
 - `deepl` → API de DeepL con soporte para glosarios
 - `microsoft-translator` → Azure Cognitive Services Translator
 - `libretranslate` → LibreTranslate autoalojado (AGPL, gratuito)
-- `api` → Conexión ligera a cualquier endpoint REST remoto
+- `api` → Conducto ligero (thin pipe) a cualquier endpoint REST remoto
 
 ### Eval Harness (proyecto complementario)
 
-Una herramienta de investigación para desarrollar, probar y evaluar métodos de traducción. Cuando un método alcanza una calidad aceptable, el harness exporta un **plugin de método**: un manifiesto `method.json` y archivos opcionales de datos de entrenamiento.
+Una herramienta de investigación para desarrollar, probar y evaluar (benchmarking) métodos de traducción. Cuando un método alcanza una calidad aceptable, el harness exporta un **plugin de método**: un manifiesto `method.json` y archivos opcionales de datos de entrenamiento.
 
 El harness nunca se ejecuta dentro de rosetta. Es una herramienta separada que produce resultados estáticos (archivos JSON). Rosetta simplemente lee esos archivos.
 
@@ -50,7 +50,7 @@ El harness nunca se ejecuta dentro de rosetta. Es una herramienta separada que p
 
 ### Rosetta Translate (planificado)
 
-Un servicio de API de uso medido que aloja métodos de traducción propietarios en el lado del servidor: los prompts, los datos de entrenamiento y los pipelines lingüísticos nunca salen del servidor.
+Un servicio de API de uso medido que aloja métodos de traducción patentados en el lado del servidor: los prompts, los datos de entrenamiento y los pipelines lingüísticos nunca abandonan el servidor.
 
 ## Cómo se conectan
 
@@ -77,14 +77,14 @@ flowchart LR
     E --> F["Returns translations"]
 ```
 
-El `APIMethod` de Rosetta es un **conducto simple**. Envía claves y recibe traducciones. Contiene cero lógica de traducción y cero contenido propietario.
+El `APIMethod` de Rosetta es un **conducto pasivo** (dumb pipe). Envía claves y recibe traducciones. No contiene ninguna lógica de traducción ni contenido patentado.
 
 ## Qué sabe cada pieza sobre las demás
 
 | Herramienta | ¿Conoce a rosetta? | ¿Conoce a Rosetta Translate? | ¿Conoce al harness? |
 |------|---------------------|-------------------------------|---------------------|
 | **i18n-rosetta** | *(es rosetta)* | Sí — el método `api` lo llama | No — solo lee las exportaciones de plugins |
-| **Rosetta Translate** | Sí — atiende sus solicitudes | *(es Rosetta Translate)* | No — recibe métodos implementados |
+| **Rosetta Translate** | Sí — atiende sus solicitudes | *(es Rosetta Translate)* | No — recibe los métodos implementados |
 | **Eval Harness** | Sí — exporta el formato de plugin | No — los métodos se implementan por separado | *(es el harness)* |
 
 ## Escenarios de usuario
@@ -114,7 +114,7 @@ rosetta plugin install ./french-formal-v1/
 rosetta sync
 ```
 
-El plugin tiene `type: "llm-coached"` → rosetta utiliza la propia clave de OpenRouter del usuario. Los datos de entrenamiento son locales (sin llamada al servidor).
+El plugin tiene `type: "llm-coached"` → rosetta utiliza la propia clave de OpenRouter del usuario. Los datos de entrenamiento son locales (sin llamadas al servidor).
 
 ### Escenario 4: Entrenamiento DIY (sin plugin, sin harness)
 
@@ -128,11 +128,32 @@ El plugin tiene `type: "llm-coached"` → rosetta utiliza la propia clave de Ope
 
 El usuario mantiene sus propias reglas gramaticales y diccionario en `.rosetta/coaching/fr.json`.
 
+## Language Cards
+
+Cada idioma en rosetta se configura a través de una **Language Card** (tarjeta de idioma): un archivo JSON que contiene ajustes preestablecidos de registro, reglas de formalidad, indicadores de soporte de métodos y convenciones tipográficas. Las Language Cards son la configuración por idioma que impulsa la traducción guiada por el registro.
+
+```mermaid
+graph LR
+    subgraph Cards["Language Cards (lib/data/)"]
+        RT["Runtime Tier<br/>language-cards/*.json<br/>~2 KB each"]
+        RF["Reference Tier<br/>language-reference/*.json<br/>~3 KB each"]
+    end
+    RT -->|"Eager load at import"| R["i18n-rosetta<br/>translate()"]
+    RF -->|"Lazy load on demand"| W["Website / Harness<br/>getLanguageReference()"]
+```
+
+Las tarjetas se dividen en dos niveles para un mejor rendimiento a escala (con el objetivo de abarcar más de 700 idiomas):
+
+- **Nivel de tiempo de ejecución (Runtime tier)** (`language-cards/`): Se carga de forma anticipada (eagerly); contiene los campos que necesita el motor de traducción (registros, formalidad, soporte de métodos, reglas tipográficas).
+- **Nivel de referencia (Reference tier)** (`language-reference/`): Se carga de forma diferida (lazily); contiene documentación para desarrolladores (desafíos lingüísticos, familia de idiomas, recursos de PNL).
+
+Ambos niveles se generan a partir de fuentes autorizadas (IANA, CLDR, Glottolog) utilizando `scripts/generate-language-card.mjs`, y luego son curados por humanos para garantizar la precisión lingüística.
+
 ## Principios de diseño
 
 1. **Sin dependencias circulares.** Los puentes son unidireccionales.
 2. **Rosetta es el núcleo ligero.** Cero dependencias, configuración opcional. Los plugins y la API son aditivos.
-3. **La protección de la propiedad intelectual es arquitectónica.** Las técnicas propietarias se mantienen en el lado del servidor. El paquete npm no incluye nada propietario.
+3. **La protección de la propiedad intelectual es arquitectónica.** Las técnicas patentadas permanecen en el lado del servidor. El paquete npm no incluye nada patentado.
 4. **El formato del plugin es el contrato.** Todo fluye a través de `method.json`.
 5. **Cada herramienta tiene un solo trabajo.** Harness → desarrollar métodos. Rosetta Translate → alojar métodos. Rosetta → traducir archivos.
 
@@ -143,5 +164,5 @@ El usuario mantiene sus propias reglas gramaticales y diccionario en `.rosetta/c
 - [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método integrado
 - [Especificación del plugin](/docs/reference/plugin-spec) — el formato del manifiesto method.json
 - [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — la herramienta de investigación complementaria
-- [Servir un método a través de la API](/docs/guides/serving-a-method) — alojamiento de pipelines de traducción personalizados
+- [Servir un método a través de API](/docs/guides/serving-a-method) — alojamiento de pipelines de traducción personalizados
 - [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — el caso de uso que impulsó esta arquitectura

@@ -26,5 +26,17 @@
   "sidebar.docsSidebar.category.Evaluation": {
     "message": "評価",
     "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Use Cases": {
+    "message": "ユースケース",
+    "description": "The label for category 'Use Cases' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Core Concepts": {
+    "message": "基本概念",
+    "description": "The label for category 'Core Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.For MT Researchers": {
+    "message": "MT研究者向け",
+    "description": "The label for category 'For MT Researchers' in sidebar 'docsSidebar'"
   }
 }

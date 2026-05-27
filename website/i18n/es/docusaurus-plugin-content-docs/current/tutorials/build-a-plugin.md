@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
 title: "Crear un plugin de traducción"
-description: "Tutorial de principio a fin: desarrollar datos de entrenamiento, medir el rendimiento con el eval harness, exportar un plugin y desplegarlo con rosetta."
+description: "Tutorial de principio a fin: desarrollar datos de entrenamiento, realizar un benchmark con el eval harness, exportar un plugin y desplegarlo con rosetta."
 ---
-# Tutorial: Construir un plugin de traducción
+# Tutorial: Crear un plugin de traducción
 
-Construya un método de traducción personalizado desde cero, evalúe su rendimiento e impleméntelo como un plugin de rosetta. Este es el flujo de trabajo completo para agregar un nuevo par de idiomas que ninguna API estándar admite.
+Cree un método de traducción personalizado desde cero, evalúe su rendimiento y despliéguelo como un plugin de rosetta. Este es el flujo de trabajo completo para agregar un nuevo par de idiomas que ninguna API comercial soporta.
 
 **Qué construirá:** Un plugin de traducción guiada para francés formal con terminología obligatoria, reglas gramaticales y puntuaciones de benchmark.
 
@@ -26,7 +26,7 @@ Usted está traduciendo un dashboard de SaaS al francés. El método predetermin
 - El tono alterna entre las formas `tu` y `vous`
 - Los términos técnicos se anglican de manera inconsistente
 
-Usted necesita **aplicación estricta de terminología** y **control de registro** que el prompt genérico del LLM no proporciona.
+Usted necesita **cumplimiento de terminología** y **control de registro** que el prompt genérico del LLM no proporciona.
 
 ## Paso 2: Crear datos de guía
 
@@ -61,9 +61,9 @@ mkdir -p .rosetta/coaching
 ```
 
 **Qué hace cada campo:**
-- **`grammar_rules`** — Se inyecta en el system prompt del LLM como restricciones explícitas
+- **`grammar_rules`** — Se inyecta en el prompt del sistema del LLM como restricciones explícitas
 - **`dictionary`** — Se compara con las claves de origen; cuando aparece un término del diccionario, se inyecta como "terminología requerida" en el prompt
-- **`style_notes`** — Se adjunta al system prompt como guía de estilo general
+- **`style_notes`** — Se añade al prompt del sistema como guía de estilo general
 
 ## Paso 3: Configurar el par
 
@@ -95,12 +95,12 @@ Indíquele a rosetta que use `llm-coached` para el francés:
 npx i18n-rosetta sync --dry
 ```
 
-Revise la salida de la ejecución de prueba (dry-run). Verifique que:
+Revise la salida del dry-run. Verifique que:
 - ✅ Los términos del diccionario se usen de manera consistente ("tableau de bord", no "panneau de contrôle")
 - ✅ La forma `vous` se use en todo momento
 - ✅ Los términos técnicos coincidan con su diccionario
 
-Luego, ejecute la sincronización real:
+Luego ejecute la sincronización real:
 
 ```bash
 npx i18n-rosetta sync
@@ -108,7 +108,7 @@ npx i18n-rosetta sync
 
 ## Paso 5: Medir el rendimiento con el Eval Harness (Opcional)
 
-Si desea puntuaciones de calidad (y las deseará, porque los plugins incluyen datos de benchmark), use el eval harness complementario.
+Si desea puntuaciones de calidad —y las desea, porque los plugins se envían con datos de benchmark— use el eval harness complementario.
 
 ### Instalar el Harness
 
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 ### Crear un corpus de referencia
 
-Cree un archivo con cadenas de origen y traducciones correctas comprobadas:
+Cree un archivo con cadenas de origen y traducciones que se sabe que son correctas:
 
 ```json title="corpus/french-formal.json"
 [
@@ -154,9 +154,9 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-El harness genera los siguientes resultados:
+El harness genera:
 - **chrF++** — Puntuación F a nivel de caracteres (0–100). Por encima de 70 es un resultado sólido.
-- **BLEU** — Superposición de N-gramas (0–100). Por encima de 40 es sólido para una traducción guiada.
+- **BLEU** — Superposición de N-gramas (0–100). Por encima de 40 es un resultado sólido para la traducción guiada.
 - **Tasa de coincidencia exacta** — Proporción de traducciones que coinciden exactamente con la referencia.
 
 ### Exportar el plugin
@@ -237,7 +237,7 @@ Ahora usted tiene:
 1. **Datos de guía** — Reglas gramaticales y terminología que garantizan la consistencia
 2. **Puntuaciones de benchmark** — Calidad cuantificada que se incluye con el plugin
 3. **Un plugin portátil** — `method.json` + datos de guía, instalable en cualquier máquina
-4. **Implementación en producción** — Integrado en su pipeline de sincronización
+4. **Despliegue en producción** — Integrado en su pipeline de sincronización
 
 ## Próximos pasos
 

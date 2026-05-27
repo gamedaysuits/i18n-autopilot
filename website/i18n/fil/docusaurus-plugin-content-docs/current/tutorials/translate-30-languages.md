@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: "Mag-translate ng 30 Languages"
-description: "Cookbook: i-scale ang isang project mula 3 languages hanggang 30 gamit ang per-pair method mixing, batching, at CI integration."
+description: "Cookbook: I-scale ang project mula 3 languages hanggang 30 gamit ang per-pair method mixing, batching, at CI integration."
 ---
 # Cookbook: Mag-translate ng 30 Languages
 
-I-scale ang isang project mula sa ilang locales papuntang global coverage. Ang cookbook na ito ay mag-guide sa inyo sa method selection, cost optimization, at CI integration para sa isang totoong multi-language deployment.
+I-scale ang isang project mula sa ilang locales papunta sa global coverage. Ipapakita ng cookbook na ito ang method selection, cost optimization, at CI integration para sa isang totoong multi-language deployment.
 
 **Scenario:** Mayroon po kayong SaaS app na may `en`, `fr`, `es`. Kailangan ninyong mag-add ng 27 pang languages across three tiers ng quality requirements.
 
@@ -13,11 +13,11 @@ I-scale ang isang project mula sa ilang locales papuntang global coverage. Ang c
 
 ## Step 1: I-categorize ang Inyong Languages
 
-Hindi lahat ng 30 languages ay nangangailangan ng parehong approach. I-group po natin sila by available method quality:
+Hindi lahat ng 30 languages ay kailangan ng parehong approach. I-group po sila base sa available method quality:
 
 | Tier | Languages | Method | Bakit |
 |------|-----------|--------|-----|
-| **Tier 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | High-value markets, nuanced ang grammar |
+| **Tier 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | High-value markets, nuanced na grammar |
 | **Tier 2 — Standard** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | High-volume, well-supported ng Google |
 | **Tier 3 — Coached** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Low-resource, kailangan ng terminology enforcement |
 
@@ -72,9 +72,9 @@ Lagi pong mag-preview bago mag-translate ng 30 languages:
 npx i18n-rosetta sync --dry
 ```
 
-I-review ang output. Ipapakita nito ang:
-- Kung aling pairs ang gumagamit ng aling method
-- Ilang keys ang bago/nagbago per locale
+I-review ang output. Ipapakita nito kung:
+- Aling mga pairs ang gumagamit ng aling method
+- Ilang keys ang bago/nabago per locale
 - Estimated API calls per tier
 
 ## Step 5: I-run ang Sync
@@ -83,22 +83,22 @@ I-review ang output. Ipapakita nito ang:
 npx i18n-rosetta sync
 ```
 
-Ipo-process ng Rosetta ang bawat pair nang independently. Magiging mabilis ang Tier 2 pairs na gumagamit ng Google Translate. Mas mabagal pero higher quality ang Tier 1 LLM pairs. Ang Tier 3 coached pairs naman ay gagamit ng coaching data ng plugin.
+Ipo-process ng Rosetta ang bawat pair nang independently. Magiging mabilis ang Tier 2 pairs na gumagamit ng Google Translate. Mas mabagal ang Tier 1 LLM pairs pero mas higher quality. Ang Tier 3 coached pairs ay gagamit ng coaching data ng plugin.
 
 ### Incremental Updates
 
-Pagkatapos ng initial sync, ang mga susunod na runs ay magta-translate lang ng **changed o new** keys:
+Pagkatapos ng initial sync, ang mga susunod na runs ay magta-translate na lang ng **changed or new** keys:
 
 ```bash
 # Only keys that changed since last sync
 npx i18n-rosetta sync
 ```
 
-Tinu-track ng lock file (`.i18n-rosetta.lock`) kung ano na ang na-translate, kaya hindi niyo na ire-retranslate ang stable content.
+Tinatrack ng lock file (`.i18n-rosetta.lock`) kung ano na ang na-translate, kaya hindi niyo na ire-retranslate ang stable content.
 
 ## Step 6: I-audit ang Quality
 
-I-check ang status ng lahat ng language pairs:
+I-check po ang status ng lahat ng language pairs:
 
 ```bash
 npx i18n-rosetta status
@@ -108,7 +108,7 @@ Mag-o-output ito ng table na nagpapakita ng method, model, at quality tier ng ba
 
 ## Step 7: CI Integration
 
-I-add ito sa inyong GitHub Actions workflow para laging current ang translations sa bawat push:
+I-add po ito sa inyong GitHub Actions workflow para laging current ang translations sa bawat push:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync Translations
@@ -156,11 +156,11 @@ Para sa isang project na may 500 source keys across 30 languages:
 
 Ang incremental syncs (5–20 changed keys) ay nagkakahalaga lang ng fraction ng isang full sync.
 
-## See Also
+## Tingnan Din
 
-- [Translation Methods](/docs/guides/translation-methods) — Kung paano gumagana ang bawat translation method at kailan ito gagamitin
+- [Translation Methods](/docs/guides/translation-methods) — Paano gumagana ang bawat translation method at kailan ito gagamitin
 - [Plugin Specification](/docs/reference/plugin-spec) — Gumawa ng coaching data para sa alinman sa inyong Tier 3 languages
 - [CI/CD Guide](/docs/guides/ci-cd) — Advanced CI patterns kasama ang PR preview builds
-- [Quality Gate](/docs/concepts/quality-gate) — Kung paano vina-validate ng Rosetta ang bawat translation bago ito isulat
+- [Quality Gate](/docs/concepts/quality-gate) — Paano vina-validate ng Rosetta ang bawat translation bago ito isulat
 - [Supported Languages](/docs/reference/supported-languages) — Full list ng language codes at method compatibility
 - [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — Mag-add ng coaching data para sa mga languages na walang broad MT coverage

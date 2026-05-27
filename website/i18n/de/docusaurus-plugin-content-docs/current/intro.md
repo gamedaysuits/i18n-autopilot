@@ -5,13 +5,13 @@ title: "Einführung"
 ---
 # i18n-rosetta
 
-Ein vollständig anpassbares Internationalisierungs-Framework. Ein Befehl übersetzt Ihre Lokalisierungsdateien. Eine Konfiguration steuert jede Methode, jedes Modell und jedes Sprachpaar. Und falls die integrierten Methoden nicht ausreichen — entwickeln Sie Ihre eigene, beweisen Sie, dass sie funktioniert, und stellen Sie sie bereit.
+Ein vollständig anpassbares Internationalisierungs-Framework. Ein Befehl übersetzt Ihre Lokalisierungsdateien. Eine Konfiguration steuert jede Methode, jedes Modell und jedes Sprachpaar. Und wenn die integrierten Methoden nicht ausreichen — entwickeln Sie Ihre eigenen, beweisen Sie deren Funktion und stellen Sie sie bereit.
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-rosetta erkennt Ihre Lokalisierungsdateien, Formate und Zielsprachen automatisch. Es übersetzt, was fehlt, überspringt, was erledigt ist, validiert jedes Ergebnis und schreibt eine saubere Ausgabe. Das ist erst der Anfang.
+rosetta erkennt automatisch Ihre Lokalisierungsdateien, das Format und die Zielsprachen. Es übersetzt, was fehlt, überspringt, was bereits erledigt ist, validiert jedes Ergebnis und schreibt eine saubere Ausgabe. Das ist erst der Anfang.
 
 ---
 
@@ -20,9 +20,10 @@ rosetta erkennt Ihre Lokalisierungsdateien, Formate und Zielsprachen automatisch
 Sie könnten eine schnelle Schleife schreiben, die für jeden Schlüssel Google Translate aufruft. Die meisten Entwickler tun das — es erfordert etwa 30 Zeilen. Hier scheitert dieser Ansatz:
 
 - **Keine Änderungserkennung.** Aktualisieren Sie eine englische Zeichenfolge — die Übersetzung bleibt für immer veraltet. rosetta verfolgt jeden Quellwert mit SHA-256-Hashes und übersetzt nur das neu, was sich geändert hat.
-- **Keine Stapelverarbeitung.** Ein API-Aufruf pro Schlüssel bedeutet 200 Schlüssel = 200 Roundtrips. rosetta bündelt Anfragen intelligent (konfigurierbar, Standard 30 Schlüssel/Stapel für LLM, 128 für Google).
-- **Keine Qualitätskontrolle.** Maschinelle Übersetzung halluziniert, gibt die Quelle unverändert zurück oder gibt im falschen Schriftsystem aus. rosetta validiert jede Übersetzung, bevor sie geschrieben wird — falsche Schriftsysteme, Längeninflation und unveränderte Quelltexte werden erkannt und abgelehnt.
-- **Keine Formaterkennung.** Fest auf JSON programmiert? rosetta verarbeitet JSON, TOML, YAML und Hugo Markdown (Frontmatter + Textkörper) mit automatischer Erkennung.
+- **Keine Stapelverarbeitung.** Ein API-Aufruf pro Schlüssel bedeutet 200 Schlüssel = 200 Netzwerkanfragen. rosetta bündelt intelligent (konfigurierbar, Standard 30 Schlüssel/Stapel für LLM, 128 für Google).
+- **Kein Zwischenspeicher.** Jede Synchronisierung übersetzt alles neu. Das Translation Memory von rosetta speichert Übersetzungen nach Quelltext + Gebietsschema + Methode zwischen — ein erneuter Synchronisierungslauf nach der Änderung eines Schlüssels übersetzt nur diesen einen Schlüssel, nicht die gesamte Datei.
+- **Keine Qualitätskontrolle.** Maschinelle Übersetzung halluziniert, gibt den Quelltext unverändert zurück oder gibt im falschen Schriftsystem aus. rosetta validiert jede Übersetzung, bevor sie geschrieben wird — falsche Schriftsysteme, Längeninflation und Quelltext-Echos werden erkannt und abgelehnt.
+- **Keine Formaterkennung.** Fest im Code auf JSON verankert? rosetta verarbeitet JSON, TOML, YAML und Hugo Markdown (Frontmatter + Textkörper) mit automatischer Erkennung.
 - **Keine Steuerung der Methoden.** Jedes Sprachpaar erhält dieselbe Methode. rosetta ermöglicht es Ihnen, Google Translate für Französisch, ein LLM für Japanisch und eine benutzerdefinierte, von der Community gehostete Pipeline für Cree zu verwenden — in derselben Konfigurationsdatei.
 
 rosetta ist die produktionsreife Version dieses Skripts.
@@ -33,7 +34,7 @@ rosetta ist die produktionsreife Version dieses Skripts.
 
 ### Jede Methode ist ein Plugin
 
-Die Übersetzungsmethode ist **pro Sprachpaar konfigurierbar**. Kombinieren Sie Google Translate, LLMs, angeleitete Prompts und benutzerdefinierte APIs im selben Projekt:
+Die Übersetzungsmethode ist **pro Sprachpaar konfigurierbar**. Mischen Sie Google Translate, LLMs, angeleitete Prompts und benutzerdefinierte APIs im selben Projekt:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -50,11 +51,11 @@ Französisch erhält Google Translate (schnell, günstig). Japanisch erhält ein
 
 ### Beweisen Sie es
 
-Glauben Sie, Ihre Methode kann von Englisch nach Spanisch übersetzen? Von Türkisch nach Aserbaidschanisch? Von Englisch nach Cree?
+Glauben Sie, dass Ihre Methode Englisch ins Spanische übersetzen kann? Türkisch ins Aserbaidschanische? Englisch ins Cree?
 
-**Beweisen Sie es.** Die zugehörige [Evaluierungsumgebung](https://mtevalarena.org/docs/specifications/harness) unterzieht jede Übersetzungsmethode einem Benchmark-Test mit reproduzierbarer, eindeutig identifizierbarer Bewertung. Die [Rangliste](/leaderboard) erfasst jede Einreichung.
+**Beweisen Sie es.** Die zugehörige [Evaluierungsumgebung](https://mtevalarena.org/docs/specifications/harness) unterzieht jede Übersetzungsmethode einem Benchmark-Test mit reproduzierbarer, durch Fingerabdrücke gesicherter Bewertung. Die [Rangliste](/leaderboard) erfasst jede Einreichung.
 
-Die Evaluierungsumgebung und die Produktions-CLI teilen sich dieselbe Plugin-Schnittstelle. Eine Methode, die in der Evaluierung gut abschneidet, kann in der Produktion verwendet werden — sofern die Community, deren Sprache sie dient, ihre Zustimmung gibt. Für indigene und ressourcenarme Sprachen ist diese Zustimmung von Bedeutung. Siehe [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
+Die Evaluierungsumgebung und die Produktions-CLI teilen sich dieselbe Plugin-Schnittstelle. Eine Methode, die in der Evaluierungsumgebung gut abschneidet, kann in der Produktion verwendet werden — sofern die Gemeinschaft, deren Sprache sie dient, ihre Zustimmung gibt. Für indigene und ressourcenarme Sprachen ist diese Zustimmung von Bedeutung. Siehe [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty).
 
 ```bash
 # Benchmark your method (in the eval harness repo)
@@ -65,7 +66,7 @@ python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 npx i18n-rosetta sync
 ```
 
-Dasselbe Plugin. Integrieren und testen.
+Dasselbe Plugin. Einbinden und testen.
 
 ### Der komplette Werkzeugkasten
 
@@ -75,42 +76,45 @@ rosetta ist nicht nur `sync`. Es ist eine vollständige i18n-Pipeline:
 |---------|-------------|
 | `sync` | Übersetzt fehlende, veraltete und Fallback-Schlüssel |
 | `watch` | Automatische Synchronisierung, wenn sich Ihre Quelldatei ändert |
-| `lint` | Durchsucht den Quellcode nach fest codierten Zeichenfolgen |
-| `wrap` | Umschließt fest codierte Zeichenfolgen automatisch mit `t()`-Aufrufen |
+| `lint` | Durchsucht den Quellcode nach fest programmierten Zeichenfolgen |
+| `wrap` | Umschließt fest programmierte Zeichenfolgen automatisch mit `t()`-Aufrufen |
 | `audit` | Listet alle unübersetzten `[EN]`-Fallback-Werte auf |
-| `integrity` | Erkennt beschädigte Platzhalter und Kodierungsprobleme |
-| `seo` | Generiert hreflang-Tags, Sitemaps und JSON-LD |
-| `status` | Zeigt Sprachpaar-Konfigurationen, Plugins und Benchmark-Ergebnisse an |
+| `integrity` | Erkennt beschädigte Platzhalter, Kodierungsprobleme und die Vollständigkeit von ICU-Pluralformen |
+| `seo` | Generiert hreflang-Tags, Sitemaps und JSON-LD-Schemata |
+| `status` | Zeigt die Konfiguration der Sprachpaare, Plugins und Benchmark-Ergebnisse an |
 | `provenance` | Überprüft die Lizenzierung der Übersetzungsressourcen |
 | `plugin` | Installiert, entfernt und listet Methoden-Plugins auf |
+| `fonts` | Lädt Web-Schriftarten für PUA-Schriftsystem-Konverter herunter |
+| `tm` | Verwaltet den Translation-Memory-Zwischenspeicher (Statistiken, Leeren, pro Gebietsschema) |
+| `xliff` | Exportiert/Importiert XLIFF 1.2 für die Überprüfung durch professionelle Übersetzer |
 
-Drei davon — `lint`, `sync`, `audit` — bilden eine CI-Pipeline, die fest codierte Zeichenfolgen abfängt, sie übersetzt und den Build fehlschlagen lässt, falls eine Lokalisierung unvollständig ist.
+Drei davon — `lint`, `sync`, `audit` — bilden eine CI-Pipeline, die fest programmierte Zeichenfolgen erfasst, diese übersetzt und den Build-Prozess abbricht, falls ein Gebietsschema unvollständig ist.
 
 ---
 
 ## Die Arena
 
-Die [Methoden-Rangliste](/leaderboard) ist die Anzeigetafel. Jede Einreichung wird per Fingerabdruck an einen Git-Commit gebunden, für einen bestimmten Datensatz versioniert und von derselben Evaluierungsumgebung bewertet. Jeder kann etwas einreichen.
+Die [Methoden-Rangliste](/leaderboard) ist die Anzeigetafel. Jede Einreichung wird mit einem Fingerabdruck an einen Git-Commit gebunden, für einen spezifischen Datensatz versioniert und von derselben Evaluierungsumgebung bewertet. Jeder kann etwas einreichen.
 
 **Was können Sie beweisen?** Die Evaluierungsumgebung akzeptiert JSON. Plugins akzeptieren JSON. Jede Methode, die JSON erzeugt, kann getestet werden:
 
 | Ansatz | Beispiel |
 |----------|---------|
-| **Angeleitetes LLM** | Injizieren von Grammatikregeln und Wörterbüchern in den Prompt eines Frontier-Modells |
-| **Feinabgestimmtes Modell** | Trainieren eines offenen Modells mit parallelen Texten — nur nicht mit den Evaluierungsdaten |
-| **FST-gesteuerte Pipeline** | LLM generiert → Finite-State-Transducer validiert die Morphologie → erneuter Versuch |
-| **Verkettete Modelle** | Modell A entwirft → Modell B führt Post-Editing durch → Modell C bewertet |
-| **Wörterbuch + LLM** | Erzwingen bekannter Begriffe aus einem Wörterbuch, das LLM übernimmt den Rest |
-| **Evolutionär** | Kandidaten generieren, bewerten, die besten mutieren, wiederholen |
-| **Partielle Übersetzung** | Eine Stichprobe manuell übersetzen, beweisen, dass Ihr LLM übereinstimmt, den Rest automatisch übersetzen |
+| **Angeleitetes LLM** | Injiziert Grammatikregeln und Wörterbücher in den Prompt eines Frontier-Modells |
+| **Feinabgestimmtes Modell** | Trainiert ein offenes Modell mit Paralleltexten — nur eben nicht mit den Evaluierungsdaten |
+| **FST-gesteuerte Pipeline** | LLM generiert → Endlicher Automat (FST) validiert die Morphologie → erneuter Versuch |
+| **Verkettete Modelle** | Modell A entwirft → Modell B übernimmt das Post-Editing → Modell C bewertet |
+| **Wörterbuch + LLM** | Erzwingt bekannte Begriffe aus einem Wörterbuch, überlässt dem LLM den Rest |
+| **Evolutionär** | Generiert Kandidaten, bewertet sie, mutiert die besten, wiederholt den Vorgang |
+| **Partielle Übersetzung** | Übersetzt eine Stichprobe von Hand, beweist die Übereinstimmung Ihres LLMs, übersetzt den Rest automatisch |
 
-Führen Sie Feinabstimmungen von Modellen durch. Setzen Sie evolutionäre Algorithmen ein. Testen Sie Antworten von Schülern in Sprachprüfungen. Erstellen Sie Nachschlagetabellen. Verketten Sie drei Modelle miteinander. Solange Ihre Methode JSON erzeugt, bewertet die Evaluierungsumgebung sie und das Framework führt sie aus.
+Stimmen Sie Modelle fein ab. Setzen Sie evolutionäre Algorithmen ein. Testen Sie Antworten von Studierenden in Sprachprüfungen. Erstellen Sie Nachschlagetabellen. Verketten Sie drei Modelle miteinander. Solange Ihre Methode JSON erzeugt, wird sie von der Evaluierungsumgebung bewertet und vom Framework ausgeführt.
 
 :::danger Die einzige Regel
-**Trainieren Sie nicht mit den Evaluierungsdaten.** Methoden, die dem Benchmark-Datensatz ausgesetzt waren, werden disqualifiziert. Führen Sie Feinabstimmungen mit beliebigen Daten durch. Nur nicht mit dem Testdatensatz.
+**Trainieren Sie nicht mit den Evaluierungsdaten.** Methoden, die dem Benchmark-Datensatz ausgesetzt waren, werden disqualifiziert. Führen Sie Feinabstimmungen durch, womit Sie möchten. Nur eben nicht mit dem Testdatensatz.
 :::
 
-Dies ist eine offene Einladung. Wenn Sie mit einer ressourcenarmen Sprache arbeiten — als Forscher, Community-Mitglied, Student oder einfach als jemand, dem das Thema am Herzen liegt — entwickeln Sie eine Methode, führen Sie die Evaluierungsumgebung aus und sichern Sie sich die höchste Punktzahl. Das Problem ist ungelöst. Die Infrastruktur ist vorhanden.
+Dies ist eine offene Einladung. Wenn Sie mit einer ressourcenarmen Sprache arbeiten — als Forscher, als Mitglied einer Gemeinschaft, als Student oder einfach als jemand, dem das Thema am Herzen liegt — entwickeln Sie eine Methode, führen Sie die Evaluierungsumgebung aus und sichern Sie sich die höchste Punktzahl. Das Problem ist ungelöst. Die Infrastruktur ist vorhanden.
 
 **[→ Zur Rangliste](/leaderboard)**
 
@@ -121,15 +125,17 @@ Dies ist eine offene Einladung. Wenn Sie mit einer ressourcenarmen Sprache arbei
 **Erste Schritte:**
 - [Installation](/docs/getting-started/installation) — Einrichtung in 2 Minuten
 - [Schnellstart](/docs/getting-started/quick-start) — Führen Sie Ihre erste Synchronisierung aus
-- [Unterstützte Sprachen](/docs/reference/supported-languages) — Was von Haus aus verfügbar ist
+- [Unterstützte Sprachen](/docs/reference/supported-languages) — Was standardmäßig verfügbar ist
 
-**Anpassen Ihrer Einrichtung:**
+**Anpassung Ihrer Einrichtung:**
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — Wählen Sie die richtige Methode pro Sprachpaar
+- [Translation Memory](/docs/concepts/translation-memory) — Wie Zwischenspeicherung Ihnen Geld spart
 - [Konfiguration](/docs/getting-started/configuration) — Vollständige Konfigurationsreferenz
 - [Mehrsprachige Hugo-Website](/docs/tutorials/hugo-multilingual-site) — Übersetzung von Markdown-Inhalten
 
 **Tiefer einsteigen:**
-- [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — OCAP-, CARE- und Māori-Prinzipien zur Datensouveränität
+- [Zusammenarbeit mit professionellen Übersetzern](/docs/guides/professional-translators) — XLIFF-Export/Import-Arbeitsablauf
+- [Datensouveränität](https://mtevalarena.org/docs/sovereignty/data-sovereignty) — OCAP-, CARE- und Māori-Datensouveränitätsprinzipien
 - [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — Die Herausforderung, mit der alles begann
 - [Kochbuch: FST-gesteuerte Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Aufbau einer Dekompositionspipeline
 - [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) — Wie die Evaluierungsumgebung und die Rangliste funktionieren

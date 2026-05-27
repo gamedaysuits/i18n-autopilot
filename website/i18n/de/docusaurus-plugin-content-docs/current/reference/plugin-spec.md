@@ -10,9 +10,9 @@ title: "Plugin-Spezifikation"
 
 ## Übersicht
 
-i18n-rosetta verwendet ein **Plugin-basiertes Methodensystem**. Jedes Sprachpaar kann eine andere Übersetzungsmethode verwenden (LLM, gecoacht, Skript-Konverter usw.). Methoden werden in `lib/translate.js` registriert und pro Paar über `lib/pairs.js` aufgelöst.
+i18n-rosetta verwendet ein **Plugin-basiertes Methodensystem**. Jedes Sprachpaar kann eine andere Übersetzungsmethode verwenden (LLM, Coached, Script-Converter usw.). Methoden werden in `lib/translate.js` registriert und pro Sprachpaar über `lib/pairs.js` aufgelöst.
 
-Die Aufgabe des Eval-Harness besteht darin, Übersetzungsmethoden zu **entwickeln, zu testen und zu exportieren**. Die Aufgabe von i18n-rosetta ist es, diese zu **verwenden und auszuführen**. Das Harness wird niemals innerhalb von rosetta ausgeführt.
+Die Aufgabe des Eval-Harness besteht darin, Übersetzungsmethoden zu **entwickeln, zu testen und zu exportieren**. Die Aufgabe von i18n-rosetta ist es, diese zu **konsumieren und auszuführen**. Das Harness läuft niemals innerhalb von rosetta.
 
 ### Datenfluss
 
@@ -25,7 +25,7 @@ flowchart LR
 
 ## Format des Methoden-Plugins
 
-Ein Methoden-Plugin ist eine einzelne JSON-Datei (`method.json`) mit optionalen Coaching-Datendateien.
+Ein Methoden-Plugin ist eine einzelne JSON-Datei (`method.json`) mit optionalen Dateien für Coaching-Daten.
 
 ### `method.json` — Erforderlich
 
@@ -74,15 +74,15 @@ Ein Methoden-Plugin ist eine einzelne JSON-Datei (`method.json`) mit optionalen 
 
 | Feld | Typ | Erforderlich | Beschreibung |
 |-------|------|----------|-------------|
-| `name` | string | ✅ | Eindeutige Methodenkennung (kebab-case) |
+| `name` | string | ✅ | Eindeutige Methodenkennung (Kebab-Case) |
 | `type` | string | ✅ | Rosetta-Methodentyp: `llm`, `llm-coached`, `api`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini` |
 | `version` | string | ✅ | Semver-Version (z. B. `1.0.0`) |
-| `locales` | string[] | ✅ | Auf welche Gebietsschemacodes (Locale-Codes) diese Methode abzielt (mindestens 1) |
-| `description` | string | — | Für Menschen lesbare Beschreibung |
+| `locales` | string[] | ✅ | Auf welche Gebietsschema-Codes (Locale-Codes) diese Methode abzielt (mindestens 1) |
+| `description` | string | — | Menschenlesbare Beschreibung |
 | `author` | string | — | Wer diese Methode entwickelt/getestet hat |
 | `config.model` | string | — | OpenRouter-Modellkennung |
 | `config.register` | string | — | Register/Tonfall der Zielsprache |
-| `config.batchSize` | number | — | Schlüssel pro API-Batch (1–200, Standard: 30) |
+| `config.batchSize` | number | — | Schlüssel pro API-Stapelverarbeitung (Batch) (1–200, Standard: 30) |
 | `config.temperature` | number | — | LLM-Temperatur (0.0–2.0, Standard: 0.3) |
 | `benchmarks` | object | — | Benchmark-Ergebnisse pro Gebietsschema |
 | `provenance` | object | — | Lizenzierung und Ressourcenabhängigkeiten |
@@ -93,38 +93,38 @@ Ein Methoden-Plugin ist eine einzelne JSON-Datei (`method.json`) mit optionalen 
 | Feld | Typ | Erforderlich | Beschreibung |
 |-------|------|----------|-------------|
 | `date` | string | ✅ | ISO 8601-Zeitstempel des Benchmark-Durchlaufs |
-| `corpus_size` | number | ✅ | Anzahl der ausgewerteten Einträge |
-| `exact_match_rate` | number | ✅ | 0.0–1.0, Anteil der exakten Übereinstimmungen |
-| `corpus_chrf` | number | — | chrF++-Wertung (0–100) |
-| `corpus_bleu` | number | — | BLEU-Wertung (0–100) |
-| `model` | string | ✅ | Während der Auswertung (Eval) verwendetes Modell |
-| `harness_version` | string | ✅ | Version des verwendeten Evaluation-Harness |
+| `corpus_size` | number | ✅ | Anzahl der evaluierten Einträge |
+| `exact_match_rate` | number | ✅ | 0.0–1.0, Anteil der exakten Übereinstimmungen (Exact Matches) |
+| `corpus_chrf` | number | — | chrF++-Wert (0–100) |
+| `corpus_bleu` | number | — | BLEU-Wert (0–100) |
+| `model` | string | ✅ | Verwendetes Modell während der Evaluierung |
+| `harness_version` | string | ✅ | Version des verwendeten Eval-Harness |
 
 :::info Welche Metriken werden angezeigt?
-Der Befehl `rosetta status` zeigt **chrF++** und die **Rate der exakten Übereinstimmungen** (exact match rate) aus dem Benchmark-Block an. `corpus_bleu` wird im Manifest akzeptiert, wird aber derzeit von keinem rosetta-Befehl angezeigt oder verwendet. Die [Methoden-Rangliste](/leaderboard) verfolgt chrF++, exakte Übereinstimmungen und die FST-Akzeptanzrate.
+Der Befehl `rosetta status` zeigt **chrF++** und die **Rate der exakten Übereinstimmungen** aus dem Benchmark-Block an. `corpus_bleu` wird im Manifest akzeptiert, wird aber derzeit von keinem rosetta-Befehl angezeigt oder verwendet. Die [Methoden-Rangliste](/leaderboard) erfasst chrF++, exakte Übereinstimmungen und die FST-Akzeptanzrate.
 :::
 
 ---
 
 ### Provenienz-Objekt
 
-Der Provenienz-Block kommuniziert den Lizenzstatus der im Plugin gebündelten Ressourcen.
+Der Provenienz-Block übermittelt den Lizenzstatus der im Plugin gebündelten Ressourcen.
 
 | Feld | Typ | Standard | Beschreibung |
 |-------|------|---------|-------------|
 | `resources` | object[] | `[]` | Liste der gebündelten Ressourcen mit `name`, `license` und `type` |
-| `commercialReady` | boolean | `false` | Ob das Plugin für den kommerziellen Vertrieb freigegeben ist |
-| `flags` | string[] | `["license-unclear"]` | Maschinenlesbare Status-Flags |
+| `commercialReady` | boolean | `false` | Gibt an, ob das Plugin für den kommerziellen Vertrieb freigegeben ist |
+| `flags` | string[] | `["license-unclear"]` | Maschinenlesbare Statuskennzeichen (Flags) |
 
-**Standardzustand** — exportierte Plugins werden mit `commercialReady: false` und `flags: ["license-unclear"]` ausgeliefert.
+**Standardzustand** — Exportierte Plugins werden mit `commercialReady: false` und `flags: ["license-unclear"]` ausgeliefert.
 
-**Freigegebener Zustand** — wenn die Lizenzierung überprüft wurde: Setzen Sie `commercialReady: true` und löschen Sie die Flags.
+**Freigegebener Zustand** — Wenn die Lizenzierung verifiziert wurde: Setzen Sie `commercialReady: true` und löschen Sie die Flags.
 
 ---
 
 ## Format der Coaching-Daten
 
-Wenn `type` auf `llm-coached` gesetzt ist, sollte das Plugin Coaching-Datendateien im Unterverzeichnis `coaching/` enthalten.
+Wenn `type` auf `llm-coached` gesetzt ist, sollte das Plugin Dateien mit Coaching-Daten im Unterverzeichnis `coaching/` enthalten.
 
 ### `coaching/<locale>.json`
 
@@ -146,7 +146,7 @@ Wenn `type` auf `llm-coached` gesetzt ist, sollte das Plugin Coaching-Datendatei
 | Feld | Typ | Erforderlich | Beschreibung |
 |-------|------|----------|-------------|
 | `grammar_rules` | string[] | — | Regeln, die in jeden LLM-Prompt für dieses Gebietsschema eingefügt werden |
-| `dictionary` | object | — | Zuordnung von Begriff → Übersetzung. Übereinstimmende Begriffe werden als erforderliche Terminologie eingefügt. |
+| `dictionary` | object | — | Begriff → Übersetzungszuordnung. Übereinstimmende Begriffe werden als erforderliche Terminologie eingefügt. |
 | `style_notes` | string | — | Freiform-Stilanweisungen, die an den Prompt angehängt werden |
 
 ---
@@ -196,8 +196,8 @@ Speichert unter `.rosetta/methods/french-formal-v1/`.
 }
 ```
 
-:::info Merge-Semantik
-Das Plugin definiert, *welche* Methode verwendet werden soll (`type`). Die Paar-Konfiguration stimmt ab, *wie* sie ausgeführt wird (`model`, `register`, `batchSize`). Wenn das Paar `model` festlegt, überschreibt dies den Standardwert des Plugins.
+:::info Zusammenführungssemantik
+Das Plugin definiert, *welche* Methode verwendet werden soll (`type`). Die Konfiguration des Sprachpaars stimmt ab, *wie* sie ausgeführt wird (`model`, `register`, `batchSize`). Wenn das Sprachpaar `model` festlegt, überschreibt dies den Standardwert des Plugins.
 :::
 
 ### Laufzeit
@@ -226,7 +226,7 @@ Referenzieren Sie das Schema in Ihrer `method.json` für die IDE-Autovervollstä
 
 ---
 
-## Was NICHT enthalten sein sollte
+## Was NICHT enthalten sein darf
 
 - ❌ Kein Python-Code oder Harness-Abhängigkeiten
 - ❌ Keine rohen Korpusdaten oder Ausführungsprotokolle
@@ -234,15 +234,15 @@ Referenzieren Sie das Schema in Ihrer `method.json` für die IDE-Autovervollstä
 - ❌ Keine Harness-Konfiguration
 - ❌ Keine internen Prompt-Vorlagen (diese befinden sich in den Methodenimplementierungen von rosetta)
 
-Das Plugin besteht **nur aus Daten**: Konfiguration, Coaching-Inhalten und Benchmark-Ergebnissen.
+Das Plugin besteht **nur aus Daten**: Konfiguration, Coaching-Inhalte und Benchmark-Ergebnisse.
 
 ---
 
 ## Siehe auch
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede integrierte Methode funktioniert
-- [Konfiguration](/docs/getting-started/configuration) — Konfiguration pro Paar und pro Sprache
-- [Bereitstellen einer Methode via API](/docs/guides/serving-a-method) — Hosting von Methoden als HTTP-Dienste
+- [Konfiguration](/docs/getting-started/configuration) — Konfiguration pro Sprachpaar und pro Sprache
+- [Bereitstellen einer Methode über API](/docs/guides/serving-a-method) — Hosting von Methoden als HTTP-Dienste
 - [Kochbuch: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — Erstellen und Paketieren einer Pipeline
-- [MT-Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — Benchmarking von Methoden für die Einreichung in die Rangliste
+- [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) — Benchmarking von Methoden für die Einreichung in die Rangliste
 - [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — der Anwendungsfall für Community-Plugins

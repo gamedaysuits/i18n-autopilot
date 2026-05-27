@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 Element|{count} Elemente",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "Vollständig anpassbare",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "Internationalisierung",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "Ein Befehl übersetzt Ihre Sprachdateien. Jede Übersetzungsmethode – Google Translate, LLMs, benutzerdefinierte APIs, Coached Pipelines – ist eine Konfigurationsoption. Nutzen Sie das, was für jede Sprache am besten funktioniert.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "Jetzt starten →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "Methoden ansehen",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "Tests",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Abhängigkeiten",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Skript-Konverter",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Sprachregister",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "Methoden pro Sprachpaar kombinieren",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "Jedes Quelle→Ziel-Paar erhält seine eigene Übersetzungsmethode, sein eigenes Modell und seine eigene Qualitätskonfiguration. Nutzen Sie das, was für jede Sprache am besten funktioniert – keine Einheitslösung.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "Mehr über Methoden erfahren →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "Entwickelt für",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "Nicht noch eine TMS-Plattform",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase und Locize sind Cloud-Plattformen, die Konten, Dashboards und monatliche Gebühren erfordern. Rosetta ist ein CLI-Tool, das in Ihrem Projekt ausgeführt wird – keine Konten, keine Dashboards, kein Vendor-Lock-in.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "Vollständigen Vergleich ansehen →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "DIE ARENA",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "Sie glauben, Sie haben die beste Methode",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "zum Übersetzen",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "Beweisen Sie es.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "Über 7.000 Sprachen. Etwa 130 verfügen über maschinelle Übersetzung. Der Rest ist ein ungelöstes Problem – und eine offene Einladung. Das Evaluation Harness von rosetta bewertet jede Methode mit eindeutigem, reproduzierbarem Scoring. Das Leaderboard erfasst jede Einreichung.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "Dies ist ein ungelöstes Problem, zu dem alle auf der Welt beitragen können.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "Entwickeln Sie eine Methode. Bewerten Sie sie. Geben Sie sie zurück.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Methoden-Leaderboard",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "Die besten Übersetzungsmethoden, sortiert nach chrF++ Score.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "Glauben Sie, Sie können sie übertreffen?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "Harness ausführen",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "Vollständiges Leaderboard →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "Methode",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "Modell",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "Paar",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Vollständig anpassbare Internationalisierung",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "Ein i18n-Framework, bei dem jede Übersetzungsmethode eine Konfigurationsoption ist. Google Translate, LLMs, benutzerdefinierte Pipelines – ein Befehl, Kontrolle pro Paar, qualitätsgesichert.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "Ein Befehl",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "Automatische Erkennung Ihrer Sprachdateien, Formate und Zielsprachen. Übersetzen Sie, was sich geändert hat. Überspringen Sie den Rest.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "Methoden pro Paar",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "Google Translate für Französisch, ein LLM für Japanisch, ein Coached Plugin für Plains Cree – alles in derselben Konfiguration.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Register & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "Steuern Sie das LLM mit pro Sprache festgelegten Tonfall-Anweisungen. Formelle Sie-Form für Deutsch, Taglish Code-Switching für Filipino, Kriegerehre für Klingonisch.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "Kontextsensitiv",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Codeblöcke, Shortcodes, Interpolationsvariablen und reines HTML werden während der Übersetzung geschützt. Das LLM sieht Ihren Code nie.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Keine Abhängigkeiten",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Nur integrierte Node.js-Funktionen. Keine SDKs, keine nativen Module, kein Build-Schritt. Funktioniert überall, wo Node 20+ läuft.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "Jede Übersetzung wird vor dem Schreiben validiert. Ausgaben in falschem Skript, Quelltext-Echos, Längeninflation und Platzhalter-Beschädigungen werden erkannt und abgelehnt.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaS-Internationalisierung",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "Übersetzen Sie Ihre Next.js-, Hugo- oder React-App in über 30 Sprachen mit Qualitätskontrolle pro Paar.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "30 Sprachen übersetzen →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "Erstellen Sie eine benutzerdefinierte Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "Verketten Sie LLMs mit FST-Validatoren, Wörterbüchern und Post-Prozessoren. Verpacken Sie es als Plugin.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FST Pipeline-Kochbuch →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "Spracherhalt",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "Angeleitete LLM-Übersetzung für Sprachen ohne API-Abdeckung — indigene, bedrohte und konstruierte Sprachen.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "Low-Resource-Leitfaden →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "Plug and Test",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "Führen Sie Ihre Methode gegen standardisierte Benchmarks aus. chrF++, Exact Match, FST-Akzeptanz — alles berechnet von derselben Testumgebung.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "Sichern Sie sich Ihr Ergebnis",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "Jede Einreichung wird einem Git-Commit eindeutig zugeordnet und anhand desselben Datensatzes bewertet. Erstellen Sie einen PR, um Ihre Lösung einzureichen.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Bestenliste →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "Respekt vor den Daten",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "Indigene Sprachen gehören ihren Gemeinschaften. rosetta unterstützt die Prinzipien von OCAP, CARE und Māori Data Sovereignty.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Datensouveränität →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "Erstellen Sie Ihre gesamte Website in",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "mit einem Befehl oder mit grenzenloser Anpassbarkeit",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "Sprachen",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "unterstützte Sprachen",
+    "description": "Languages supported button label"
   }
 }

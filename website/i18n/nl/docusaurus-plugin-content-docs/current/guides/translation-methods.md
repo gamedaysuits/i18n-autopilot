@@ -29,7 +29,7 @@ Gericht op snelheid en kosten. Het beste voor grote volumes aan key-value paren.
 | `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ talen) |
 | `deepl` | `DEEPL_API_KEY` | DeepL API met glossary-ondersteuning (30+ talen) |
 | `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ talen) |
-| `libretranslate` | *(zelf-gehost)* | Zelf-gehoste LibreTranslate (AGPL, gratis) |
+| `libretranslate` | *(self-hosted)* | Self-hosted LibreTranslate (AGPL, gratis) |
 
 ### Infrastructuur
 
@@ -59,11 +59,11 @@ flowchart TD
 Vertaalt via elke LLM op [OpenRouter](https://openrouter.ai). Dit is de standaardmethode en de meest veelzijdige.
 
 **Hoe het werkt:**
-1. Bundelt sleutels in batches (standaard 30/batch) met register- en contextinstructies
+1. Bundelt keys in batches (standaard 30/batch) met register- en contextinstructies
 2. Verzendt naar OpenRouter als een gestructureerde prompt
 3. Ontleedt de JSON-respons
 4. Valideert elke vertaling via de [quality gate](/docs/concepts/quality-gate)
-5. Schrijft goedgekeurde vertalingen weg, probeert mislukte vertalingen opnieuw of wijst deze af
+5. Schrijft goedgekeurde vertalingen weg, probeert mislukkingen opnieuw of wijst ze af
 
 **Wanneer te gebruiken:** De meeste projecten. Vooral sites met veel content en Markdown, waar codeblokken en shortcodes afgeschermd moeten worden.
 
@@ -83,10 +83,10 @@ Hetzelfde als `llm`, maar met grammaticaregels, terminologiewoordenboeken en sti
 **Hoe het werkt:**
 1. Laadt coachinggegevens uit `.rosetta/coaching/<locale>.json` of de `coaching/`-directory van een plug-in
 2. Injecteert grammaticaregels, woordenboektermen en stijlnotities in de systeemprompt
-3. Woordenboektermen die overeenkomen met bronsleutels worden opgenomen als vereiste terminologie
+3. Woordenboektermen die overeenkomen met bron-keys worden opgenomen als vereiste terminologie
 4. De vertaling verloopt zoals bij `llm`, waarbij coachinggegevens precisie toevoegen
 
-**Wanneer te gebruiken:** Talen met weinig bronnen (low-resource), domeinspecifieke terminologie (juridisch, medisch), formele registers, of elk geval waarin de generieke LLM-uitvoer niet precies genoeg is.
+**Wanneer te gebruiken:** Talen met weinig bronnen (low-resource languages), domeinspecifieke terminologie (juridisch, medisch), formele registers, of elk ander geval waarin de generieke LLM-uitvoer niet precies genoeg is.
 
 **Formaat van coachinggegevens:**
 
@@ -117,7 +117,7 @@ Vertaalt direct via de OpenAI Chat Completions API. Geen OpenRouter-tussenpersoo
 
 **Functies:**
 - ✅ Markdown-bewust (contentvertaling)
-- ✅ Ondersteuning voor coaching (grammaticaregels, woordenboek-overrides, stijlnotities)
+- ✅ Coaching-ondersteuning (grammaticaregels, woordenboek-overrides, stijlnotities)
 - ✅ JSON-modus voor gestructureerde key-value uitvoer
 - ✅ Exponentiële backoff met nieuwe pogingen (retry)
 
@@ -139,14 +139,14 @@ Haal uw sleutel op via [platform.openai.com/api-keys](https://platform.openai.co
 
 ## `anthropic` — Directe Anthropic API
 
-Vertaalt direct via de Anthropic Messages API. Gebruikt de `system` parameter voor coachinggegevens, wat Anthropic's prompt caching mogelijk maakt.
+Vertaalt direct via de Anthropic Messages API. Gebruikt de parameter `system` voor coachinggegevens, wat Anthropic's prompt caching mogelijk maakt.
 
 **Modellen:** `claude-sonnet-4-6` (standaard), `claude-haiku-4-5`, `claude-opus-4-7`
 
 **Functies:**
 - ✅ Markdown-bewust (contentvertaling)
-- ✅ Ondersteuning voor coaching (grammaticaregels, woordenboek-overrides, stijlnotities)
-- ✅ System prompt caching (spreidt de kosten van coaching over batches)
+- ✅ Coaching-ondersteuning (grammaticaregels, woordenboek-overrides, stijlnotities)
+- ✅ System prompt caching (spreidt de coachingkosten over batches)
 - ✅ Exponentiële backoff met nieuwe pogingen (retry)
 
 **Configuratie:**
@@ -173,7 +173,7 @@ Vertaalt direct via de Google Gemini `generateContent` API. **Gratis niveau besc
 
 **Functies:**
 - ✅ Markdown-bewust (contentvertaling)
-- ✅ Ondersteuning voor coaching (grammaticaregels, woordenboek-overrides, stijlnotities)
+- ✅ Coaching-ondersteuning (grammaticaregels, woordenboek-overrides, stijlnotities)
 - ✅ JSON-responsmodus via `responseMimeType`
 - ✅ Gratis niveau (royaal dagelijks quotum)
 - ✅ Exponentiële backoff met nieuwe pogingen (retry)
@@ -196,7 +196,7 @@ Haal uw sleutel op via [aistudio.google.com/apikey](https://aistudio.google.com/
 
 ### Modelvalidatie
 
-De directe LLM-providers (`openai`, `anthropic`, `gemini`) valideren uw modelstring bij het eerste gebruik. Dit ondervangt drie categorieën van fouten:
+De directe LLM-providers (`openai`, `anthropic`, `gemini`) valideren uw modelstring bij het eerste gebruik. Dit ondervangt drie categorieën fouten:
 
 **Verkeerd methodeformaat** — Het gebruik van een modelpad in OpenRouter-stijl bij een directe provider:
 
@@ -223,7 +223,7 @@ De directe LLM-providers (`openai`, `anthropic`, `gemini`) valideren uw modelstr
 ```
 
 :::note Dit zijn waarschuwingen, geen fouten
-Modelvalidatie registreert waarschuwingen, maar blokkeert de API-aanroep niet. De provider-API geeft het definitieve oordeel — een toekomstige modelnaam zou aan een ander patroon kunnen voldoen, en we willen dit niet blokkeren op basis van heuristiek.
+Modelvalidatie logt waarschuwingen, maar blokkeert de API-aanroep niet. De provider-API geeft het definitieve oordeel — een toekomstige modelnaam zou met een ander patroon kunnen overeenkomen, en we willen niet blokkeren op basis van heuristiek.
 :::
 
 ---
@@ -232,32 +232,32 @@ Modelvalidatie registreert waarschuwingen, maar blokkeert de API-aanroep niet. D
 
 Directe integratie met Google Cloud Translation API v2. Gebruikt de REST API — geen SDK, geen serviceaccount. Alleen de API-sleutel.
 
-**Wanneer te gebruiken:** Grote volumes aan key-value stringparen waarbij snelheid en kosten belangrijker zijn dan nuance. Ondersteunt standaard meer dan 130 talen.
+**Wanneer te gebruiken:** Grote volumes aan key-value stringparen waarbij snelheid en kosten belangrijker zijn dan nuance. Ondersteunt standaard 130+ talen.
 
 **Beperkingen:**
-- ⚠️ **Niet Markdown-bewust.** Zal codeblokken, shortcodes en interpolatievariabelen beschadigen.
+- ⚠️ **Geen Markdown-bewustzijn.** Zal codeblokken, shortcodes en interpolatievariabelen beschadigen.
 - Geen controle over register/toon
-- Geen coaching of handhaving van terminologie
+- Geen coaching of afdwingen van terminologie
 
 ```bash
 npx i18n-rosetta sync --method google-translate
 ```
 
 :::tip Automatische detectie
-Als alleen `GOOGLE_TRANSLATE_API_KEY` is ingesteld (geen OpenRouter-sleutel), schakelt rosetta automatisch over naar Google Translate. Er is geen configuratiewijziging nodig.
+Als alleen `GOOGLE_TRANSLATE_API_KEY` is ingesteld (geen OpenRouter-sleutel), schakelt rosetta automatisch over naar Google Translate. Geen configuratiewijziging nodig.
 :::
 
 ## `deepl` — DeepL API
 
-Directe integratie met de DeepL-vertaal-API. Ondersteunt glossaries (woordenlijsten) voor consistente terminologie.
+Directe integratie met de DeepL-vertaal-API. Ondersteunt glossaries voor consistente terminologie.
 
-**Wanneer te gebruiken:** Europese talen waarin DeepL uitblinkt (Duits, Frans, Spaans, Nederlands, Pools, enz.). Glossary-ondersteuning handhaaft consistente terminologie zonder coachinggegevens.
+**Wanneer te gebruiken:** Europese talen waarin DeepL uitblinkt (Duits, Frans, Spaans, Nederlands, Pools, enz.). Glossary-ondersteuning dwingt consistente terminologie af zonder coachinggegevens.
 
 **Functies:**
-- ✅ Automatische detectie van free/pro-eindpunten (`:fx` achtervoegsel bij gratis sleutels)
+- ✅ Automatische detectie van free/pro-eindpunten (achtervoegsel `:fx` bij gratis sleutels)
 - ✅ Aanmaken en beheren van glossaries
 - ✅ Controle over het formaliteitsniveau
-- ⚠️ **Niet Markdown-bewust** — alleen key-value paren
+- ⚠️ **Geen Markdown-bewustzijn** — alleen key-value paren
 
 **Configuratie:**
 
@@ -279,12 +279,12 @@ Haal uw sleutel op via [deepl.com/pro-api](https://www.deepl.com/pro-api).
 
 Directe integratie met Microsoft Translator Text API v3.
 
-**Wanneer te gebruiken:** Enterprise-omgevingen met bestaande Azure-infrastructuur. Ondersteunt meer dan 100 talen, waaronder vele die niet door Google Translate worden gedekt.
+**Wanneer te gebruiken:** Enterprise-omgevingen met bestaande Azure-infrastructuur. Ondersteunt 100+ talen, waaronder veel talen die Google Translate niet dekt.
 
 **Functies:**
 - ✅ Tot 100 segmenten per verzoek (hoge doorvoer)
-- ✅ Optionele regioparameter voor optimalisatie van latentie
-- ⚠️ **Niet Markdown-bewust** — alleen key-value paren
+- ✅ Optionele regioparameter voor latentie-optimalisatie
+- ⚠️ **Geen Markdown-bewustzijn** — alleen key-value paren
 - ⚠️ **Geen contentvertaling** — alleen key-value paren
 
 **Configuratie:**
@@ -304,17 +304,17 @@ export MICROSOFT_TRANSLATOR_REGION=global  # optional
 
 Haal uw sleutel op via de [Azure Portal](https://portal.azure.com) → Cognitive Services → Translator.
 
-## `libretranslate` — Zelf-gehoste vertaling
+## `libretranslate` — Self-Hosted Vertaling
 
-Zelf-gehoste open-source vertaling met behulp van LibreTranslate. Draait lokaal of op uw eigen infrastructuur — geen API-kosten, volledige datasoevereiniteit.
+Self-hosted open-source vertaling met behulp van LibreTranslate. Draait lokaal of op uw eigen infrastructuur — geen API-kosten, volledige datasoevereiniteit.
 
-**Wanneer te gebruiken:** Projecten die offline vertaling, naleving van dataprivacy (AVG/GDPR) of kosteloze werking vereisen. Vooral nuttig voor CI-pijplijnen die niet afhankelijk mogen zijn van externe API's.
+**Wanneer te gebruiken:** Projecten die offline vertaling, naleving van dataprivacy (AVG/GDPR) of een kosteloze werking vereisen. Vooral nuttig voor CI-pijplijnen die niet afhankelijk mogen zijn van externe API's.
 
 **Functies:**
-- ✅ Zelf-gehost — geen externe API-aanroepen
+- ✅ Self-hosted — geen externe API-aanroepen
 - ✅ Gratis en open source (AGPL-3.0)
 - ✅ Docker-implementatie beschikbaar
-- ⚠️ **Niet Markdown-bewust** — alleen key-value paren
+- ⚠️ **Geen Markdown-bewustzijn** — alleen key-value paren
 - ⚠️ **Geen contentvertaling** — alleen key-value paren
 - ⚠️ Kwaliteit varieert per talenpaar
 
@@ -340,9 +340,9 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — Remote Translation API
 
-Een thin HTTP-client voor door de community gehoste of IP-beschermde vertaaleindpunten. Rosetta verzendt sleutels en ontvangt vertalingen terug — het bevat zelf geen vertaallogica.
+Een thin HTTP-client voor door de community gehoste of IP-beschermde vertaaleindpunten. Rosetta verzendt keys en ontvangt vertalingen terug — het bevat zelf geen vertaallogica.
 
-**Wanneer te gebruiken:** Wanneer vertaalmethoden server-side worden gehost (bijv. bedrijfseigen coachinggegevens, gefinetunede modellen, FST-pijplijnen die niet gedistribueerd kunnen worden).
+**Wanneer te gebruiken:** Wanneer vertaalmethoden server-side worden gehost (bijv. propriëtaire coachinggegevens, gefinetunede modellen, FST-pijplijnen die niet gedistribueerd kunnen worden).
 
 ```json
 {
@@ -356,8 +356,8 @@ Een thin HTTP-client voor door de community gehoste of IP-beschermde vertaaleind
 }
 ```
 
-:::note OCAP-compatibele community-vertaling
-De `api`-methode vormt de brug naar **OCAP-compatibele, door de community gehoste vertaling**. Inheemse en minderheidstaalgemeenschappen kunnen hun eigen vertaaleindpunten hosten — waardoor coachinggegevens, gefinetunede modellen en taalkundig IP onder controle van de community blijven — terwijl Rosetta hiermee verbinding maakt als een thin client.
+:::note OCAP-compatibele communityvertaling
+De methode `api` vormt de brug naar **OCAP-compatibele, door de community gehoste vertaling**. Inheemse en minderheidstaalgemeenschappen kunnen hun eigen vertaaleindpunten hosten — waarbij coachinggegevens, gefinetunede modellen en linguïstisch intellectueel eigendom (IP) onder controle van de community blijven — terwijl Rosetta hiermee verbinding maakt als een thin client.
 
 Zie [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor de volledige handleiding over community-hosting, en [Een methode aanbieden via API](/docs/guides/serving-a-method) voor de vereisten van eindpunten.
 :::
@@ -366,7 +366,7 @@ Zie [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/comm
 
 ## Configuratie per talenpaar
 
-De echte kracht is het combineren van methoden per talenpaar:
+De echte kracht schuilt in het combineren van methoden per talenpaar:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -381,14 +381,14 @@ De echte kracht is het combineren van methoden per talenpaar:
 }
 ```
 
-Dit vertaalt Frans via DeepL (glossary-ondersteuning), Japans via OpenAI (kwaliteit), Koreaans via Gemini (gratis niveau), Arabisch via Microsoft Translator (dekking), en Plains Cree via een gecoachte plug-in (gespecialiseerd).
+Dit vertaalt Frans via DeepL (glossary-ondersteuning), Japans via OpenAI (kwaliteit), Koreaans via Gemini (gratis niveau), Arabisch via Microsoft Translator (dekking) en Plains Cree via een gecoachte plug-in (gespecialiseerd).
 
 ## Plug-ins
 
-Plug-ins zijn vooraf verpakte vertaalrecepten voor specifieke talenparen. Het zijn JSON-manifesten — geen code — die rosetta vertellen welke methode moet worden gebruikt, met welke instellingen, en welke kwaliteit is gebenchmarkt.
+Plug-ins zijn vooraf verpakte vertaalrecepten voor specifieke talenparen. Het zijn JSON-manifesten — geen code — die rosetta vertellen welke methode gebruikt moet worden, met welke instellingen, en welke kwaliteit is gebenchmarkt.
 
 :::tip Van eval harness naar productie in één commando
-Plug-ins die zijn ontwikkeld en bewezen in de [eval harness](https://mtevalarena.org/docs/specifications/harness) kunnen direct worden geïnstalleerd — de methode die u daar valideert, wordt hier geïmplementeerd met een enkel `plugin install`-commando. Zie [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) voor de volledige evaluatieworkflow.
+Plug-ins die zijn ontwikkeld en bewezen in de [eval harness](https://mtevalarena.org/docs/specifications/harness) kunnen direct worden geïnstalleerd — de methode die u daar valideert, wordt hier geïmplementeerd met één enkel `plugin install`-commando. Zie [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) voor de volledige evaluatieworkflow.
 :::
 
 ```bash
@@ -426,7 +426,7 @@ Wisselt u tussen methoden? Het modelformaat en de omgevingsvariabele (env var) v
 ```
 
 **Belangrijkste verschillen:**
-- OpenRouter gebruikt het `provider/model`-formaat (bijv. `openai/gpt-4o`). Directe providers gebruiken kale modelnamen (bijv. `gpt-4o`).
+- OpenRouter gebruikt het formaat `provider/model` (bijv. `openai/gpt-4o`). Directe providers gebruiken kale modelnamen (bijv. `gpt-4o`).
 - Elke directe provider heeft zijn eigen omgevingsvariabele (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`).
 - Als u het verkeerde modelformaat gebruikt, zal rosetta u waarschuwen — zie [Modelvalidatie](#model-validation).
 
@@ -445,29 +445,29 @@ Wisselt u tussen methoden? Het modelformaat en de omgevingsvariabele (env var) v
  }
 ```
 
-:::tip Wanneer OpenRouter vs Direct te gebruiken
-**Gebruik OpenRouter** wanneer u tussen modellen wilt wisselen zonder omgevingsvariabelen te wijzigen, of wanneer u toegang wilt tot meer dan 200 modellen via één enkele sleutel. **Gebruik directe providers** wanneer u eenvoudigere facturering, lagere latentie (geen tussenpersoon) of toegang tot provider-specifieke functies zoals Anthropic's prompt caching wilt.
+:::tip Wanneer OpenRouter vs. Direct gebruiken
+**Gebruik OpenRouter** wanneer u tussen modellen wilt wisselen zonder omgevingsvariabelen te wijzigen, of wanneer u toegang wilt tot 200+ modellen via één enkele sleutel. **Gebruik directe providers** wanneer u eenvoudigere facturering, lagere latentie (geen tussenpersoon) of toegang tot providerspecifieke functies zoals Anthropic's prompt caching wilt.
 :::
 
 ---
 
 ## Kostenvergelijking
 
-Geschatte kosten per 1.000 vertaalde sleutels (gaat uit van ~10 tokens per sleutel, 30 sleutels per batch):
+Geschatte kosten per 1.000 vertaalde keys (uitgaande van ~10 tokens per key, 30 keys per batch):
 
-| Methode | Kosten / 1K sleutels | Snelheid | Kwaliteit | Het beste voor |
+| Methode | Kosten / 1K keys | Snelheid | Kwaliteit | Het beste voor |
 |--------|----------------|-------|---------|----------|
 | `gemini` (Flash) | **Gratis** (binnen niveau) | Snel | Goed | Aan de slag gaan, persoonlijke projecten |
-| `google-translate` | ~$0.02 | Snelst | Voldoende | Grote volumes, Europese talen |
-| `deepl` | ~$0.02 | Snel | Goed | Europese talen, terminologie |
-| `microsoft-translator` | ~$0.01 | Snel | Voldoende | Azure-omgevingen, brede taaldekking |
-| `libretranslate` | **Gratis** (zelf-gehost) | Varieert | Redelijk | Air-gapped, AVG/GDPR, CI-pijplijnen |
-| `gemini` (Pro) | ~$0.07 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig, gratis quotum |
-| `openai` (GPT-4o-mini) | ~$0.01 | Snel | Goed | Budget LLM |
-| `openai` (GPT-4o) | ~$0.10 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig |
-| `anthropic` (Haiku) | ~$0.01 | Snel | Goed | Budget LLM |
-| `anthropic` (Sonnet) | ~$0.10 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig |
-| `anthropic` (Opus) | ~$0.50 | Traag | Uitstekend | Maximale kwaliteit |
+| `google-translate` | ~$0,02 | Snelst | Voldoende | Grote volumes, Europese talen |
+| `deepl` | ~$0,02 | Snel | Goed | Europese talen, terminologie |
+| `microsoft-translator` | ~$0,01 | Snel | Voldoende | Azure-omgevingen, brede taaldekking |
+| `libretranslate` | **Gratis** (self-hosted) | Varieert | Redelijk | Air-gapped, AVG/GDPR, CI-pijplijnen |
+| `gemini` (Pro) | ~$0,07 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig, gratis quotum |
+| `openai` (GPT-4o-mini) | ~$0,01 | Snel | Goed | Budget-LLM |
+| `openai` (GPT-4o) | ~$0,10 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig |
+| `anthropic` (Haiku) | ~$0,01 | Snel | Goed | Budget-LLM |
+| `anthropic` (Sonnet) | ~$0,10 | Gemiddeld | Zeer goed | Kwaliteitsgevoelig |
+| `anthropic` (Opus) | ~$0,50 | Traag | Uitstekend | Maximale kwaliteit |
 | `llm` (OpenRouter) | Varieert per model | Varieert | Varieert | Modelvergelijking, experimenteren |
 
 :::note Dit zijn schattingen
@@ -485,4 +485,4 @@ De werkelijke kosten zijn afhankelijk van de lengte van uw brontekst, de batchgr
 - [Een methode aanbieden via API](/docs/guides/serving-a-method)
 - [Quality gate](/docs/concepts/quality-gate)
 - [Architectuur](/docs/concepts/architecture)
-- [Problemen oplossen](/docs/guides/troubleshooting) — modelfouten, API-problemen
+- [Probleemoplossing](/docs/guides/troubleshooting) — modelfouten, API-problemen

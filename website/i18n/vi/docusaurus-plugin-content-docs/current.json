@@ -26,5 +26,17 @@
   "sidebar.docsSidebar.category.Evaluation": {
     "message": "Đánh giá",
     "description": "The label for category 'Evaluation' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Use Cases": {
+    "message": "Trường hợp sử dụng",
+    "description": "The label for category 'Use Cases' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Core Concepts": {
+    "message": "Khái niệm cốt lõi",
+    "description": "The label for category 'Core Concepts' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.For MT Researchers": {
+    "message": "Dành cho MT Researchers",
+    "description": "The label for category 'For MT Researchers' in sidebar 'docsSidebar'"
   }
 }

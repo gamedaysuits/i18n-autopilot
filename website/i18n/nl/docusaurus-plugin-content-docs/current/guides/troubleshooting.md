@@ -10,7 +10,7 @@ Veelvoorkomende problemen en oplossingen voor i18n-rosetta.
 
 ### "OPENROUTER_API_KEY not found"
 
-Rosetta vereist een API key voor LLM-vertaling. Stel deze in als een omgevingsvariabele:
+Rosetta vereist een API-sleutel voor LLM-vertaling. Stel deze in als een omgevingsvariabele:
 
 ```bash
 export OPENROUTER_API_KEY="sk-or-v1-..."
@@ -23,30 +23,30 @@ OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
 :::tip
-Als u alleen een Google Translate API key heeft, zal rosetta deze automatisch detecteren en Google Translate als de standaardmethode gebruiken. Er is geen configuratiewijziging nodig.
+Als u alleen een Google Translate API-sleutel heeft, detecteert rosetta dit automatisch en gebruikt het Google Translate als de standaardmethode. Er is geen configuratiewijziging nodig.
 :::
 
 ### "401 Unauthorized" van OpenRouter
 
-Uw API key is ongeldig of verlopen. Controleer deze op [openrouter.ai/keys](https://openrouter.ai/keys).
+Uw API-sleutel is ongeldig of verlopen. Controleer deze op [openrouter.ai/keys](https://openrouter.ai/keys).
 
 ### "429 Too Many Requests" / Rate Limiting
 
-Rosetta verwerkt rate limits intern met exponential backoff. Als u consequent tegen rate limits aanloopt:
+Rosetta verwerkt rate limits intern met een exponentiële backoff. Als u consequent tegen rate limits aanloopt:
 
-1. **Verlaag de batch size** in uw configuratie:
+1. **Verklein de batchgrootte** in uw configuratie:
    ```json
    { "batchSize": 15 }
    ```
 2. **Gebruik een model met hogere rate limits** (bijv. `google/gemini-3.5-flash` heeft ruime limieten)
-3. **Gebruik een goedkopere/snellere methode** voor grote volumes — Google Translate heeft geen rate limits:
+3. **Gebruik een goedkopere/snellere methode** voor paren met een hoog volume — Google Translate heeft geen rate limits:
    ```json
    { "pairs": { "en:it": { "method": "google-translate" } } }
    ```
 
 ### Model Not Found / 404-fouten
 
-Directe LLM-providers (`openai`, `anthropic`, `gemini`) valideren uw model string bij het eerste gebruik. Als u een waarschuwing ziet:
+Directe LLM-providers (`openai`, `anthropic`, `gemini`) valideren uw modelstring bij het eerste gebruik. Als u een waarschuwing ziet:
 
 **"looks like an OpenRouter path"** — U gebruikt een model in OpenRouter-formaat (`google/gemini-3.5-flash`) met een directe provider. Directe providers gebruiken kale modelnamen:
 
@@ -67,19 +67,19 @@ Of schakel over naar de `llm`-methode om OpenRouter te gebruiken:
 + { "method": "anthropic", "model": "claude-sonnet-4-6" }
 ```
 
-**"not found in available models"** — Het model is mogelijk verouderd (deprecated) of verkeerd gespeld. Rosetta haalt de actuele modellenlijst van de provider op en stelt alternatieven voor. Raadpleeg de documentatie van de provider voor de huidige modelnamen.
+**"not found in available models"** — Het model is mogelijk verouderd of verkeerd gespeld. Rosetta haalt de actuele modellijst van de provider op en stelt alternatieven voor. Raadpleeg de documentatie van de provider voor de huidige modelnamen.
 
-:::tip Model deprecation komt voor
-Providers trekken regelmatig modelnamen terug. Als vertalingen plotseling mislukken na een update van de provider, controleer dan de `[WARN]`-uitvoer — deze toont u de huidige alternatieven.
+:::tip Veroudering van modellen komt voor
+Providers trekken regelmatig modelnamen terug. Als vertalingen plotseling mislukken na een update van een provider, controleer dan de uitvoer van `[WARN]` — deze toont u de huidige alternatieven.
 :::
 
 ## Vertaalkwaliteit
 
-### Vertalingen kopiëren de brontaal
+### Vertalingen weerspiegelen de brontaal
 
 De quality gate vangt dit op. Als een vertaling identiek is aan de Engelse bron, wordt deze afgewezen en opnieuw geprobeerd. Als dit aanhoudt:
 
-1. **Controleer het model** — Sommige modellen presteren slecht voor specifieke talencombinaties
+1. **Controleer het model** — Sommige modellen presteren slecht voor specifieke talenparen
 2. **Voeg registerinstructies toe** — Vertel het model welke taal het moet produceren:
    ```json
    {
@@ -94,36 +94,36 @@ De quality gate vangt dit op. Als een vertaling identiek is aan de Engelse bron,
 
 De script compliance check van de quality gate vangt de meeste gevallen op. Als dit aanhoudt:
 
-- Controleer of de locale-code correct is (`ja`, niet `jp`)
+- Controleer of de localecode correct is (`ja`, niet `jp`)
 - Voeg expliciete scriptinstructies toe in het `register`-veld:
   ```json
   { "register": "Japanese using hiragana, katakana, and kanji" }
   ```
 
-### Hallucinatiepatronen in uitvoer
+### Hallucinatiepatronen in de uitvoer
 
 Herhaalde trigrampatronen (bijv. "hallo hallo hallo") worden opgevangen door de hallucination loop detector. Als de uitvoer onleesbaar is maar de detector passeert:
 
-1. **Verlaag de batch size** — Kleinere batches produceren meer gerichte uitvoer
+1. **Verklein de batchgrootte** — Kleinere batches produceren een meer gerichte uitvoer
 2. **Gebruik een sterker model** — Grotere modellen hallucineren minder bij niet-Latijnse scripts
-3. **Voeg coaching data toe** — Woordenboektermen verankeren de vertaling
+3. **Voeg coachinggegevens toe** — Woordenboektermen verankeren de vertaling
 
 ## Bestands- & Formaatproblemen
 
 ### "No locale files found"
 
-Rosetta detecteert locale-bestanden automatisch. Als deze niet gevonden kunnen worden:
+Rosetta detecteert locale-bestanden automatisch. Als het deze niet kan vinden:
 
 1. **Controleer `localesDir`** — Moet verwijzen naar de map die de locale-bestanden bevat:
    ```json
    { "localesDir": "./locales" }
    ```
-2. **Controleer de bestandsnaamgeving** — Bestanden moeten worden benoemd op basis van de locale-code: `en.json`, `fr.json`, enz.
+2. **Controleer de bestandsnaamgeving** — Bestanden moeten worden vernoemd naar de localecode: `en.json`, `fr.json`, enz.
 3. **Controleer het formaat** — Ondersteunde formaten: JSON, geneste JSON, YAML, TOML
 
 ### Lock file-conflicten
 
-Als `.i18n-rosetta.lock` in een slechte staat terechtkomt:
+Als `.i18n-rosetta.lock` in een slechte staat raakt:
 
 ```bash
 # Reset the lock file (next sync will retranslate everything)
@@ -137,7 +137,7 @@ Het verwijderen van de lock file betekent dat de volgende synchronisatie alle sl
 
 ### Specifieke sleutels opnieuw vertalen
 
-Als individuele vertalingen onjuist zijn en u wilt forceren dat deze opnieuw worden vertaald zonder de lock file te verwijderen:
+Als individuele vertalingen onjuist zijn en u wilt forceren dat ze opnieuw worden vertaald zonder de lock file te verwijderen:
 
 ```bash
 # Re-translate a single key
@@ -153,21 +153,21 @@ De `--force-keys`-vlag negeert de hash-controle van de lock file voor die specif
 
 Dit zou niet moeten gebeuren — codeblokken worden afgeschermd vóór de vertaling. Als dit toch gebeurt:
 
-1. Controleer of het codeblok standaard fencing gebruikt (drie backticks)
+1. Controleer of het codeblok standaard markeringen gebruikt (drie backticks)
 2. Controleer op niet-gesloten codeblokken in de bron-Markdown
-3. Maak een issue aan — dit is een bug in het sentinel shielding-systeem
+3. Dien een issue in — dit is een bug in het sentinel shielding-systeem
 
 ## CLI-problemen
 
 ### `--watch` detecteert geen wijzigingen
 
-File watching gebruikt de native `fs.watch` van Node.js. Bekende problemen:
+Bestandsbewaking gebruikt de native `fs.watch` van Node.js. Bekende problemen:
 
 - **Netwerkschijven** — `fs.watch` werkt niet betrouwbaar op NFS/SMB-mounts
-- **Docker-volumes** — Gebruik de polling-modus of draai rosetta binnen de container
-- **Grote mappen** — De watcher monitort `localesDir` recursief; zeer diepe bomen kunnen de limieten van het besturingssysteem overschrijden
+- **Docker-volumes** — Gebruik de polling-modus of voer rosetta uit binnen de container
+- **Grote mappen** — De watcher bewaakt `localesDir` recursief; zeer diepe bomen kunnen de limieten van het besturingssysteem overschrijden
 
-### `npx` draait een oude versie
+### `npx` voert een oude versie uit
 
 ```bash
 # Clear the npx cache
@@ -185,10 +185,10 @@ i18n-rosetta sync
 
 ### Synchronisatie is traag voor veel talen
 
-Rosetta vertaalt talencombinaties standaard sequentieel. Om meertalige synchronisaties te versnellen:
+Rosetta vertaalt paren standaard sequentieel. Om meertalige synchronisaties te versnellen:
 
-1. **Gebruik Google Translate voor grote volumes** — Het is 10–50× sneller dan LLM-vertaling
-2. **Verhoog de batch size** (tot 50, standaard is 30):
+1. **Gebruik Google Translate voor paren met een hoog volume** — Het is 10 tot 50 keer sneller dan LLM-vertaling
+2. **Vergroot de batchgrootte** (tot 50, standaard is 30):
    ```json
    { "batchSize": 50 }
    ```
@@ -196,12 +196,28 @@ Rosetta vertaalt talencombinaties standaard sequentieel. Om meertalige synchroni
 
 ### Hoge API-kosten
 
-- **Controleer batch sizes** — Grotere batches = minder API-aanroepen = lagere kosten
+- **Controleer batchgroottes** — Grotere batches = minder API-aanroepen = lagere kosten
+- **Gebruik Translation Memory** — TM is standaard ingeschakeld. Voer `i18n-rosetta tm stats` uit om te controleren of het werkt. Als u 0 vermeldingen ziet na meerdere synchronisaties, is er mogelijk iets mis met de machtigingen van uw `.rosetta/`-map
 - **Gebruik prompt caching** — Rosetta splitst systeem-/gebruikersberichten voor cache hits op Anthropic- en Google-modellen
 - **Gebruik Google Translate voor Tier 2-talen** — Zie het [Translate 30 Languages](/docs/tutorials/translate-30-languages) kookboek
 
+### Verouderde vertalingen na het wisselen van providers
+
+Als u overschakelt van de ene vertaalmethode naar de andere (bijv. van `llm` naar `deepl`), kan de TM-cache nog steeds oude vertalingen van de vorige methode leveren voor sleutels waarvan de brontekst niet is gewijzigd. De cache-sleutel bevat de methodenaam, dus de meeste gevallen worden automatisch afgehandeld. Maar als u `model` binnen dezelfde methode heeft gewijzigd:
+
+```bash
+# Force fresh translations for all keys
+i18n-rosetta sync --no-tm
+
+# Or clear the cache entirely and re-sync
+i18n-rosetta tm clear --yes
+i18n-rosetta sync
+```
+
+Zie [Translation Memory](/docs/concepts/translation-memory) voor details over het ontwerp van de cache-sleutel.
+
 ## Loopt u nog steeds vast?
 
-- **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Zoek in bestaande issues of maak een nieuwe aan
+- **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Zoek in bestaande issues of dien een nieuwe in
 - **[Architecture Docs](/docs/concepts/architecture)** — Begrijp het systeemontwerp
 - **[Quality Gate](/docs/concepts/quality-gate)** — Hoe validatie onder de motorkap werkt

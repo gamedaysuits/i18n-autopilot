@@ -4,11 +4,11 @@ title: "快速入门"
 ---
 # 快速开始
 
-在 60 秒内翻译你的第一个语言文件。
+在 60 秒内翻译你的第一个本地化文件。
 
-## 1. 设置你的语言文件
+## 1. 设置你的本地化文件
 
-创建一个源语言文件。Rosetta 支持 JSON、TOML 和 YAML：
+创建一个源本地化文件。Rosetta 支持 JSON、TOML 和 YAML：
 
 ```json title="locales/en.json"
 {
@@ -96,6 +96,8 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+未更改的键值 (`hero.subtitle`) 将由 rosetta 的 **Translation Memory**（翻译记忆库）缓存提供——无需 API 调用，没有成本。该缓存会在每次同步期间自动构建，并存储在 `.rosetta/tm.json` 中。
+
 ## 可选：创建配置文件
 
 为了获得更多控制权，请生成一个配置文件：
@@ -105,7 +107,7 @@ npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-向导会引导你了解每种语言的**语域预设 (register presets)** —— 这是针对其语言系统调整的预设语气/正式程度指令。法语有 T-V 预设（vouvoiement 与 tutoiement），韩语有敬语级别（해요체 与 합쇼체 与 해체），日语有敬语选项（です/ます 与 丁寧語）。
+引导向导将带你了解每种语言的 **register presets**（语域预设）——这是针对其语言系统调整的预置语气/正式程度说明。法语有 T-V 预设（vouvoiement 与 tutoiement），韩语有敬语级别（해요체 与 합쇼체 与 해체），日语有敬语选项（です/ます 与 丁寧語）。
 
 或者使用预设键值手动创建配置：
 
@@ -127,15 +129,18 @@ npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific target
 
 ## 可选：监听模式
 
-当源文件更改时自动翻译：
+当源文件发生更改时自动翻译：
 
 ```bash
 npx i18n-rosetta watch
 ```
 
-## 后续步骤
+## 下一步
 
 - **[配置](/docs/getting-started/configuration)** — 完整的配置参考
-- **[翻译方法](/docs/guides/translation-methods)** — 选择合适的方法
+- **[翻译方法](/docs/guides/translation-methods)** — 为每个语言对选择合适的方法
+- **[翻译记忆库](/docs/concepts/translation-memory)** — 缓存如何在重新运行时为你省钱
+- **[与专业翻译人员合作](/docs/guides/professional-translators)** — 导出 XLIFF 以供人工审校
 - **[框架集成](/docs/guides/framework-integration)** — Hugo、next-intl、react-i18next
-- **[CI/CD](/docs/guides/ci-cd)** — 在流水线中自动执行翻译
+- **[CI/CD](/docs/guides/ci-cd)** — 在你的流水线中自动执行翻译
+- **[故障排除](/docs/guides/troubleshooting)** — 常见问题与解决方案

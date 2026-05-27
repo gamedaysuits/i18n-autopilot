@@ -30,9 +30,9 @@ Se você tiver apenas uma chave de API do Google Translate, o rosetta detecta au
 
 Sua chave de API é inválida ou expirou. Verifique-a em [openrouter.ai/keys](https://openrouter.ai/keys).
 
-### "429 Too Many Requests" / Limitação de Taxa
+### "429 Too Many Requests" / Limite de Taxa
 
-O Rosetta lida com os limites de taxa internamente com recuo exponencial (exponential backoff). Se você atingir os limites de taxa consistentemente:
+O Rosetta lida com limites de taxa internamente usando recuo exponencial (exponential backoff). Se você atingir os limites de taxa consistentemente:
 
 1. **Reduza o tamanho do lote** na sua configuração:
    ```json
@@ -67,7 +67,7 @@ Ou mude para o método `llm` para usar o OpenRouter:
 + { "method": "anthropic", "model": "claude-sonnet-4-6" }
 ```
 
-**"not found in available models"** — O modelo pode ter sido descontinuado ou digitado incorretamente. O Rosetta busca a lista de modelos ativos do provedor e sugere alternativas. Verifique a documentação do provedor para ver os nomes de modelos atuais.
+**"not found in available models"** — O modelo pode ter sido descontinuado ou digitado incorretamente. O Rosetta busca a lista de modelos ativos do provedor e sugere alternativas. Verifique a documentação do provedor para os nomes de modelos atuais.
 
 :::tip A descontinuação de modelos acontece
 Os provedores retiram nomes de modelos regularmente. Se as traduções falharem repentinamente após uma atualização do provedor, verifique a saída do `[WARN]` — ela mostrará as alternativas atuais.
@@ -75,7 +75,7 @@ Os provedores retiram nomes de modelos regularmente. Se as traduções falharem 
 
 ## Qualidade da Tradução
 
-### Traduções repetem o idioma de origem
+### As traduções repetem o idioma de origem
 
 O quality gate detecta isso. Se uma tradução for idêntica à origem em inglês, ela será rejeitada e tentada novamente. Se o problema persistir:
 
@@ -88,13 +88,13 @@ O quality gate detecta isso. Se uma tradução for idêntica à origem em inglê
      }
    }
    ```
-3. **Tente um modelo diferente** — Mude do `gpt-4o-mini` para o `gpt-4o` ou `google/gemini-2.5-pro`
+3. **Tente um modelo diferente** — Mude de `gpt-4o-mini` para `gpt-4o` ou `google/gemini-2.5-pro`
 
 ### Saída de script incorreta (ex: texto latino para japonês)
 
 A verificação de conformidade de script do quality gate detecta a maioria dos casos. Se o problema persistir:
 
-- Verifique se o código de localidade está correto (`ja`, e não `jp`)
+- Verifique se o código de localidade está correto (`ja`, não `jp`)
 - Adicione instruções explícitas de script no campo `register`:
   ```json
   { "register": "Japanese using hiragana, katakana, and kanji" }
@@ -105,8 +105,8 @@ A verificação de conformidade de script do quality gate detecta a maioria dos 
 Padrões de trigramas repetidos (ex: "olá olá olá") são detectados pelo detector de loop de alucinação. Se a saída estiver confusa, mas passar pelo detector:
 
 1. **Reduza o tamanho do lote** — Lotes menores produzem saídas mais focadas
-2. **Use um modelo mais forte** — Modelos maiores alucinam menos em scripts não latinos
-3. **Adicione dados de orientação (coaching data)** — Termos de dicionário ancoram a tradução
+2. **Use um modelo mais robusto** — Modelos maiores alucinam menos em scripts não latinos
+3. **Adicione dados de treinamento (coaching data)** — Termos de dicionário ancoram a tradução
 
 ## Problemas de Arquivo e Formato
 
@@ -121,7 +121,7 @@ O Rosetta detecta automaticamente os arquivos de localidade. Se não conseguir e
 2. **Verifique a nomenclatura dos arquivos** — Os arquivos devem ser nomeados pelo código de localidade: `en.json`, `fr.json`, etc.
 3. **Verifique o formato** — Formatos suportados: JSON, JSON aninhado, YAML, TOML
 
-### Conflitos no arquivo de bloqueio (lock file)
+### Conflitos de arquivo de bloqueio (Lock file)
 
 Se o `.i18n-rosetta.lock` entrar em um estado ruim:
 
@@ -137,7 +137,7 @@ Excluir o arquivo de bloqueio significa que a próxima sincronização retraduzi
 
 ### Retraduzindo chaves específicas
 
-Se traduções individuais estiverem erradas e você quiser forçar a retradução delas sem excluir o arquivo de bloqueio:
+Se traduções individuais estiverem incorretas e você quiser forçá-las a serem retraduzidas sem excluir o arquivo de bloqueio:
 
 ```bash
 # Re-translate a single key
@@ -155,7 +155,7 @@ Isso não deveria acontecer — os blocos de código são protegidos antes da tr
 
 1. Verifique se o bloco de código usa a formatação padrão (três crases)
 2. Verifique se há blocos de código não fechados no Markdown de origem
-3. Abra uma issue — este é um bug no sistema de proteção de sentinela (sentinel shielding)
+3. Abra uma issue — isso é um bug no sistema de proteção de sentinela
 
 ## Problemas na CLI
 
@@ -164,8 +164,8 @@ Isso não deveria acontecer — os blocos de código são protegidos antes da tr
 A observação de arquivos usa o `fs.watch` nativo do Node.js. Problemas conhecidos:
 
 - **Unidades de rede** — O `fs.watch` não funciona de forma confiável em montagens NFS/SMB
-- **Volumes Docker** — Use o modo de polling ou execute o rosetta dentro do contêiner
-- **Diretórios grandes** — O observador monitora o `localesDir` recursivamente; árvores muito profundas podem exceder os limites do sistema operacional
+- **Volumes Docker** — Use o modo de sondagem (polling) ou execute o rosetta dentro do contêiner
+- **Diretórios grandes** — O observador monitora `localesDir` recursivamente; árvores muito profundas podem exceder os limites do sistema operacional
 
 ### `npx` executa uma versão antiga
 
@@ -192,16 +192,32 @@ O Rosetta traduz os pares sequencialmente por padrão. Para acelerar as sincroni
    ```json
    { "batchSize": 50 }
    ```
-3. **Use um modelo rápido** — O `gpt-4o-mini` é significativamente mais rápido que o `gpt-4o`
+3. **Use um modelo rápido** — `gpt-4o-mini` é significativamente mais rápido que `gpt-4o`
 
 ### Altos custos de API
 
 - **Verifique os tamanhos dos lotes** — Lotes maiores = menos chamadas de API = menor custo
-- **Use o cache de prompts** — O Rosetta divide as mensagens do sistema/usuário para acertos de cache (cache hits) nos modelos da Anthropic e do Google
-- **Use o Google Translate para idiomas Tier 2** — Consulte o guia [Traduzir 30 Idiomas](/docs/tutorials/translate-30-languages)
+- **Use a Memória de Tradução (TM)** — A TM está ativada por padrão. Execute `i18n-rosetta tm stats` para verificar se está funcionando. Se você vir 0 entradas após várias sincronizações, pode haver algo errado com as permissões do seu diretório `.rosetta/`
+- **Use o cache de prompts** — O Rosetta divide as mensagens de sistema/usuário para acertos de cache nos modelos da Anthropic e do Google
+- **Use o Google Translate para idiomas Tier 2** — Veja o guia [Traduzir 30 Idiomas](/docs/tutorials/translate-30-languages)
+
+### Traduções desatualizadas após trocar de provedor
+
+Se você mudar de um método de tradução para outro (ex: de `llm` para `deepl`), o cache da TM ainda pode fornecer traduções antigas do método anterior para chaves cujo texto de origem não mudou. A chave de cache inclui o nome do método, então a maioria dos casos é tratada automaticamente. Mas se você alterou `model` dentro do mesmo método:
+
+```bash
+# Force fresh translations for all keys
+i18n-rosetta sync --no-tm
+
+# Or clear the cache entirely and re-sync
+i18n-rosetta tm clear --yes
+i18n-rosetta sync
+```
+
+Veja [Memória de Tradução](/docs/concepts/translation-memory) para obter detalhes sobre o design da chave de cache.
 
 ## Ainda com problemas?
 
-- **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Pesquise problemas existentes ou abra um novo
+- **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Pesquise issues existentes ou abra uma nova
 - **[Documentação de Arquitetura](/docs/concepts/architecture)** — Entenda o design do sistema
 - **[Quality Gate](/docs/concepts/quality-gate)** — Como a validação funciona nos bastidores

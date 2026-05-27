@@ -1,23 +1,23 @@
 ---
 sidebar_position: 8
 title: "Exposer une méthode personnalisée en tant qu'API"
-description: "Encapsulez des pipelines de traduction complexes (FST gates, LLM chains multi-étapes) en tant que service HTTP et intégrez-les à i18n-rosetta via la méthode api."
+description: "Encapsulez des pipelines de traduction complexes (FST gates, multi-step LLM chains) sous forme de service HTTP et intégrez-les à i18n-rosetta via la méthode api."
 ---
 # Exposer une méthode personnalisée en tant qu'API
 
-La **méthode `api`** d'i18n-rosetta vous permet de diriger n'importe quelle paire de traduction vers un point de terminaison HTTP externe. C'est ainsi que vous intégrez des pipelines qui sont trop complexes pour une simple invite LLM — analyseurs morphologiques, transducteurs à états finis (FST), chaînes LLM à plusieurs étapes, ou toute méthode de recherche personnalisée que vous avez conçue.
+La **méthode `api`** d'i18n-rosetta vous permet de diriger n'importe quelle paire de traduction vers un endpoint HTTP externe. C'est ainsi que vous intégrez des pipelines qui sont trop complexes pour un simple prompt LLM — analyseurs morphologiques, transducteurs à états finis (FST), chaînes LLM à plusieurs étapes, ou toute méthode de recherche personnalisée que vous avez développée.
 
 ## Pourquoi un service API ?
 
-Certains pipelines de traduction ne peuvent pas s'exécuter au sein d'un simple cycle invite-réponse :
+Certains pipelines de traduction ne peuvent pas s'exécuter dans un simple cycle prompt-réponse :
 
 | Étape du pipeline | Exemple |
 |---|---|
-| **Décomposition morphologique** | Séparer les mots polysynthétiques en morphèmes avant la traduction |
+| **Décomposition morphologique** | Diviser les mots polysynthétiques en morphèmes avant la traduction |
 | **Validation FST** | Rejeter les résultats qui enfreignent les règles phonologiques ou morphologiques |
 | **Chaînes LLM à plusieurs étapes** | Cycles de génération → vérification → correction avec différents modèles |
 | **Recherche dans un dictionnaire** | Croiser les données avec un dictionnaire bilingue révisé au milieu du pipeline |
-| **Intervention humaine** | Mettre en file d'attente les traductions incertaines pour une révision par un expert |
+| **Human-in-the-loop** | Mettre en file d'attente les traductions incertaines pour une révision par un expert |
 
 La méthode `api` traite votre pipeline comme une boîte noire — i18n-rosetta envoie les chaînes sources, votre service renvoie les traductions. Ce qui se passe à l'intérieur dépend entièrement de vous.
 
@@ -35,11 +35,11 @@ graph LR
 
 ## Configuration de votre service
 
-Votre service API doit implémenter un point de terminaison unique qui accepte et renvoie du JSON :
+Votre service API doit implémenter un endpoint unique qui accepte et renvoie du JSON :
 
 ### Format de la requête
 
-rosetta envoie ce corps JSON exact (voir [api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js)) :
+rosetta envoie exactement ce corps JSON (voir [api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js)) :
 
 ```json
 POST /translate
@@ -62,7 +62,7 @@ Authorization: Bearer <ROSETTA_API_KEY>
 | `source_locale` | string | Code de langue source BCP 47 |
 | `target_locale` | string | Code de langue cible BCP 47 |
 | `method` | string | Nom du plugin ou `"default"` |
-| `keys` | object | Mappage de la clé → chaîne source à traduire |
+| `keys` | object | Map de clé → chaîne source à traduire |
 ```
 
 ### Response Format
@@ -110,7 +110,7 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- Votre pipeline s'insère ici ---
+    // --- Votre pipeline va ici ---
     // Étape 1 : Décomposition morphologique
     const morphemes = await decompose(source, source_locale);
 
@@ -134,7 +134,7 @@ app.post('/translate', async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('L\'API de traduction est en cours d\'exécution sur http://localhost:3001');
+  console.log('API de traduction en cours d\'exécution sur http://localhost:3001');
 });
 ```
 
@@ -149,7 +149,7 @@ Point a translation pair at your running service in `i18n-rosetta.config.json`:
     "en:crk": {
       "method": "api",
       "endpoint": "http://localhost:3001/translate",
-      "register": "Cri des plaines formel. Utiliser l'orthographe SRO."
+      "register": "Formal Plains Cree. Use SRO orthography."
     }
   }
 }
@@ -183,7 +183,7 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# Cloner l'environnement d'évaluation
+# Cloner le harnais de test
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Bonnes pratiques
 
-1. **Renvoyez des chaînes vides en cas d'échec** — Ne renvoyez pas la chaîne source en tant que "traduction". Renvoyez `""` et laissez le mécanisme de préfixe de secours d'i18n-rosetta s'en charger.
+1. **Renvoyez des chaînes vides en cas d'échec** — Ne renvoyez pas la chaîne source en tant que "traduction". Renvoyez `""` et laissez le mécanisme de préfixe de repli d'i18n-rosetta s'en charger.
 2. **Incluez des scores de confiance** — Si votre pipeline peut estimer la qualité, renvoyez-la dans les métadonnées. Cela facilite l'audit de qualité.
-3. **Implémentez des vérifications d'état (health checks)** — Ajoutez un point de terminaison `GET /health` afin qu'i18n-rosetta puisse vérifier la connectivité avant de lancer une synchronisation massive.
-4. **Gérez les limites de débit avec élégance** — Si votre pipeline a des limites de débit, renvoyez les codes d'état `429`. Le système de traitement par lots d'i18n-rosetta réduira alors la cadence.
+3. **Implémentez des vérifications d'état (health checks)** — Ajoutez un endpoint `GET /health` afin qu'i18n-rosetta puisse vérifier la connectivité avant de lancer une synchronisation massive.
+4. **Gérez les limites de requêtes (rate limit) avec souplesse** — Si votre pipeline a des limites de débit, renvoyez des codes d'état `429`. Le système de traitement par lots d'i18n-rosetta ralentira la cadence.
 5. **Journalisez tout** — Les pipelines à plusieurs étapes peuvent échouer silencieusement. Journalisez les entrées/sorties de chaque étape pour le débogage.
 
 ## Licence
 
-Le modèle de méthode `api` est entièrement ouvert — il n'y a aucune restriction de licence pour envelopper votre propre pipeline de traduction sous forme de service HTTP. Le `gds-mt-eval-harness` est disponible sous licence MIT pour les implémentations de référence.
+Le modèle de la méthode `api` est entièrement ouvert — il n'y a aucune restriction de licence pour encapsuler votre propre pipeline de traduction sous forme de service HTTP. Le `gds-mt-eval-harness` est disponible sous licence MIT pour les implémentations de référence.
 
 ## Voir aussi
 
 - [Méthodes de traduction](/docs/guides/translation-methods) — aperçu de toutes les méthodes intégrées (`openai`, `google`, `api`, etc.)
-- [Spécification des plugins](/docs/reference/plugin-spec) — schéma complet pour `i18n-rosetta.config.json` incluant les champs de la méthode `api`
-- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — guide de bout en bout pour les langues sous-dotées en ressources, incluant les principes OCAP
+- [Spécification des plugins](/docs/reference/plugin-spec) — schéma complet pour `i18n-rosetta.config.json`, y compris les champs de la méthode `api`
+- [Soutenir une langue peu dotée](https://mtevalarena.org/docs/community/low-resource-languages) — guide de bout en bout pour les langues disposant de peu de ressources, incluant les principes OCAP
 - [Architecture](/docs/concepts/architecture) — fonctionnement de la boucle de synchronisation, du traitement par lots et de la répartition des méthodes d'i18n-rosetta
 - [Évaluation de la traduction automatique (MT)](https://mtevalarena.org/docs/leaderboard/rules) — méthodologie d'évaluation, métriques et processus de soumission au classement
-- [Classement des méthodes](/leaderboard) — classements de qualité en direct pour les différentes méthodes et paires de langues
+- [Classement des méthodes](/leaderboard) — classements de qualité en direct pour les méthodes et les paires de langues

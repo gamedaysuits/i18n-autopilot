@@ -47,12 +47,18 @@ yarn add --dev i18n-rosetta
 
 ## 获取 API 密钥
 
-Rosetta 需要一个翻译后端。请选择其中一个：
+Rosetta 需要一个翻译后端。请选择一个：
 
-| 提供商 | 环境变量 | 最佳适用场景 |
+| 提供商 | 环境变量 | 适用场景 |
 |----------|---------------------|----------|
 | **OpenRouter**（推荐） | `OPENROUTER_API_KEY` | 内容密集的项目、Markdown、200+ 模型 |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 大量键值对（130+ 语言） |
+| **Gemini**（免费额度） | `GEMINI_API_KEY` | 零成本起步、质量良好 |
+| **OpenAI** | `OPENAI_API_KEY` | 直接访问 GPT-4o |
+| **Anthropic** | `ANTHROPIC_API_KEY` | 直接访问 Claude、文本细节处理好 |
+| **DeepL** | `DEEPL_API_KEY` | 欧洲语言、内置正式度控制 |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | 大量键值对、130+ 语言 |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure、100+ 语言 |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | 自托管、隐私优先 |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -70,7 +76,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-最佳适用场景：内容密集的项目、Markdown 翻译，以及需要内容感知屏蔽（代码块、短代码、插值变量）的项目。
+适用场景：内容密集的项目、Markdown 翻译，以及需要内容感知保护（代码块、短代码、插值变量）的项目。
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,7 +85,7 @@ OPENROUTER_API_KEY=sk-or-v1-your-key-here
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-最佳适用场景：大量键值对字符串（130+ 语言）。**不推荐**用于 Markdown 内容 —— Google Translate 无法识别代码块、短代码或插值变量。
+适用场景：大量键值对字符串（130+ 语言）。**不推荐**用于 Markdown 内容——Google Translate 无法识别代码块、短代码或插值变量。
 
 :::tip 智能检测
 如果仅设置了 `GOOGLE_TRANSLATE_API_KEY`（没有 OpenRouter 密钥），rosetta 会自动切换到 Google Translate。无需更改配置。

@@ -140,12 +140,25 @@ jobs:
 | **Sync** | `sync` | Post-commit / CI | Traducir claves faltantes y modificadas |
 | **Audit** | `audit` | Paso de compilación | Hacer fallar el despliegue si algún idioma está incompleto |
 
+:::tip Memoria de traducción en CI
+Si su runner de CI tiene un espacio de trabajo persistente (o almacena en caché `.rosetta/`), la memoria de traducción se activa automáticamente — las sincronizaciones posteriores solo traducen las claves cuyo texto de origen realmente cambió. Para los runners efímeros, considere almacenar en caché `.rosetta/tm.json` entre ejecuciones:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
+
 ---
 
-## Ver también
+## Consulte también
 
 - [Referencia de la CLI](/docs/reference/cli) — referencia completa de comandos
-- [Cómo funciona Sync](/docs/concepts/how-sync-works) — comprender la sincronización incremental
+- [Cómo funciona la sincronización](/docs/concepts/how-sync-works) — comprender la sincronización incremental
+- [Memoria de traducción](/docs/concepts/translation-memory) — almacenamiento en caché y ahorro de costos
 - [Métodos de traducción](/docs/guides/translation-methods) — selección de métodos por par
 - [Quality Gate](/docs/concepts/quality-gate) — qué sucede cuando las traducciones fallan
 - [Configuración](/docs/getting-started/configuration) — referencia de configuración

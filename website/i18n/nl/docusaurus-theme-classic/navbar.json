@@ -26,5 +26,9 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "logo.alt": {
+    "message": "i18n-rosetta logo — drie balken met de tekens R, ロ en ᕈ",
+    "description": "The alt text of navbar logo"
   }
 }

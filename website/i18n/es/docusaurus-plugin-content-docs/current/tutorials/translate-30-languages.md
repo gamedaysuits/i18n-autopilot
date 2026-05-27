@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: "Traducir 30 idiomas"
-description: "Guía práctica: escale un proyecto de 3 a 30 idiomas mediante la combinación de métodos por par, el procesamiento por lotes y la integración de CI."
+description: "Recetario: escale un proyecto de 3 a 30 idiomas usando mezcla de métodos por par, batching e integración de CI."
 ---
 # Cookbook: Traducir 30 idiomas
 
-Escale un proyecto desde unas pocas configuraciones regionales hasta una cobertura global. Este cookbook le guía a través de la selección de métodos, la optimización de costos y la integración de CI para una implementación multilingüe real.
+Escale un proyecto desde unos pocos idiomas locales hasta una cobertura global. Este cookbook le guía a través de la selección de métodos, la optimización de costos y la integración de CI para una implementación multilingüe real.
 
 **Escenario:** Usted tiene una aplicación SaaS con `en`, `fr`, `es`. Necesita agregar 27 idiomas más a través de tres niveles de requisitos de calidad.
 
@@ -19,7 +19,7 @@ No todos los 30 idiomas necesitan el mismo enfoque. Agrúpelos según la calidad
 |------|-----------|--------|-----|
 | **Nivel 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Mercados de alto valor, gramática con matices |
 | **Nivel 2 — Estándar** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Alto volumen, buen soporte por parte de Google |
-| **Nivel 3 — Entrenado** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Bajos recursos, requieren cumplimiento de terminología |
+| **Nivel 3 — Guiado** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Bajos recursos, requieren aplicación estricta de terminología |
 
 ## Paso 2: Configure por par
 
@@ -83,7 +83,7 @@ Revise el resultado. Este mostrará:
 npx i18n-rosetta sync
 ```
 
-Rosetta procesa cada par de forma independiente. Los pares de Nivel 2 que usan Google Translate serán rápidos. Los pares LLM de Nivel 1 serán más lentos pero de mayor calidad. Los pares entrenados de Nivel 3 utilizan los datos de entrenamiento del plugin.
+Rosetta procesa cada par de forma independiente. Los pares del Nivel 2 que usan Google Translate serán rápidos. Los pares LLM del Nivel 1 serán más lentos pero de mayor calidad. Los pares guiados del Nivel 3 utilizan los datos de entrenamiento del plugin.
 
 ### Actualizaciones incrementales
 
@@ -94,11 +94,11 @@ Después de la sincronización inicial, las ejecuciones posteriores solo traduce
 npx i18n-rosetta sync
 ```
 
-El archivo de bloqueo (`.i18n-rosetta.lock`) rastrea lo que se ha traducido, por lo que nunca volverá a traducir contenido estable.
+El archivo de bloqueo (`.i18n-rosetta.lock`) rastrea lo que se ha traducido, por lo que nunca volverá a traducir el contenido estable.
 
 ## Paso 6: Audite la calidad
 
-Compruebe el estado de todos los pares de idiomas:
+Verifique el estado de todos los pares de idiomas:
 
 ```bash
 npx i18n-rosetta status
@@ -151,7 +151,7 @@ Para un proyecto con 500 claves de origen en 30 idiomas:
 |------|-----------|--------|-----------------|
 | Nivel 1 (5 idiomas) | ja, ko, zh, de, pt | GPT-4o | ~$2.50/sincronización completa |
 | Nivel 2 (18 idiomas) | it, nl, pl, etc. | Google Translate | ~$0.90/sincronización completa |
-| Nivel 3 (4 idiomas) | crk, oj, mi, haw | GPT-4o-mini entrenado | ~$0.40/sincronización completa |
+| Nivel 3 (4 idiomas) | crk, oj, mi, haw | GPT-4o-mini guiado | ~$0.40/sincronización completa |
 | **Total** | **30 idiomas** | **Mixto** | **~$3.80/sincronización completa** |
 
 Las sincronizaciones incrementales (de 5 a 20 claves cambiadas) cuestan una fracción de una sincronización completa.
@@ -160,7 +160,7 @@ Las sincronizaciones incrementales (de 5 a 20 claves cambiadas) cuestan una frac
 
 - [Métodos de traducción](/docs/guides/translation-methods) — Cómo funciona cada método de traducción y cuándo usarlo
 - [Especificación de plugins](/docs/reference/plugin-spec) — Cree datos de entrenamiento para cualquiera de sus idiomas de Nivel 3
-- [Guía de CI/CD](/docs/guides/ci-cd) — Patrones de CI avanzados, incluidas las compilaciones de vista previa de PR
+- [Guía de CI/CD](/docs/guides/ci-cd) — Patrones avanzados de CI, incluidas las compilaciones de vista previa de PR
 - [Puerta de calidad](/docs/concepts/quality-gate) — Cómo Rosetta valida cada traducción antes de escribirla
 - [Idiomas compatibles](/docs/reference/supported-languages) — Lista completa de códigos de idioma y compatibilidad de métodos
 - [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — Agregue datos de entrenamiento para idiomas sin una amplia cobertura de MT

@@ -1,36 +1,36 @@
 ---
 sidebar_position: 1
 title: "สร้าง Plugin แปลภาษา"
-description: "บทช่วยสอนแบบ End-to-end: พัฒนา coaching data, ทำ benchmark ด้วย eval harness, ส่งออก Plugin และ deploy ด้วย rosetta"
+description: "บทช่วยสอนแบบ End-to-end: พัฒนาข้อมูล Coaching, ทำ Benchmark ด้วย eval harness, Export Plugin และ Deploy ด้วย rosetta"
 ---
 # บทช่วยสอน: สร้าง Translation Plugin
 
-สร้าง custom translation method ตั้งแต่เริ่มต้น, ทำการ benchmark, และ deploy เป็น rosetta plugin นี่คือเวิร์กโฟลว์ที่สมบูรณ์สำหรับการเพิ่มคู่ภาษาใหม่ที่ไม่มี API สำเร็จรูปรองรับ
+สร้างวิธีการแปลแบบกำหนดเองตั้งแต่เริ่มต้น ทำการวัดประสิทธิภาพ และปรับใช้เป็นปลั๊กอิน rosetta นี่คือเวิร์กโฟลว์ที่สมบูรณ์สำหรับการเพิ่มคู่ภาษาใหม่ที่ไม่มี API สำเร็จรูปรองรับ
 
-**สิ่งที่คุณจะได้สร้าง:** coached translation plugin สำหรับภาษาฝรั่งเศสแบบเป็นทางการ พร้อมการบังคับใช้คำศัพท์, กฎไวยากรณ์, และคะแนน benchmark
+**สิ่งที่คุณจะได้สร้าง:** ปลั๊กอินการแปลแบบมีคำแนะนำ (coached translation) สำหรับภาษาฝรั่งเศสแบบเป็นทางการ พร้อมการบังคับใช้คำศัพท์ กฎไวยากรณ์ และคะแนนการวัดประสิทธิภาพ
 
 **เวลา:** 30–45 นาที
 
 **ข้อกำหนดเบื้องต้น:**
 - ติดตั้ง i18n-rosetta แล้ว (`npm install --save-dev i18n-rosetta`)
-- OpenRouter API key (`OPENROUTER_API_KEY`)
+- คีย์ OpenRouter API (`OPENROUTER_API_KEY`)
 - Python 3.10+ (สำหรับ eval harness)
 
 ---
 
 ## ขั้นตอนที่ 1: ระบุปัญหา
 
-คุณกำลังแปล SaaS dashboard เป็นภาษาฝรั่งเศส วิธี `llm` ที่เป็นค่าเริ่มต้นให้คำแปลที่ถูกต้องแต่ไม่สม่ำเสมอ:
+คุณกำลังแปลแดชบอร์ด SaaS เป็นภาษาฝรั่งเศส วิธีการ `llm` ที่เป็นค่าเริ่มต้นให้คำแปลที่ถูกต้องแต่ไม่สม่ำเสมอ:
 
-- บางครั้ง "dashboard" ถูกแปลเป็น "tableau de bord" และบางครั้งเป็น "panneau de contrôle"
+- บางครั้ง "dashboard" ถูกแปลเป็น "tableau de bord" แต่บางครั้งก็เป็น "panneau de contrôle"
 - น้ำเสียงสลับไปมาระหว่างรูปแบบ `tu` และ `vous`
 - คำศัพท์ทางเทคนิคถูกทับศัพท์ภาษาอังกฤษอย่างไม่สม่ำเสมอ
 
-คุณต้องการ **terminology enforcement** (การบังคับใช้คำศัพท์) และ **register control** (การควบคุมระดับภาษา) ซึ่ง prompt ของ LLM ทั่วไปไม่มีให้
+คุณต้องการ **การบังคับใช้คำศัพท์** และ **การควบคุมระดับภาษา** ซึ่ง prompt ของ LLM ทั่วไปไม่มีให้
 
-## ขั้นตอนที่ 2: สร้าง Coaching Data
+## ขั้นตอนที่ 2: สร้างข้อมูลคำแนะนำ (Coaching Data)
 
-สร้างไฟล์ coaching ที่เข้ารหัสข้อกำหนดทางภาษาของคุณ:
+สร้างไฟล์คำแนะนำที่เข้ารหัสข้อกำหนดทางภาษาของคุณ:
 
 ```bash
 mkdir -p .rosetta/coaching
@@ -62,10 +62,10 @@ mkdir -p .rosetta/coaching
 
 **หน้าที่ของแต่ละฟิลด์:**
 - **`grammar_rules`** — ถูกแทรกเข้าไปใน system prompt ของ LLM เพื่อเป็นข้อจำกัดที่ชัดเจน
-- **`dictionary`** — จับคู่กับ source keys; เมื่อมีคำศัพท์ในพจนานุกรมปรากฏขึ้น จะถูกแทรกเป็น "required terminology" (คำศัพท์ที่บังคับใช้) ใน prompt
+- **`dictionary`** — จับคู่กับคีย์ต้นทาง; เมื่อพบคำศัพท์ในพจนานุกรม คำนั้นจะถูกแทรกเป็น "คำศัพท์ที่จำเป็น" ใน prompt
 - **`style_notes`** — ต่อท้าย system prompt เพื่อเป็นคำแนะนำรูปแบบทั่วไป
 
-## ขั้นตอนที่ 3: กำหนดค่า Pair
+## ขั้นตอนที่ 3: กำหนดค่าคู่ภาษา
 
 บอกให้ rosetta ใช้ `llm-coached` สำหรับภาษาฝรั่งเศส:
 
@@ -95,20 +95,20 @@ mkdir -p .rosetta/coaching
 npx i18n-rosetta sync --dry
 ```
 
-ตรวจสอบผลลัพธ์ของ dry-run ตรวจดูว่า:
-- ✅ คำศัพท์ในพจนานุกรมถูกใช้อย่างสม่ำเสมอ ("tableau de bord" ไม่ใช่ "panneau de contrôle")
+ตรวจสอบผลลัพธ์จากการรันแบบ dry-run ตรวจสอบว่า:
+- ✅ มีการใช้คำศัพท์ในพจนานุกรมอย่างสม่ำเสมอ ("tableau de bord" ไม่ใช่ "panneau de contrôle")
 - ✅ มีการใช้รูปแบบ `vous` ตลอดทั้งข้อความ
 - ✅ คำศัพท์ทางเทคนิคตรงกับพจนานุกรมของคุณ
 
-จากนั้นรันการซิงค์จริง:
+จากนั้นให้รันการซิงค์จริง:
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-## ขั้นตอนที่ 5: ทำ Benchmark ด้วย Eval Harness (ไม่บังคับ)
+## ขั้นตอนที่ 5: วัดประสิทธิภาพด้วย Eval Harness (ไม่บังคับ)
 
-หากคุณต้องการคะแนนคุณภาพ — ซึ่งคุณต้องการแน่นอน เพราะปลั๊กอินจะมาพร้อมกับข้อมูล benchmark — ให้ใช้ eval harness ที่มาคู่กัน
+หากคุณต้องการคะแนนคุณภาพ — ซึ่งคุณควรมี เนื่องจากปลั๊กอินจะมาพร้อมกับข้อมูลการวัดประสิทธิภาพ — ให้ใช้ eval harness ที่มาคู่กัน
 
 ### ติดตั้ง Harness
 
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 ### สร้าง Reference Corpus
 
-สร้างไฟล์ที่มี source strings และคำแปลที่ถูกต้องแน่นอน:
+สร้างไฟล์ที่มีข้อความต้นทางและคำแปลที่ทราบว่าถูกต้อง:
 
 ```json title="corpus/french-formal.json"
 [
@@ -143,7 +143,7 @@ pip install -r requirements.txt
 ]
 ```
 
-### รัน Benchmark
+### รันการวัดประสิทธิภาพ
 
 ```bash
 python harness.py eval \
@@ -154,12 +154,12 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-ผลลัพธ์จาก harness:
-- **chrF++** — Character-level F-score (0–100) ค่าที่สูงกว่า 70 ถือว่าดีมาก
-- **BLEU** — N-gram overlap (0–100) ค่าที่สูงกว่า 40 ถือว่าแข็งแกร่งสำหรับ coached translation
-- **Exact match rate** — สัดส่วนของคำแปลที่ตรงกับข้อมูลอ้างอิงแบบเป๊ะๆ
+ผลลัพธ์ที่ได้จาก harness:
+- **chrF++** — คะแนน F-score ระดับตัวอักษร (0–100) คะแนนที่สูงกว่า 70 ถือว่าดีมาก
+- **BLEU** — การทับซ้อนของ N-gram (0–100) คะแนนที่สูงกว่า 40 ถือว่าแข็งแกร่งสำหรับการแปลแบบมีคำแนะนำ
+- **Exact match rate** — สัดส่วนของคำแปลที่ตรงกับข้อมูลอ้างอิงทุกประการ
 
-### Export ปลั๊กอิน
+### ส่งออกปลั๊กอิน
 
 เมื่อคุณพอใจกับคะแนนแล้ว:
 
@@ -184,9 +184,9 @@ french-formal-v1/
 npx i18n-rosetta plugin install ./french-formal-v1/
 ```
 
-คำสั่งนี้จะคัดลอกปลั๊กอินไปยัง `.rosetta/methods/french-formal-v1/`
+สิ่งนี้จะคัดลอกปลั๊กอินไปยัง `.rosetta/methods/french-formal-v1/`
 
-อัปเดต config ของคุณเพื่อใช้งาน:
+อัปเดตการกำหนดค่าของคุณเพื่อใช้งาน:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -198,7 +198,7 @@ npx i18n-rosetta plugin install ./french-formal-v1/
 }
 ```
 
-## ขั้นตอนที่ 7: ตรวจสอบความถูกต้อง
+## ขั้นตอนที่ 7: ตรวจสอบ
 
 ```bash
 # Check plugin is installed and shows benchmark scores
@@ -234,14 +234,14 @@ flowchart LR
 ```
 
 ตอนนี้คุณมี:
-1. **Coaching data** — กฎไวยากรณ์และคำศัพท์ที่บังคับใช้เพื่อความสม่ำเสมอ
-2. **Benchmark scores** — คุณภาพที่วัดผลได้ซึ่งมาพร้อมกับปลั๊กอิน
-3. **A portable plugin** — `method.json` + coaching data ที่สามารถติดตั้งได้บนทุกเครื่อง
-4. **Production deployment** — ผสานรวมเข้ากับ sync pipeline ของคุณ
+1. **ข้อมูลคำแนะนำ** — กฎไวยากรณ์และคำศัพท์ที่บังคับใช้ความสม่ำเสมอ
+2. **คะแนนการวัดประสิทธิภาพ** — คุณภาพที่วัดผลได้ซึ่งมาพร้อมกับปลั๊กอิน
+3. **ปลั๊กอินแบบพกพา** — `method.json` + ข้อมูลคำแนะนำ สามารถติดตั้งได้บนทุกเครื่อง
+4. **การปรับใช้จริง** — ผสานรวมเข้ากับไปป์ไลน์การซิงค์ของคุณ
 
 ## ขั้นตอนต่อไป
 
-- **[Plugin Specification](/docs/reference/plugin-spec)** — ข้อมูลอ้างอิงรูปแบบ manifest ฉบับเต็ม
-- **[Translation Methods](/docs/guides/translation-methods)** — เปรียบเทียบวิธีการแปลทั้งสี่วิธี
-- **[Low-Resource Languages](https://mtevalarena.org/docs/community/low-resource-languages)** — นำรูปแบบนี้ไปใช้กับภาษาที่ไม่มี API รองรับ
-- **[Translate 30 Languages](/docs/tutorials/translate-30-languages)** — ขยายสเกลโปรเจกต์ของคุณสู่กลุ่มผู้ชมทั่วโลก
+- **[ข้อกำหนดของปลั๊กอิน](/docs/reference/plugin-spec)** — ข้อมูลอ้างอิงรูปแบบ manifest ฉบับเต็ม
+- **[วิธีการแปล](/docs/guides/translation-methods)** — เปรียบเทียบวิธีการทั้งสี่แบบ
+- **[ภาษาที่มีทรัพยากรน้อย](https://mtevalarena.org/docs/community/low-resource-languages)** — นำรูปแบบนี้ไปใช้กับภาษาที่ไม่มี API รองรับ
+- **[แปล 30 ภาษา](/docs/tutorials/translate-30-languages)** — ขยายสเกลโปรเจกต์ของคุณสู่กลุ่มผู้ชมทั่วโลก

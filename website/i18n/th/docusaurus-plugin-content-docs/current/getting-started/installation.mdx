@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 ## ข้อกำหนดเบื้องต้น
 
 - **Node.js 20.11+** (native ESM)
-- API key สำหรับการแปลภาษา (ดูรายละเอียดด้านล่าง)
+- คีย์ API สำหรับการแปลภาษา (ดูรายละเอียดด้านล่าง)
 
 ## ติดตั้ง
 
@@ -45,19 +45,25 @@ yarn add --dev i18n-rosetta
   </TabItem>
 </Tabs>
 
-## รับ API Key
+## รับคีย์ API
 
-Rosetta จำเป็นต้องใช้ระบบเบื้องหลัง (backend) สำหรับการแปลภาษา โปรดเลือกหนึ่งรายการ:
+Rosetta จำเป็นต้องใช้แบ็กเอนด์สำหรับการแปลภาษา โปรดเลือกหนึ่งรายการ:
 
-| ผู้ให้บริการ | Environment Variable | เหมาะสำหรับ |
+| ผู้ให้บริการ | ตัวแปรสภาพแวดล้อม | เหมาะสำหรับ |
 |----------|---------------------|----------|
-| **OpenRouter** (แนะนำ) | `OPENROUTER_API_KEY` | โปรเจกต์ที่มีเนื้อหาจำนวนมาก, Markdown, โมเดลมากกว่า 200+ รายการ |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | ข้อมูลแบบ key-value จำนวนมาก (รองรับ 130+ ภาษา) |
+| **OpenRouter** (แนะนำ) | `OPENROUTER_API_KEY` | โปรเจกต์ที่มีเนื้อหาเยอะ, Markdown, โมเดลมากกว่า 200+ รายการ |
+| **Gemini** (ใช้งานฟรี) | `GEMINI_API_KEY` | เริ่มต้นโดยไม่มีค่าใช้จ่าย, คุณภาพดี |
+| **OpenAI** | `OPENAI_API_KEY` | เข้าถึง GPT-4o โดยตรง |
+| **Anthropic** | `ANTHROPIC_API_KEY` | เข้าถึง Claude โดยตรง, ข้อความที่มีความละเอียดอ่อน |
+| **DeepL** | `DEEPL_API_KEY` | ภาษายุโรป, มีการตั้งค่าระดับความเป็นทางการในตัว |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | คู่ key-value ปริมาณมาก, รองรับมากกว่า 130+ ภาษา |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, รองรับมากกว่า 100+ ภาษา |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | โฮสต์ด้วยตัวเอง, เน้นความเป็นส่วนตัว |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
 
-[OpenRouter](https://openrouter.ai) ให้บริการ API แบบรวมศูนย์สำหรับโมเดล LLM มากกว่า 200+ รายการ โดยมีแพ็กเกจใช้งานฟรี
+[OpenRouter](https://openrouter.ai) ให้บริการ API แบบรวมศูนย์สำหรับโมเดล LLM มากกว่า 200+ รายการ มีระดับการใช้งานฟรี
 
 ```bash
 # Sign up at https://openrouter.ai, then:
@@ -70,7 +76,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-เหมาะสำหรับ: โปรเจกต์ที่มีเนื้อหาจำนวนมาก, การแปล Markdown และโปรเจกต์ที่ต้องการการปกป้องเนื้อหาตามบริบท (code blocks, shortcodes, ตัวแปร interpolation)
+เหมาะสำหรับ: โปรเจกต์ที่มีเนื้อหาเยอะ, การแปล Markdown และโปรเจกต์ที่ต้องการการปกป้องเนื้อหาแบบรับรู้บริบท (บล็อกโค้ด, ชอร์ตโค้ด, ตัวแปร interpolation)
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ OPENROUTER_API_KEY=sk-or-v1-your-key-here
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-เหมาะสำหรับ: ข้อมูลสตริงแบบ key-value จำนวนมาก (รองรับ 130+ ภาษา) **ไม่แนะนำ** สำหรับเนื้อหา Markdown — เนื่องจาก Google Translate ไม่สามารถรับรู้ถึง code blocks, shortcodes หรือตัวแปร interpolation ได้
+เหมาะสำหรับ: คู่สตริง key-value ปริมาณมาก (มากกว่า 130+ ภาษา) **ไม่แนะนำ** สำหรับเนื้อหา Markdown — Google Translate ไม่สามารถรับรู้บล็อกโค้ด, ชอร์ตโค้ด หรือตัวแปร interpolation ได้
 
 :::tip การตรวจจับอัจฉริยะ
-หากมีการตั้งค่าเพียง `GOOGLE_TRANSLATE_API_KEY` (ไม่มีคีย์ OpenRouter) rosetta จะสลับไปใช้ Google Translate โดยอัตโนมัติ คุณไม่จำเป็นต้องเปลี่ยนการตั้งค่าใดๆ
+หากมีการตั้งค่าเพียง `GOOGLE_TRANSLATE_API_KEY` (ไม่มีคีย์ OpenRouter) rosetta จะสลับไปใช้ Google Translate โดยอัตโนมัติ ไม่จำเป็นต้องเปลี่ยนการตั้งค่าใดๆ
 :::
 
   </TabItem>
@@ -94,4 +100,4 @@ export GOOGLE_TRANSLATE_API_KEY=...
 npx i18n-rosetta --help
 ```
 
-คุณควรจะเห็นรายการคำสั่งที่สามารถใช้งานได้ ตอนนี้คุณพร้อมสำหรับ [เริ่มต้นใช้งานด่วน](/docs/getting-started/quick-start) แล้ว
+คุณควรจะเห็นรายการคำสั่งที่ใช้งานได้ คุณพร้อมสำหรับ [เริ่มต้นใช้งานด่วน](/docs/getting-started/quick-start) แล้ว

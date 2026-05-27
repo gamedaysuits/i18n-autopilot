@@ -1,25 +1,25 @@
 ---
 sidebar_position: 8
-title: "Pag-serve ng Custom Method bilang isang API"
-description: "I-wrap ang mga complex translation pipelines (FST gates, multi-step LLM chains) bilang isang HTTP service at i-plug ito sa i18n-rosetta gamit ang api method."
+title: "Pag-serve ng Custom Method bilang API"
+description: "I-wrap ang mga complex translation pipeline (FST gates, multi-step LLM chains) bilang isang HTTP service at i-plug ito sa i18n-rosetta gamit ang api method."
 ---
 # Pag-serve ng Custom Method bilang isang API
 
-Hinahayaan po kayo ng **`api` method** ng i18n-rosetta na i-point ang anumang translation pair sa isang external HTTP endpoint. Ganito niyo po i-integrate ang mga pipelines na masyadong complex para sa isang single LLM prompt — morphological analyzers, finite-state transducers (FSTs), multi-step LLM chains, o anumang custom research method na na-build niyo.
+Ang **`api` method** ng i18n-rosetta ay nagbibigay-daan sa inyo na i-point ang anumang translation pair sa isang external na HTTP endpoint. Ganito niyo po mai-integrate ang mga pipelines na masyadong complex para sa isang single LLM prompt — mga morphological analyzers, finite-state transducers (FSTs), multi-step LLM chains, o anumang custom research method na na-build ninyo.
 
 ## Bakit isang API Service?
 
-May mga translation pipelines po na hindi pwedeng i-run sa loob ng isang simpleng prompt-response cycle:
+May mga translation pipelines na hindi pwedeng mag-run sa loob ng isang simpleng prompt-response cycle:
 
-| Pipeline step | Halimbawa |
+| Pipeline step | Example |
 |---|---|
 | **Morphological decomposition** | I-split ang mga polysynthetic words sa mga morphemes bago ang translation |
-| **FST validation** | I-reject ang mga outputs na nag-violate ng phonological o morphological rules |
+| **FST validation** | I-reject ang mga outputs na nag-violate ng mga phonological o morphological rules |
 | **Multi-step LLM chains** | Generate → verify → correct cycles gamit ang iba't ibang models |
-| **Dictionary lookup** | I-cross-reference ang isang curated bilingual dictionary sa kalagitnaan ng pipeline |
-| **Human-in-the-loop** | I-queue ang mga uncertain translations para sa expert review |
+| **Dictionary lookup** | Mag-cross-reference sa isang curated bilingual dictionary mid-pipeline |
+| **Human-in-the-loop** | I-queue ang mga uncertain na translations para sa expert review |
 
-Tine-treat po ng `api` method ang inyong pipeline bilang isang black box — magse-send ang i18n-rosetta ng source strings, at magre-return naman ang inyong service ng translations. Kung ano man po ang mangyari sa loob ay nakadepende na sa inyo.
+Tini-treat ng `api` method ang inyong pipeline bilang isang black box — magse-send ang i18n-rosetta ng mga source strings, at magre-return naman ng translations ang inyong service. Kung ano ang mangyayari sa loob ay nakadepende na po sa inyo.
 
 ## Architecture
 
@@ -35,11 +35,11 @@ graph LR
 
 ## Pag-set Up ng Inyong Service
 
-Kailangan pong mag-implement ang inyong API service ng isang single endpoint na nag-a-accept at nagre-return ng JSON:
+Kailangang mag-implement ang inyong API service ng isang single endpoint na nag-a-accept at nagre-return ng JSON:
 
 ### Request Format
 
-Ise-send po ng rosetta ang eksaktong JSON body na ito (tingnan ang [api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js)):
+Ise-send ng rosetta ang eksaktong JSON body na ito (tingnan ang [api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js)):
 
 ```json
 POST /translate
@@ -243,15 +243,15 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Best Practices
 
-1. **Mag-return ng empty strings para sa failures** — Huwag i-return ang source string bilang isang "translation." I-return ang `""` at hayaan ang fallback prefix mechanism ng i18n-rosetta na mag-handle nito.
+1. **Mag-return ng empty strings para sa mga failures** — Huwag i-return ang source string bilang isang "translation." Mag-return ng `""` at hayaan ang fallback prefix mechanism ng i18n-rosetta na mag-handle nito.
 2. **Mag-include ng confidence scores** — Kung kaya ng inyong pipeline na mag-estimate ng quality, i-return ito sa metadata. Makakatulong po ito sa quality auditing.
 3. **Mag-implement ng health checks** — Mag-add ng `GET /health` endpoint para ma-verify ng i18n-rosetta ang connectivity bago mag-start ng isang malaking sync.
-4. **Mag-rate limit nang maayos** — Kung may throughput limits ang inyong pipeline, mag-return ng `429` status codes. Magba-back off po ang batch system ng i18n-rosetta.
+4. **Mag-rate limit nang maayos** — Kung may throughput limits ang inyong pipeline, mag-return ng `429` status codes. Magba-back off ang batch system ng i18n-rosetta.
 5. **I-log ang lahat** — Pwedeng mag-fail silently ang mga multi-step pipelines. I-log ang input/output ng bawat step para sa debugging.
 
 ## Licensing
 
-Fully open po ang `api` method pattern — walang licensing restrictions sa pag-wrap ng inyong sariling translation pipeline bilang isang HTTP service. Available po ang `gds-mt-eval-harness` sa ilalim ng MIT license para sa mga reference implementations.
+Ang `api` method pattern ay fully open — walang licensing restrictions sa pag-wrap ng inyong sariling translation pipeline bilang isang HTTP service. Available ang `gds-mt-eval-harness` sa ilalim ng MIT license para sa mga reference implementations.
 
 ## Tingnan Din
 

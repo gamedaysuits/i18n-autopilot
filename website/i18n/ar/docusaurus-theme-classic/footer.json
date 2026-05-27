@@ -62,5 +62,9 @@
   "copyright": {
     "message": "حقوق الطبع والنشر © 2026 Curtis Forbes. تم الإنشاء باستخدام Docusaurus.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "بناء مسار",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

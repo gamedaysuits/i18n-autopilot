@@ -18,6 +18,9 @@ i18n-rosetta integrity         Audit locale files for format/encoding issues
 i18n-rosetta status            Show pair configuration, plugins, and quality tiers
 i18n-rosetta provenance        Audit translation resource licensing
 i18n-rosetta plugin <sub>      Manage method plugins (install, remove, list)
+i18n-rosetta fonts <sub>       Download web fonts for PUA script converters
+i18n-rosetta tm <sub>          Manage Translation Memory cache (stats, clear)
+i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 ```
 
 各コマンドの詳細なヘルプを表示するには、`i18n-rosetta <command> --help` を実行します。
@@ -35,14 +38,19 @@ i18n-rosetta plugin <sub>      Manage method plugins (install, remove, list)
 --model <model>         Override translation model
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
---dry                   Preview changes without writing files
+--dry, --dry-run        Preview changes without writing files
+--concurrency <n>       Max parallel API calls for content translation (default: 12)
+--force-content         Re-translate all content files (clears content lock)
+--force-keys <keys>     Comma-separated dot-notation keys to force re-translate
+--no-tm                 Skip Translation Memory cache for this sync run
+--locale <code>         Target locale (xliff export, tm clear)
 ```
 
 ---
 
 ## init
 
-`i18n-rosetta.config.json` を作成する対話型のセットアップウィザードです。ソースロケール、ターゲット言語、ファイル形式、および翻訳モデルの設定をガイドします。
+`i18n-rosetta.config.json` を作成する対話型のセットアップウィザードです。ソース言語、ターゲット言語、ファイル形式、および翻訳モデルの設定をガイドします。
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -51,7 +59,7 @@ i18n-rosetta init --yes --langs fr,de,ja   # quick setup with specific languages
 i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 ```
 
-**`--langs` オプション**: ターゲット言語コードのカンマ区切りリストです。言語のプロンプトをスキップし、各言語にデフォルトのレジスター（文体）プリセットを適用します。完全に非対話型のセットアップを行うには、`--yes` と組み合わせます。
+**`--langs` オプション**: ターゲット言語コードのカンマ区切りリストです。言語のプロンプトをスキップし、各言語のデフォルトの文体プリセットを適用します。完全に非対話型のセットアップを行うには、`--yes` と組み合わせます。
 
 **言語プリセット**: ターゲット言語のプロンプトが表示されたら、プリセット名を入力できます。
 - `european` → fr, de, es, it, pt, nl
@@ -69,21 +77,28 @@ i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 
 ```bash
 i18n-rosetta sync                                   # translate everything
-i18n-rosetta sync --dry                             # preview only
+i18n-rosetta sync --dry-run                         # preview only
 i18n-rosetta sync --force-keys "hero.title"         # force re-translate
 i18n-rosetta sync --force-keys "a.title,a.subtitle" # multiple keys
+i18n-rosetta sync --force-content                   # re-translate all Markdown/MDX
 i18n-rosetta sync --content-dir ./content           # include Hugo Markdown
 i18n-rosetta sync --method google-translate          # force Google Translate
+i18n-rosetta sync --concurrency 20                  # 20 parallel API calls
 i18n-rosetta sync --fallback                         # write [EN] prefixes on failure
+i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**変更の検出**: rosetta は SHA-256 ハッシュを `.i18n-rosetta.lock` に保存します。ソースの値が変更されると、次回の同期時にそれらのキーが自動的に再翻訳されます。すべての開発者でベースラインを共有できるように、ロックファイルをコミットしてください。
+**翻訳メモリ (Translation Memory)**: デフォルトでは、`sync` は `.rosetta/tm.json` を読み込み、変更されていないソース値に対してキャッシュされた翻訳を提供します。キャッシュをバイパスするには `--no-tm` を使用します（翻訳プロバイダーを切り替える場合や品質のデバッグ時に便利です）。[翻訳メモリ](/docs/concepts/translation-memory)を参照してください。
+
+**変更検知**: rosettaは `.i18n-rosetta.lock` にSHA-256ハッシュを保存します。ソース値が変更されると、次回の同期時にそれらのキーが自動的に再翻訳されます。すべての開発者が基準を共有できるように、ロックファイルをコミットしてください。
+
+**並列処理**: コンテンツの翻訳（Markdown、MDX、ブログ記事）は、同時実行数を設定可能なフラットなワークアイテムプールで実行されます。デフォルトは12の並列API呼び出しです。`--concurrency` または `concurrency` 設定フィールドで上書きできます。JSONキーの翻訳はロケールごとに順次実行されます（十分に高速なため、並列化によるメリットはありません）。
 
 ---
 
 ## watch
 
-ソースロケールファイルが変更されたときに自動同期します。`Ctrl+C` で中断されるまで実行されます。
+ソースのロケールファイルが変更されたときに自動同期します。`Ctrl+C` で中断されるまで実行されます。
 
 ```bash
 i18n-rosetta watch
@@ -93,7 +108,7 @@ i18n-rosetta watch
 
 ## audit
 
-翻訳されていない `[EN]` プレフィックス付きのフォールバック値をすべてリストします。見つかった場合はコード 1 で終了します。不完全な翻訳がある場合にビルドを失敗させる CI ゲートとして使用してください。
+未翻訳の `[EN]` プレフィックスが付いたフォールバック値をすべて一覧表示します。見つかった場合はコード1で終了します。翻訳が不完全な場合にビルドを失敗させるCIゲートとして使用します。
 
 ```bash
 i18n-rosetta audit
@@ -103,7 +118,7 @@ i18n-rosetta audit
 
 ## lint
 
-i18n 翻訳呼び出しを使用すべき、ハードコードされたユーザー向け文字列がないかソースコードをスキャンします。フレームワーク (next-intl、react-i18next、vue-i18n、Hugo) を自動検出します。
+ソースコードをスキャンし、i18nの翻訳呼び出しを使用すべきハードコードされたユーザー向け文字列を検索します。フレームワーク（next-intl、react-i18next、vue-i18n、Hugo）を自動検出します。
 
 ```bash
 i18n-rosetta lint                    # exits 1 if issues found
@@ -113,18 +128,18 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 ```
 
 **検出対象:**
-- JSX テキスト、`placeholder`、`alt`、`aria-label`、`title` 内のハードコードされた文字列
-- ユーザー向けコンテンツが含まれているが、i18n フレームワークのインポートがないファイル
+- JSXテキスト、`placeholder`、`alt`、`aria-label`、`title` 内のハードコードされた文字列
+- ユーザー向けコンテンツが含まれているが、i18nフレームワークのインポートがないファイル
 - デッドキー — どのソースファイルからも参照されていないロケールキー
-- カバレッジスコア — i18n を経由している文字列の割合
+- カバレッジスコア — i18nを経由している文字列の割合
 
-**除外設定**: プロジェクトのルートに `.rosettaignore` を作成します (`.gitignore` のような glob パターンを使用)。
+**除外**: プロジェクトのルートに `.rosettaignore` を作成します（`.gitignore` のようなglobパターン）。
 
 ---
 
 ## wrap
 
-`lint` によって検出されたハードコードされた文字列を `t()` 呼び出しで自動的にラップします。ファイルを変更する前に自動バックアップを作成します。
+`lint` によって検出されたハードコードされた文字列を、自動的に `t()` の呼び出しでラップします。ファイルを変更する前に自動バックアップを作成します。
 
 ```bash
 i18n-rosetta wrap                    # auto-wrap with backup
@@ -132,17 +147,17 @@ i18n-rosetta wrap --dry              # preview wrapping changes
 i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 ```
 
-**セーフティゲート:**
-1. Git のクリーンチェック (dry-run ではスキップ)
+**安全対策:**
+1. Gitのクリーンチェック（ドライランではスキップ）
 2. `.rosetta-backup/` への自動バックアップ
-3. 各ファイル書き込み前の差分プレビュー
+3. 各ファイルの書き込み前の差分プレビュー
 4. バックアップから復元するための `--undo` サポート
 
 ---
 
 ## seo
 
-多言語サイト用の SEO アーティファクトを生成します。
+多言語サイト向けのSEO成果物を生成します。
 
 ```bash
 i18n-rosetta seo hreflang                                        # print hreflang tags
@@ -153,8 +168,8 @@ i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schem
 | サブコマンド | 出力 |
 |------------|--------|
 | `hreflang` | `<link rel="alternate" hreflang>` タグ |
-| `sitemap` | 多言語 `sitemap.xml` |
-| `jsonld` | JSON-LD WebSite 言語スキーマ |
+| `sitemap` | 多言語の `sitemap.xml` |
+| `jsonld` | JSON-LD WebSite言語スキーマ |
 
 ---
 
@@ -168,16 +183,68 @@ i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
 **チェック内容:**
-- プレースホルダーの破損 (例: ソースには `{name}` が存在するが、ターゲットにはない)
-- エンコーディングの問題 (文字化け、無効な Unicode)
-- 未翻訳のコピー (ターゲットの値がソースと同一)
-- 孤立したキー (ターゲットには存在するがソースには存在しないキー)
+- プレースホルダーの破損（例: ソースには `{name}` が存在するが、ターゲットにはない）
+- エンコーディングの問題（文字化け、無効なUnicode）
+- 未翻訳のコピー（ターゲットの値がソースと完全に一致する）
+- 孤立したキー（ターゲットには存在するがソースには存在しないキー）
+- ICU MessageFormatの複数形カテゴリの完全性（例: アラビア語には6つのカテゴリが必要）
+
+---
+
+## tm
+
+翻訳メモリ（Translation Memory）キャッシュ（`.rosetta/tm.json`）を管理します。TMは以前の翻訳を保存し、その後の同期時にAPIを呼び出す代わりにそれらを提供します。
+
+```bash
+i18n-rosetta tm stats                  # show cache statistics
+i18n-rosetta tm clear                  # clear cache (with confirmation)
+i18n-rosetta tm clear --yes            # clear without confirmation
+i18n-rosetta tm clear --locale fr      # clear only French entries
+```
+
+| サブコマンド | 出力 |
+|------------|--------|
+| `stats` | エントリ数、ファイルサイズ、ロケールごとの内訳 |
+| `clear` | キャッシュファイルの削除（全体またはロケールごと） |
+
+| オプション | 効果 |
+|--------|--------|
+| `--locale <code>` | 1つのロケールのエントリのみをクリアする |
+| `--yes` | 確認プロンプトをスキップする |
+
+TMの仕組みとクリアするタイミングについては、[翻訳メモリ](/docs/concepts/translation-memory)を参照してください。
+
+---
+
+## xliff
+
+プロの翻訳者によるレビューのために、XLIFF 1.2ファイルをエクスポートおよびインポートします。XLIFFは、memoQ、SDL Trados、PhraseなどのCATツールでサポートされている世界共通の交換フォーマットです。
+
+```bash
+i18n-rosetta xliff export --locale fr                   # export French XLIFF
+i18n-rosetta xliff export --locale ja --out ./review/   # custom output path
+i18n-rosetta xliff import .rosetta/xliff/fr.xliff       # import reviewed file
+i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
+```
+
+| サブコマンド | 出力 |
+|------------|--------|
+| `export` | ソースとターゲットのロケールファイルから `.xliff` を生成する |
+| `import` | レビュー済みの `.xliff` 翻訳をロケールファイルにマージする |
+
+| オプション | 効果 |
+|--------|--------|
+| `--locale <code>` | エクスポートするターゲットロケール（必須） |
+| `--out <path>` | カスタムの出力パスまたはディレクトリ |
+| `--dry` | 書き込まずにインポートをプレビューする |
+
+ワークフローの全体については、[プロの翻訳者との連携](/docs/guides/professional-translators)を参照してください。
 
 ---
 
 ## status
 
-ペア構成、インストールされているプラグイン、品質ティア、およびベンチマークスコアを表示します。
+ペア設定、インストール済みのプラグイン、品質ティア、およびベンチマークスコアを表示します。
 
 ```bash
 i18n-rosetta status
@@ -187,7 +254,7 @@ i18n-rosetta status
 
 ## provenance
 
-インストールされているすべてのプラグインについて、翻訳リソースのライセンスを監査します。
+インストールされているすべてのプラグインの翻訳リソースのライセンスを監査します。
 
 ```bash
 i18n-rosetta provenance
@@ -197,7 +264,7 @@ i18n-rosetta provenance
 
 ## plugin
 
-翻訳メソッドプラグインを管理します。プラグインは、`.rosetta/methods/` にインストールされるパッケージ化された翻訳レシピです。
+翻訳メソッドのプラグインを管理します。プラグインは、`.rosetta/methods/` にインストールされるパッケージ化された翻訳レシピです。
 
 ```bash
 i18n-rosetta plugin list                      # show installed plugins
@@ -205,13 +272,44 @@ i18n-rosetta plugin install ./my-method/      # install from local directory
 i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 ```
 
-プラグインマニフェストの形式については、[プラグイン仕様](/docs/reference/plugin-spec)を参照してください。
+プラグインマニフェストのフォーマットについては、[プラグイン仕様](/docs/reference/plugin-spec)を参照してください。
 
 ---
 
+## fonts
+
+人工言語スクリプトコンバーター用のPUA Webフォントをダウンロードおよび管理します。私用領域（Private Use Area）の文字を使用する言語（クリンゴン語、シンダール語、クリプトン語など）は、スクリプトを描画するためにカスタムWebフォントを必要とします。このコマンドは、検証済みのオープンソースリポジトリからそれらをダウンロードします。
+
+```bash
+i18n-rosetta fonts list                           # show needed fonts
+i18n-rosetta fonts install                        # download all needed fonts
+i18n-rosetta fonts install --css                  # also generate CSS snippet
+i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
+```
+
+| サブコマンド | 出力 |
+|------------|--------|
+| `list` | 必要なPUAフォントとそのインストール状況を表示する |
+| `install` | 設定された言語のフォントをダウンロードする |
+
+| オプション | 効果 |
+|--------|--------|
+| `--dir <path>` | フォントの出力ディレクトリを上書きする（プロジェクトタイプから自動検出） |
+| `--css` | フォントと一緒に `conlang-fonts.css` スニペットを生成する |
+| `--config <path>` | 設定ファイルへのパス（どの言語がフォントを必要とするかを検出するために使用） |
+
+**自動検出:** 出力ディレクトリはプロジェクトの構造から推測されます:
+- **Docusaurus** → `static/fonts/` または `website/static/fonts/`
+- **Hugo** → `static/fonts/`
+- **デフォルト** → `public/fonts/`
+
+**ネイティブUnicodeコンバーター**（`crk` → クリー文字、`sr` → セルビア語キリル文字）は、フォントのインストールを必要としません。
+
+PUAフォントの詳細については、[人工言語、スクリプト、正書法](/docs/guides/conlangs-scripts-orthography)を参照してください。
+
 ## 3層パイプライン
 
-堅牢な i18n を実現するために、`lint`、`sync`、および `audit` を組み合わせて使用します。
+強固なi18nを実現するために、`lint`、`sync`、および `audit` を組み合わせて使用します:
 
 ```json title="package.json"
 {
@@ -223,10 +321,10 @@ i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 }
 ```
 
-| レイヤー | コマンド | 実行タイミング | 目的 |
+| レイヤー | コマンド | タイミング | 目的 |
 |-------|---------|------|---------|
-| **Lint** | `lint` | コミット前 | ハードコードされた文字列を含むコミットをブロックする |
-| **Sync** | `sync` | コミット後 / CI | 不足しているキーや変更されたキーを翻訳する |
+| **Lint** | `lint` | プレコミット | ハードコードされた文字列を含むコミットをブロックする |
+| **Sync** | `sync` | ポストコミット / CI | 不足しているキーや変更されたキーを翻訳する |
 | **Audit** | `audit` | ビルドステップ | いずれかのロケールが不完全な場合にデプロイを失敗させる |
 
 ---
@@ -235,7 +333,9 @@ i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 
 - [設定](/docs/getting-started/configuration) — 設定ファイルのリファレンス
 - [翻訳メソッド](/docs/guides/translation-methods) — ペアごとのメソッド選択
-- [プラグイン仕様](/docs/reference/plugin-spec) — プラグインマニフェストの形式
-- [CI/CD ガイド](/docs/guides/ci-cd) — パイプラインでの CLI コマンドの自動化
-- [同期の仕組み](/docs/concepts/how-sync-works) — 同期パイプラインの理解
+- [翻訳メモリ](/docs/concepts/translation-memory) — キャッシュとコスト削減
+- [プロの翻訳者との連携](/docs/guides/professional-translators) — XLIFFワークフロー
+- [プラグイン仕様](/docs/reference/plugin-spec) — プラグインマニフェストのフォーマット
+- [CI/CDガイド](/docs/guides/ci-cd) — パイプラインでのCLIコマンドの自動化
+- [Syncの仕組み](/docs/concepts/how-sync-works) — 同期パイプラインの理解
 - [品質ゲート](/docs/concepts/quality-gate) — 翻訳の検証方法

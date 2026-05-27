@@ -44,7 +44,7 @@ Obtenga una clave gratuita de Gemini en [aistudio.google.com/apikey](https://ais
 npx i18n-rosetta sync
 ```
 
-:::tip ¿Usa Gemini?
+:::tip ¿Utiliza Gemini?
 Si eligió la Opción B (Gemini), agregue `--method gemini`:
 ```bash
 npx i18n-rosetta sync --method gemini
@@ -52,13 +52,13 @@ npx i18n-rosetta sync --method gemini
 :::
 
 Rosetta hará lo siguiente:
-1. Detectar automáticamente `locales/en.json` como el origen
-2. Encontrar (o solicitar) los idiomas de destino
-3. Traducir todas las claves
-4. Escribir `locales/fr.json`, `locales/ja.json`, etc.
-5. Crear `.i18n-rosetta.lock` para hacer un seguimiento de lo que se ha traducido
+1. Detectará automáticamente `locales/en.json` como origen
+2. Encontrará (o solicitará) los idiomas de destino
+3. Traducirá todas las claves
+4. Escribirá `locales/fr.json`, `locales/ja.json`, etc.
+5. Creará `.i18n-rosetta.lock` para realizar un seguimiento de lo que se ha traducido
 
-## 4. Verifique los resultados
+## 4. Revise los resultados
 
 ```bash
 cat locales/fr.json
@@ -96,6 +96,8 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+La clave sin cambios (`hero.subtitle`) se sirve desde la caché de la **Translation Memory** de rosetta — sin llamadas a la API, sin costo. La caché se genera automáticamente durante cada sincronización y se almacena en `.rosetta/tm.json`.
+
 ## Opcional: Cree un archivo de configuración
 
 Para tener más control, genere un archivo de configuración:
@@ -105,7 +107,7 @@ npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-El asistente guiado lo lleva paso a paso por los **ajustes preestablecidos de registro** de cada idioma — instrucciones predefinidas de tono y formalidad adaptadas a su sistema lingüístico. El francés tiene ajustes preestablecidos T-V (vouvoiement vs tutoiement), el coreano tiene niveles de habla (해요체 vs 합쇼체 vs 해체) y el japonés tiene opciones de keigo (です/ます vs 丁寧語).
+El asistente guiado lo guía a través de los **register presets** de cada idioma: instrucciones predefinidas de tono/formalidad adaptadas a su sistema lingüístico. El francés tiene ajustes preestablecidos T-V (vouvoiement vs tutoiement), el coreano tiene niveles de habla (해요체 vs 합쇼체 vs 해체) y el japonés tiene opciones de keigo (です/ます vs 丁寧語).
 
 O cree una configuración manualmente con claves preestablecidas:
 
@@ -125,7 +127,7 @@ O cree una configuración manualmente con claves preestablecidas:
 
 Ejecute `npx i18n-rosetta init` para explorar los ajustes preestablecidos disponibles para cada idioma.
 
-## Opcional: Modo Watch
+## Opcional: Watch Mode
 
 Traduzca automáticamente cuando cambie su archivo de origen:
 
@@ -136,6 +138,9 @@ npx i18n-rosetta watch
 ## Próximos pasos
 
 - **[Configuración](/docs/getting-started/configuration)** — Referencia completa de configuración
-- **[Métodos de traducción](/docs/guides/translation-methods)** — Elija el método adecuado
+- **[Métodos de traducción](/docs/guides/translation-methods)** — Elija el método adecuado para cada par
+- **[Translation Memory](/docs/concepts/translation-memory)** — Cómo la caché le ahorra dinero en las reejecuciones
+- **[Trabajo con traductores profesionales](/docs/guides/professional-translators)** — Exporte a XLIFF para revisión humana
 - **[Integración de frameworks](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
 - **[CI/CD](/docs/guides/ci-cd)** — Automatice las traducciones en su pipeline
+- **[Solución de problemas](/docs/guides/troubleshooting)** — Problemas comunes y soluciones

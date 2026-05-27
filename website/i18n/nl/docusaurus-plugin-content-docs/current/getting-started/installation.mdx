@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 ## Vereisten
 
 - **Node.js 20.11+** (native ESM)
-- Een translation API key (zie hieronder)
+- Een API-sleutel voor vertalingen (zie hieronder)
 
 ## Installeren
 
@@ -45,19 +45,25 @@ yarn add --dev i18n-rosetta
   </TabItem>
 </Tabs>
 
-## Een API key verkrijgen
+## Een API-sleutel verkrijgen
 
-Rosetta heeft een translation backend nodig. Kies er een:
+Rosetta heeft een vertalings-backend nodig. Kies er een:
 
-| Provider | Omgevingsvariabele | Het meest geschikt voor |
+| Provider | Omgevingsvariabele | Het beste voor |
 |----------|---------------------|----------|
-| **OpenRouter** (aanbevolen) | `OPENROUTER_API_KEY` | Content-heavy projecten, Markdown, 200+ modellen |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Grote volumes key-value pairs (130+ talen) |
+| **OpenRouter** (aanbevolen) | `OPENROUTER_API_KEY` | Projecten met veel content, Markdown, 200+ modellen |
+| **Gemini** (gratis niveau) | `GEMINI_API_KEY` | Kosteloze start, goede kwaliteit |
+| **OpenAI** | `OPENAI_API_KEY` | Directe toegang tot GPT-4o |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Directe toegang tot Claude, genuanceerde tekst |
+| **DeepL** | `DEEPL_API_KEY` | Europese talen, ingebouwde formaliteit |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Grote volumes key-value paren, 130+ talen |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, 100+ talen |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Zelf gehost, privacy voorop |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
 
-[OpenRouter](https://openrouter.ai) biedt een geünificeerde API voor 200+ LLM-modellen. Free tier beschikbaar.
+[OpenRouter](https://openrouter.ai) biedt een uniforme API voor 200+ LLM-modellen. Gratis niveau beschikbaar.
 
 ```bash
 # Sign up at https://openrouter.ai, then:
@@ -70,7 +76,7 @@ Of voeg toe aan `.env.local`:
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-Het meest geschikt voor: content-heavy projecten, Markdown-vertalingen en projecten die content-aware shielding nodig hebben (code blocks, shortcodes, interpolation variables).
+Het beste voor: projecten met veel content, Markdown-vertaling en projecten die contentbewuste afscherming nodig hebben (codeblokken, shortcodes, interpolatievariabelen).
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ Het meest geschikt voor: content-heavy projecten, Markdown-vertalingen en projec
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-Het meest geschikt voor: grote volumes key-value string pairs (130+ talen). **Niet aanbevolen** voor Markdown-content — Google Translate heeft geen besef van code blocks, shortcodes of interpolation variables.
+Het beste voor: grote volumes key-value stringparen (130+ talen). **Niet aanbevolen** voor Markdown-content — Google Translate heeft geen besef van codeblokken, shortcodes of interpolatievariabelen.
 
 :::tip Slimme detectie
-Als alleen `GOOGLE_TRANSLATE_API_KEY` is ingesteld (geen OpenRouter key), schakelt rosetta automatisch over naar Google Translate. Er is geen configuratiewijziging nodig.
+Als alleen `GOOGLE_TRANSLATE_API_KEY` is ingesteld (geen OpenRouter-sleutel), schakelt rosetta automatisch over naar Google Translate. Er is geen configuratiewijziging nodig.
 :::
 
   </TabItem>
@@ -94,4 +100,4 @@ Als alleen `GOOGLE_TRANSLATE_API_KEY` is ingesteld (geen OpenRouter key), schake
 npx i18n-rosetta --help
 ```
 
-U zou de lijst met beschikbare commando's moeten zien. U bent klaar voor de [Quick Start](/docs/getting-started/quick-start).
+U zou de lijst met beschikbare opdrachten moeten zien. U bent klaar voor de [Snelstart](/docs/getting-started/quick-start).

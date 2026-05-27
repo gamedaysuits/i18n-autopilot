@@ -2,13 +2,13 @@
 sidebar_position: 5
 title: "Dữ liệu huấn luyện"
 ---
-# Dữ liệu Coaching
+# Dữ liệu huấn luyện
 
-Dữ liệu Coaching là cơ chế của rosetta để dạy các LLM về những ngôn ngữ mà chúng chưa được đào tạo. Bằng cách cung cấp các quy tắc ngữ pháp, từ điển và ghi chú về văn phong cùng với mỗi yêu cầu dịch, bạn biến một LLM đa dụng thành một trình biên dịch nhận thức được ngữ cảnh cho bất kỳ ngôn ngữ nào — bao gồm cả những ngôn ngữ hiện chưa được hỗ trợ MT (Dịch máy).
+Dữ liệu huấn luyện là cơ chế của rosetta để dạy các LLM về những ngôn ngữ mà chúng chưa được đào tạo. Bằng cách cung cấp các quy tắc ngữ pháp, từ điển và ghi chú về văn phong cùng với mỗi yêu cầu dịch, bạn biến một LLM đa dụng thành một trình biên dịch nhận thức được ngữ cảnh cho bất kỳ ngôn ngữ nào — bao gồm cả những ngôn ngữ chưa từng được hỗ trợ MT.
 
 ## Cách thức hoạt động
 
-Khi bạn thiết lập phương thức của một cặp ngôn ngữ thành `llm-coached`, rosetta sẽ tải một tệp coaching từ `.rosetta/coaching/<locale>.json` và chèn nội dung của nó vào mọi prompt của LLM như một phần của system message. LLM sẽ thấy các quy tắc ngôn ngữ của bạn cùng với yêu cầu dịch, từ đó tạo ra kết quả tuân theo ngữ pháp và thuật ngữ của bạn thay vì phải phỏng đoán.
+Khi bạn thiết lập phương thức của một cặp ngôn ngữ thành `llm-coached`, rosetta sẽ tải một tệp huấn luyện từ `.rosetta/coaching/<locale>.json` và chèn nội dung của nó vào mọi prompt của LLM như một phần của system message. LLM sẽ thấy các quy tắc ngôn ngữ của bạn cùng với yêu cầu dịch, từ đó tạo ra kết quả tuân theo ngữ pháp và thuật ngữ của bạn thay vì phải phỏng đoán.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,9 +28,9 @@ Khi bạn thiết lập phương thức của một cặp ngôn ngữ thành `ll
 └──────────────────────────────────────────────────────┘
 ```
 
-Vì dữ liệu coaching là một phần của system message, nó được hưởng lợi từ tính năng **prompt caching** — các nhà cung cấp như Anthropic và Google sẽ lưu trữ các tiền tố hệ thống lặp lại, do đó bạn chỉ phải trả phí cho ngữ cảnh coaching một lần mỗi phiên, thay vì mỗi lần cho từng batch.
+Vì dữ liệu huấn luyện là một phần của system message, nó được hưởng lợi từ tính năng **prompt caching** — các nhà cung cấp như Anthropic và Google sẽ lưu trữ các tiền tố hệ thống lặp đi lặp lại, do đó bạn chỉ phải trả phí cho ngữ cảnh huấn luyện một lần cho mỗi phiên, chứ không phải một lần cho mỗi batch.
 
-## Định dạng tệp Coaching
+## Định dạng tệp huấn luyện
 
 Tạo một tệp JSON cho mỗi locale trong `.rosetta/coaching/`:
 
@@ -56,35 +56,35 @@ Tạo một tệp JSON cho mỗi locale trong `.rosetta/coaching/`:
 
 ### Các trường dữ liệu
 
-| Trường | Loại | Bắt buộc | Mô tả |
+| Trường | Kiểu dữ liệu | Bắt buộc | Mô tả |
 |-------|------|----------|-------------|
-| `grammar_rules` | `string[]` | Không | Mảng các quy tắc ngữ pháp được chèn vào system prompt. Mỗi quy tắc nên là một chỉ dẫn ngắn gọn, có tính thực thi để LLM có thể làm theo. |
+| `grammar_rules` | `string[]` | Không | Mảng chứa các quy tắc ngữ pháp được chèn vào system prompt. Mỗi quy tắc nên là một chỉ dẫn ngắn gọn, mang tính thực thi để LLM có thể làm theo. |
 | `dictionary` | `object` | Không | Bản đồ key-value của thuật ngữ tiếng Anh → thuật ngữ ngôn ngữ đích. Được sử dụng cho các từ vựng chuyên ngành mà LLM có thể không biết. |
-| `style_notes` | `string` | Không | Các chỉ dẫn văn phong tự do (register, giọng điệu, các quy ước về độ trang trọng). |
+| `style_notes` | `string` | Không | Các chỉ dẫn văn phong dạng tự do (sắc thái, giọng điệu, các quy ước về độ trang trọng). |
 
 Tất cả các trường đều không bắt buộc — bạn có thể bắt đầu chỉ với một từ điển và thêm các quy tắc ngữ pháp trong quá trình tinh chỉnh.
 
 ## Hành vi dự phòng (Fallback)
 
-Nếu một cặp ngôn ngữ được cấu hình là `llm-coached` nhưng không có tệp coaching nào tồn tại cho locale đó, rosetta sẽ **chuyển về phương thức `llm` tiêu chuẩn** kèm theo một cảnh báo trên console:
+Nếu một cặp ngôn ngữ được cấu hình là `llm-coached` nhưng không có tệp huấn luyện nào tồn tại cho locale đó, rosetta sẽ **chuyển về phương thức `llm` tiêu chuẩn** kèm theo một cảnh báo trên console:
 
 ```
 [INFO] No coaching data for "crk" at .rosetta/coaching/crk.json
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Điều này có nghĩa là bạn có thể thiết lập `"defaultMethod": "llm-coached"` trên toàn cục một cách an toàn — các ngôn ngữ có dữ liệu coaching sẽ sử dụng nó, và phần còn lại sẽ nhận được bản dịch LLM tiêu chuẩn mà không gặp lỗi.
+Điều này có nghĩa là bạn có thể thiết lập `"defaultMethod": "llm-coached"` trên toàn cục một cách an toàn — các ngôn ngữ có dữ liệu huấn luyện sẽ sử dụng nó, và phần còn lại sẽ nhận được bản dịch LLM tiêu chuẩn mà không gặp lỗi.
 
 ## Khi nào nên sử dụng Coaching
 
-| Tình huống | Phương thức đề xuất |
+| Tình huống | Phương thức được đề xuất |
 |----------|-------------------|
-| Ngôn ngữ Nhóm 1 (Tiếng Pháp, Tây Ban Nha, Đức) | `llm` hoặc `google-translate` — LLM đã biết rất rõ các ngôn ngữ này |
-| Ngôn ngữ Nhóm 2 (Tiếng Hàn, Thổ Nhĩ Kỳ, Thái) | `llm` kèm theo register — LLM xử lý tốt các ngôn ngữ này khi có hướng dẫn về văn phong |
-| Ngôn ngữ Nhóm 3 (Plains Cree, Yoruba, Quechua) | `llm-coached` — LLM cần các quy tắc ngữ pháp và từ điển |
-| Ngôn ngữ nhân tạo (Klingon, Sindarin, Kryptonian) | `llm-coached` — LLM có một số dữ liệu đào tạo nhưng cần được hiệu chỉnh |
+| Các ngôn ngữ Tier 1 (Tiếng Pháp, Tiếng Tây Ban Nha, Tiếng Đức) | `llm` hoặc `google-translate` — LLM đã biết rất rõ các ngôn ngữ này |
+| Các ngôn ngữ Tier 2 (Tiếng Hàn, Tiếng Thổ Nhĩ Kỳ, Tiếng Thái) | `llm` kèm theo sắc thái (register) — LLM xử lý tốt các ngôn ngữ này khi có hướng dẫn về văn phong |
+| Các ngôn ngữ Tier 3 (Tiếng Plains Cree, Tiếng Yoruba, Tiếng Quechua) | `llm-coached` — LLM cần các quy tắc ngữ pháp và từ điển |
+| Ngôn ngữ nhân tạo (Tiếng Klingon, Tiếng Sindarin, Tiếng Krypton) | `llm-coached` — LLM có một số dữ liệu đào tạo nhưng cần được hiệu chỉnh |
 
-## Xây dựng dữ liệu Coaching chất lượng
+## Xây dựng dữ liệu huấn luyện chất lượng
 
 ### Quy tắc ngữ pháp
 
@@ -100,19 +100,19 @@ Hãy viết các quy tắc dưới dạng **chỉ dẫn**, thay vì mô tả. LL
 
 ### Từ điển
 
-Tập trung vào **các thuật ngữ chuyên ngành** mà LLM có thể dịch sai hoặc tự bịa ra. Đừng bận tâm đến các từ thông dụng mà LLM đã xử lý tốt — hãy tập trung vào các thuật ngữ dành riêng cho UI của ứng dụng của bạn.
+Tập trung vào **các thuật ngữ chuyên ngành** mà LLM có thể dịch sai hoặc tự bịa ra. Đừng bận tâm đến những từ thông dụng mà LLM đã xử lý tốt — hãy tập trung vào các thuật ngữ dành riêng cho UI của ứng dụng của bạn.
 
 ### Ghi chú văn phong
 
-Hãy cụ thể về register, độ trang trọng và các quy ước:
+Hãy cụ thể về sắc thái, độ trang trọng và các quy ước:
 
 ```json
 "style_notes": "Use formal register (vous-form in French). Preserve brand names untranslated. UI labels should be imperative mood ('Save', not 'Saves'). Maximum 40 characters for button text."
 ```
 
-## Kiểm thử các bản dịch Coached
+## Kiểm thử các bản dịch được huấn luyện
 
-Sử dụng [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) để đánh giá chuẩn (benchmark) các bản dịch coached của bạn so với một kho ngữ liệu tham chiếu:
+Sử dụng [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) để đánh giá chuẩn (benchmark) các bản dịch được huấn luyện của bạn so với một kho ngữ liệu tham chiếu:
 
 ```bash
 # Install the harness
@@ -125,14 +125,14 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Công cụ này cung cấp cho bạn các điểm số chrF++, BLEU và khớp chính xác (exact match). Hãy tạo nhiều phiên bản tệp coaching và so sánh — các số liệu khách quan luôn tốt hơn việc đánh giá chủ quan.
+Công cụ này cung cấp cho bạn các điểm số chrF++, BLEU và exact match. Hãy tạo nhiều phiên bản tệp huấn luyện và so sánh chúng — các số liệu khách quan luôn tốt hơn việc đánh giá chủ quan.
 
 ---
 
 ## Xem thêm
 
 - [Phương thức dịch](/docs/guides/translation-methods) — phương thức llm-coached
-- [Hỗ trợ ngôn ngữ có tài nguyên thấp](https://mtevalarena.org/docs/community/low-resource-languages) — thực hành coaching
-- [Đặc tả Plugin](/docs/reference/plugin-spec) — đóng gói dữ liệu coaching vào một plugin
-- [Cổng chất lượng (Quality Gate)](/docs/concepts/quality-gate) — cách các bản dịch coached được xác thực
-- [Cấu hình](/docs/getting-started/configuration) — cấu hình coaching cho từng cặp ngôn ngữ
+- [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — thực hành coaching
+- [Đặc tả Plugin](/docs/reference/plugin-spec) — đóng gói dữ liệu huấn luyện trong một plugin
+- [Quality Gate](/docs/concepts/quality-gate) — cách các bản dịch được huấn luyện được xác thực
+- [Cấu hình](/docs/getting-started/configuration) — cấu hình huấn luyện cho từng cặp ngôn ngữ

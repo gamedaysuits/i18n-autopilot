@@ -52,7 +52,13 @@ Rosetta necesita un backend de traducción. Elija uno:
 | Proveedor | Variable de entorno | Ideal para |
 |----------|---------------------|----------|
 | **OpenRouter** (recomendado) | `OPENROUTER_API_KEY` | Proyectos con mucho contenido, Markdown, más de 200 modelos |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Pares clave-valor de alto volumen (más de 130 idiomas) |
+| **Gemini** (nivel gratuito) | `GEMINI_API_KEY` | Inicio sin costo, buena calidad |
+| **OpenAI** | `OPENAI_API_KEY` | Acceso directo a GPT-4o |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Acceso directo a Claude, texto con matices |
+| **DeepL** | `DEEPL_API_KEY` | Idiomas europeos, formalidad integrada |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Pares clave-valor de alto volumen, más de 130 idiomas |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, más de 100 idiomas |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Autohospedado, prioridad en la privacidad |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -70,7 +76,7 @@ O agregue a `.env.local`:
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-Ideal para: proyectos con mucho contenido, traducción de Markdown y proyectos que necesitan protección sensible al contenido (bloques de código, shortcodes, variables de interpolación).
+Ideal para: proyectos con mucho contenido, traducción de Markdown y proyectos que necesitan protección consciente del contenido (bloques de código, shortcodes, variables de interpolación).
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,16 +85,16 @@ Ideal para: proyectos con mucho contenido, traducción de Markdown y proyectos q
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-Ideal para: pares de cadenas clave-valor de alto volumen (más de 130 idiomas). **No recomendado** para contenido en Markdown: Google Translate no tiene conocimiento de bloques de código, shortcodes ni variables de interpolación.
+Ideal para: pares de cadenas clave-valor de alto volumen (más de 130 idiomas). **No recomendado** para contenido Markdown: Google Translate no tiene conocimiento de bloques de código, shortcodes ni variables de interpolación.
 
 :::tip Detección inteligente
-Si solo se configura `GOOGLE_TRANSLATE_API_KEY` (sin clave de OpenRouter), rosetta cambia automáticamente a Google Translate. No se necesita ningún cambio de configuración.
+Si solo se establece `GOOGLE_TRANSLATE_API_KEY` (sin clave de OpenRouter), rosetta cambia automáticamente a Google Translate. No se necesita ningún cambio de configuración.
 :::
 
   </TabItem>
 </Tabs>
 
-## Verificar la instalación
+## Verificar instalación
 
 ```bash
 npx i18n-rosetta --help

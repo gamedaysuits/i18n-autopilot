@@ -58,7 +58,7 @@ jobs:
 
 ## Méthode Google Translate
 
-Si vous utilisez la méthode intégrée Google Translate au lieu d'OpenRouter :
+Si vous utilisez la méthode Google Translate intégrée au lieu d'OpenRouter :
 
 ```yaml
 - name: Sync translations
@@ -113,7 +113,7 @@ Si vous utilisez un point de terminaison de traduction distant (par exemple, un 
 
 ## Pipeline CI à trois couches
 
-Pour une couverture i18n maximale, sécurisez votre pipeline avec ces trois outils :
+Pour une couverture i18n maximale, contrôlez votre pipeline avec ces trois outils :
 
 ```yaml
 jobs:
@@ -140,12 +140,25 @@ jobs:
 | **Sync** | `sync` | Post-commit / CI | Traduire les clés manquantes et modifiées |
 | **Audit** | `audit` | Étape de build | Faire échouer le déploiement si une locale est incomplète |
 
+:::tip Translation Memory dans la CI
+Si votre exécuteur CI (runner) dispose d'un espace de travail persistant (ou met en cache `.rosetta/`), la Translation Memory s'active automatiquement — les synchronisations ultérieures ne traduisent que les clés dont le texte source a réellement changé. Pour les exécuteurs éphémères, envisagez de mettre en cache `.rosetta/tm.json` entre les exécutions :
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
+
 ---
 
 ## Voir aussi
 
 - [Référence de la CLI](/docs/reference/cli) — référence complète des commandes
-- [Fonctionnement de la synchronisation](/docs/concepts/how-sync-works) — comprendre la synchronisation incrémentielle
+- [Comment fonctionne la synchronisation](/docs/concepts/how-sync-works) — comprendre la synchronisation incrémentielle
+- [Translation Memory](/docs/concepts/translation-memory) — mise en cache et réduction des coûts
 - [Méthodes de traduction](/docs/guides/translation-methods) — sélection de la méthode par paire
-- [Quality Gate](/docs/concepts/quality-gate) — ce qui se passe en cas d'échec des traductions
+- [Quality Gate](/docs/concepts/quality-gate) — que se passe-t-il en cas d'échec des traductions
 - [Configuration](/docs/getting-started/configuration) — référence de la configuration

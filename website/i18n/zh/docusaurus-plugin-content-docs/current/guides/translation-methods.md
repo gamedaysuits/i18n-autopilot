@@ -4,32 +4,32 @@ title: "翻译方法"
 ---
 # 翻译方法
 
-Rosetta 支持十种翻译方法。每个语言对可以使用不同的方法——你的整个项目不必局限于一种方案。
+Rosetta 支持十种翻译方法。每个语言对都可以使用不同的方法——你不必在整个项目中局限于一种方案。
 
 ## 方法对比
 
 ### LLM 提供商
 
-注重质量，支持 Markdown，兼容辅导（coaching）。非常适合内容密集的项目。
+注重质量，支持 Markdown，兼容辅导（coaching）功能。最适合内容密集的项目。
 
 | 方法 | 键名 | 功能说明 |
 |--------|-----|-------------|
-| `llm` (默认) | `OPENROUTER_API_KEY` | 通过 OpenRouter 调用 LLM —— 200+ 模型，自动路由 |
+| `llm`（默认） | `OPENROUTER_API_KEY` | 通过 OpenRouter 调用 LLM — 200+ 模型，自动路由 |
 | `llm-coached` | `OPENROUTER_API_KEY` | LLM + 语法规则、词典、样式说明 |
 | `openai` | `OPENAI_API_KEY` | 直连 OpenAI API (gpt-4o, gpt-4o-mini) |
 | `anthropic` | `ANTHROPIC_API_KEY` | 直连 Anthropic API (Claude Sonnet, Haiku, Opus) |
-| `gemini` | `GEMINI_API_KEY` | 直连 Google Gemini API (Flash, Pro) —— 提供免费额度 |
+| `gemini` | `GEMINI_API_KEY` | 直连 Google Gemini API (Flash, Pro) — 提供免费额度 |
 
 ### 传统机器翻译 (MT)
 
-注重速度和成本。非常适合大批量的键值对。
+注重速度和成本。最适合大量的键值对。
 
 | 方法 | 键名 | 功能说明 |
 |--------|-----|-------------|
-| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ 种语言) |
-| `deepl` | `DEEPL_API_KEY` | 支持术语表的 DeepL API (30+ 种语言) |
-| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ 种语言) |
-| `libretranslate` | *(自托管)* | 自托管 LibreTranslate (AGPL，免费) |
+| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2（130+ 语言） |
+| `deepl` | `DEEPL_API_KEY` | 支持术语表的 DeepL API（30+ 语言） |
+| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator（100+ 语言） |
+| `libretranslate` | *(自托管)* | 自托管 LibreTranslate（AGPL，免费） |
 
 ### 基础设施
 
@@ -54,18 +54,18 @@ flowchart TD
 
 ---
 
-## `llm` — LLM 翻译 (默认)
+## `llm` — LLM 翻译（默认）
 
-通过 [OpenRouter](https://openrouter.ai) 上的任何 LLM 进行翻译。这是默认方法，也是最通用的方法。
+通过 [OpenRouter](https://openrouter.ai) 上的任意 LLM 进行翻译。这是默认方法，也是最通用的方法。
 
 **工作原理：**
-1. 将键名分批（默认 30 个/批），并附带语域和上下文指令
+1. 将键值分批（默认 30 个/批），并附带语域和上下文指令
 2. 作为结构化提示词发送至 OpenRouter
 3. 解析 JSON 响应
 4. 通过[质量门禁](/docs/concepts/quality-gate)验证每条翻译
-5. 写入通过验证的翻译，重试或拒绝失败的翻译
+5. 写入通过的翻译，对失败的翻译进行重试或拒绝
 
-**适用场景：** 大多数项目。特别是包含 Markdown 的内容密集型网站，这类网站需要保护代码块和短代码。
+**适用场景：** 大多数项目。特别是包含 Markdown 的内容密集型网站，这类网站需要保护代码块和短代码不受影响。
 
 **配置：**
 
@@ -83,10 +83,10 @@ flowchart TD
 **工作原理：**
 1. 从 `.rosetta/coaching/<locale>.json` 或插件的 `coaching/` 目录加载辅导数据
 2. 将语法规则、词典术语和样式说明注入系统提示词
-3. 匹配源键名的词典术语将作为必需术语包含在内
+3. 与源键匹配的词典术语将作为必需术语包含在内
 4. 翻译过程与 `llm` 相同，辅导数据可提高准确性
 
-**适用场景：** 低资源语言、特定领域术语（法律、医疗）、正式语域，或任何通用 LLM 输出不够精确的情况。
+**适用场景：** 低资源语言、特定领域术语（法律、医疗）、正式语域，或任何通用 LLM 输出不够精确的场景。
 
 **辅导数据格式：**
 
@@ -111,15 +111,15 @@ flowchart TD
 
 ## `openai` — 直连 OpenAI API
 
-直接通过 OpenAI Chat Completions API 进行翻译。没有 OpenRouter 中间商——使用你的密钥、你的账户和你的使用量仪表板。
+直接通过 OpenAI Chat Completions API 进行翻译。没有 OpenRouter 中间商——使用你自己的密钥、账户和用量面板。
 
-**模型：** `gpt-4o` (默认), `gpt-4o-mini`
+**模型：** `gpt-4o`（默认），`gpt-4o-mini`
 
 **特性：**
-- ✅ 支持 Markdown (内容翻译)
-- ✅ 支持辅导 (语法规则、词典覆盖、样式说明)
-- ✅ 支持 JSON 模式以输出结构化键值对
-- ✅ 指数退避重试机制
+- ✅ 支持 Markdown（内容翻译）
+- ✅ 支持辅导功能（语法规则、词典覆盖、样式说明）
+- ✅ 支持 JSON 模式，用于结构化键值输出
+- ✅ 带有重试机制的指数退避
 
 **配置：**
 
@@ -141,13 +141,13 @@ export OPENAI_API_KEY=sk-proj-...
 
 直接通过 Anthropic Messages API 进行翻译。使用 `system` 参数处理辅导数据，从而启用 Anthropic 的提示词缓存功能。
 
-**模型：** `claude-sonnet-4-6` (默认), `claude-haiku-4-5`, `claude-opus-4-7`
+**模型：** `claude-sonnet-4-6`（默认），`claude-haiku-4-5`，`claude-opus-4-7`
 
 **特性：**
-- ✅ 支持 Markdown (内容翻译)
-- ✅ 支持辅导 (语法规则、词典覆盖、样式说明)
-- ✅ 系统提示词缓存 (在批次间分摊辅导成本)
-- ✅ 指数退避重试机制
+- ✅ 支持 Markdown（内容翻译）
+- ✅ 支持辅导功能（语法规则、词典覆盖、样式说明）
+- ✅ 系统提示词缓存（在批次间分摊辅导成本）
+- ✅ 带有重试机制的指数退避
 
 **配置：**
 
@@ -169,14 +169,14 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 直接通过 Google Gemini `generateContent` API 进行翻译。**提供免费额度**——最佳的零成本起点。
 
-**模型：** `gemini-2.5-flash` (默认), `gemini-2.5-pro`
+**模型：** `gemini-2.5-flash`（默认），`gemini-2.5-pro`
 
 **特性：**
-- ✅ 支持 Markdown (内容翻译)
-- ✅ 支持辅导 (语法规则、词典覆盖、样式说明)
+- ✅ 支持 Markdown（内容翻译）
+- ✅ 支持辅导功能（语法规则、词典覆盖、样式说明）
 - ✅ 通过 `responseMimeType` 支持 JSON 响应模式
-- ✅ 免费额度 (充裕的每日配额)
-- ✅ 指数退避重试机制
+- ✅ 免费额度（慷慨的每日配额）
+- ✅ 带有重试机制的指数退避
 
 **配置：**
 
@@ -196,9 +196,9 @@ export GEMINI_API_KEY=AI...
 
 ### 模型验证
 
-直连 LLM 提供商 (`openai`, `anthropic`, `gemini`) 会在首次使用时验证你的模型字符串。这可以捕获三类错误：
+直连 LLM 提供商（`openai`、`anthropic`、`gemini`）会在首次使用时验证你的模型字符串。这可以捕获三类错误：
 
-**方法格式错误**——在直连提供商中使用了 OpenRouter 风格的模型路径：
+**方法格式错误** — 在直连提供商中使用了 OpenRouter 风格的模型路径：
 
 ```
 [WARN] OpenAI: model "google/gemini-3.5-flash" looks like an OpenRouter path.
@@ -206,7 +206,7 @@ export GEMINI_API_KEY=AI...
        To use OpenRouter models, set method to 'llm' instead.
 ```
 
-**提供商错误**——使用了完全不同提供商的模型：
+**提供商错误** — 使用了完全不同提供商的模型：
 
 ```
 [WARN] Gemini: model "claude-sonnet-4-6" is an Anthropic model.
@@ -214,7 +214,7 @@ export GEMINI_API_KEY=AI...
        Use --method anthropic or set "method": "anthropic" in config.
 ```
 
-**模型已弃用或拼写错误**——在首次 API 调用时，rosetta 会获取提供商的实时模型列表，并对照检查你的模型：
+**模型已弃用或拼写错误** — 在首次 API 调用时，rosetta 会获取提供商的实时模型列表，并对照检查你的模型：
 
 ```
 [WARN] Gemini: model "gemini-1.5-flash" not found in available models.
@@ -223,7 +223,7 @@ export GEMINI_API_KEY=AI...
 ```
 
 :::note 这些是警告，不是错误
-模型验证会记录警告，但不会阻止 API 调用。提供商 API 会给出最终判定——未来的模型名称可能会匹配不同的模式，我们不想基于启发式规则进行拦截。
+模型验证会记录警告，但不会阻止 API 调用。提供商 API 会给出最终裁决——未来的模型名称可能会匹配不同的模式，我们不想基于启发式规则进行拦截。
 :::
 
 ---
@@ -232,12 +232,12 @@ export GEMINI_API_KEY=AI...
 
 直接集成 Google Cloud Translation API v2。使用 REST API——无需 SDK，无需服务账号。只需 API 密钥。
 
-**适用场景：** 速度和成本比细微语义更重要的大批量键值对字符串。开箱即用支持 130+ 种语言。
+**适用场景：** 速度和成本比细微语义更重要的大量键值字符串对。开箱即用支持 130 多种语言。
 
-**限制：**
+**局限性：**
 - ⚠️ **不支持 Markdown。** 会破坏代码块、短代码和插值变量。
-- 不支持语域/语气控制
-- 不支持辅导或强制术语
+- 无语域/语气控制
+- 无辅导功能或术语强制执行
 
 ```bash
 npx i18n-rosetta sync --method google-translate
@@ -254,10 +254,10 @@ npx i18n-rosetta sync --method google-translate
 **适用场景：** DeepL 擅长的欧洲语言（德语、法语、西班牙语、荷兰语、波兰语等）。术语表支持可在没有辅导数据的情况下强制保持术语一致。
 
 **特性：**
-- ✅ 自动检测免费/专业版端点 (免费密钥带有 `:fx` 后缀)
-- ✅ 术语表创建和管理
+- ✅ 自动检测免费/专业版端点（免费密钥带有 `:fx` 后缀）
+- ✅ 术语表创建与管理
 - ✅ 正式程度控制
-- ⚠️ **不支持 Markdown** —— 仅限键值对
+- ⚠️ **不支持 Markdown** — 仅限键值对
 
 **配置：**
 
@@ -279,13 +279,13 @@ export DEEPL_API_KEY=your-key-here
 
 直接集成 Microsoft Translator Text API v3。
 
-**适用场景：** 拥有现有 Azure 基础设施的企业环境。支持 100+ 种语言，包括许多 Google Translate 未覆盖的语言。
+**适用场景：** 拥有现有 Azure 基础设施的企业环境。支持 100 多种语言，包括许多 Google Translate 未覆盖的语言。
 
 **特性：**
-- ✅ 每次请求最多 100 个片段 (高吞吐量)
-- ✅ 可选的区域参数用于延迟优化
-- ⚠️ **不支持 Markdown** —— 仅限键值对
-- ⚠️ **不支持内容翻译** —— 仅限键值对
+- ✅ 每次请求最多 100 个片段（高吞吐量）
+- ✅ 可选区域参数以优化延迟
+- ⚠️ **不支持 Markdown** — 仅限键值对
+- ⚠️ **不支持内容翻译** — 仅限键值对
 
 **配置：**
 
@@ -306,16 +306,16 @@ export MICROSOFT_TRANSLATOR_REGION=global  # optional
 
 ## `libretranslate` — 自托管翻译
 
-使用 LibreTranslate 的自托管开源翻译。在本地或你自己的基础设施上运行——零 API 成本，完全的数据主权。
+使用 LibreTranslate 进行自托管开源翻译。在本地或你自己的基础设施上运行——零 API 成本，完全的数据主权。
 
 **适用场景：** 需要离线翻译、数据隐私合规 (GDPR) 或零成本运行的项目。特别适用于不应依赖外部 API 的 CI 流水线。
 
 **特性：**
-- ✅ 自托管 —— 无外部 API 调用
-- ✅ 免费开源 (AGPL-3.0)
+- ✅ 自托管 — 无外部 API 调用
+- ✅ 免费且开源 (AGPL-3.0)
 - ✅ 提供 Docker 部署
-- ⚠️ **不支持 Markdown** —— 仅限键值对
-- ⚠️ **不支持内容翻译** —— 仅限键值对
+- ⚠️ **不支持 Markdown** — 仅限键值对
+- ⚠️ **不支持内容翻译** — 仅限键值对
 - ⚠️ 质量因语言对而异
 
 **设置：**
@@ -340,9 +340,9 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — 远程翻译 API
 
-适用于社区托管或受知识产权保护的翻译端点的轻量级 HTTP 客户端。Rosetta 发送键名并接收翻译结果——它本身不包含任何翻译逻辑。
+适用于社区托管或受知识产权保护的翻译端点的轻量级 HTTP 客户端。Rosetta 发送键值并接收翻译结果——它本身不包含任何翻译逻辑。
 
-**适用场景：** 翻译方法托管在服务端时（例如，专有辅导数据、微调模型、无法分发的 FST 流水线）。
+**适用场景：** 当翻译方法托管在服务端时（例如，专有辅导数据、微调模型、无法分发的 FST 流水线）。
 
 ```json
 {
@@ -357,14 +357,14 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 ```
 
 :::note 兼容 OCAP 的社区翻译
-`api` 方法是通向**兼容 OCAP 的社区托管翻译**的桥梁。原住民和少数语种社区可以托管自己的翻译端点——将辅导数据、微调模型和语言知识产权置于社区控制之下——而 Rosetta 则作为轻量级客户端连接到它们。
+`api` 方法是通往**兼容 OCAP 的社区托管翻译**的桥梁。原住民和少数语种社区可以托管自己的翻译端点——将辅导数据、微调模型和语言知识产权保留在社区控制之下——而 Rosetta 则作为轻量级客户端连接到它们。
 
 有关完整的社区托管演练，请参阅[支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages)；有关端点要求，请参阅[通过 API 提供方法](/docs/guides/serving-a-method)。
 :::
 
 ---
 
-## 按语言对配置
+## 语言对独立配置
 
 真正的强大之处在于为每个语言对混合使用不同的方法：
 
@@ -381,14 +381,14 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 }
 ```
 
-这会通过 DeepL 翻译法语（支持术语表），通过 OpenAI 翻译日语（保证质量），通过 Gemini 翻译韩语（免费额度），通过 Microsoft Translator 翻译阿拉伯语（覆盖面广），并通过辅导插件翻译平原克里语（专业性强）。
+这将通过 DeepL 翻译法语（支持术语表），通过 OpenAI 翻译日语（注重质量），通过 Gemini 翻译韩语（免费额度），通过 Microsoft Translator 翻译阿拉伯语（覆盖面广），并通过辅导插件翻译平原克里语（专业化）。
 
 ## 插件
 
-插件是为特定语言对预先打包的翻译配方。它们是 JSON 清单——而非代码——用于告诉 rosetta 使用哪种方法、什么设置以及已基准测试的质量如何。
+插件是针对特定语言对的预打包翻译配方。它们是 JSON 清单（而非代码），用于告诉 rosetta 使用哪种方法、什么设置，以及已经过基准测试的质量水平。
 
 :::tip 一键从评估工具链投入生产
-在[评估工具链](https://mtevalarena.org/docs/specifications/harness)中开发并验证的插件可以直接安装——你在那里验证的方法，只需一条 `plugin install` 命令即可在此部署。有关完整的评估工作流，请参阅 [MT 评估](https://mtevalarena.org/docs/leaderboard/rules)。
+在[评估工具链](https://mtevalarena.org/docs/specifications/harness)中开发并验证的插件可以直接安装——你在那里验证的方法只需一条 `plugin install` 命令即可在此处部署。有关完整的评估工作流，请参阅 [MT 评估](https://mtevalarena.org/docs/leaderboard/rules)。
 :::
 
 ```bash
@@ -426,9 +426,9 @@ i18n-rosetta plugin remove french-formal-v1
 ```
 
 **主要区别：**
-- OpenRouter 使用 `provider/model` 格式 (例如 `openai/gpt-4o`)。直连提供商使用纯模型名称 (例如 `gpt-4o`)。
-- 每个直连提供商都有自己的环境变量 (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`)。
-- 如果使用了错误的模型格式，rosetta 会向你发出警告——请参阅[模型验证](#model-validation)。
+- OpenRouter 使用 `provider/model` 格式（例如 `openai/gpt-4o`）。直连提供商使用纯模型名称（例如 `gpt-4o`）。
+- 每个直连提供商都有自己的环境变量（`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GEMINI_API_KEY`）。
+- 如果使用了错误的模型格式，rosetta 会发出警告——请参阅[模型验证](#model-validation)。
 
 ### 直连提供商 → OpenRouter
 
@@ -446,32 +446,32 @@ i18n-rosetta plugin remove french-formal-v1
 ```
 
 :::tip 何时使用 OpenRouter 与直连
-**使用 OpenRouter** 的场景：希望在不更改环境变量的情况下切换模型，或者希望通过单个密钥访问 200+ 个模型。**使用直连提供商**的场景：希望计费更简单、延迟更低（无中间商），或者需要访问提供商的特定功能（如 Anthropic 的提示词缓存）。
+**使用 OpenRouter** 的场景：希望在不更改环境变量的情况下切换模型，或者希望通过单个密钥访问 200 多个模型。**使用直连提供商**的场景：希望计费更简单、延迟更低（无中间商），或者需要使用提供商的特定功能（如 Anthropic 的提示词缓存）。
 :::
 
 ---
 
 ## 成本对比
 
-每翻译 1,000 个键名的预估成本（假设每个键名约 10 个 token，每批 30 个键名）：
+每翻译 1,000 个键的预估成本（假设每个键约 10 个 token，每批 30 个键）：
 
-| 方法 | 成本 / 1K 键名 | 速度 | 质量 | 最佳适用场景 |
+| 方法 | 成本 / 1K 键 | 速度 | 质量 | 最适合 |
 |--------|----------------|-------|---------|----------|
-| `gemini` (Flash) | **免费** (额度内) | 快 | 良好 | 入门、个人项目 |
+| `gemini` (Flash) | **免费**（额度内） | 快 | 良好 | 入门、个人项目 |
 | `google-translate` | ~$0.02 | 最快 | 尚可 | 大批量、欧洲语言 |
 | `deepl` | ~$0.02 | 快 | 良好 | 欧洲语言、术语 |
 | `microsoft-translator` | ~$0.01 | 快 | 尚可 | Azure 用户、广泛的语言覆盖 |
-| `libretranslate` | **免费** (自托管) | 不定 | 一般 | 物理隔离、GDPR、CI 流水线 |
-| `gemini` (Pro) | ~$0.07 | 中等 | 很好 | 对质量敏感、免费配额 |
-| `openai` (GPT-4o-mini) | ~$0.01 | 快 | 良好 | 预算有限的 LLM |
-| `openai` (GPT-4o) | ~$0.10 | 中等 | 很好 | 对质量敏感 |
-| `anthropic` (Haiku) | ~$0.01 | 快 | 良好 | 预算有限的 LLM |
-| `anthropic` (Sonnet) | ~$0.10 | 中等 | 很好 | 对质量敏感 |
-| `anthropic` (Opus) | ~$0.50 | 慢 | 极佳 | 追求最高质量 |
-| `llm` (OpenRouter) | 因模型而异 | 不定 | 不定 | 模型对比、实验 |
+| `libretranslate` | **免费**（自托管） | 视情况而定 | 一般 | 物理隔离、GDPR、CI 流水线 |
+| `gemini` (Pro) | ~$0.07 | 中等 | 极佳 | 注重质量、免费配额 |
+| `openai` (GPT-4o-mini) | ~$0.01 | 快 | 良好 | 经济型 LLM |
+| `openai` (GPT-4o) | ~$0.10 | 中等 | 极佳 | 注重质量 |
+| `anthropic` (Haiku) | ~$0.01 | 快 | 良好 | 经济型 LLM |
+| `anthropic` (Sonnet) | ~$0.10 | 中等 | 极佳 | 注重质量 |
+| `anthropic` (Opus) | ~$0.50 | 慢 | 完美 | 追求极致质量 |
+| `llm` (OpenRouter) | 因模型而异 | 视情况而定 | 视情况而定 | 模型对比、实验 |
 
 :::note 这些是预估值
-实际成本取决于你的源文本长度、批次大小以及提供商的定价变动。请查看各提供商当前的定价页面以获取准确费率。
+实际成本取决于你的源文本长度、批次大小以及提供商的定价变化。请查看各提供商当前的定价页面以获取准确费率。
 :::
 
 ---
@@ -485,4 +485,4 @@ i18n-rosetta plugin remove french-formal-v1
 - [通过 API 提供方法](/docs/guides/serving-a-method)
 - [质量门禁](/docs/concepts/quality-gate)
 - [架构](/docs/concepts/architecture)
-- [故障排除](/docs/guides/troubleshooting) —— 模型错误、API 问题
+- [故障排除](/docs/guides/troubleshooting) — 模型错误、API 问题

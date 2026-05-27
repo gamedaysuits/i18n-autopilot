@@ -2,10 +2,12 @@
   "code": "crk",
   "extends": "subfamily-cree",
   "name": "Plains Cree",
-  "nativeName": "nêhiyawêwin",
+  "nativeName": "nêhiyawêwin / ᓀᐦᐃᔭᐍᐏᐣ",
   "iso639_1": null,
   "iso639_3": "crk",
   "bcp47": "crk",
+  "script": "Cans",
+  "dir": "ltr",
   "formality": {
     "system": "register-levels",
     "description": "Plains Cree does not have a European-style T-V distinction. Formality is expressed through the use of respectful particles and verb forms. The language has a complex polysynthetic morphology — a single word can encode what requires an entire sentence in English. SRO (Standard Roman Orthography) is the working script; Syllabics (ᓀᐦᐃᔭᐍᐏᐣ) is the display script.",

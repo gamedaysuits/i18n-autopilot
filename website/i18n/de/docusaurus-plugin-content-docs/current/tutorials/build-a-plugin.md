@@ -1,32 +1,32 @@
 ---
 sidebar_position: 1
 title: "Ein Übersetzungs-Plugin erstellen"
-description: "End-to-End-Tutorial: Entwickeln Sie Coaching-Daten, führen Sie Benchmarks mit dem Eval Harness durch, exportieren Sie ein Plugin und stellen Sie es mit rosetta bereit."
+description: "End-to-End-Tutorial: Coaching-Daten entwickeln, mit dem Eval Harness benchmarken, ein Plugin exportieren und es mit rosetta bereitstellen."
 ---
 # Tutorial: Ein Übersetzungs-Plugin erstellen
 
-Erstellen Sie eine benutzerdefinierte Übersetzungsmethode von Grund auf, unterziehen Sie diese einem Benchmark und stellen Sie sie als rosetta-Plugin bereit. Dies ist der vollständige Arbeitsablauf zum Hinzufügen eines neuen Sprachpaares, das von keiner Standard-API unterstützt wird.
+Erstellen Sie eine benutzerdefinierte Übersetzungsmethode von Grund auf, führen Sie Benchmarks durch und stellen Sie sie als rosetta-Plugin bereit. Dies ist der vollständige Arbeitsablauf zum Hinzufügen eines neuen Sprachpaares, das von keiner Standard-API unterstützt wird.
 
-**Was Sie erstellen werden:** Ein Plugin für gecoachte Übersetzung für formelles Französisch mit verbindlicher Terminologie, Grammatikregeln und Benchmark-Werten.
+**Was Sie erstellen werden:** Ein Plugin für angeleitete Übersetzungen für formelles Französisch mit verbindlicher Terminologie, Grammatikregeln und Benchmark-Ergebnissen.
 
-**Zeitaufwand:** 30–45 Minuten
+**Dauer:** 30–45 Minuten
 
 **Voraussetzungen:**
 - i18n-rosetta ist installiert (`npm install --save-dev i18n-rosetta`)
 - Ein OpenRouter-API-Schlüssel (`OPENROUTER_API_KEY`)
-- Python 3.10+ (für die Eval-Harness)
+- Python 3.10+ (für die Evaluierungsumgebung)
 
 ---
 
 ## Schritt 1: Das Problem identifizieren
 
-Sie übersetzen ein SaaS-Dashboard ins Französische. Die Standardmethode `llm` liefert zwar korrekte, aber inkonsistente Übersetzungen:
+Sie übersetzen ein SaaS-Dashboard ins Französische. Die Standardmethode `llm` liefert korrekte, aber inkonsistente Übersetzungen:
 
-- Manchmal wird "dashboard" zu "tableau de bord", ein andermal zu "panneau de contrôle"
+- Manchmal wird „dashboard“ zu „tableau de bord“, ein andermal zu „panneau de contrôle“
 - Der Tonfall wechselt zwischen den Formen `tu` und `vous`
 - Fachbegriffe werden inkonsistent anglisiert
 
-Sie benötigen eine **verbindliche Terminologie** und **Registerkontrolle**, die der generische LLM-Prompt nicht bietet.
+Sie benötigen **verbindliche Terminologie** und **Registerkontrolle**, die der generische LLM-Prompt nicht bietet.
 
 ## Schritt 2: Coaching-Daten erstellen
 
@@ -61,9 +61,9 @@ mkdir -p .rosetta/coaching
 ```
 
 **Was jedes Feld bewirkt:**
-- **`grammar_rules`** — Wird als explizite Einschränkung in den LLM-System-Prompt injiziert
-- **`dictionary`** — Wird mit Quellschlüsseln abgeglichen; wenn ein Wörterbuchbegriff auftritt, wird er als "erforderliche Terminologie" in den Prompt injiziert
-- **`style_notes`** — Wird als allgemeine Stilrichtlinie an den System-Prompt angehängt
+- **`grammar_rules`** — Wird als explizite Einschränkung in den LLM-System-Prompt eingefügt
+- **`dictionary`** — Wird mit den Quellschlüsseln abgeglichen; wenn ein Wörterbuchbegriff auftaucht, wird er als „erforderliche Terminologie“ in den Prompt eingefügt
+- **`style_notes`** — Wird dem System-Prompt als allgemeine Stilrichtlinie angehängt
 
 ## Schritt 3: Das Sprachpaar konfigurieren
 
@@ -95,22 +95,22 @@ Weisen Sie rosetta an, `llm-coached` für Französisch zu verwenden:
 npx i18n-rosetta sync --dry
 ```
 
-Überprüfen Sie die Ausgabe des Probelaufs (Dry-Run). Stellen Sie sicher, dass:
-- ✅ Wörterbuchbegriffe konsistent verwendet werden ("tableau de bord", nicht "panneau de contrôle")
+Überprüfen Sie die Ausgabe des Probelaufs. Stellen Sie sicher, dass:
+- ✅ Wörterbuchbegriffe konsistent verwendet werden („tableau de bord“, nicht „panneau de contrôle“)
 - ✅ Die Form `vous` durchgängig verwendet wird
 - ✅ Fachbegriffe mit Ihrem Wörterbuch übereinstimmen
 
-Führen Sie dann die tatsächliche Synchronisierung aus:
+Führen Sie dann die eigentliche Synchronisation aus:
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-## Schritt 5: Benchmarking mit der Eval-Harness (Optional)
+## Schritt 5: Benchmark mit der Evaluierungsumgebung (Optional)
 
-Wenn Sie Qualitätswerte wünschen — und das tun Sie, da Plugins mit Benchmark-Daten ausgeliefert werden —, verwenden Sie die zugehörige Eval-Harness.
+Wenn Sie Qualitätsbewertungen wünschen – und das sollten Sie, da Plugins mit Benchmark-Daten ausgeliefert werden –, verwenden Sie die zugehörige Evaluierungsumgebung.
 
-### Die Harness installieren
+### Die Evaluierungsumgebung installieren
 
 ```bash
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 ### Einen Referenzkorpus erstellen
 
-Erstellen Sie eine Datei mit Quellzeichenfolgen und verifizierten Übersetzungen:
+Erstellen Sie eine Datei mit Quellzeichenfolgen und als gut bekannten Übersetzungen:
 
 ```json title="corpus/french-formal.json"
 [
@@ -154,14 +154,14 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-Die Harness gibt Folgendes aus:
+Die Evaluierungsumgebung gibt Folgendes aus:
 - **chrF++** — F-Score auf Zeichenebene (0–100). Ein Wert über 70 ist stark.
-- **BLEU** — N-Gramm-Überlappung (0–100). Ein Wert über 40 ist solide für eine gecoachte Übersetzung.
+- **BLEU** — N-Gramm-Überlappung (0–100). Ein Wert über 40 ist für angeleitete Übersetzungen solide.
 - **Exakte Übereinstimmungsrate** — Anteil der Übersetzungen, die exakt mit der Referenz übereinstimmen.
 
 ### Das Plugin exportieren
 
-Sobald Sie mit den Werten zufrieden sind:
+Sobald Sie mit den Ergebnissen zufrieden sind:
 
 ```bash
 python harness.py export \
@@ -235,9 +235,9 @@ flowchart LR
 
 Sie verfügen nun über:
 1. **Coaching-Daten** — Grammatikregeln und Terminologie, die Konsistenz erzwingen
-2. **Benchmark-Werte** — Quantifizierte Qualität, die mit dem Plugin ausgeliefert wird
+2. **Benchmark-Ergebnisse** — Quantifizierte Qualität, die mit dem Plugin ausgeliefert wird
 3. **Ein portables Plugin** — `method.json` + Coaching-Daten, installierbar auf jedem Rechner
-4. **Produktionsbereitstellung** — Integriert in Ihre Synchronisierungs-Pipeline
+4. **Produktionsbereitstellung** — Integriert in Ihre Synchronisations-Pipeline
 
 ## Nächste Schritte
 

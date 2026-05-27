@@ -6,7 +6,7 @@ title: "CI/CD"
 
 Automatiseer vertalingen in uw build pipeline.
 
-## GitHub Actions: Synchroniseren bij push
+## GitHub Actions: Sync on Push
 
 Voeg vertalingssynchronisatie toe aan uw bestaande build pipeline:
 
@@ -23,9 +23,9 @@ jobs:
       - run: npm run build
 ```
 
-## GitHub Actions: Geplande synchronisatie
+## GitHub Actions: Scheduled Sync
 
-Voer vertalingen uit volgens een schema en commit automatisch:
+Voer vertalingen uit volgens een schema en voer automatische commits uit:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync translations
@@ -113,7 +113,7 @@ Als u een remote translation endpoint gebruikt (bijv. een gehoste vertaaldienst)
 
 ## Drie-laagse CI-pipeline
 
-Voor maximale i18n-dekking bewaakt u uw pipeline met alle drie de tools:
+Voor maximale i18n-dekking beveiligt u uw pipeline met alle drie de tools:
 
 ```yaml
 jobs:
@@ -140,12 +140,25 @@ jobs:
 | **Sync** | `sync` | Post-commit / CI | Vertaal ontbrekende en gewijzigde keys |
 | **Audit** | `audit` | Build-stap | Laat de deployment falen als een locale onvolledig is |
 
+:::tip Translation Memory in CI
+Als uw CI-runner een persistente workspace heeft (of `.rosetta/` in de cache opslaat), treedt Translation Memory automatisch in werking — bij volgende synchronisaties worden alleen keys vertaald waarvan de brontekst daadwerkelijk is gewijzigd. Voor ephemeral runners kunt u overwegen om `.rosetta/tm.json` tussen de runs in de cache op te slaan:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
+
 ---
 
 ## Zie ook
 
 - [CLI-referentie](/docs/reference/cli) — volledige commando-referentie
 - [Hoe Sync werkt](/docs/concepts/how-sync-works) — incrementele synchronisatie begrijpen
+- [Translation Memory](/docs/concepts/translation-memory) — caching en kostenbesparingen
 - [Vertaalmethoden](/docs/guides/translation-methods) — methodeselectie per paar
 - [Quality Gate](/docs/concepts/quality-gate) — wat er gebeurt als vertalingen falen
-- [Configuratie](/docs/getting-started/configuration) — configuratiereferentie
+- [Configuratie](/docs/getting-started/configuration) — configuratie-referentie

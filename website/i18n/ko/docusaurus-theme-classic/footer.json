@@ -62,5 +62,9 @@
   "copyright": {
     "message": "Copyright © 2026 Curtis Forbes. Docusaurus로 제작되었습니다.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "파이프라인 구축하기",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

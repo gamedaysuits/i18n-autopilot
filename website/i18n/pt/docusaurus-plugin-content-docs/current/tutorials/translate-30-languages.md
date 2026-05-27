@@ -1,13 +1,13 @@
 ---
 sidebar_position: 2
 title: "Traduza 30 idiomas"
-description: "Cookbook: escale um projeto de 3 para 30 idiomas usando combinação de métodos por par, batching e integração com CI."
+description: "Cookbook: escale um projeto de 3 para 30 idiomas usando combinação de métodos por par, processamento em lote e integração com CI."
 ---
 # Cookbook: Traduzir 30 Idiomas
 
-Escale um projeto de alguns poucos locales para cobertura global. Este cookbook aborda a seleção de métodos, otimização de custos e integração contínua (CI) para um deploy multilíngue real.
+Escale um projeto de algumas poucas localidades para uma cobertura global. Este cookbook detalha a seleção de métodos, otimização de custos e integração contínua (CI) para uma implantação multilíngue real.
 
-**Cenário:** Você tem um app SaaS com `en`, `fr`, `es`. Você precisa adicionar mais 27 idiomas divididos em três níveis de requisitos de qualidade.
+**Cenário:** Você tem um aplicativo SaaS com `en`, `fr`, `es`. Você precisa adicionar mais 27 idiomas em três níveis de requisitos de qualidade.
 
 ---
 
@@ -17,11 +17,11 @@ Nem todos os 30 idiomas precisam da mesma abordagem. Agrupe-os pela qualidade do
 
 | Nível | Idiomas | Método | Motivo |
 |------|-----------|--------|-----|
-| **Nível 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Mercados de alto valor, gramática rica em nuances |
+| **Nível 1 — Premium** | `ja`, `ko`, `zh`, `de`, `pt` | `llm` (GPT-4o) | Mercados de alto valor, gramática com nuances |
 | **Nível 2 — Padrão** | `it`, `nl`, `pl`, `sv`, `da`, `fi`, `no`, `cs`, `ro`, `hu`, `el`, `tr`, `id`, `ms`, `th`, `vi`, `uk`, `bg` | `google-translate` | Alto volume, bem suportado pelo Google |
-| **Nível 3 — Treinado** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Poucos recursos, exigem controle de terminologia |
+| **Nível 3 — Treinado** | `crk`, `oj`, `mi`, `haw` | `llm-coached` + plugins | Poucos recursos, requer aplicação de terminologia |
 
-## Passo 2: Configure por Par
+## Passo 2: Configurar por Par
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -49,13 +49,13 @@ Nem todos os 30 idiomas precisam da mesma abordagem. Agrupe-os pela qualidade do
 }
 ```
 
-**Nota:** Idiomas não listados em `pairs` herdam `defaultMethod: "google-translate"`. Você não precisa listar todos os 30.
+**Nota:** Os idiomas não listados em `pairs` herdam `defaultMethod: "google-translate"`. Você não precisa listar todos os 30.
 
 :::info
-O suporte a `crk` está em desenvolvimento — veja [Apoie um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para o status e diretrizes de contribuição.
+O suporte a `crk` está em desenvolvimento — veja [Apoiar um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para o status e diretrizes de contribuição.
 :::
 
-## Passo 3: Configure as Chaves de API
+## Passo 3: Configurar Chaves de API
 
 Você precisará de ambas as chaves de API para esta configuração:
 
@@ -64,7 +64,7 @@ export OPENROUTER_API_KEY="sk-or-v1-..."
 export GOOGLE_TRANSLATE_API_KEY="AIza..."
 ```
 
-## Passo 4: Faça um Dry Run Primeiro
+## Passo 4: Faça uma Simulação Primeiro
 
 Sempre visualize antes de traduzir 30 idiomas:
 
@@ -74,8 +74,8 @@ npx i18n-rosetta sync --dry
 
 Revise a saída. Ela mostrará:
 - Quais pares usam qual método
-- Quantas chaves são novas/alteradas por locale
-- Estimativa de chamadas de API por nível
+- Quantas chaves são novas/alteradas por localidade
+- Chamadas de API estimadas por nível
 
 ## Passo 5: Execute a Sincronização
 
@@ -83,7 +83,7 @@ Revise a saída. Ela mostrará:
 npx i18n-rosetta sync
 ```
 
-O Rosetta processa cada par de forma independente. Os pares do Nível 2 usando o Google Translate serão rápidos. Os pares LLM do Nível 1 serão mais lentos, mas com maior qualidade. Os pares treinados do Nível 3 usam os dados de coaching do plugin.
+O Rosetta processa cada par de forma independente. Os pares do Nível 2 usando o Google Translate serão rápidos. Os pares LLM do Nível 1 serão mais lentos, mas com maior qualidade. Os pares treinados do Nível 3 usam os dados de treinamento do plugin.
 
 ### Atualizações Incrementais
 
@@ -94,9 +94,9 @@ Após a sincronização inicial, as execuções subsequentes traduzem apenas as 
 npx i18n-rosetta sync
 ```
 
-O arquivo de lock (`.i18n-rosetta.lock`) rastreia o que foi traduzido, para que você nunca retraduza conteúdo estável.
+O lock file (`.i18n-rosetta.lock`) rastreia o que foi traduzido, para que você nunca retraduza conteúdo estável.
 
-## Passo 6: Audite a Qualidade
+## Passo 6: Auditar a Qualidade
 
 Verifique o status de todos os pares de idiomas:
 
@@ -104,11 +104,11 @@ Verifique o status de todos os pares de idiomas:
 npx i18n-rosetta status
 ```
 
-Isso gera uma tabela mostrando o método, modelo e nível de qualidade de cada par, e se dados de coaching ou pontuações de benchmark estão disponíveis.
+Isso gera uma tabela mostrando o método, modelo, nível de qualidade de cada par e se dados de treinamento ou pontuações de benchmark estão disponíveis.
 
-## Passo 7: Integração Contínua (CI)
+## Passo 7: Integração com CI
 
-Adicione ao seu fluxo de trabalho do GitHub Actions para que as traduções se mantenham atualizadas a cada push:
+Adicione ao seu fluxo de trabalho do GitHub Actions para que as traduções permaneçam atualizadas a cada push:
 
 ```yaml title=".github/workflows/i18n-sync.yml"
 name: Sync Translations
@@ -149,18 +149,18 @@ Para um projeto com 500 chaves de origem em 30 idiomas:
 
 | Nível | Idiomas | Método | Custo Aproximado |
 |------|-----------|--------|-----------------|
-| Nível 1 (5 idiomas) | ja, ko, zh, de, pt | GPT-4o | ~$2,50/sync completa |
-| Nível 2 (18 idiomas) | it, nl, pl, etc. | Google Translate | ~$0,90/sync completa |
-| Nível 3 (4 idiomas) | crk, oj, mi, haw | GPT-4o-mini treinado | ~$0,40/sync completa |
-| **Total** | **30 idiomas** | **Misto** | **~$3,80/sync completa** |
+| Nível 1 (5 idiomas) | ja, ko, zh, de, pt | GPT-4o | ~$2,50/sincronização completa |
+| Nível 2 (18 idiomas) | it, nl, pl, etc. | Google Translate | ~$0,90/sincronização completa |
+| Nível 3 (4 idiomas) | crk, oj, mi, haw | GPT-4o-mini treinado | ~$0,40/sincronização completa |
+| **Total** | **30 idiomas** | **Misto** | **~$3,80/sincronização completa** |
 
 Sincronizações incrementais (5–20 chaves alteradas) custam uma fração de uma sincronização completa.
 
 ## Veja Também
 
 - [Métodos de Tradução](/docs/guides/translation-methods) — Como cada método de tradução funciona e quando usá-lo
-- [Especificação de Plugin](/docs/reference/plugin-spec) — Crie dados de coaching para qualquer um dos seus idiomas do Nível 3
-- [Guia de CI/CD](/docs/guides/ci-cd) — Padrões avançados de CI, incluindo builds de preview para PRs
+- [Especificação de Plugin](/docs/reference/plugin-spec) — Crie dados de treinamento para qualquer um dos seus idiomas do Nível 3
+- [Guia de CI/CD](/docs/guides/ci-cd) — Padrões avançados de CI, incluindo builds de visualização de PR
 - [Quality Gate](/docs/concepts/quality-gate) — Como o Rosetta valida cada tradução antes de gravá-la
 - [Idiomas Suportados](/docs/reference/supported-languages) — Lista completa de códigos de idioma e compatibilidade de métodos
-- [Apoie um Idioma de Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — Adicione dados de coaching para idiomas sem ampla cobertura de MT
+- [Apoiar um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — Adicione dados de treinamento para idiomas sem ampla cobertura de MT

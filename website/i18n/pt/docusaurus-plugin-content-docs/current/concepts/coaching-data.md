@@ -4,7 +4,7 @@ title: "Dados de Coaching"
 ---
 # Dados de Coaching
 
-Os dados de coaching são o mecanismo do rosetta para ensinar LLMs sobre idiomas nos quais eles não foram treinados. Ao fornecer regras gramaticais, dicionários e notas de estilo junto com cada solicitação de tradução, você transforma um LLM de uso geral em um tradutor sensível ao contexto para qualquer idioma — incluindo idiomas com zero suporte a MT existente.
+Os dados de coaching são o mecanismo do rosetta para ensinar aos LLMs sobre idiomas nos quais eles não foram treinados. Ao fornecer regras gramaticais, dicionários e notas de estilo junto com cada solicitação de tradução, você transforma um LLM de uso geral em um tradutor sensível ao contexto para qualquer idioma — incluindo idiomas com zero suporte de MT existente.
 
 ## Como Funciona
 
@@ -28,7 +28,7 @@ Quando você define o método de um par como `llm-coached`, o rosetta carrega um
 └──────────────────────────────────────────────────────┘
 ```
 
-Como os dados de coaching fazem parte da mensagem do sistema, eles se beneficiam do **prompt caching** — provedores como Anthropic e Google fazem cache de prefixos de sistema repetidos, então você só paga pelo contexto de coaching uma vez por sessão, e não uma vez por lote.
+Como os dados de coaching fazem parte da mensagem do sistema, eles se beneficiam do **prompt caching** — provedores como Anthropic e Google armazenam em cache prefixos de sistema repetidos, então você só paga pelo contexto de coaching uma vez por sessão, e não uma vez por lote.
 
 ## Formato do Arquivo de Coaching
 
@@ -59,14 +59,14 @@ Crie um arquivo JSON por localidade em `.rosetta/coaching/`:
 | Campo | Tipo | Obrigatório | Descrição |
 |-------|------|----------|-------------|
 | `grammar_rules` | `string[]` | Não | Array de regras gramaticais injetadas no prompt do sistema. Cada regra deve ser uma instrução concisa e acionável que o LLM possa seguir. |
-| `dictionary` | `object` | Não | Mapa de chave-valor de termo em inglês → termo no idioma de destino. Usado para vocabulário específico de domínio que o LLM não conheceria. |
+| `dictionary` | `object` | Não | Mapa de chave-valor do termo em inglês → termo no idioma de destino. Usado para vocabulário específico do domínio que o LLM não conheceria. |
 | `style_notes` | `string` | Não | Instruções de estilo em formato livre (registro, tom, convenções de formalidade). |
 
 Todos os campos são opcionais — você pode começar apenas com um dicionário e adicionar regras gramaticais à medida que refina.
 
 ## Comportamento de Fallback
 
-Se um par estiver configurado para `llm-coached`, mas não existir nenhum arquivo de coaching para essa localidade, o rosetta **fará o fallback para o método `llm` padrão** com um aviso no console:
+Se um par estiver configurado para `llm-coached`, mas não existir nenhum arquivo de coaching para essa localidade, o rosetta **faz o fallback para o método `llm` padrão** com um aviso no console:
 
 ```
 [INFO] No coaching data for "crk" at .rosetta/coaching/crk.json
@@ -75,7 +75,7 @@ Se um par estiver configurado para `llm-coached`, mas não existir nenhum arquiv
 
 Isso significa que você pode definir `"defaultMethod": "llm-coached"` globalmente com segurança — os idiomas com dados de coaching o usarão, e o restante receberá a tradução padrão do LLM sem erros.
 
-## Quando Usar o Coaching
+## Quando Usar Coaching
 
 | Cenário | Método Recomendado |
 |----------|-------------------|
@@ -84,7 +84,7 @@ Isso significa que você pode definir `"defaultMethod": "llm-coached"` globalmen
 | Idiomas Tier 3 (Cree das Planícies, Iorubá, Quíchua) | `llm-coached` — Os LLMs precisam de regras gramaticais e dicionários |
 | Conlangs (Klingon, Sindarin, Kryptoniano) | `llm-coached` — Os LLMs têm alguns dados de treinamento, mas precisam de correções |
 
-## Construindo Bons Dados de Coaching
+## Criando Bons Dados de Coaching
 
 ### Regras Gramaticais
 
@@ -100,7 +100,7 @@ Escreva as regras como **instruções**, não como descrições. O LLM segue ins
 
 ### Dicionários
 
-Concentre-se em **termos específicos de domínio** que o LLM erraria ou inventaria. Não se preocupe com palavras comuns com as quais o LLM já lida — concentre-se nos termos específicos da UI do seu aplicativo.
+Concentre-se em **termos específicos do domínio** que o LLM erraria ou inventaria. Não se preocupe com palavras comuns com as quais o LLM já lida — foque nos termos específicos da UI da sua aplicação.
 
 ### Notas de Estilo
 
@@ -112,7 +112,7 @@ Seja específico sobre registro, formalidade e convenções:
 
 ## Testando Traduções com Coaching
 
-Use o [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) para fazer o benchmark de suas traduções com coaching em relação a um corpus de referência:
+Use o [MT Eval Harness](https://github.com/gamedaysuits/gds-mt-eval-harness) para fazer o benchmark das suas traduções com coaching em relação a um corpus de referência:
 
 ```bash
 # Install the harness
@@ -125,7 +125,7 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Isso fornece as pontuações de chrF++, BLEU e exact match. Crie várias versões de arquivos de coaching e compare — métricas objetivas superam a revisão subjetiva.
+Isso fornece as pontuações chrF++, BLEU e de correspondência exata. Crie várias versões de arquivos de coaching e compare — métricas objetivas superam a revisão subjetiva.
 
 ---
 

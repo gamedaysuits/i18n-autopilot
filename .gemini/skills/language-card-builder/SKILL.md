@@ -71,11 +71,19 @@ Find the language's native name. This is how speakers refer to their own languag
 4. Community language websites
 
 **Examples**:
-- French → `français`
-- Plains Cree → `nêhiyawêwin`
-- Yoruba → `Èdè Yorùbá`
+- French → `Français`
+- Russian → `Русский` (Cyrillic, not 'Russkiy')
+- Arabic → `العربية` (Arabic script, RTL)
+- Japanese → `日本語`
+- Plains Cree → `nêhiyawêwin / ᓀᐦᐃᔭᐍᐏᐣ` (SRO + Syllabics)
+- Korean → `한국어` (Hangul)
+- Yoruba → `Èdè Yorùbá` (with diacritics)
 
-**Validation**: Ensure proper diacritics and script. Don't anglicize.
+**Rules**:
+- Must render in the language's native script, not romanized
+- For dual-script languages, include both forms separated by ` / `
+- Ensure proper diacritics — don't anglicize or simplify
+- Verify the name is what speakers actually call their own language
 
 ### Step 2: Linguistic Challenges
 
@@ -253,7 +261,7 @@ If you found a GiellaLT FST in Step 4a:
 Before marking a card as "complete", verify:
 
 - [ ] No TODO strings remain in either card file
-- [ ] `nativeName` is present with proper diacritics
+- [ ] `nativeName` is present in native script with proper diacritics (dual-script languages use 'name1 / name2')
 - [ ] At least 3 linguisticChallenges with specific MT failure modes
 - [ ] Demographics has speaker count and regions
 - [ ] `resources.corpora` has at least 1 entry (OPUS at minimum)

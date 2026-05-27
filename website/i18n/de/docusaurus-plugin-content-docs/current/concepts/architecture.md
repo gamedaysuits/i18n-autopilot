@@ -4,7 +4,7 @@ title: "Architektur"
 ---
 # Architektur
 
-Das Rosetta-Übersetzungs-Ökosystem besteht aus drei unabhängigen Tools, die über klar definierte Verträge zusammenarbeiten. Keines von ihnen ist zur Erstellungszeit voneinander abhängig. Sie kommunizieren über ein gemeinsames **Methoden-Plugin-Format** und einen **REST-API-Vertrag**.
+Das Rosetta-Übersetzungsökosystem besteht aus drei unabhängigen Werkzeugen, die über klar definierte Verträge zusammenarbeiten. Keines von ihnen ist zur Build-Zeit voneinander abhängig. Sie kommunizieren über ein gemeinsames **Methoden-Plugin-Format** und einen **REST-API-Vertrag**.
 
 ## Die drei Komponenten
 
@@ -26,7 +26,7 @@ graph TB
 
 ### i18n-rosetta (dieses Projekt)
 
-Das Open-Source-Entwicklertool. Es übersetzt Lokalisierungsdateien mithilfe von Plugin-Methoden. Es hat keine Abhängigkeiten, die Konfiguration ist optional und es funktioniert sofort.
+Das Open-Source-Entwicklerwerkzeug. Übersetzt Locale-Dateien unter Verwendung von Plug-in-basierten Methoden. Keine Abhängigkeiten, Konfiguration optional, sofort einsatzbereit.
 
 **Integrierte Methoden:**
 - `llm` → OpenRouter / beliebiges LLM (200+ Modelle)
@@ -38,19 +38,19 @@ Das Open-Source-Entwicklertool. Es übersetzt Lokalisierungsdateien mithilfe von
 - `deepl` → DeepL API mit Glossar-Unterstützung
 - `microsoft-translator` → Azure Cognitive Services Translator
 - `libretranslate` → Selbstgehostetes LibreTranslate (AGPL, kostenlos)
-- `api` → Schlanke Schnittstelle zu einem beliebigen Remote-REST-Endpunkt
+- `api` → Schlanke Verbindung zu einem beliebigen Remote-REST-Endpunkt
 
 ### Eval Harness (Begleitprojekt)
 
-Ein Forschungstool zur Entwicklung, zum Testen und zum Benchmarking von Übersetzungsmethoden. Wenn eine Methode eine akzeptable Qualität erreicht, exportiert das Harness ein **Methoden-Plugin** — ein `method.json`-Manifest und optionale Coaching-Datendateien.
+Ein Forschungswerkzeug zur Entwicklung, zum Testen und zum Benchmarking von Übersetzungsmethoden. Wenn eine Methode eine akzeptable Qualität erreicht, exportiert das Harness ein **Methoden-Plugin** — ein `method.json`-Manifest und optionale Coaching-Datendateien.
 
-Das Harness läuft niemals innerhalb von rosetta. Es ist ein separates Tool, das eine statische Ausgabe (JSON-Dateien) erzeugt. Rosetta liest diese Dateien lediglich.
+Das Harness wird niemals innerhalb von rosetta ausgeführt. Es ist ein separates Werkzeug, das statische Ausgaben (JSON-Dateien) erzeugt. Rosetta liest diese Dateien lediglich.
 
 [→ Eval Harness auf GitHub](https://github.com/gamedaysuits/gds-mt-eval-harness)
 
 ### Rosetta Translate (geplant)
 
-Ein API-Dienst mit nutzungsabhängiger Abrechnung, der proprietäre Übersetzungsmethoden serverseitig hostet — die Prompts, Coaching-Daten und linguistischen Pipelines verlassen den Server niemals.
+Ein nutzungsbasierter API-Dienst, der proprietäre Übersetzungsmethoden serverseitig hostet — die Prompts, Coaching-Daten und linguistischen Pipelines verlassen den Server niemals.
 
 ## Wie sie miteinander verbunden sind
 
@@ -77,11 +77,11 @@ flowchart LR
     E --> F["Returns translations"]
 ```
 
-Rosettas `APIMethod` ist eine **reine Datenleitung (Dumb Pipe)**. Sie sendet Schlüssel nach außen und empfängt Übersetzungen zurück. Sie enthält keinerlei Übersetzungslogik und keine proprietären Inhalte.
+Die `APIMethod` von Rosetta ist eine **reine Durchleitung**. Sie sendet Schlüssel nach außen und empfängt Übersetzungen zurück. Sie enthält keinerlei Übersetzungslogik und keinerlei proprietäre Inhalte.
 
 ## Was jede Komponente über die anderen weiß
 
-| Tool | Kennt rosetta? | Kennt Rosetta Translate? | Kennt Harness? |
+| Werkzeug | Kennt rosetta? | Kennt Rosetta Translate? | Kennt das Harness? |
 |------|---------------------|-------------------------------|---------------------|
 | **i18n-rosetta** | *(ist rosetta)* | Ja — die `api`-Methode ruft es auf | Nein — liest nur Plugin-Exporte |
 | **Rosetta Translate** | Ja — bedient dessen Anfragen | *(ist Rosetta Translate)* | Nein — empfängt bereitgestellte Methoden |
@@ -98,7 +98,7 @@ npx i18n-rosetta sync
 
 Verwendet die integrierte `llm`-Methode. Keine Plugins, kein Rosetta Translate, kein Harness.
 
-### Szenario 2: Google Translate als Basis
+### Szenario 2: Google Translate-Basislinie
 
 ```bash
 export GOOGLE_TRANSLATE_API_KEY=AIza...
@@ -114,9 +114,9 @@ rosetta plugin install ./french-formal-v1/
 rosetta sync
 ```
 
-Das Plugin hat `type: "llm-coached"` → rosetta verwendet den eigenen OpenRouter-Schlüssel des Benutzers. Die Coaching-Daten sind lokal (kein Serveraufruf).
+Das Plugin verfügt über `type: "llm-coached"` → rosetta verwendet den eigenen OpenRouter-Schlüssel des Benutzers. Coaching-Daten sind lokal (kein Serveraufruf).
 
-### Szenario 4: Eigenes Coaching (kein Plugin, kein Harness)
+### Szenario 4: DIY-Coaching (kein Plugin, kein Harness)
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -128,13 +128,34 @@ Das Plugin hat `type: "llm-coached"` → rosetta verwendet den eigenen OpenRoute
 
 Der Benutzer pflegt seine eigenen Grammatikregeln und sein eigenes Wörterbuch in `.rosetta/coaching/fr.json`.
 
+## Language Cards
+
+Jede Sprache in rosetta wird über eine **Language Card** konfiguriert — eine JSON-Datei, die Register-Voreinstellungen, Formalitätsregeln, Flags zur Methodenunterstützung und Typografie-Konventionen enthält. Language Cards sind die sprachspezifische Konfiguration, die die registergesteuerte Übersetzung antreibt.
+
+```mermaid
+graph LR
+    subgraph Cards["Language Cards (lib/data/)"]
+        RT["Runtime Tier<br/>language-cards/*.json<br/>~2 KB each"]
+        RF["Reference Tier<br/>language-reference/*.json<br/>~3 KB each"]
+    end
+    RT -->|"Eager load at import"| R["i18n-rosetta<br/>translate()"]
+    RF -->|"Lazy load on demand"| W["Website / Harness<br/>getLanguageReference()"]
+```
+
+Die Cards sind für eine skalierbare Leistung (mit dem Ziel von über 700 Sprachen) in zwei Ebenen unterteilt:
+
+- **Laufzeitebene** (`language-cards/`): Wird sofort geladen — die Felder, die die Übersetzungs-Engine benötigt (Register, Formalität, Methodenunterstützung, Typografieregeln).
+- **Referenzebene** (`language-reference/`): Wird bei Bedarf geladen — Entwicklerdokumentation (linguistische Herausforderungen, Sprachfamilie, NLP-Ressourcen).
+
+Beide Ebenen werden aus maßgeblichen Quellen (IANA, CLDR, Glottolog) unter Verwendung von `scripts/generate-language-card.mjs` generiert und anschließend für linguistische Genauigkeit von Menschen kuratiert.
+
 ## Designprinzipien
 
-1. **Keine zirkulären Abhängigkeiten.** Die Verbindungen sind Einwegverbindungen.
-2. **Rosetta ist der leichtgewichtige Kern.** Keine Abhängigkeiten, Konfiguration ist optional. Plugins und API sind ergänzend.
-3. **Der Schutz des geistigen Eigentums (IP) ist architektonisch verankert.** Proprietäre Techniken bleiben serverseitig. Das npm-Paket enthält keine proprietären Bestandteile.
+1. **Keine zirkulären Abhängigkeiten.** Die Verbindungen sind Einwegstraßen.
+2. **Rosetta ist der leichtgewichtige Kern.** Keine Abhängigkeiten, Konfiguration optional. Plugins und API sind additiv.
+3. **Der Schutz des geistigen Eigentums (IP) ist architektonisch verankert.** Proprietäre Techniken bleiben serverseitig. Das npm-Paket liefert keine proprietären Inhalte aus.
 4. **Das Plugin-Format ist der Vertrag.** Alles fließt durch `method.json`.
-5. **Jedes Tool hat genau eine Aufgabe.** Harness → Methoden entwickeln. Rosetta Translate → Methoden hosten. Rosetta → Dateien übersetzen.
+5. **Jedes Werkzeug hat genau eine Aufgabe.** Harness → Methoden entwickeln. Rosetta Translate → Methoden hosten. Rosetta → Dateien übersetzen.
 
 ---
 
@@ -142,6 +163,6 @@ Der Benutzer pflegt seine eigenen Grammatikregeln und sein eigenes Wörterbuch i
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — wie jede integrierte Methode funktioniert
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — das method.json-Manifestformat
-- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — das begleitende Forschungstool
-- [Bereitstellung einer Methode via API](/docs/guides/serving-a-method) — Hosting benutzerdefinierter Übersetzungs-Pipelines
+- [Eval Harness](https://mtevalarena.org/docs/specifications/harness) — das begleitende Forschungswerkzeug
+- [Bereitstellen einer Methode via API](/docs/guides/serving-a-method) — Hosting benutzerdefinierter Übersetzungs-Pipelines
 - [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — der Anwendungsfall, der diese Architektur vorangetrieben hat

@@ -4,11 +4,11 @@ title: "Coaching-Daten"
 ---
 # Coaching-Daten
 
-Coaching-Daten sind der Mechanismus von rosetta, um LLMs Sprachen beizubringen, auf die sie nicht trainiert wurden. Indem Sie Grammatikregeln, Wörterbücher und Stilhinweise zusammen mit jeder Übersetzungsanfrage bereitstellen, verwandeln Sie ein universelles LLM in einen kontextsensitiven Übersetzer für jede beliebige Sprache — einschließlich Sprachen, für die es bisher keinerlei MT-Unterstützung gibt.
+Coaching-Daten sind der Mechanismus von rosetta, um LLMs Sprachen beizubringen, auf die sie nicht trainiert wurden. Indem Sie Grammatikregeln, Wörterbücher und Stilhinweise zusammen mit jeder Übersetzungsanfrage bereitstellen, verwandeln Sie ein universelles LLM in einen kontextbezogenen Übersetzer für jede beliebige Sprache — einschließlich Sprachen, für die es bisher keinerlei MT-Unterstützung gibt.
 
-## Funktionsweise
+## Wie es funktioniert
 
-Wenn Sie die Methode eines Paares auf `llm-coached` festlegen, lädt rosetta eine Coaching-Datei aus `.rosetta/coaching/<locale>.json` und fügt deren Inhalt als Teil der Systemnachricht in jeden LLM-Prompt ein. Das LLM sieht Ihre linguistischen Regeln zusammen mit der Übersetzungsanfrage und erzeugt eine Ausgabe, die Ihrer Grammatik und Terminologie folgt, anstatt zu raten.
+Wenn Sie die Methode eines Paares auf `llm-coached` festlegen, lädt rosetta eine Coaching-Datei aus `.rosetta/coaching/<locale>.json` und fügt deren Inhalt als Teil der Systemnachricht in jeden LLM-Prompt ein. Das LLM sieht Ihre linguistischen Regeln zusammen mit der Übersetzungsanfrage und erzeugt so eine Ausgabe, die Ihrer Grammatik und Terminologie folgt, anstatt zu raten.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,7 +28,7 @@ Wenn Sie die Methode eines Paares auf `llm-coached` festlegen, lädt rosetta ein
 └──────────────────────────────────────────────────────┘
 ```
 
-Da die Coaching-Daten Teil der Systemnachricht sind, profitieren sie vom **Prompt-Caching** — Anbieter wie Anthropic und Google speichern wiederholte Systempräfixe zwischen, sodass Sie für den Coaching-Kontext nur einmal pro Sitzung bezahlen und nicht einmal pro Stapel.
+Da die Coaching-Daten Teil der Systemnachricht sind, profitieren sie vom **Prompt-Caching** — Anbieter wie Anthropic und Google speichern wiederholte Systempräfixe zwischen, sodass Sie für den Coaching-Kontext nur einmal pro Sitzung und nicht einmal pro Batch bezahlen.
 
 ## Format der Coaching-Datei
 
@@ -58,11 +58,11 @@ Erstellen Sie eine JSON-Datei pro Locale in `.rosetta/coaching/`:
 
 | Feld | Typ | Erforderlich | Beschreibung |
 |-------|------|----------|-------------|
-| `grammar_rules` | `string[]` | Nein | Array von Grammatikregeln, die in den System-Prompt eingefügt werden. Jede Regel sollte eine präzise, umsetzbare Anweisung sein, der das LLM folgen kann. |
-| `dictionary` | `object` | Nein | Schlüssel-Wert-Zuordnung vom englischen Begriff → Begriff der Zielsprache. Wird für domänenspezifisches Vokabular verwendet, das das LLM nicht kennen würde. |
-| `style_notes` | `string` | Nein | Freiform-Stilanweisungen (Register, Tonalität, Formalitätskonventionen). |
+| `grammar_rules` | `string[]` | Nein | Array von Grammatikregeln, die in den System-Prompt eingefügt werden. Jede Regel sollte eine prägnante, umsetzbare Anweisung sein, der das LLM folgen kann. |
+| `dictionary` | `object` | Nein | Schlüssel-Wert-Zuordnung (Key-Value Map) vom englischen Begriff → Begriff der Zielsprache. Wird für domänenspezifisches Vokabular verwendet, das das LLM nicht kennen würde. |
+| `style_notes` | `string` | Nein | Freiform-Stilanweisungen (Register, Tonfall, Formalitätskonventionen). |
 
-Alle Felder sind optional — Sie können nur mit einem Wörterbuch beginnen und Grammatikregeln hinzufügen, während Sie die Daten weiter verfeinern.
+Alle Felder sind optional — Sie können nur mit einem Wörterbuch beginnen und Grammatikregeln hinzufügen, während Sie es weiter verfeinern.
 
 ## Fallback-Verhalten
 
@@ -73,14 +73,14 @@ Wenn ein Paar für `llm-coached` konfiguriert ist, aber keine Coaching-Datei fü
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Das bedeutet, dass Sie `"defaultMethod": "llm-coached"` bedenkenlos global festlegen können — Sprachen mit Coaching-Daten werden diese verwenden, und der Rest erhält eine standardmäßige LLM-Übersetzung ohne Fehler.
+Das bedeutet, dass Sie `"defaultMethod": "llm-coached"` bedenkenlos global festlegen können — Sprachen mit Coaching-Daten werden diese verwenden, und der Rest erhält fehlerfrei die Standard-LLM-Übersetzung.
 
 ## Wann Coaching verwendet werden sollte
 
 | Szenario | Empfohlene Methode |
 |----------|-------------------|
-| Tier-1-Sprachen (Französisch, Spanisch, Deutsch) | `llm` oder `google-translate` — LLMs beherrschen diese bereits gut |
-| Tier-2-Sprachen (Koreanisch, Türkisch, Thai) | `llm` mit einem Register — LLMs bewältigen diese angemessen mit Stilvorgaben |
+| Tier-1-Sprachen (Französisch, Spanisch, Deutsch) | `llm` oder `google-translate` — LLMs kennen diese bereits sehr gut |
+| Tier-2-Sprachen (Koreanisch, Türkisch, Thai) | `llm` mit einem Register — LLMs bewältigen diese mit Stilvorgaben angemessen |
 | Tier-3-Sprachen (Plains Cree, Yoruba, Quechua) | `llm-coached` — LLMs benötigen Grammatikregeln und Wörterbücher |
 | Conlangs (Klingonisch, Sindarin, Kryptonisch) | `llm-coached` — LLMs haben einige Trainingsdaten, benötigen aber Korrekturen |
 
@@ -88,7 +88,7 @@ Das bedeutet, dass Sie `"defaultMethod": "llm-coached"` bedenkenlos global festl
 
 ### Grammatikregeln
 
-Schreiben Sie Regeln als **Anweisungen**, nicht als Beschreibungen. Das LLM befolgt Anweisungen besser, als es linguistische Theorien interpretiert.
+Schreiben Sie Regeln als **Anweisungen**, nicht als Beschreibungen. Das LLM befolgt Anweisungen besser, als es linguistische Theorie interpretiert.
 
 ```json
 // ❌ Descriptive (the LLM learns nothing actionable)
@@ -100,7 +100,7 @@ Schreiben Sie Regeln als **Anweisungen**, nicht als Beschreibungen. Das LLM befo
 
 ### Wörterbücher
 
-Konzentrieren Sie sich auf **domänenspezifische Begriffe**, die das LLM falsch übersetzen oder erfinden würde. Halten Sie sich nicht mit gebräuchlichen Wörtern auf, die das LLM bereits beherrscht — konzentrieren Sie sich auf die Begriffe, die spezifisch für die Benutzeroberfläche Ihrer Anwendung sind.
+Konzentrieren Sie sich auf **domänenspezifische Begriffe**, die das LLM falsch verstehen oder erfinden würde. Halten Sie sich nicht mit gebräuchlichen Wörtern auf, die das LLM bereits beherrscht — konzentrieren Sie sich auf die Begriffe, die spezifisch für die Benutzeroberfläche (UI) Ihrer Anwendung sind.
 
 ### Stilhinweise
 
@@ -125,7 +125,7 @@ mt-eval run --corpus data/crk-corpus.json --model google/gemini-2.5-pro
 mt-eval test eval/logs/run_*.json
 ```
 
-Dies liefert Ihnen chrF++-, BLEU- und Exact-Match-Werte. Erstellen Sie mehrere Versionen der Coaching-Datei und vergleichen Sie diese — objektive Metriken schlagen subjektive Überprüfungen.
+Dadurch erhalten Sie chrF++-, BLEU- und Exact-Match-Werte. Erstellen Sie mehrere Versionen der Coaching-Datei und vergleichen Sie diese — objektive Metriken sind einer subjektiven Überprüfung überlegen.
 
 ---
 
@@ -133,6 +133,6 @@ Dies liefert Ihnen chrF++-, BLEU- und Exact-Match-Werte. Erstellen Sie mehrere V
 
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — die llm-coached Methode
 - [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) — Coaching in der Praxis
-- [Plugin-Spezifikation](/docs/reference/plugin-spec) — Bündeln von Coaching-Daten in einem Plugin
+- [Plugin-Spezifikation](/docs/reference/plugin-spec) — Verpacken von Coaching-Daten in einem Plugin
 - [Quality Gate](/docs/concepts/quality-gate) — wie gecoachte Übersetzungen validiert werden
-- [Konfiguration](/docs/getting-started/configuration) — Coaching-Konfiguration pro Sprachpaar
+- [Konfiguration](/docs/getting-started/configuration) — Coaching-Konfiguration pro Paar

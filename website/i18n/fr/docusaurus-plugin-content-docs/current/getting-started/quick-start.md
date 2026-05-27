@@ -51,7 +51,7 @@ npx i18n-rosetta sync --method gemini
 ```
 :::
 
-Rosetta procédera comme suit :
+Rosetta va :
 1. Détecter automatiquement `locales/en.json` comme source
 2. Trouver (ou demander) les langues cibles
 3. Traduire toutes les clés
@@ -80,7 +80,7 @@ cat locales/fr.json
 
 ## Que se passe-t-il ensuite ?
 
-Lorsque vous modifiez une chaîne source, rosetta détecte la modification grâce au suivi par hachage SHA-256 et ne retraduit que cette clé lors de la synchronisation suivante :
+Lorsque vous modifiez une chaîne source, rosetta détecte le changement via le suivi de hachage SHA-256 et ne retraduit que cette clé lors de la prochaine synchronisation :
 
 ```json title="locales/en.json (updated)"
 {
@@ -96,18 +96,20 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+La clé inchangée (`hero.subtitle`) est fournie par le cache de la **Mémoire de traduction** de rosetta — aucun appel API, aucun coût. Le cache est généré automatiquement lors de chaque synchronisation et stocké dans `.rosetta/tm.json`.
+
 ## Facultatif : Créez un fichier de configuration
 
-Pour un contrôle accru, générez un fichier de configuration :
+Pour plus de contrôle, générez un fichier de configuration :
 
 ```bash
 npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-L'assistant guidé vous accompagne à travers les **register presets** de chaque langue — des instructions de ton et de formalité prédéfinies et adaptées à son système linguistique. Le français dispose de préréglages T-V (vouvoiement contre tutoiement), le coréen possède des niveaux de discours (해요체 contre 합쇼체 contre 해체), le japonais offre des options de keigo (です/ます contre 丁寧語).
+L'assistant guidé vous accompagne à travers les **préréglages de registre** de chaque langue — des instructions de ton et de formalité préconfigurées et adaptées à son système linguistique. Le français dispose de préréglages T-V (vouvoiement contre tutoiement), le coréen possède des niveaux de discours (해요체 contre 합쇼체 contre 해체), le japonais offre des options de keigo (です/ます contre 丁寧語).
 
-Ou créez une configuration manuellement avec des clés prédéfinies :
+Ou créez une configuration manuellement avec des clés de préréglage :
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -136,6 +138,9 @@ npx i18n-rosetta watch
 ## Étapes suivantes
 
 - **[Configuration](/docs/getting-started/configuration)** — Référence complète de la configuration
-- **[Méthodes de traduction](/docs/guides/translation-methods)** — Choisissez la méthode appropriée
+- **[Méthodes de traduction](/docs/guides/translation-methods)** — Choisissez la méthode appropriée par paire
+- **[Mémoire de traduction](/docs/concepts/translation-memory)** — Comment la mise en cache vous fait économiser de l'argent lors des réexécutions
+- **[Travailler avec des traducteurs professionnels](/docs/guides/professional-translators)** — Exportez en XLIFF pour une révision humaine
 - **[Intégration de frameworks](/docs/guides/framework-integration)** — Hugo, next-intl, react-i18next
 - **[CI/CD](/docs/guides/ci-cd)** — Automatisez les traductions dans votre pipeline
+- **[Dépannage](/docs/guides/troubleshooting)** — Problèmes courants et solutions

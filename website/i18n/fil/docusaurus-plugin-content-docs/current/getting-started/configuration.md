@@ -4,7 +4,7 @@ title: "Configuration"
 ---
 # Configuration
 
-Gumagana ang Rosetta nang zero-config — nag-a-auto-detect ito ng locale files, format, at target languages mula sa project mo. Para sa mas maraming control, gumawa ng `i18n-rosetta.config.json` sa project root mo, o i-run ang:
+Gumagana po ang Rosetta nang zero-config — nag-a-auto-detect ito ng locale files, format, at target languages mula sa inyong project. Para sa mas maraming control, gumawa po ng `i18n-rosetta.config.json` sa inyong project root, o i-run ang:
 
 ```bash
 npx i18n-rosetta init
@@ -23,6 +23,7 @@ npx i18n-rosetta init
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
   "batchSize": 30,
+  "concurrency": 12,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -56,12 +57,13 @@ Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, 
 | `version` | `number` | `3` | Config schema version. Laging `3`. |
 | `inputLocale` | `string` | `"en"` | Source language code (BCP 47). |
 | `localesDir` | `string` | `"./locales"` | Path papunta sa locale files. Ini-scan ng Rosetta ang directory na ito. |
-| `contentDir` | `string` | `null` | Hugo content directory. Ine-enable nito ang Markdown body translation. |
+| `contentDir` | `string` | `null` | Hugo content directory. Ini-enable nito ang Markdown body translation. |
 | `translatableFields` | `string[]` | `null` | I-override ang default translatable frontmatter fields para sa content translation. Gumagamit ang `null` ng built-in defaults (`title`, `description`, `summary`). |
 | `format` | `string` | `"auto"` | File format: `json`, `toml`, `yaml`, o `auto` (ide-detect mula sa extension). |
-| `model` | `string` | `"google/gemini-3.5-flash"` | Default model para sa LLM methods. Nakadepende ang format sa method: Gumagamit ang OpenRouter ng `provider/model` (hal., `google/gemini-3.5-flash`); gumagamit naman ang direct providers ng bare names (hal., `gpt-4o`, `gemini-2.5-flash`). |
+| `model` | `string` | `"google/gemini-3.5-flash"` | Default model para sa LLM methods. Nakadepende ang format sa method: Gumagamit ang OpenRouter ng `provider/model` (hal., `google/gemini-3.5-flash`); gumagamit ang direct providers ng bare names (hal., `gpt-4o`, `gemini-2.5-flash`). |
 | `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Mao-override ito ng `--method` CLI flag. |
 | `batchSize` | `number` | `30` | Keys per translation batch. Mas mataas = mas kaunting API calls, pero mas malalaking prompts. |
+| `concurrency` | `number` | `12` | Max parallel API calls para sa content (Markdown/MDX) translation. Mao-override ito ng `--concurrency` CLI flag. |
 | `fallbackPrefix` | `string` | `"[EN] "` | Prefix na idinadagdag sa untranslated fallback values. Ginagamit ng `audit` para ma-detect ang incomplete translations. |
 | `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Environment variable name para sa API key. I-override para sa custom env var names. |
 | `baseUrl` | `string` | `""` | Base URL para sa SEO artifact generation (hreflang, sitemaps, JSON-LD). |
@@ -69,7 +71,7 @@ Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, 
 | `languages` | `object` | `{}` | Per-language overrides. Tingnan ang [Language Configuration](#language-configuration). |
 | `lint.srcDir` | `string` | `null` | Source directory para sa lint scanning. `null` = auto-detect mula sa framework. |
 | `lint.ignore` | `string[]` | `["node_modules", ...]` | Glob patterns na ie-exclude sa lint. |
-| `lint.minLength` | `number` | `2` | Minimum string length para i-flag bilang hardcoded. |
+| `lint.minLength` | `number` | `2` | Minimum string length para ma-flag bilang hardcoded. |
 | `seo.urlPattern` | `string` | `"/:locale/:path"` | URL pattern template para sa hreflang tag generation. |
 | `seo.pages` | `string[]` | `null` | Explicit page list para sa SEO. `null` = auto-detect mula sa locale keys. |
 | `typegen.output` | `string` | `null` | Output path para sa generated TypeScript types. `null` = disabled. |
@@ -77,7 +79,7 @@ Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, 
 
 ## Pair Configuration
 
-Pwedeng i-configure nang independently ang bawat source→target pair:
+Ang bawat source→target pair ay puwedeng i-configure nang independently:
 
 ```json
 {
@@ -123,7 +125,7 @@ Kinukuha ng bawat language ang default register nito mula sa built-in register t
 
 ### Object na may register strings
 
-Ang value ay pwedeng isang **preset key** mula sa language card, o custom register text:
+Ang value ay puwedeng maging isang **preset key** mula sa language's card, o custom register text:
 
 ```json
 {
@@ -135,7 +137,7 @@ Ang value ay pwedeng isang **preset key** mula sa language card, o custom regist
 }
 ```
 
-Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa language card. Kung oo, gagamitin ang buong register prompt mula sa card. Kung hindi, gagamitin ang string as-is. Tingnan ang [Supported Languages](/docs/reference/supported-languages#language-cards) para sa available presets.
+Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa language card. Kung oo, gagamitin ang full register prompt mula sa card. Kung hindi, gagamitin ang string as-is. Tingnan po ang [Supported Languages](/docs/reference/supported-languages#language-cards) para sa available presets.
 
 ### Object na may full config
 
@@ -154,14 +156,14 @@ Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa langua
 }
 ```
 
-Pwede mong paghaluin ang shorthand at full objects sa iisang block.
+Puwede ninyong i-mix ang shorthand at full objects sa iisang block.
 
 
 ### Language Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `register` | `string` | Style/tone instructions. Pwedeng isang **preset key** (hal., `casual-tu`, `formal-hapsyo`) o custom text. Tingnan ang [Language Cards](/docs/reference/supported-languages#language-cards). |
+| `register` | `string` | Style/tone instructions. Puwedeng maging **preset key** (hal., `casual-tu`, `formal-hapsyo`) o custom text. Tingnan ang [Language Cards](/docs/reference/supported-languages#language-cards). |
 | `name` | `string` | Human-readable language name (para sa status display) |
 | `model` | `string` | I-override ang default model |
 | `batchSize` | `number` | I-override ang default batch size |
@@ -169,7 +171,7 @@ Pwede mong paghaluin ang shorthand at full objects sa iisang block.
 | `script` | `string` | ISO 15924 script code. Tini-trigger nito ang script validation sa quality gate. |
 
 :::info Inheritance chain
-Nare-resolve ang settings sa ganitong order (first wins):
+Nare-resolve ang settings sa order na ito (first wins):
 
 **pair-level** → **language-level** → **global config** → **defaults**
 
@@ -178,7 +180,7 @@ Halimbawa, kung nag-set ang `pairs["en:fr"]` ng `model`, ino-override nito ang p
 
 ## Non-English Source
 
-Kung hindi English ang source language mo:
+Kung hindi English ang inyong source language:
 
 ```bash
 # CLI flag (one-time)
@@ -193,19 +195,36 @@ npx i18n-rosetta sync --source fr
 
 ## Lock File
 
-Gumagawa ang Rosetta ng `.i18n-rosetta.lock` para i-track ang SHA-256 hashes ng translated source values. **I-commit ang file na ito** para pareho ang translation baseline ng lahat ng developers.
+Gumagawa ang Rosetta ng `.i18n-rosetta.lock` para i-track ang SHA-256 hashes ng translated source values. **I-commit po ang file na ito** para ma-share ng lahat ng developers ang parehong translation baseline.
 
 Kapag nagbago ang isang source value, hindi na magmamatch ang hash, at ire-retranslate ng rosetta ang key na iyon sa susunod na sync.
 
 ## `.rosettaignore`
 
-Gumawa ng `.rosettaignore` sa project root mo para i-exclude ang files mula sa `lint` scanning. Gumagamit ito ng glob patterns, tulad ng `.gitignore`:
+Gumawa po ng `.rosettaignore` sa inyong project root para i-exclude ang files mula sa `lint` scanning. Gumagamit ito ng glob patterns, tulad ng `.gitignore`:
 
 ```text title=".rosettaignore"
 src/components/legacy/**
 src/utils/constants.js
 **/*.test.js
 ```
+
+## `.rosetta/` Directory
+
+Gumagawa ang Rosetta ng `.rosetta/` directory sa inyong project root para sa internal state. Kadalasan ay dapat ninyo itong **idagdag sa `.gitignore`** — local optimization po ito, hindi project source:
+
+```gitignore
+.rosetta/
+```
+
+| File | Purpose | Commit? |
+|------|---------|--------|
+| `tm.json` | Translation Memory cache — nag-i-store ng previous translations na naka-key by source text + locale + method | Hindi (local cache) |
+| `xliff/*.xliff` | XLIFF export files para sa professional translator review | Hindi (transient) |
+| `methods/` | Installed method plugin manifests | Oo (shared config) |
+| `backups/` | Pre-wrap backups (ginawa ng `wrap --undo`) | Hindi (safety net) |
+
+Tingnan ang [Translation Memory](/docs/concepts/translation-memory) para sa details tungkol sa `tm.json` at kung paano ito nakakatipid sa API costs.
 
 ---
 
@@ -296,15 +315,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-Makukuha mo ang translate, coaching, retry loops, model validation, quality tiers, at setup help nang libre. Ang HTTP request shape lang ang provider-specific. Para sa non-LLM adapters na gumagamit ng raw `fetch()`, gamitin ang shared `fetchWithRetry()` helper mula sa `lib/methods/fetch-with-retry.js` imbes na magsulat ng sarili mong retry loop.
+Makukuha ninyo ang translate, coaching, retry loops, model validation, quality tiers, at setup help nang libre. Ang HTTP request shape lang ang provider-specific. Para sa non-LLM adapters na gumagamit ng raw `fetch()`, gamitin ang shared `fetchWithRetry()` helper mula sa `lib/methods/fetch-with-retry.js` sa halip na gumawa ng sarili ninyong retry loop.
 
 ---
 
-## Tingnan Din
+## See Also
 
 - [CLI Reference](/docs/reference/cli) — lahat ng commands at flags
 - [Translation Methods](/docs/guides/translation-methods) — pagpili at pag-mix ng methods
+- [Translation Memory](/docs/concepts/translation-memory) — caching at cost savings
+- [Working with Professional Translators](/docs/guides/professional-translators) — XLIFF workflow
 - [Plugin Specification](/docs/reference/plugin-spec) — method plugin manifest format
-- [Architecture](/docs/concepts/architecture) — paano nagko-connect ang mga pieces
+- [Architecture](/docs/concepts/architecture) — kung paano nagko-connect ang mga pieces
 - [Supported Languages](/docs/reference/supported-languages) — built-in language support
 - [How Sync Works](/docs/concepts/how-sync-works) — ang translation pipeline

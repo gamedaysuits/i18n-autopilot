@@ -4,19 +4,19 @@ title: "So sánh"
 ---
 # So sánh Rosetta
 
-i18n-rosetta thuộc một danh mục khác so với hầu hết các công cụ localization (địa phương hóa). Dưới đây là một so sánh khách quan.
+i18n-rosetta thuộc một danh mục khác so với hầu hết các công cụ bản địa hóa. Dưới đây là một so sánh khách quan.
 
 ## Bức tranh tổng quan
 
-Hầu hết các công cụ localization thuộc một trong ba danh mục sau:
+Hầu hết các công cụ bản địa hóa thuộc một trong ba danh mục sau:
 
 | Danh mục | Ví dụ | Mô hình |
 |----------|----------|-------|
-| **Nền tảng Cloud TMS** | Crowdin, Phrase, Locize, Tolgee | Bảng điều khiển SaaS + người dịch + đăng ký hàng tháng |
-| **Công cụ trích xuất Key** | i18next-scanner, FormatJS CLI | Quét mã nguồn để tìm các lệnh gọi hàm dịch |
-| **Engine dịch CLI** | **i18n-rosetta** | Chạy trong dự án của bạn, dịch file trực tiếp, không cần tài khoản cloud |
+| **Nền tảng TMS đám mây** | Crowdin, Phrase, Locize, Tolgee | Bảng điều khiển SaaS + người dịch + đăng ký hàng tháng |
+| **Công cụ trích xuất khóa** | i18next-scanner, FormatJS CLI | Quét mã nguồn để tìm các lệnh gọi hàm dịch |
+| **Công cụ dịch CLI** | **i18n-rosetta** | Chạy trong dự án của bạn, dịch tệp trực tiếp, không cần tài khoản đám mây |
 
-Rosetta là một **Engine dịch CLI** — nó dịch trực tiếp các file locale của bạn bằng cách sử dụng các backend có thể cấu hình (LLMs, Google Translate, custom plugins). Không có bảng điều khiển cloud, không có quy trình làm việc cho người dịch, không có phí hàng tháng.
+Rosetta là một **công cụ dịch CLI** — nó dịch trực tiếp các tệp ngôn ngữ của bạn bằng cách sử dụng các backend có thể cấu hình (LLM, Google Translate, plugin tùy chỉnh). Không có bảng điều khiển đám mây, không có quy trình làm việc cho người dịch, không có phí hàng tháng.
 
 ---
 
@@ -24,19 +24,22 @@ Rosetta là một **Engine dịch CLI** — nó dịch trực tiếp các file l
 
 | Tính năng | i18n-rosetta | Crowdin | Phrase | Locize |
 |---------|:------------:|:-------:|:------:|:------:|
-| **Chạy cục bộ (không cần tài khoản cloud)** | ✅ | ❌ | ❌ | ❌ |
-| **Không có dependencies** | ✅ | ❌ | ❌ | ❌ |
-| **Cấu hình phương thức cho từng cặp ngôn ngữ** | ✅ | ❌ | ❌ | ❌ |
-| **Tùy chỉnh văn phong ngôn ngữ (registers)** | ✅ | ❌ | ❌ | ❌ |
-| **Nhận biết nội dung (bảo vệ các khối code)** | ✅ | ❌ | ❌ | ❌ |
-| **Chuyển đổi ngôn ngữ nhân tạo (Conlang) & hệ thống chữ viết (script)** | ✅ | ❌ | ❌ | ❌ |
+| **Chạy cục bộ (không cần tài khoản đám mây)** | ✅ | ❌ | ❌ | ❌ |
+| **Không có dependency** | ✅ | ❌ | ❌ | ❌ |
+| **Cấu hình phương thức theo từng cặp ngôn ngữ** | ✅ | ❌ | ❌ | ❌ |
+| **Văn phong ngôn ngữ tùy chỉnh** | ✅ | ❌ | ❌ | ❌ |
+| **Nhận biết nội dung (bảo vệ các khối mã)** | ✅ | ❌ | ❌ | ❌ |
+| **Chuyển đổi ngôn ngữ nhân tạo & hệ thống chữ viết** | ✅ | ❌ | ❌ | ❌ |
 | **Kiến trúc plugin** | ✅ | ❌ | ❌ | ❌ |
 | **Dịch Markdown / nội dung** | ✅ | ✅ | ✅ | ❌ |
-| **Quy trình cho người dịch** | ❌ | ✅ | ✅ | ✅ |
-| **Bộ nhớ dịch (Translation memory)** | ❌ | ✅ | ✅ | ✅ |
+| **Bộ nhớ dịch (Translation Memory)** | ✅ | ✅ | ✅ | ✅ |
+| **Xuất/nhập XLIFF** | ✅ | ✅ | ✅ | ❌ |
+| **Xác thực số nhiều ICU** | ✅ | ✅ | ✅ | ❌ |
+| **Thực thi thuật ngữ** | ✅ | ✅ | ✅ | ❌ |
+| **Quy trình làm việc cho người dịch** | Dựa trên XLIFF | ✅ | ✅ | ✅ |
 | **Chỉnh sửa theo ngữ cảnh (trực quan)** | ❌ | ✅ | ✅ | ✅ |
 | **Cộng tác nhóm** | ❌ | ✅ | ✅ | ✅ |
-| **Hỗ trợ định dạng file** | JSON, TOML, YAML, MD | 50+ | 40+ | JSON |
+| **Hỗ trợ định dạng tệp** | JSON, TOML, YAML, MD, XLIFF | 50+ | 40+ | JSON |
 | **Giá cả** | Miễn phí (trả phí cho LLM của bạn) | Từ $0/tháng | Từ $0/tháng | Từ $0/tháng |
 
 ---
@@ -45,28 +48,29 @@ Rosetta là một **Engine dịch CLI** — nó dịch trực tiếp các file l
 
 **Rosetta là lựa chọn phù hợp khi:**
 
-- Bạn muốn tích hợp machine translation (dịch máy) vào build pipeline của mình — chứ không phải một quy trình riêng biệt
-- Bạn cần kiểm soát phương thức cho từng ngôn ngữ (dùng LLM cho một số ngôn ngữ, Google Translate cho ngôn ngữ khác, và custom plugins cho phần còn lại)
+- Bạn muốn tích hợp dịch máy vào quy trình build của mình — không phải là một quy trình làm việc riêng biệt
+- Bạn cần kiểm soát phương thức cho từng ngôn ngữ (LLM cho một số ngôn ngữ, Google Translate cho các ngôn ngữ khác, plugin tùy chỉnh cho phần còn lại)
 - Bạn đang dịch sang các ngôn ngữ không được API hỗ trợ (ngôn ngữ bản địa, ngôn ngữ có nguy cơ tuyệt chủng, ngôn ngữ nhân tạo)
-- Bạn muốn đầu ra hệ thống chữ viết mang tính tất định (Cree Syllabics, Klingon pIqaD, Tengwar)
-- Bạn không muốn bị phụ thuộc vào nhà cung cấp (vendor lock-in) và không muốn phụ thuộc vào cloud
-- Bạn là một lập trình viên độc lập hoặc một nhóm nhỏ không cần quy trình làm việc cho người dịch
+- Bạn muốn đầu ra hệ thống chữ viết có tính xác định (Cree Syllabics, Klingon pIqaD, Tengwar)
+- Bạn không muốn bị phụ thuộc vào nhà cung cấp (vendor lock-in) và không phụ thuộc vào đám mây
+- Bạn là nhà phát triển độc lập hoặc nhóm nhỏ không cần một bảng điều khiển TMS đầy đủ
+- Bạn muốn bàn giao tệp XLIFF cho các dịch giả chuyên nghiệp mà không cần đăng ký dịch vụ đám mây
 
-**Một Cloud TMS sẽ phù hợp hơn khi:**
+**Một TMS đám mây sẽ phù hợp hơn khi:**
 
-- Bạn có các dịch giả chuyên nghiệp đánh giá từng chuỗi văn bản
-- Bạn cần quản lý translation memory và thuật ngữ (glossary) trên nhiều dự án
-- Bạn cần chỉnh sửa trực quan theo ngữ cảnh (xem trước bản dịch ngay trong UI của bạn)
-- Bạn có một nhóm lớn với nhu cầu kiểm soát truy cập dựa trên vai trò (role-based access control)
-- Bạn cần hỗ trợ hơn 50 định dạng file
+- Bạn có các dịch giả chuyên nghiệp đánh giá từng chuỗi văn bản (quy trình XLIFF của rosetta đơn giản hơn một TMS đầy đủ)
+- Bạn cần quản lý bộ nhớ dịch và thuật ngữ xuyên suốt nhiều dự án
+- Bạn cần chỉnh sửa trực quan theo ngữ cảnh (xem trước bản dịch ngay trong giao diện người dùng của bạn)
+- Bạn có một nhóm lớn với nhu cầu kiểm soát truy cập dựa trên vai trò
+- Bạn cần hỗ trợ hơn 50 định dạng tệp
 
 ---
 
-## Những điều Rosetta làm được mà không công cụ nào khác có
+## Những gì Rosetta làm được mà không công cụ nào khác có
 
-### 1. Tùy chỉnh văn phong (Custom Registers)
+### 1. Văn phong tùy chỉnh
 
-Mỗi cặp ngôn ngữ đều có các hướng dẫn về giọng điệu phù hợp với văn hóa dành cho LLM:
+Mỗi cặp ngôn ngữ đều nhận được các hướng dẫn về giọng điệu phù hợp với văn hóa dành cho LLM:
 
 ```json
 {
@@ -82,47 +86,47 @@ Mỗi cặp ngôn ngữ đều có các hướng dẫn về giọng điệu phù
 }
 ```
 
-Không có công cụ nào khác đi kèm với 47 văn phong ngôn ngữ được cấu hình sẵn, hoặc cho phép bạn tự định nghĩa văn phong tùy chỉnh cho từng dự án.
+Không có công cụ nào khác đi kèm với 47 văn phong ngôn ngữ được cấu hình sẵn, hoặc cho phép bạn xác định các văn phong tùy chỉnh cho từng dự án.
 
-### 2. Trình chuyển đổi chữ viết tất định (Deterministic Script Converters)
+### 2. Trình chuyển đổi hệ thống chữ viết có tính xác định
 
-Rosetta tích hợp sẵn năm trình chuyển đổi chữ viết chạy dưới dạng các post-translation hooks (hook sau khi dịch) — không cần đến LLM:
+Rosetta đi kèm với năm trình chuyển đổi hệ thống chữ viết tích hợp sẵn, chạy dưới dạng các hook sau khi dịch — không cần LLM:
 
-| Locale | Chuyển đổi | Ví dụ |
+| Ngôn ngữ (Locale) | Chuyển đổi | Ví dụ |
 |--------|-----------|---------|
 | `crk` | SRO → Cree Syllabics | `nêhiyawêwin` → `ᓀᐦᐃᔭᐍᐏᐣ` |
 | `sr` | Latin → Cyrillic | `Beograd` → `Београд` |
-| `tlh` | Romanization → pIqaD | `tlhIngan Hol` → (Ký tự pIqaD) |
+| `tlh` | Romanization → pIqaD | `tlhIngan Hol` → (ký tự pIqaD) |
 | `x-elvish-s` | Latin → Tengwar | Sindarin → Tengwar (Chế độ Beleriand) |
-| `x-kryptonian` | Latin → Kryptonian | Thay thế mật mã (yêu cầu font chữ) |
+| `x-kryptonian` | Latin → Kryptonian | Thay thế mật mã (yêu cầu phông chữ) |
 
-Đây là các trình chuyển đổi hoàn toàn dựa trên bảng tra cứu (lookup-table) — mang tính tất định, có thể kiểm toán và không có rủi ro ảo giác (hallucination) từ LLM.
+Đây là các trình chuyển đổi hoàn toàn dựa trên bảng tra cứu — có tính xác định, có thể kiểm toán và không có rủi ro ảo giác từ LLM.
 
-### 3. Bảo vệ nhận biết nội dung (Content-Aware Shielding)
+### 3. Bảo vệ nhận biết nội dung
 
 Khi dịch Markdown hoặc nội dung đa phương tiện (rich content), Rosetta sẽ bảo vệ:
 
-- Các khối code (` ``` `)
-- Code nội tuyến (inline code) (`` ` ` ``)
+- Các khối mã (fenced code blocks) (` ``` `)
+- Mã nội tuyến (`` ` ` ``)
 - Các shortcode của Hugo (`{{</* */>}}`, `{{%/* */%}}`)
-- Các biến nội suy (interpolation variables) (`{{ .Count }}`, `{name}`, `{{t('key')}}`)
+- Các biến nội suy (`{{ .Count }}`, `{name}`, `{{t('key')}}`)
 - Các khối HTML thô
 
-Những thành phần này được thay thế bằng các token giám sát (sentinel tokens) Unicode trước khi dịch và được khôi phục lại sau đó. LLM sẽ không bao giờ nhìn thấy code, shortcode hay các biến của bạn.
+Chúng được thay thế bằng các token giám sát (sentinel token) Unicode trước khi dịch và được khôi phục lại sau đó. LLM sẽ không bao giờ nhìn thấy mã, shortcode hoặc các biến của bạn.
 
-### 4. Plugin phương thức được huấn luyện (Coached Method Plugins)
+### 4. Các plugin phương thức được huấn luyện
 
 Đối với các ngôn ngữ không được API hỗ trợ, bạn có thể xây dựng một phương thức dịch được huấn luyện:
 
 1. Viết dữ liệu huấn luyện ngôn ngữ (quy tắc ngữ pháp, từ vựng, ví dụ)
 2. Đóng gói nó thành một plugin
-3. Đánh giá hiệu suất (benchmark) so với các bản dịch tham chiếu bằng [eval harness](https://github.com/gamedaysuits/gds-mt-eval-harness)
-4. Cài đặt nó vào dự án của bạn với `i18n-rosetta plugin install`
+3. Đánh giá chuẩn (benchmark) nó với các bản dịch tham chiếu bằng cách sử dụng [eval harness](https://github.com/gamedaysuits/gds-mt-eval-harness)
+4. Cài đặt nó vào dự án của bạn bằng `i18n-rosetta plugin install`
 
-Đây là cách rosetta xử lý tiếng Plains Cree — và cũng là cách bạn có thể xử lý bất kỳ ngôn ngữ nào, kể cả những ngôn ngữ chưa tồn tại.
+Đây là cách rosetta xử lý tiếng Plains Cree — và là cách bạn có thể xử lý bất kỳ ngôn ngữ nào, kể cả những ngôn ngữ chưa tồn tại.
 
 ---
 
-## Tóm lại
+## Điểm mấu chốt
 
-Rosetta không phải là công cụ thay thế cho Crowdin. Nó là một công cụ khác dành cho một quy trình làm việc khác. Nếu bạn cần người dịch, hãy sử dụng TMS. Nếu bạn cần một CLI có thể dịch các file của mình chỉ bằng một lệnh và cho phép bạn kiểm soát các phương thức, mô hình và văn phong cho từng ngôn ngữ — hãy sử dụng rosetta.
+Rosetta không phải là sự thay thế cho Crowdin. Nó là một công cụ khác dành cho một quy trình làm việc khác. Nếu bạn cần người dịch, hãy sử dụng TMS. Nếu bạn cần một CLI dịch các tệp của bạn chỉ bằng một lệnh và cung cấp cho bạn quyền kiểm soát theo từng ngôn ngữ đối với các phương thức, mô hình và văn phong — hãy sử dụng rosetta.

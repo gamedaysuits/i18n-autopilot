@@ -25,7 +25,7 @@
     },
     "nativeName": {
       "type": ["string", "null"],
-      "description": "Name of the language in its own script. Null for conlangs without established endonyms."
+      "description": "Name of the language in its own script (endonym). For languages with dual orthographies (e.g., SRO and Syllabics for Cree, Latin and Cyrillic for Serbian), include both separated by ' / '. Must render correctly in the language's native script — e.g., 'Русский' not 'Russkiy', 'العربية' not 'al-Arabiyyah', 'nêhiyawêwin / ᓀᐦᐃᔭᐍᐏᐣ' not just 'nehiyawewin'. Null for conlangs without established endonyms."
     },
     "iso639_1": {
       "type": ["string", "null"],

@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "عنصر واحد|{count} عناصر",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "قابل للتخصيص بالكامل",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "تدويل",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "أمر واحد يترجم ملفات اللغات الخاصة بك. كل طريقة ترجمة — Google Translate، أو نماذج اللغات الكبيرة (LLMs)، أو واجهات برمجة التطبيقات المخصصة، أو مسارات العمل الموجهة — هي خيار إعداد. استخدم ما يناسب كل لغة.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "ابدأ الآن ←",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "عرض الطرق",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "الاختبارات",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "التبعيات",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "محولات الأبجدية",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "سجلات اللغة",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "امزج الطرق لكل زوج لغوي",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "يحصل كل زوج (مصدر ← هدف) على طريقة الترجمة، والنموذج، وإعدادات الجودة الخاصة به. استخدم ما يناسب كل لغة — بدلاً من حل واحد يناسب الجميع.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "تعرف على الطرق ←",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "مُصمم من أجل",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "ليست مجرد منصة TMS أخرى",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "منصات Crowdin وPhrase وLocize هي منصات سحابية تتطلب حسابات ولوحات تحكم ورسوم شهرية. أداة Rosetta هي أداة سطر أوامر (CLI) تعمل داخل مشروعك — بلا حسابات، ولا لوحات تحكم، ولا تقييد بمُورّد.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "عرض المقارنة الكاملة ←",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "الساحة",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "هل تعتقد أن لديك أفضل طريقة",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "للترجمة",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "أثبت ذلك.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "أكثر من 7,000 لغة. حوالي 130 منها تدعم الترجمة الآلية. البقية تمثل مشكلة لم تُحل — ودعوة مفتوحة. تقوم بيئة التقييم في rosetta بقياس أداء أي طريقة مع تسجيل نتائج موثقة وقابلة لإعادة الإنتاج. وتتتبع لوحة الصدارة كل مشاركة.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "هذه مشكلة لم تُحل ويمكن للجميع في العالم المساهمة فيها.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "ابنِ طريقة. قيّمها. شاركها مع الجميع.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 لوحة صدارة الطرق",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "أفضل طرق الترجمة مصنفة حسب تقييم chrF++.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "هل تعتقد أنه يمكنك التفوق عليهم؟",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "تشغيل بيئة التقييم",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "لوحة الصدارة الكاملة ←",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "الطريقة",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "النموذج",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "الزوج",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "تدويل قابل للتخصيص بالكامل",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "إطار عمل i18n حيث تكون كل طريقة ترجمة عبارة عن خيار إعداد. Google Translate، أو LLMs، أو مسارات عمل مخصصة — أمر واحد، تحكم لكل زوج لغوي، مع ضمان الجودة.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "أمر واحد",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "اكتشاف تلقائي لملفات اللغات، وتنسيقها، واللغات المستهدفة. ترجم ما تغير. وتخطَّ ما لم يتغير.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "طرق لكل زوج لغوي",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "استخدم Google Translate للفرنسية، ونموذج LLM لليابانية، ومكون إضافي موجه للغة Plains Cree — كل ذلك في نفس الإعدادات.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "سجلات اللغة والتوجيه",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "توجيه نماذج LLM بتعليمات نبرة الصوت لكل لغة. صيغة Sie الرسمية للألمانية، والتبديل اللغوي Taglish للفلبينية، وشرف المحارب للغة Klingon.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "إدراك المحتوى",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "تتم حماية كتل الأكواد، والرموز القصيرة، ومتغيرات الاستيفاء، وHTML الخام أثناء الترجمة. لا يرى نموذج LLM الكود الخاص بك أبدًا.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "بدون تبعيات",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "يعتمد على وحدات Node.js المدمجة فقط. بدون SDKs، أو وحدات أصلية، أو خطوات بناء. يعمل في أي مكان يدعم Node 20+.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "بوابة الجودة",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "يتم التحقق من صحة كل ترجمة قبل كتابتها. يتم اكتشاف ورفض مخرجات الأبجدية الخاطئة، وتكرار المصدر، وتضخم الطول، وتلف العناصر النائبة.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "تدويل برمجيات SaaS",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "ترجم تطبيق Next.js أو Hugo أو React الخاص بك إلى أكثر من 30 لغة مع مراقبة الجودة لكل زوج لغوي.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "ترجم 30 لغة ←",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "بناء مسار عمل مخصص",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "اربط نماذج LLMs مع أدوات التحقق FST، والقواميس، وأدوات المعالجة اللاحقة. وقم بتحزيمها كمكون إضافي.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "دليل FST Pipeline →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "الحفاظ على اللغات",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "ترجمة LLM موجهة للغات التي لا تدعمها واجهات برمجة التطبيقات (API) — اللغات الأصلية، والمهددة بالانقراض، والمصطنعة.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "دليل اللغات منخفضة الموارد →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "التوصيل والاختبار",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "اختبر طريقتك مقابل معايير قياسية. يتم حساب chrF++، والتطابق التام، وقبول FST بواسطة نفس بيئة الاختبار.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "بيئة التقييم →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "سجل نتيجتك",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "يتم ربط كل إرسال ببصمة Git commit وتقييمه مقابل نفس مجموعة البيانات. افتح PR للإرسال.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "لوحة المتصدرين →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "احترام البيانات",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "اللغات الأصلية ملك لمجتمعاتها. تدعم rosetta مبادئ OCAP، و CARE، و Māori Data Sovereignty.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "سيادة البيانات →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "قم ببناء موقعك الإلكتروني بالكامل بـ",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "بأمر واحد، أو بتخصيص لا محدود",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "لغات",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "اللغات المدعومة",
+    "description": "Languages supported button label"
   }
 }

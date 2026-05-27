@@ -2,13 +2,13 @@
 sidebar_position: 3
 title: "CI/CD"
 ---
-# การทำงานร่วมกับ CI/CD
+# การรวมระบบ CI/CD
 
 ทำให้การแปลภาษาใน build pipeline ของคุณเป็นแบบอัตโนมัติ
 
 ## GitHub Actions: ซิงค์เมื่อมีการ Push
 
-เพิ่มการซิงค์การแปลภาษาลงใน build pipeline เดิมของคุณ:
+เพิ่มการซิงค์การแปลภาษาลงใน build pipeline ที่คุณมีอยู่:
 
 ```yaml title=".github/workflows/deploy.yml"
 jobs:
@@ -56,9 +56,9 @@ jobs:
           git push
 ```
 
-## วิธีการใช้ Google Translate
+## วิธี Google Translate
 
-หากใช้วิธีการ Google Translate ที่มีมาให้ในตัวแทนการใช้ OpenRouter:
+หากใช้วิธี Google Translate ที่มีมาให้ในตัวแทนที่จะใช้ OpenRouter:
 
 ```yaml
 - name: Sync translations
@@ -69,7 +69,7 @@ jobs:
 
 ## ผู้ให้บริการ LLM โดยตรง
 
-หากใช้วิธีการ `openai`, `anthropic` หรือ `gemini` โดยตรง:
+หากใช้วิธี `openai`, `anthropic` หรือ `gemini` โดยตรง:
 
 ```yaml
 # OpenAI
@@ -113,7 +113,7 @@ jobs:
 
 ## CI Pipeline แบบสามชั้น
 
-เพื่อให้ครอบคลุม i18n มากที่สุด ให้ควบคุม pipeline ของคุณด้วยเครื่องมือทั้งสามนี้:
+เพื่อให้ครอบคลุม i18n สูงสุด ให้ตรวจสอบ pipeline ของคุณด้วยเครื่องมือทั้งสามนี้:
 
 ```yaml
 jobs:
@@ -136,16 +136,29 @@ jobs:
 
 | ชั้น | คำสั่ง | เมื่อใด | วัตถุประสงค์ |
 |-------|---------|------|---------|
-| **Lint** | `lint` | Pre-commit | บล็อกการ commit ที่มี hardcoded strings |
-| **Sync** | `sync` | Post-commit / CI | แปลคีย์ที่ขาดหายไปและมีการเปลี่ยนแปลง |
-| **Audit** | `audit` | Build step | ทำให้การ deploy ล้มเหลวหากมี locale ใดไม่สมบูรณ์ |
+| **Lint** | `lint` | Pre-commit | บล็อกการคอมมิตที่มี hardcoded strings |
+| **Sync** | `sync` | Post-commit / CI | แปลคีย์ที่ขาดหายไปและถูกเปลี่ยนแปลง |
+| **Audit** | `audit` | Build step | ทำให้การ deploy ล้มเหลวหากมี locale ใดที่ไม่สมบูรณ์ |
+
+:::tip Translation Memory ใน CI
+หาก CI runner ของคุณมี persistent workspace (หรือมีการแคช `.rosetta/`) ระบบ Translation Memory จะทำงานโดยอัตโนมัติ — การซิงค์ในครั้งถัดๆ ไปจะแปลเฉพาะคีย์ที่ข้อความต้นฉบับมีการเปลี่ยนแปลงจริงๆ เท่านั้น สำหรับ ephemeral runners ควรพิจารณาแคช `.rosetta/tm.json` ระหว่างการรันแต่ละครั้ง:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
 
 ---
 
 ## ดูเพิ่มเติม
 
-- [ข้อมูลอ้างอิง CLI](/docs/reference/cli) — ข้อมูลอ้างอิงคำสั่งแบบเต็ม
-- [วิธีการทำงานของการซิงค์](/docs/concepts/how-sync-works) — ทำความเข้าใจการซิงค์แบบ incremental
-- [วิธีการแปลภาษา](/docs/guides/translation-methods) — การเลือกวิธีการสำหรับแต่ละคู่ภาษา
+- [CLI Reference](/docs/reference/cli) — ข้อมูลอ้างอิงคำสั่งแบบเต็ม
+- [How Sync Works](/docs/concepts/how-sync-works) — ทำความเข้าใจเกี่ยวกับการซิงค์แบบ incremental
+- [Translation Memory](/docs/concepts/translation-memory) — การแคชและการประหยัดค่าใช้จ่าย
+- [Translation Methods](/docs/guides/translation-methods) — การเลือกวิธีสำหรับแต่ละคู่ภาษา
 - [Quality Gate](/docs/concepts/quality-gate) — จะเกิดอะไรขึ้นเมื่อการแปลล้มเหลว
-- [การตั้งค่า](/docs/getting-started/configuration) — ข้อมูลอ้างอิงการตั้งค่า (config)
+- [Configuration](/docs/getting-started/configuration) — ข้อมูลอ้างอิงการตั้งค่า (config)

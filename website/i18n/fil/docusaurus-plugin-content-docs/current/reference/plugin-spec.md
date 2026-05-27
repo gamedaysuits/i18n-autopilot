@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: "Plugin Specification"
+title: "Specification ng Plugin"
 ---
 # Method Plugin Specification
 
@@ -12,7 +12,7 @@ title: "Plugin Specification"
 
 Gumagamit ang i18n-rosetta ng isang **pluggable method system**. Bawat language pair ay pwedeng gumamit ng iba't ibang translation method (LLM, coached, script-converter, atbp.). Naka-register ang mga method sa `lib/translate.js` at nire-resolve per-pair via `lib/pairs.js`.
 
-Ang trabaho ng eval harness ay mag-**develop, mag-test, at mag-export** ng mga translation method. Ang trabaho naman po ng i18n-rosetta ay mag-**consume at mag-execute** ng mga ito. Hindi kailanman nagra-run ang harness sa loob ng rosetta.
+Ang trabaho ng eval harness ay mag-**develop, mag-test, at mag-export** ng mga translation method. Ang trabaho naman ng i18n-rosetta ay mag-**consume at mag-execute** ng mga ito. Hindi po kailanman nagra-run ang harness sa loob ng rosetta.
 
 ### Data Flow
 
@@ -23,9 +23,9 @@ flowchart LR
 
 ---
 
-## Format ng Method Plugin
+## Method Plugin Format
 
-Ang method plugin ay isang solong JSON file (`method.json`) na may mga optional na coaching data file.
+Ang method plugin ay isang single JSON file (`method.json`) na may optional na mga coaching data file.
 
 ### `method.json` — Required
 
@@ -100,8 +100,8 @@ Ang method plugin ay isang solong JSON file (`method.json`) na may mga optional 
 | `model` | string | ✅ | Model na ginamit during eval |
 | `harness_version` | string | ✅ | Version ng evaluation harness na ginamit |
 
-:::info Aling mga metric ang idi-display?
-Idi-display ng `rosetta status` command ang **chrF++** at **exact match rate** mula sa benchmark block. Tinatanggap ang `corpus_bleu` sa manifest pero hindi po ito kasalukuyang naka-display o ginagamit ng kahit anong rosetta command. Tina-track ng [Method Leaderboard](/leaderboard) ang chrF++, exact match, at FST acceptance rate.
+:::info Aling mga metric ang naka-display?
+Ang `rosetta status` command ay nagdi-display ng **chrF++** at **exact match rate** mula sa benchmark block. Ang `corpus_bleu` ay ina-accept sa manifest pero hindi po ito kasalukuyang naka-display o ginagamit ng kahit anong rosetta command. Tinu-track ng [Method Leaderboard](/leaderboard) ang chrF++, exact match, at FST acceptance rate.
 :::
 
 ---
@@ -113,18 +113,18 @@ Kino-communicate ng provenance block ang licensing status ng mga bundled resourc
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `resources` | object[] | `[]` | Listahan ng mga bundled resource na may `name`, `license`, at `type` |
-| `commercialReady` | boolean | `false` | Kung cleared ba ang plugin para sa commercial distribution |
+| `commercialReady` | boolean | `false` | Kung cleared na ba ang plugin para sa commercial distribution |
 | `flags` | string[] | `["license-unclear"]` | Machine-readable na status flags |
 
-**Default state** — ang mga exported plugin ay nagshi-ship nang may `commercialReady: false` at `flags: ["license-unclear"]`.
+**Default state** — ang mga exported plugin ay nagshi-ship na may `commercialReady: false` at `flags: ["license-unclear"]`.
 
 **Cleared state** — kapag na-verify na ang licensing: i-set ang `commercialReady: true` at i-clear ang mga flag.
 
 ---
 
-## Format ng Coaching Data
+## Coaching Data Format
 
-Kung ang `type` ay `llm-coached`, dapat isama ng plugin ang mga coaching data file sa `coaching/` subdirectory.
+Kung ang `type` ay `llm-coached`, dapat i-include ng plugin ang mga coaching data file sa `coaching/` subdirectory.
 
 ### `coaching/<locale>.json`
 
@@ -182,7 +182,7 @@ european-formal-v2/
 i18n-rosetta plugin install ./french-formal-v1/
 ```
 
-Nase-save sa `.rosetta/methods/french-formal-v1/`.
+Nagsi-save sa `.rosetta/methods/french-formal-v1/`.
 
 ### Configuration
 
@@ -204,8 +204,8 @@ Ang plugin ang nagde-define kung *anong* method ang gagamitin (`type`). Ang pair
 
 1. Binabasa ng Rosetta ang `method.json` mula sa `.rosetta/methods/french-formal-v1/`
 2. Ang `type` field ng plugin ang nagse-set ng translation method (hal., `llm-coached`)
-3. Nilo-load nito ang coaching data mula sa `coaching/` directory ng plugin
-4. Ginagamit ang `config` block para punan ang mga gap sa model/register/temperature
+3. Nilo-load ang coaching data mula sa `coaching/` directory ng plugin
+4. Ginagamit ang `config` block para i-fill ang mga gap sa model/register/temperature
 5. Naka-display ang `benchmarks` block sa `rosetta status` output
 6. Tsine-check ng `rosetta provenance` ang `provenance` block para sa mga licensing flag
 
@@ -213,7 +213,7 @@ Ang plugin ang nagde-define kung *anong* method ang gagamitin (`type`). Ang pair
 
 ## Schema Validation
 
-Bina-validate ang mga plugin manifest during install time laban sa [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json).
+Ang mga plugin manifest ay vina-validate during install time laban sa [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json).
 
 I-reference ang schema sa inyong `method.json` para sa IDE autocompletion:
 
@@ -226,15 +226,15 @@ I-reference ang schema sa inyong `method.json` para sa IDE autocompletion:
 
 ---
 
-## Mga HINDI Dapat Isama
+## Mga HINDI Dapat I-include
 
 - ❌ Walang Python code o harness dependencies
 - ❌ Walang raw corpus data o run logs
-- ❌ Walang mga API key o credentials
+- ❌ Walang API keys o credentials
 - ❌ Walang harness configuration
-- ❌ Walang internal prompt templates (nasa method implementations po ng rosetta ang mga iyon)
+- ❌ Walang internal prompt templates (nasa method implementations ng rosetta ang mga iyon)
 
-Ang plugin ay **data only** lamang: configuration, coaching content, at benchmark results.
+Ang plugin ay **data only** po lamang: configuration, coaching content, at benchmark results.
 
 ---
 

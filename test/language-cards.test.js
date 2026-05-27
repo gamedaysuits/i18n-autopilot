@@ -625,16 +625,19 @@ describe('Language card taxonomic inheritance', () => {
     assert.ok(card, 'crk card should load');
     assert.equal(card.extends, 'subfamily-cree');
 
+    // Overridden by child card (crk) — Syllabics is the display script,
+    // even though the working orthography (SRO) is Latin-based
+    assert.equal(card.script, 'Cans');
+    assert.equal(card.dir, 'ltr');
+    assert.equal(card.name, 'Plains Cree');
+    assert.ok(card.nativeName.includes('ᓀᐦᐃᔭᐍᐏᐣ'),
+      'nativeName should include Syllabics form');
+    assert.ok(card.formality.description.includes('Plains Cree does not have'));
+
     // Inherited from subfamily-cree
-    assert.equal(card.script, 'Latn');
     assert.equal(card.rules?.variables?.syntax, 'SRO-style attachment');
 
     // Inherited from family-algonquian (parent of subfamily-cree)
-    assert.equal(card.dir, 'ltr');
     assert.equal(card.gender?.grammatical, false);
-
-    // Overridden by child card (crk)
-    assert.equal(card.name, 'Plains Cree');
-    assert.ok(card.formality.description.includes('Plains Cree does not have'));
   });
 });

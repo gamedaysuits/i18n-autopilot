@@ -1,17 +1,17 @@
 ---
 sidebar_position: 1
-title: "Bumuo ng Translation Plugin"
+title: "Gumawa ng Translation Plugin"
 description: "End-to-end tutorial: mag-develop ng coaching data, mag-benchmark gamit ang eval harness, mag-export ng plugin, at i-deploy ito gamit ang rosetta."
 ---
-# Tutorial: Gumawa ng Translation Plugin
+# Tutorial: Bumuo ng Translation Plugin
 
-Bumuo ng custom translation method from scratch, i-benchmark ito, at i-deploy bilang isang rosetta plugin. Ito po ang kumpletong workflow para sa pag-add ng bagong language pair na hindi sinusuportahan ng kahit anong off-the-shelf API.
+Bumuo ng custom translation method from scratch, i-benchmark ito, at i-deploy bilang isang rosetta plugin. Ito ang kumpletong workflow para sa pag-add ng bagong language pair na hindi sinusuportahan ng anumang off-the-shelf API.
 
-**Ano ang bubuuin ninyo:** Isang coached translation plugin para sa formal French na may enforced terminology, grammar rules, at benchmark scores.
+**Ang bubuuin ninyo:** Isang coached translation plugin para sa formal French na may enforced terminology, grammar rules, at benchmark scores.
 
-**Time:** 30–45 minuto
+**Oras:** 30–45 minutes
 
-**Prerequisites:**
+**Mga Prerequisites:**
 - Naka-install ang i18n-rosetta (`npm install --save-dev i18n-rosetta`)
 - Isang OpenRouter API key (`OPENROUTER_API_KEY`)
 - Python 3.10+ (para sa eval harness)
@@ -20,17 +20,17 @@ Bumuo ng custom translation method from scratch, i-benchmark ito, at i-deploy bi
 
 ## Step 1: Tukuyin ang Problema
 
-Nagt-translate po kayo ng isang SaaS dashboard sa French. Ang default na `llm` method ay nagpo-produce ng tama pero inconsistent na translations:
+Nagt-translate po kayo ng isang SaaS dashboard sa French. Ang default na `llm` method ay nagbibigay ng tama pero inconsistent na mga translation:
 
 - Minsan ang "dashboard" ay nagiging "tableau de bord," minsan naman ay "panneau de contrôle"
 - Nag-iiba-iba ang tone sa pagitan ng `tu` at `vous` forms
-- Naging anglicized nang inconsistent ang mga technical terms
+- Ang mga technical terms ay na-a-anglicize nang inconsistent
 
-Kailangan ninyo ng **terminology enforcement** at **register control** na hindi naipo-provide ng generic na LLM prompt.
+Kailangan ninyo po ng **terminology enforcement** at **register control** na hindi naibibigay ng generic LLM prompt.
 
 ## Step 2: Gumawa ng Coaching Data
 
-Gumawa po ng coaching file na nag-e-encode ng inyong mga linguistic requirements:
+Gumawa po ng coaching file na mag-e-encode ng inyong mga linguistic requirements:
 
 ```bash
 mkdir -p .rosetta/coaching
@@ -61,8 +61,8 @@ mkdir -p .rosetta/coaching
 ```
 
 **Ano ang ginagawa ng bawat field:**
-- **`grammar_rules`** — Ini-inject sa LLM system prompt bilang explicit constraints
-- **`dictionary`** — Mina-match laban sa source keys; kapag lumabas ang isang dictionary term, ini-inject ito bilang "required terminology" sa prompt
+- **`grammar_rules`** — Ini-inject sa LLM system prompt bilang mga explicit constraints
+- **`dictionary`** — Imina-match sa mga source keys; kapag lumabas ang isang dictionary term, ini-inject ito bilang "required terminology" sa prompt
 - **`style_notes`** — Ina-append sa system prompt bilang general style guidance
 
 ## Step 3: I-configure ang Pair
@@ -96,9 +96,9 @@ npx i18n-rosetta sync --dry
 ```
 
 I-review ang dry-run output. I-check kung:
-- ✅ Consistent na nagagamit ang dictionary terms ("tableau de bord," hindi "panneau de contrôle")
-- ✅ Nagagamit ang `vous` form sa kabuuan
-- ✅ Nagma-match ang technical terms sa inyong dictionary
+- ✅ Consistent na ginagamit ang mga dictionary terms ("tableau de bord," hindi "panneau de contrôle")
+- ✅ Ginagamit ang `vous` form sa buong translation
+- ✅ Nagma-match ang mga technical terms sa inyong dictionary
 
 Pagkatapos ay i-run ang totoong sync:
 
@@ -108,7 +108,7 @@ npx i18n-rosetta sync
 
 ## Step 5: I-benchmark gamit ang Eval Harness (Optional)
 
-Kung gusto ninyo ng quality scores — at sigurado pong gusto ninyo, dahil ang mga plugins ay nagshi-ship kasama ang benchmark data — gamitin ang companion eval harness.
+Kung gusto ninyo po ng quality scores — at siguradong gusto ninyo, dahil ang mga plugins ay nagshi-ship kasama ang benchmark data — gamitin ang companion eval harness.
 
 ### I-install ang Harness
 
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 
 ### Gumawa ng Reference Corpus
 
-Gumawa ng file na may source strings at known-good translations:
+Gumawa ng file na may mga source strings at known-good translations:
 
 ```json title="corpus/french-formal.json"
 [
@@ -155,13 +155,13 @@ python harness.py eval \
 ```
 
 Ang output ng harness ay:
-- **chrF++** — Character-level F-score (0–100). Ang above 70 ay strong.
-- **BLEU** — N-gram overlap (0–100). Ang above 40 ay solid para sa coached translation.
-- **Exact match rate** — Proportion ng translations na eksaktong nagma-match sa reference.
+- **chrF++** — Character-level F-score (0–100). Ang score na above 70 ay strong.
+- **BLEU** — N-gram overlap (0–100). Ang score na above 40 ay solid para sa coached translation.
+- **Exact match rate** — Proportion ng mga translations na nagma-match nang eksakto sa reference.
 
 ### I-export ang Plugin
 
-Kapag satisfied na po kayo sa scores:
+Kapag satisfied na po kayo sa mga scores:
 
 ```bash
 python harness.py export \
@@ -211,7 +211,7 @@ npx i18n-rosetta sync
 npx i18n-rosetta provenance
 ```
 
-Ipapakita ng `status` output ang:
+Ipapakita sa `status` output ang:
 
 ```
 en → fr
@@ -223,7 +223,7 @@ en → fr
   Exact:     42%
 ```
 
-## Ano ang Binuo Ninyo
+## Ano ang Inyong Nabuo
 
 ```mermaid
 flowchart LR
@@ -234,9 +234,9 @@ flowchart LR
 ```
 
 Meron na po kayong:
-1. **Coaching data** — Grammar rules at terminology na nag-e-enforce ng consistency
-2. **Benchmark scores** — Quantified quality na naka-ship kasama ng plugin
-3. **Isang portable plugin** — `method.json` + coaching data, installable sa kahit anong machine
+1. **Coaching data** — Mga grammar rules at terminology na nag-e-enforce ng consistency
+2. **Benchmark scores** — Quantified quality na kasamang nagshi-ship sa plugin
+3. **Isang portable plugin** — `method.json` + coaching data, na installable sa kahit anong machine
 4. **Production deployment** — Integrated sa inyong sync pipeline
 
 ## Next Steps

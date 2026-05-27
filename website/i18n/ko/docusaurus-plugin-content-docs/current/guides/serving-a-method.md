@@ -1,25 +1,25 @@
 ---
 sidebar_position: 8
 title: "커스텀 메서드를 API로 제공하기"
-description: "복잡한 번역 파이프라인(FST gates, 다단계 LLM chains)을 HTTP 서비스로 래핑하고 api 메서드를 통해 i18n-rosetta에 연동해 보세요."
+description: "복잡한 번역 파이프라인(FST 게이트, 다단계 LLM 체인)을 HTTP 서비스로 래핑하여 api 메서드를 통해 i18n-rosetta에 연동할 수 있어요."
 ---
-# 커스텀 메서드를 API로 제공하기
+# 사용자 지정 메서드를 API로 제공하기
 
-i18n-rosetta의 **`api` method**를 사용하면 번역 쌍을 외부 HTTP 엔드포인트에 연결할 수 있어요. 이를 통해 형태소 분석기, 유한 상태 변환기(FST), 다단계 LLM 체인 또는 직접 구축한 커스텀 연구 메서드와 같이 단일 LLM 프롬프트로 처리하기에는 너무 복잡한 파이프라인을 통합할 수 있어요.
+i18n-rosetta의 **`api` 메서드**를 사용하면 모든 번역 쌍을 외부 HTTP 엔드포인트로 지정할 수 있어요. 형태소 분석기, 유한 상태 변환기(FST), 다단계 LLM 체인 또는 직접 구축한 사용자 지정 연구 메서드와 같이 단일 LLM 프롬프트로는 너무 복잡한 파이프라인을 통합하는 방법이에요.
 
 ## 왜 API 서비스인가요?
 
-일부 번역 파이프라인은 단순한 프롬프트-응답 사이클 내에서 실행할 수 없어요:
+일부 번역 파이프라인은 단순한 프롬프트-응답 주기 내에서 실행될 수 없어요:
 
 | 파이프라인 단계 | 예시 |
 |---|---|
-| **Morphological decomposition** | 번역 전에 포합어(polysynthetic words)를 형태소로 분할해요 |
-| **FST validation** | 음운론적 또는 형태론적 규칙을 위반하는 출력을 거부해요 |
-| **Multi-step LLM chains** | 여러 모델을 사용하여 생성 → 검증 → 수정 사이클을 수행해요 |
-| **Dictionary lookup** | 파이프라인 중간에 큐레이션된 이중 언어 사전을 교차 참조해요 |
+| **형태소 분해** | 번역 전에 포합어(polysynthetic words)를 형태소로 분할해요 |
+| **FST 검증** | 음운론적 또는 형태론적 규칙을 위반하는 출력을 거부해요 |
+| **다단계 LLM 체인** | 다른 모델을 사용하여 생성 → 검증 → 수정 주기를 거쳐요 |
+| **사전 검색** | 파이프라인 중간에 큐레이션된 이중 언어 사전을 교차 참조해요 |
 | **Human-in-the-loop** | 불확실한 번역을 전문가 검토를 위해 대기열에 추가해요 |
 
-`api` 메서드는 파이프라인을 블랙박스로 취급해요. i18n-rosetta가 소스 문자열을 보내면, 서비스가 번역을 반환하죠. 그 내부에서 어떤 일이 일어나는지는 전적으로 여러분에게 달려 있어요.
+`api` 메서드는 파이프라인을 블랙박스로 취급해요. i18n-rosetta가 원본 문자열을 보내면 서비스가 번역을 반환하죠. 그 내부에서 일어나는 일은 전적으로 여러분에게 달려 있어요.
 
 ## 아키텍처
 
@@ -39,7 +39,7 @@ API 서비스는 JSON을 수락하고 반환하는 단일 엔드포인트를 구
 
 ### 요청 형식
 
-rosetta는 정확히 다음과 같은 JSON 본문을 전송해요([api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js) 참고):
+rosetta는 정확히 다음 JSON 본문을 전송해요([api.js](https://github.com/gamedaysuits/i18n-rosetta/blob/main/lib/methods/api.js) 참고):
 
 ```json
 POST /translate
@@ -59,10 +59,10 @@ Authorization: Bearer <ROSETTA_API_KEY>
 
 | 필드 | 타입 | 설명 |
 |-------|------|-------------|
-| `source_locale` | string | BCP 47 소스 언어 코드 |
-| `target_locale` | string | BCP 47 타겟 언어 코드 |
+| `source_locale` | string | BCP 47 원본 언어 코드 |
+| `target_locale` | string | BCP 47 대상 언어 코드 |
 | `method` | string | 플러그인 이름 또는 `"default"` |
-| `keys` | object | 키 → 번역할 소스 문자열의 맵 |
+| `keys` | object | 번역할 키 → 원본 문자열의 맵 |
 ```
 
 ### Response Format
@@ -99,10 +99,10 @@ const app = express();
 app.use(express.json());
 
 /**
- * rosetta API 계약:
+ * rosetta API contract:
  *
- * 요청:  { source_locale, target_locale, method, keys: { "key": "source" } }
- * 응답: { translations: { "key": "translated" }, meta: { ... } }
+ * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
+ * Response: { translations: { "key": "translated" }, meta: { ... } }
  */
 app.post('/translate', async (req, res) => {
   const { source_locale, target_locale, method, keys } = req.body;
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- 여기에 파이프라인을 작성하세요 ---
-    // 1단계: 형태소 분해
+    // --- Your pipeline goes here ---
+    // Step 1: Morphological decomposition
     const morphemes = await decompose(source, source_locale);
 
-    // 2단계: 컨텍스트를 포함한 LLM 번역
+    // Step 2: LLM translation with context
     const draft = await llmTranslate(morphemes, target_locale);
 
-    // 3단계: FST 검증
+    // Step 3: FST validation
     const validated = await fstValidate(draft, target_locale);
 
-    // 4단계: 후처리 (정서법 정규화 등)
+    // Step 4: Post-processing (orthography normalization, etc.)
     translations[key] = await postProcess(validated);
   }
 
@@ -183,12 +183,12 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# 하네스 클론하기
+# Clone the harness
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
 
-# 메서드 출력에 대한 평가 실행하기
+# Run the evaluation against your method's output
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## 모범 사례
 
-1. **실패 시 빈 문자열 반환하기** — 소스 문자열을 "번역"으로 반환하지 마세요. `""`을 반환하여 i18n-rosetta의 폴백 접두사(fallback prefix) 메커니즘이 처리하도록 하세요.
-2. **신뢰도 점수 포함하기** — 파이프라인이 품질을 추정할 수 있다면 메타데이터에 이를 반환하세요. 이는 품질 감사에 도움이 돼요.
-3. **상태 확인(health checks) 구현하기** — 대규모 동기화를 시작하기 전에 i18n-rosetta가 연결을 확인할 수 있도록 `GET /health` 엔드포인트를 추가하세요.
-4. **유연하게 속도 제한(Rate limit) 처리하기** — 파이프라인에 처리량 제한이 있는 경우 `429` 상태 코드를 반환하세요. i18n-rosetta의 배치 시스템이 백오프(back off)할 거예요.
-5. **모든 항목 로깅하기** — 다단계 파이프라인은 조용히 실패할 수 있어요. 디버깅을 위해 각 단계의 입력/출력을 기록하세요.
+1. **실패 시 빈 문자열 반환하기** — 원본 문자열을 "번역"으로 반환하지 마세요. `""`을 반환하여 i18n-rosetta의 대체 접두사(fallback prefix) 메커니즘이 처리하도록 하세요.
+2. **신뢰도 점수 포함하기** — 파이프라인에서 품질을 추정할 수 있다면 메타데이터에 반환해 주세요. 이는 품질 감사에 도움이 돼요.
+3. **상태 확인(Health checks) 구현하기** — 대규모 동기화를 시작하기 전에 i18n-rosetta가 연결을 확인할 수 있도록 `GET /health` 엔드포인트를 추가해 주세요.
+4. **유연한 속도 제한(Rate limit) 처리** — 파이프라인에 처리량 제한이 있는 경우 `429` 상태 코드를 반환해 주세요. i18n-rosetta의 배치 시스템이 요청 속도를 조절할 거예요.
+5. **모든 항목 로깅하기** — 다단계 파이프라인은 조용히 실패할 수 있어요. 디버깅을 위해 각 단계의 입력/출력을 기록해 주세요.
 
 ## 라이선스
 
-`api` 메서드 패턴은 완전히 개방되어 있어요. 자체 번역 파이프라인을 HTTP 서비스로 래핑하는 데에는 어떠한 라이선스 제한도 없어요. `gds-mt-eval-harness`는 참조 구현을 위해 MIT 라이선스로 제공돼요.
+`api` 메서드 패턴은 완전히 개방되어 있어요. 자체 번역 파이프라인을 HTTP 서비스로 래핑하는 데에는 라이선스 제한이 없어요. `gds-mt-eval-harness`은 참조 구현을 위해 MIT 라이선스에 따라 사용할 수 있어요.
 
-## 함께 보기
+## 참고 자료
 
-- [번역 메서드](/docs/guides/translation-methods) — 모든 내장 메서드(`openai`, `google`, `api` 등)에 대한 개요
-- [플러그인 사양](/docs/reference/plugin-spec) — `api` 메서드 필드를 포함한 `i18n-rosetta.config.json`의 전체 스키마
-- [자원이 부족한 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages) — OCAP 원칙을 포함하여 자원이 부족한 언어를 위한 엔드투엔드 가이드
-- [아키텍처](/docs/concepts/architecture) — i18n-rosetta의 동기화 루프, 일괄 처리(batching) 및 메서드 디스패치 작동 방식
-- [MT 평가](https://mtevalarena.org/docs/leaderboard/rules) — 평가 방법론, 지표 및 리더보드 제출 프로세스
-- [메서드 리더보드](/leaderboard) — 메서드 및 언어 쌍 전반에 걸친 실시간 품질 순위
+- [번역 메서드](/docs/guides/translation-methods) — 모든 내장 메서드(`openai`, `google`, `api` 등)에 대한 개요예요.
+- [플러그인 사양](/docs/reference/plugin-spec) — `api` 메서드 필드를 포함한 `i18n-rosetta.config.json`의 전체 스키마예요.
+- [자원이 부족한 언어 지원하기](https://mtevalarena.org/docs/community/low-resource-languages) — OCAP 원칙을 포함하여 자원이 부족한 언어를 위한 엔드투엔드 가이드예요.
+- [아키텍처](/docs/concepts/architecture) — i18n-rosetta의 동기화 루프, 일괄 처리(batching) 및 메서드 디스패치가 작동하는 방식이에요.
+- [MT 평가](https://mtevalarena.org/docs/leaderboard/rules) — 평가 방법론, 지표 및 리더보드 제출 프로세스예요.
+- [메서드 리더보드](/leaderboard) — 메서드 및 언어 쌍 전반에 걸친 실시간 품질 순위예요.

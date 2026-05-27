@@ -4,7 +4,7 @@ title: "Scriptconverters"
 ---
 # Scriptconverters
 
-Scriptconverters zijn deterministische, LLM-vrije post-translation hooks die tekst van het ene schriftsysteem naar het andere converteren. Ze maken een workflow mogelijk van "één keer vertalen, in meerdere schriften weergeven" — u vertaalt naar een werkschrift (meestal Latijns) en converteert dit vervolgens automatisch naar het weergaveschrift.
+Scriptconverters zijn deterministische, LLM-vrije post-translation hooks die tekst van het ene schrijfsysteem naar het andere converteren. Ze maken een "één keer vertalen, in meerdere schriften weergeven"-workflow mogelijk — u vertaalt naar een werkschrift (meestal Latijns) en converteert dit vervolgens automatisch naar het weergaveschrift.
 
 ## Waarom Scriptconverters?
 
@@ -14,7 +14,7 @@ Sommige talen gebruiken meerdere schriften voor dezelfde gesproken taal:
 - **Servisch**: Latijns voor internationaal gebruik → Cyrillisch voor binnenlands gebruik
 - **Klingon**: Romanisatie voor typen → pIqaD (  ) voor weergave
 
-Direct vertalen naar niet-Latijnse schriften levert problemen op: LLM's hallucineren tekens, JSON-bestanden worden moeilijk te beheren in versiebeheer en diff-tools kunnen wijzigingen niet vergelijken. Scriptconverters lossen dit op door vertalingen in een versiebeheervriendelijk schrift te houden en deze deterministisch te converteren tijdens de synchronisatie.
+Direct vertalen naar niet-Latijnse schriften levert problemen op: LLM's hallucineren tekens, JSON-bestanden worden moeilijk te beheren in versiebeheer en diff-tools kunnen wijzigingen niet vergelijken. Scriptconverters lossen dit op door vertalingen in een versiebeheervriendelijk schrift te houden en deze deterministisch te converteren tijdens het synchroniseren.
 
 ## Beschikbare converters
 
@@ -35,7 +35,7 @@ Rosetta wordt geleverd met vijf ingebouwde scriptconverters:
 
 ## Hoe ze werken
 
-Scriptconverters worden **na** de vertaling uitgevoerd als een post-processing stap. De pijplijn is:
+Scriptconverters worden **na** de vertaling uitgevoerd als een post-processing stap. De pijplijn is als volgt:
 
 ```
 Source (English) → LLM Translation → Working Script → Script Converter → Display Script
@@ -48,7 +48,7 @@ Bijvoorbeeld, Plains Cree:
 
 ### Greedy links-naar-rechts matching
 
-Alle converters gebruiken hetzelfde algoritme: probeer op elke tekenpositie eerst de langst mogelijke match en vervolgens steeds kortere matches. Tekens die met geen enkel patroon overeenkomen (spaties, leestekens, cijfers) worden ongewijzigd doorgegeven.
+Alle converters gebruiken hetzelfde algoritme: probeer op elke tekenpositie eerst de langst mogelijke match en vervolgens steeds kortere matches. Tekens die met geen enkel patroon overeenkomen (spaties, leestekens, getallen) worden ongewijzigd doorgegeven.
 
 Dit verwerkt digrafen en trigrafen correct:
 - Klingon: `tlh` → enkel pIqaD-teken (niet `t` + `l` + `h`)
@@ -70,7 +70,7 @@ Scriptconverters worden automatisch geactiveerd wanneer de locale-code overeenko
 }
 ```
 
-Wanneer rosetta het `en:crk` paar synchroniseert, worden vertalingen eerst geproduceerd in SRO en vervolgens automatisch geconverteerd naar Syllabics voordat ze naar `crk.json` worden geschreven.
+Wanneer Rosetta het `en:crk`-paar synchroniseert, worden vertalingen eerst in SRO geproduceerd en vervolgens automatisch geconverteerd naar Syllabics voordat ze naar `crk.json` worden geschreven.
 
 ### Converterstatus controleren
 
@@ -80,9 +80,9 @@ npx i18n-rosetta status
 
 De statusuitvoer toont welke paren actieve scriptconverters hebben en welke conversie zij uitvoeren.
 
-## Vereisten voor webfonts
+## Vereisten voor weblettertypen
 
-Drie converters leveren Unicode Private Use Area (PUA)-tekens als uitvoer, waarvoor aangepaste webfonts vereist zijn:
+Drie converters produceren Unicode Private Use Area (PUA)-tekens die aangepaste weblettertypen vereisen:
 
 ### Klingon (pIqaD)
 
@@ -132,7 +132,7 @@ Installeer een Kryptonian-lettertype dat is toegewezen aan PUA-codepoints U+E100
 }
 ```
 
-:::tip Alternatieve aanpak voor Kryptonian
+:::tip Alternatieve benadering voor Kryptonian
 Aangezien Kryptonian een pure A-Z cipher is, kunt u de scriptconverter volledig overslaan en het lettertype via CSS toepassen op Latijnse tekst. Dit is vaak eenvoudiger voor webimplementaties — u hoeft alleen het Kryptonian-lettertype aan te bieden en `font-family` in te stellen op de relevante elementen.
 :::
 
@@ -140,10 +140,10 @@ Aangezien Kryptonian een pure A-Z cipher is, kunt u de scriptconverter volledig 
 
 Om een converter voor een nieuwe taal toe te voegen, bewerkt u `lib/scripts.js`:
 
-1. **Maak de conversiemap** — een geordende array van `[from, to]` paren, de langste sequenties eerst
+1. **Maak de conversiemap** — een geordende array van `[from, to]`-paren, met de langste reeksen eerst
 2. **Maak de converterfunctie** — een greedy links-naar-rechts scanner (gebruik `sroToSyllabics` als sjabloon)
-3. **Registreer deze** in het `SCRIPT_CONVERTERS` object met de locale-code als sleutel
-4. **Voeg het `script` veld toe** aan de registervermelding van de taal in `registers.js`
+3. **Registreer deze** in het `SCRIPT_CONVERTERS`-object met de locale-code als sleutel
+4. **Voeg het `script`-veld toe** aan de registervermelding van de taal in `registers.js`
 
 ```javascript
 // Example: adding a converter for Cherokee (chr)
@@ -167,8 +167,8 @@ SCRIPT_CONVERTERS['chr'] = {
 
 ## Zie ook
 
-- [Conlangs, schriften & orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-fonts, Unicode, nieuwe converters toevoegen
-- [Quality Gate](/docs/concepts/quality-gate) — validatie die wordt uitgevoerd vóór de scriptconversie
+- [Conlangs, schriften & orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-lettertypen, Unicode, nieuwe converters toevoegen
+- [Quality Gate](/docs/concepts/quality-gate) — validatie die wordt uitgevoerd vóór scriptconversie
 - [Ondersteunde talen](/docs/reference/supported-languages) — welke talen scriptconverters hebben
-- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics in context
-- [Cookbook: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — scriptconversie in een meertraps pijplijn
+- [Een taal met weinig bronnen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — SRO→Syllabics in context
+- [Kookboek: FST-Gated pijplijn](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — scriptconversie in een multi-stage pijplijn

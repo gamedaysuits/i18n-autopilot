@@ -102,7 +102,7 @@ Wenn Sie die Methoden `openai`, `anthropic` oder `gemini` direkt verwenden:
 
 ## Remote-Übersetzungs-API
 
-Wenn Sie einen Remote-Übersetzungsendpunkt verwenden (z. B. einen gehosteten Übersetzungsdienst):
+Wenn Sie einen Remote-Übersetzungs-Endpunkt verwenden (z. B. einen gehosteten Übersetzungsdienst):
 
 ```yaml
 - name: Sync translations
@@ -113,7 +113,7 @@ Wenn Sie einen Remote-Übersetzungsendpunkt verwenden (z. B. einen gehosteten Ü
 
 ## Dreistufige CI-Pipeline
 
-Für maximale i18n-Abdeckung sollten Sie Ihre Pipeline mit allen drei Werkzeugen absichern:
+Für eine maximale i18n-Abdeckung sollten Sie Ihre Pipeline mit allen drei Tools absichern:
 
 ```yaml
 jobs:
@@ -134,18 +134,31 @@ jobs:
       - run: npx i18n-rosetta audit
 ```
 
-| Ebene | Befehl | Wann | Zweck |
+| Stufe | Befehl | Wann | Zweck |
 |-------|---------|------|---------|
-| **Lint** | `lint` | Pre-Commit | Verhindert Commits mit hartcodierten Zeichenfolgen |
-| **Sync** | `sync` | Post-Commit / CI | Übersetzt fehlende und geänderte Schlüssel |
+| **Lint** | `lint` | Pre-commit | Blockiert Commits mit hartcodierten Zeichenfolgen |
+| **Sync** | `sync` | Post-commit / CI | Übersetzt fehlende und geänderte Schlüssel |
 | **Audit** | `audit` | Build-Schritt | Bricht das Deployment ab, falls ein Gebietsschema unvollständig ist |
+
+:::tip Translation Memory in der CI
+Wenn Ihr CI-Runner über einen persistenten Arbeitsbereich verfügt (oder `.rosetta/` zwischenspeichert), wird das Translation Memory automatisch aktiviert — nachfolgende Synchronisierungen übersetzen nur Schlüssel, deren Quelltext sich tatsächlich geändert hat. Bei flüchtigen Runnern sollten Sie in Erwägung ziehen, `.rosetta/tm.json` zwischen den Ausführungen zwischenzuspeichern:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: .rosetta/tm.json
+    key: rosetta-tm-${{ hashFiles('locales/en.json') }}
+    restore-keys: rosetta-tm-
+```
+:::
 
 ---
 
 ## Siehe auch
 
 - [CLI-Referenz](/docs/reference/cli) — vollständige Befehlsreferenz
-- [Wie die Synchronisierung funktioniert](/docs/concepts/how-sync-works) — Verständnis der inkrementellen Synchronisierung
-- [Übersetzungsmethoden](/docs/guides/translation-methods) — Methodenauswahl pro Paar
+- [Wie die Synchronisierung funktioniert](/docs/concepts/how-sync-works) — inkrementelle Synchronisierung verstehen
+- [Translation Memory](/docs/concepts/translation-memory) — Caching und Kosteneinsparungen
+- [Übersetzungsmethoden](/docs/guides/translation-methods) — Methodenauswahl pro Sprachpaar
 - [Quality Gate](/docs/concepts/quality-gate) — was passiert, wenn Übersetzungen fehlschlagen
 - [Konfiguration](/docs/getting-started/configuration) — Konfigurationsreferenz

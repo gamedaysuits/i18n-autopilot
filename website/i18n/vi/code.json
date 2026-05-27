@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1 mục|{count} mục",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "Tùy chỉnh hoàn toàn",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "quốc tế hóa",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "Một lệnh duy nhất để dịch các file locale của bạn. Mọi phương thức dịch — Google Translate, LLMs, custom APIs, coached pipelines — đều là một tùy chọn cấu hình. Sử dụng những gì phù hợp nhất cho từng ngôn ngữ.",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "Bắt đầu →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "Xem các phương thức",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "Tests",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "Dependencies",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "Script converters",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "Language registers",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "Kết hợp các phương thức cho từng cặp ngôn ngữ",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "Mỗi cặp nguồn→đích có phương thức dịch, model và cấu hình chất lượng riêng. Sử dụng những gì phù hợp cho từng ngôn ngữ — không phải một giải pháp cho tất cả.",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "Tìm hiểu về các phương thức →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "Được xây dựng cho",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "Không phải là một nền tảng TMS thông thường",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin, Phrase và Locize là các nền tảng đám mây yêu cầu tài khoản, dashboards và phí hàng tháng. Rosetta là một công cụ CLI chạy ngay trong dự án của bạn — không cần tài khoản, không có dashboards, không có vendor lock-in.",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "Xem so sánh chi tiết →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "ĐẤU TRƯỜNG",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "Bạn nghĩ mình có phương thức tốt nhất",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "để dịch thuật",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "Hãy chứng minh đi.",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "Hơn 7.000 ngôn ngữ. Khoảng 130 ngôn ngữ có machine translation. Phần còn lại là một bài toán chưa có lời giải — và là một lời mời mở. Evaluation harness của rosetta đánh giá bất kỳ phương thức nào với điểm số có thể tái tạo và được fingerprinted. Leaderboard theo dõi mọi lượt gửi.",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "Đây là một bài toán chưa có lời giải mà mọi người trên thế giới đều có thể đóng góp.",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "Xây dựng một phương thức. Chấm điểm nó. Đóng góp lại cho cộng đồng.",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 Bảng xếp hạng phương thức",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "Các phương thức dịch hàng đầu được xếp hạng theo điểm chrF++.",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "Bạn nghĩ mình có thể đánh bại họ?",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "Chạy harness",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "Bảng xếp hạng đầy đủ →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "Phương thức",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "Model",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "Cặp ngôn ngữ",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "Quốc tế hóa tùy chỉnh hoàn toàn",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "Một i18n framework nơi mọi phương thức dịch đều là một tùy chọn cấu hình. Google Translate, LLMs, custom pipelines — một lệnh duy nhất, kiểm soát theo từng cặp ngôn ngữ, quality-gated.",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "Một lệnh duy nhất",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "Tự động phát hiện các file locale, định dạng và ngôn ngữ đích của bạn. Dịch những gì đã thay đổi. Bỏ qua những gì không đổi.",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "Phương thức theo từng cặp",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "Google Translate cho tiếng Pháp, một LLM cho tiếng Nhật, một coached plugin cho tiếng Plains Cree — tất cả trong cùng một cấu hình.",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "Registers & Coaching",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "Điều hướng LLM bằng các hướng dẫn về giọng điệu cho từng ngôn ngữ. Dạng Sie trang trọng cho tiếng Đức, chuyển đổi mã Taglish cho tiếng Philipin, danh dự chiến binh cho tiếng Klingon.",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "Content Aware",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "Code blocks, shortcodes, interpolation variables và raw HTML được bảo vệ trong quá trình dịch. LLM không bao giờ nhìn thấy code của bạn.",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "Zero Dependencies",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Chỉ sử dụng các built-ins của Node.js. Không có SDKs, không có native modules, không có build step. Hoạt động ở bất kỳ đâu Node 20+ chạy.",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "Quality Gate",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "Mọi bản dịch đều được xác thực trước khi ghi. Đầu ra sai script, source echoes, length inflation và hỏng placeholder đều bị phát hiện và từ chối.",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "Quốc tế hóa SaaS",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "Dịch ứng dụng Next.js, Hugo hoặc React của bạn sang hơn 30 ngôn ngữ với kiểm soát chất lượng theo từng cặp.",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "Dịch 30 ngôn ngữ →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "Xây dựng Custom Pipeline",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "Kết nối các LLMs với FST validators, từ điển và post-processors. Đóng gói nó thành một plugin.",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "Cẩm nang FST Pipeline →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "Bảo tồn ngôn ngữ",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "Dịch thuật LLM có hướng dẫn dành cho các ngôn ngữ không được API hỗ trợ — ngôn ngữ bản địa, có nguy cơ tuyệt chủng hoặc ngôn ngữ nhân tạo.",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "Hướng dẫn Low-Resource →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "Tích hợp và Kiểm thử",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "Chạy phương pháp của bạn trên các benchmark tiêu chuẩn. chrF++, exact match, FST acceptance — tất cả đều được tính toán bởi cùng một harness.",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "Xác nhận điểm số",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "Mỗi bản gửi đều được gắn dấu vân tay với một Git commit và được chấm điểm trên cùng một dataset. Mở một PR để gửi.",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "Bảng xếp hạng →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "Tôn trọng dữ liệu",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "Ngôn ngữ bản địa thuộc về cộng đồng của họ. rosetta hỗ trợ các nguyên tắc OCAP, CARE và Chủ quyền Dữ liệu Māori.",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "Chủ quyền dữ liệu →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "Xây dựng toàn bộ trang web của bạn bằng",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "chỉ với một câu lệnh, hoặc tùy chỉnh không giới hạn",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "ngôn ngữ",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "ngôn ngữ được hỗ trợ",
+    "description": "Languages supported button label"
   }
 }

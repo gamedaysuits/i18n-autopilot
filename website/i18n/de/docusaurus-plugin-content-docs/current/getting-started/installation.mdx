@@ -52,7 +52,13 @@ Rosetta benötigt ein Übersetzungs-Backend. Wählen Sie eines aus:
 | Anbieter | Umgebungsvariable | Am besten geeignet für |
 |----------|---------------------|----------|
 | **OpenRouter** (empfohlen) | `OPENROUTER_API_KEY` | Inhaltsreiche Projekte, Markdown, 200+ Modelle |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Große Mengen an Schlüssel-Wert-Paaren (130+ Sprachen) |
+| **Gemini** (kostenloser Tarif) | `GEMINI_API_KEY` | Kostenloser Einstieg, gute Qualität |
+| **OpenAI** | `OPENAI_API_KEY` | Direkter GPT-4o-Zugriff |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Direkter Claude-Zugriff, nuancierte Texte |
+| **DeepL** | `DEEPL_API_KEY` | Europäische Sprachen, integrierte Formalität |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Große Mengen an Schlüssel-Wert-Paaren, 130+ Sprachen |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, 100+ Sprachen |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Selbstgehostet, Datenschutz im Vordergrund |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
@@ -64,13 +70,13 @@ Rosetta benötigt ein Übersetzungs-Backend. Wählen Sie eines aus:
 export OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
-Oder fügen Sie Folgendes zu `.env.local` hinzu:
+Oder fügen Sie dies zu `.env.local` hinzu:
 
 ```bash
 OPENROUTER_API_KEY=sk-or-v1-your-key-here
 ```
 
-Am besten geeignet für: inhaltsreiche Projekte, Markdown-Übersetzung und Projekte, die einen inhaltsbezogenen Schutz benötigen (Codeblöcke, Shortcodes, Interpolationsvariablen).
+Am besten geeignet für: inhaltsreiche Projekte, Markdown-Übersetzungen und Projekte, die einen inhaltsbezogenen Schutz benötigen (Codeblöcke, Shortcodes, Interpolationsvariablen).
 
   </TabItem>
   <TabItem value="google" label="Google Translate">
@@ -79,10 +85,10 @@ Am besten geeignet für: inhaltsreiche Projekte, Markdown-Übersetzung und Proje
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-Am besten geeignet für: große Mengen an Schlüssel-Wert-Paaren für Zeichenketten (130+ Sprachen). **Nicht empfohlen** für Markdown-Inhalte — Google Translate erkennt keine Codeblöcke, Shortcodes oder Interpolationsvariablen.
+Am besten geeignet für: große Mengen an Schlüssel-Wert-Zeichenfolgenpaaren (130+ Sprachen). **Nicht empfohlen** für Markdown-Inhalte — Google Translate erkennt keine Codeblöcke, Shortcodes oder Interpolationsvariablen.
 
 :::tip Intelligente Erkennung
-Wenn nur `GOOGLE_TRANSLATE_API_KEY` festgelegt ist (kein OpenRouter-Schlüssel), wechselt Rosetta automatisch zu Google Translate. Es ist keine Änderung der Konfiguration erforderlich.
+Wenn nur `GOOGLE_TRANSLATE_API_KEY` festgelegt ist (kein OpenRouter-Schlüssel), wechselt rosetta automatisch zu Google Translate. Es ist keine Konfigurationsänderung erforderlich.
 :::
 
   </TabItem>
@@ -94,4 +100,4 @@ Wenn nur `GOOGLE_TRANSLATE_API_KEY` festgelegt ist (kein OpenRouter-Schlüssel),
 npx i18n-rosetta --help
 ```
 
-Sie sollten nun die Liste der verfügbaren Befehle sehen. Sie sind bereit für den [Schnellstart](/docs/getting-started/quick-start).
+Sie sollten die Liste der verfügbaren Befehle sehen. Sie sind bereit für den [Schnellstart](/docs/getting-started/quick-start).

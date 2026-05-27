@@ -10,7 +10,7 @@ O Rosetta suporta dez métodos de tradução. Cada par de idiomas pode usar um m
 
 ### Provedores de LLM
 
-Foco em qualidade, compatível com Markdown, suporte a coaching. Ideal para projetos com muito conteúdo.
+Focados em qualidade, compatíveis com Markdown e com suporte a coaching. Ideais para projetos com muito conteúdo.
 
 | Método | Chave | O que faz |
 |--------|-----|-------------|
@@ -22,7 +22,7 @@ Foco em qualidade, compatível com Markdown, suporte a coaching. Ideal para proj
 
 ### MT Tradicional
 
-Foco em velocidade e custo. Ideal para grandes volumes de pares chave-valor.
+Focados em velocidade e custo. Ideais para grandes volumes de pares chave-valor.
 
 | Método | Chave | O que faz |
 |--------|-----|-------------|
@@ -35,7 +35,7 @@ Foco em velocidade e custo. Ideal para grandes volumes de pares chave-valor.
 
 | Método | Chave | O que faz |
 |--------|-----|-------------|
-| `api` | *(por provedor)* | Cliente HTTP leve (thin client) para qualquer endpoint REST de tradução |
+| `api` | *(por provedor)* | Cliente HTTP leve para qualquer endpoint REST de tradução |
 
 ## Árvore de Decisão
 
@@ -56,7 +56,7 @@ flowchart TD
 
 ## `llm` — Tradução por LLM (Padrão)
 
-Traduz via qualquer LLM no [OpenRouter](https://openrouter.ai). Este é o método padrão e o mais versátil.
+Traduz através de qualquer LLM no [OpenRouter](https://openrouter.ai). Este é o método padrão e o mais versátil.
 
 **Como funciona:**
 1. Agrupa chaves em lotes (padrão de 30/lote) com instruções de registro e contexto
@@ -119,7 +119,7 @@ Traduz diretamente através da API Chat Completions da OpenAI. Sem o OpenRouter 
 - ✅ Compatível com Markdown (tradução de conteúdo)
 - ✅ Suporte a coaching (regras gramaticais, substituições de dicionário, notas de estilo)
 - ✅ Modo JSON para saída estruturada de chave-valor
-- ✅ Backoff exponencial com novas tentativas
+- ✅ Backoff exponencial com novas tentativas (retry)
 
 **Configuração:**
 
@@ -147,7 +147,7 @@ Traduz diretamente através da API Messages da Anthropic. Usa o parâmetro `syst
 - ✅ Compatível com Markdown (tradução de conteúdo)
 - ✅ Suporte a coaching (regras gramaticais, substituições de dicionário, notas de estilo)
 - ✅ Cache de prompt do sistema (amortiza o custo de coaching entre os lotes)
-- ✅ Backoff exponencial com novas tentativas
+- ✅ Backoff exponencial com novas tentativas (retry)
 
 **Configuração:**
 
@@ -167,7 +167,7 @@ Obtenha sua chave em [console.anthropic.com](https://console.anthropic.com/setti
 
 ## `gemini` — API Direta do Google Gemini
 
-Traduz diretamente através da API `generateContent` do Google Gemini. **Nível gratuito disponível** — o melhor ponto de partida com custo zero.
+Traduz diretamente através da API `generateContent` do Google Gemini. **Nível gratuito disponível** — o melhor ponto de partida sem custos.
 
 **Modelos:** `gemini-2.5-flash` (padrão), `gemini-2.5-pro`
 
@@ -176,7 +176,7 @@ Traduz diretamente através da API `generateContent` do Google Gemini. **Nível 
 - ✅ Suporte a coaching (regras gramaticais, substituições de dicionário, notas de estilo)
 - ✅ Modo de resposta em JSON via `responseMimeType`
 - ✅ Nível gratuito (cota diária generosa)
-- ✅ Backoff exponencial com novas tentativas
+- ✅ Backoff exponencial com novas tentativas (retry)
 
 **Configuração:**
 
@@ -196,7 +196,7 @@ Obtenha sua chave em [aistudio.google.com/apikey](https://aistudio.google.com/ap
 
 ### Validação de Modelo
 
-Os provedores diretos de LLM (`openai`, `anthropic`, `gemini`) validam a string do seu modelo no primeiro uso. Isso detecta três categorias de erros:
+Os provedores diretos de LLM (`openai`, `anthropic`, `gemini`) validam a string do seu modelo no primeiro uso. Isso captura três categorias de erros:
 
 **Formato de método incorreto** — Usar um caminho de modelo no estilo OpenRouter com um provedor direto:
 
@@ -214,7 +214,7 @@ Os provedores diretos de LLM (`openai`, `anthropic`, `gemini`) validam a string 
        Use --method anthropic or set "method": "anthropic" in config.
 ```
 
-**Modelo obsoleto ou com erro de digitação** — Na primeira chamada da API, o rosetta busca a lista de modelos ativos do provedor e verifica o seu modelo em relação a ela:
+**Modelo obsoleto ou com erro de digitação** — Na primeira chamada à API, o rosetta busca a lista de modelos ativos do provedor e verifica o seu modelo em relação a ela:
 
 ```
 [WARN] Gemini: model "gemini-1.5-flash" not found in available models.
@@ -223,7 +223,7 @@ Os provedores diretos de LLM (`openai`, `anthropic`, `gemini`) validam a string 
 ```
 
 :::note Estes são avisos, não erros
-A validação de modelo registra avisos, mas não bloqueia a chamada da API. A API do provedor dá o veredito final — o nome de um modelo futuro pode corresponder a um padrão diferente, e não queremos bloquear com base em heurísticas.
+A validação de modelo registra avisos, mas não bloqueia a chamada à API. A API do provedor dá o veredito final — um nome de modelo futuro pode corresponder a um padrão diferente, e não queremos restringir com base em heurísticas.
 :::
 
 ---
@@ -251,10 +251,10 @@ Se apenas `GOOGLE_TRANSLATE_API_KEY` estiver configurado (sem chave do OpenRoute
 
 Integração direta com a API de tradução do DeepL. Suporta glossários para uma terminologia consistente.
 
-**Quando usar:** Idiomas europeus onde o DeepL se destaca (alemão, francês, espanhol, holandês, polonês, etc.). O suporte a glossário aplica uma terminologia consistente sem dados de coaching.
+**Quando usar:** Idiomas europeus onde o DeepL se destaca (alemão, francês, espanhol, holandês, polonês, etc.). O suporte a glossário impõe uma terminologia consistente sem dados de coaching.
 
 **Recursos:**
-- ✅ Detecção automática de endpoint gratuito/pro (sufixo `:fx` em chaves gratuitas)
+- ✅ Detecção automática de endpoint free/pro (sufixo `:fx` em chaves gratuitas)
 - ✅ Criação e gerenciamento de glossários
 - ✅ Controle de nível de formalidade
 - ⚠️ **Não é compatível com Markdown** — apenas pares chave-valor
@@ -279,11 +279,11 @@ Obtenha sua chave em [deepl.com/pro-api](https://www.deepl.com/pro-api).
 
 Integração direta com a Microsoft Translator Text API v3.
 
-**Quando usar:** Ambientes corporativos com infraestrutura Azure existente. Suporta mais de 100 idiomas, incluindo muitos que o Google Translate não cobre.
+**Quando usar:** Ambientes corporativos com infraestrutura existente do Azure. Suporta mais de 100 idiomas, incluindo muitos que o Google Translate não cobre.
 
 **Recursos:**
 - ✅ Até 100 segmentos por solicitação (alto rendimento)
-- ✅ Parâmetro de região opcional para otimização de latência
+- ✅ Parâmetro opcional de região para otimização de latência
 - ⚠️ **Não é compatível com Markdown** — apenas pares chave-valor
 - ⚠️ **Sem tradução de conteúdo** — apenas pares chave-valor
 
@@ -340,7 +340,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — API de Tradução Remota
 
-Um cliente HTTP leve (thin client) para endpoints de tradução hospedados pela comunidade ou protegidos por IP. O Rosetta envia as chaves e recebe as traduções de volta — ele não contém nenhuma lógica de tradução.
+Um cliente HTTP leve para endpoints de tradução hospedados pela comunidade ou protegidos por IP. O Rosetta envia as chaves e recebe as traduções de volta — ele não contém nenhuma lógica de tradução.
 
 **Quando usar:** Quando os métodos de tradução são hospedados no lado do servidor (por exemplo, dados de coaching proprietários, modelos ajustados, pipelines FST que não podem ser distribuídos).
 
@@ -357,7 +357,7 @@ Um cliente HTTP leve (thin client) para endpoints de tradução hospedados pela 
 ```
 
 :::note Tradução Comunitária Compatível com OCAP
-O método `api` é a ponte para a **tradução hospedada pela comunidade compatível com OCAP**. Comunidades indígenas e de idiomas minoritários podem hospedar seus próprios endpoints de tradução — mantendo dados de coaching, modelos ajustados e a propriedade intelectual linguística sob controle da comunidade — enquanto o Rosetta se conecta a eles como um cliente leve.
+O método `api` é a ponte para a **tradução hospedada pela comunidade compatível com OCAP**. Comunidades indígenas e de idiomas minoritários podem hospedar seus próprios endpoints de tradução — mantendo dados de coaching, modelos ajustados e propriedade intelectual linguística sob controle da comunidade — enquanto o Rosetta se conecta a eles como um cliente leve.
 
 Veja [Apoiar um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) para o passo a passo completo de hospedagem comunitária, e [Servindo um Método via API](/docs/guides/serving-a-method) para os requisitos do endpoint.
 :::
@@ -381,14 +381,14 @@ O verdadeiro poder está em misturar métodos por par de idiomas:
 }
 ```
 
-Isso traduz o francês via DeepL (suporte a glossário), o japonês via OpenAI (qualidade), o coreano via Gemini (nível gratuito), o árabe via Microsoft Translator (cobertura) e o Cree das Planícies via um plugin com coaching (especializado).
+Isso traduz o francês via DeepL (suporte a glossário), japonês via OpenAI (qualidade), coreano via Gemini (nível gratuito), árabe via Microsoft Translator (cobertura) e Plains Cree via um plugin com coaching (especializado).
 
 ## Plugins
 
 Plugins são receitas de tradução pré-empacotadas para pares de idiomas específicos. Eles são manifestos em JSON — não código — que dizem ao rosetta qual método usar, com quais configurações e qual qualidade foi avaliada.
 
-:::tip Do ambiente de avaliação (eval harness) para a produção em um comando
-Plugins desenvolvidos e comprovados no [ambiente de avaliação](https://mtevalarena.org/docs/specifications/harness) podem ser instalados diretamente — o método que você valida lá é implantado aqui com um único comando `plugin install`. Veja [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) para o fluxo de trabalho de avaliação completo.
+:::tip Do ambiente de avaliação (eval harness) para produção em um comando
+Plugins desenvolvidos e comprovados no [ambiente de avaliação](https://mtevalarena.org/docs/specifications/harness) podem ser instalados diretamente — o método que você valida lá é implantado aqui com um único comando `plugin install`. Veja [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) para o fluxo de trabalho completo de avaliação.
 :::
 
 ```bash
@@ -401,7 +401,7 @@ Veja a [Especificação de Plugin](/docs/reference/plugin-spec) para o formato c
 
 ---
 
-## Trocando de Provedores
+## Trocando de Provedor
 
 Mudando de método? O formato do modelo e a variável de ambiente mudam — aqui está o mapa:
 
@@ -426,9 +426,9 @@ Mudando de método? O formato do modelo e a variável de ambiente mudam — aqui
 ```
 
 **Principais diferenças:**
-- O OpenRouter usa o formato `provider/model` (ex.: `openai/gpt-4o`). Provedores diretos usam apenas os nomes dos modelos (ex.: `gpt-4o`).
+- O OpenRouter usa o formato `provider/model` (ex: `openai/gpt-4o`). Provedores diretos usam apenas os nomes dos modelos (ex: `gpt-4o`).
 - Cada provedor direto tem sua própria variável de ambiente (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`).
-- Se você usar o formato de modelo incorreto, o rosetta irá avisá-lo — veja [Validação de Modelo](#model-validation).
+- Se você usar o formato de modelo incorreto, o rosetta irá avisá-lo — veja [Validação de Modelo](#validação-de-modelo).
 
 ### Provedor Direto → OpenRouter
 
@@ -446,32 +446,32 @@ Mudando de método? O formato do modelo e a variável de ambiente mudam — aqui
 ```
 
 :::tip Quando usar OpenRouter vs Direto
-**Use o OpenRouter** quando quiser alternar entre modelos sem alterar as variáveis de ambiente, ou quando quiser acesso a mais de 200 modelos a partir de uma única chave. **Use provedores diretos** quando quiser um faturamento mais simples, menor latência (sem intermediários) ou acesso a recursos específicos do provedor, como o cache de prompt da Anthropic.
+**Use o OpenRouter** quando quiser alternar entre modelos sem alterar variáveis de ambiente, ou quando quiser acesso a mais de 200 modelos com uma única chave. **Use provedores diretos** quando quiser um faturamento mais simples, menor latência (sem intermediários) ou acesso a recursos específicos do provedor, como o cache de prompt da Anthropic.
 :::
 
 ---
 
 ## Comparação de Custos
 
-Custo aproximado por 1.000 chaves traduzidas (assume ~10 tokens por chave, 30 chaves por lote):
+Custo aproximado por 1.000 chaves traduzidas (presume ~10 tokens por chave, 30 chaves por lote):
 
 | Método | Custo / 1K Chaves | Velocidade | Qualidade | Ideal Para |
 |--------|----------------|-------|---------|----------|
 | `gemini` (Flash) | **Gratuito** (dentro do nível) | Rápida | Boa | Iniciantes, projetos pessoais |
-| `google-translate` | ~$0.02 | Muito Rápida | Adequada | Alto volume, idiomas europeus |
-| `deepl` | ~$0.02 | Rápida | Boa | Idiomas europeus, terminologia |
-| `microsoft-translator` | ~$0.01 | Rápida | Adequada | Ambientes Azure, ampla cobertura de idiomas |
+| `google-translate` | ~$0,02 | Mais rápida | Adequada | Alto volume, idiomas europeus |
+| `deepl` | ~$0,02 | Rápida | Boa | Idiomas europeus, terminologia |
+| `microsoft-translator` | ~$0,01 | Rápida | Adequada | Ambientes Azure, ampla cobertura de idiomas |
 | `libretranslate` | **Gratuito** (auto-hospedado) | Variável | Razoável | Ambientes isolados (air-gapped), GDPR, pipelines de CI |
-| `gemini` (Pro) | ~$0.07 | Média | Muito boa | Foco em qualidade, cota gratuita |
-| `openai` (GPT-4o-mini) | ~$0.01 | Rápida | Boa | LLM econômico |
-| `openai` (GPT-4o) | ~$0.10 | Média | Muito boa | Foco em qualidade |
-| `anthropic` (Haiku) | ~$0.01 | Rápida | Boa | LLM econômico |
-| `anthropic` (Sonnet) | ~$0.10 | Média | Muito boa | Foco em qualidade |
-| `anthropic` (Opus) | ~$0.50 | Lenta | Excelente | Qualidade máxima |
+| `gemini` (Pro) | ~$0,07 | Média | Muito boa | Foco em qualidade, cota gratuita |
+| `openai` (GPT-4o-mini) | ~$0,01 | Rápida | Boa | LLM econômico |
+| `openai` (GPT-4o) | ~$0,10 | Média | Muito boa | Foco em qualidade |
+| `anthropic` (Haiku) | ~$0,01 | Rápida | Boa | LLM econômico |
+| `anthropic` (Sonnet) | ~$0,10 | Média | Muito boa | Foco em qualidade |
+| `anthropic` (Opus) | ~$0,50 | Lenta | Excelente | Qualidade máxima |
 | `llm` (OpenRouter) | Varia por modelo | Variável | Variável | Comparação de modelos, experimentação |
 
 :::note Estas são estimativas
-Os custos reais dependem do tamanho do texto de origem, do tamanho do lote e das alterações de preços do provedor. Verifique a página de preços atual de cada provedor para obter as taxas exatas.
+Os custos reais dependem do tamanho do texto de origem, do tamanho do lote e das mudanças de preços do provedor. Verifique a página de preços atual de cada provedor para obter as taxas exatas.
 :::
 
 ---

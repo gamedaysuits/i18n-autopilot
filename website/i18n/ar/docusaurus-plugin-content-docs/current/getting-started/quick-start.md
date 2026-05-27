@@ -4,11 +4,11 @@ title: "البدء السريع"
 ---
 # البدء السريع
 
-ترجم ملف الترجمة (locale) الأول الخاص بك في 60 ثانية.
+ترجم ملف locale الأول الخاص بك في 60 ثانية.
 
-## 1. إعداد ملفات الترجمة الخاصة بك
+## 1. إعداد ملفات locale الخاصة بك
 
-أنشئ ملف ترجمة المصدر. يدعم Rosetta تنسيقات JSON، و TOML، و YAML:
+قم بإنشاء ملف locale المصدر. يدعم Rosetta تنسيقات JSON و TOML و YAML:
 
 ```json title="locales/en.json"
 {
@@ -36,7 +36,7 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 export GEMINI_API_KEY=AI...
 ```
 
-احصل على مفتاح Gemini مجاني من [aistudio.google.com/apikey](https://aistudio.google.com/apikey). واحصل على مفتاح OpenRouter من [openrouter.ai](https://openrouter.ai).
+احصل على مفتاح Gemini مجاني من [aistudio.google.com/apikey](https://aistudio.google.com/apikey). احصل على مفتاح OpenRouter من [openrouter.ai](https://openrouter.ai).
 
 ## 3. تشغيل المزامنة
 
@@ -55,7 +55,7 @@ npx i18n-rosetta sync --method gemini
 1. الاكتشاف التلقائي لـ `locales/en.json` كملف مصدر
 2. العثور على اللغات المستهدفة (أو المطالبة بها)
 3. ترجمة جميع المفاتيح
-4. كتابة `locales/fr.json`، و `locales/ja.json`، إلخ.
+4. كتابة `locales/fr.json` و `locales/ja.json`، إلخ.
 5. إنشاء `.i18n-rosetta.lock` لتتبع ما تمت ترجمته
 
 ## 4. التحقق من النتائج
@@ -80,7 +80,7 @@ cat locales/fr.json
 
 ## ماذا يحدث بعد ذلك؟
 
-عندما تقوم بتغيير نص المصدر، يكتشف rosetta التغيير عبر تتبع تجزئة SHA-256 ويعيد ترجمة ذلك المفتاح فقط في المزامنة التالية:
+عند تغيير نص المصدر، يكتشف rosetta التغيير عبر تتبع تجزئة SHA-256 ويعيد ترجمة هذا المفتاح فقط في المزامنة التالية:
 
 ```json title="locales/en.json (updated)"
 {
@@ -96,6 +96,8 @@ npx i18n-rosetta sync
 # Only "hero.title" is re-translated across all locales
 ```
 
+يتم تقديم المفتاح غير المتغير (`hero.subtitle`) من ذاكرة التخزين المؤقت لـ **Translation Memory** الخاصة بـ rosetta — بدون استدعاء لـ API، وبدون تكلفة. يتم بناء ذاكرة التخزين المؤقت تلقائياً خلال كل عملية مزامنة ويتم تخزينها في `.rosetta/tm.json`.
+
 ## اختياري: إنشاء ملف تكوين
 
 لمزيد من التحكم، قم بإنشاء ملف تكوين:
@@ -105,7 +107,7 @@ npx i18n-rosetta init                         # guided wizard
 npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific targets
 ```
 
-يرشدك المعالج الموجه خلال **الإعدادات المسبقة للأسلوب (register presets)** لكل لغة — وهي تعليمات جاهزة للنبرة/الرسمية مضبوطة وفقاً لنظامها اللغوي. تحتوي اللغة الفرنسية على إعدادات T-V المسبقة (vouvoiement مقابل tutoiement)، وتحتوي اللغة الكورية على مستويات التحدث (해요체 مقابل 합쇼체 مقابل 해체)، وتحتوي اللغة اليابانية على خيارات keigo (です/ます مقابل 丁寧語).
+يرشدك المعالج الموجه عبر **register presets** (إعدادات النبرة المسبقة) لكل لغة — وهي تعليمات مبنية مسبقاً للنبرة/الرسمية ومضبوطة وفقاً لنظامها اللغوي. تحتوي الفرنسية على إعدادات T-V المسبقة (vouvoiement مقابل tutoiement)، وتحتوي الكورية على مستويات التحدث (해요체 مقابل 합쇼체 مقابل 해체)، وتحتوي اليابانية على خيارات keigo (です/ます مقابل 丁寧語).
 
 أو قم بإنشاء ملف تكوين يدوياً باستخدام مفاتيح الإعدادات المسبقة:
 
@@ -127,7 +129,7 @@ npx i18n-rosetta init --yes --langs fr,de,ja  # quick setup with specific target
 
 ## اختياري: وضع المراقبة (Watch Mode)
 
-ترجمة تلقائية عند تغيير ملف المصدر الخاص بك:
+الترجمة التلقائية عند تغيير ملف المصدر الخاص بك:
 
 ```bash
 npx i18n-rosetta watch
@@ -136,6 +138,9 @@ npx i18n-rosetta watch
 ## الخطوات التالية
 
 - **[التكوين](/docs/getting-started/configuration)** — مرجع التكوين الكامل
-- **[طرق الترجمة](/docs/guides/translation-methods)** — اختيار الطريقة المناسبة
-- **[تكامل أطر العمل](/docs/guides/framework-integration)** — Hugo، و next-intl، و react-i18next
-- **[CI/CD](/docs/guides/ci-cd)** — أتمتة الترجمات في مسار العمل الخاص بك
+- **[طرق الترجمة](/docs/guides/translation-methods)** — اختيار الطريقة الصحيحة لكل زوج لغوي
+- **[ذاكرة الترجمة (Translation Memory)](/docs/concepts/translation-memory)** — كيف يوفر لك التخزين المؤقت المال عند إعادة التشغيل
+- **[العمل مع مترجمين محترفين](/docs/guides/professional-translators)** — تصدير XLIFF للمراجعة البشرية
+- **[تكامل أطر العمل (Framework Integration)](/docs/guides/framework-integration)** — Hugo، next-intl، react-i18next
+- **[CI/CD](/docs/guides/ci-cd)** — أتمتة الترجمات في مسار العمل (pipeline) الخاص بك
+- **[استكشاف الأخطاء وإصلاحها](/docs/guides/troubleshooting)** — المشكلات الشائعة والحلول

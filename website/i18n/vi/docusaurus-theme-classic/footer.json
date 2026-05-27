@@ -62,5 +62,9 @@
   "copyright": {
     "message": "Bản quyền © 2026 Curtis Forbes. Xây dựng bằng Docusaurus.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "Xây dựng Pipeline",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

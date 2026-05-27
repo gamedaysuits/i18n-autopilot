@@ -360,5 +360,273 @@
   "theme.docs.DocCard.categoryDescription.plurals": {
     "message": "1件のアイテム|{count}件のアイテム",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "homepage.hero.titleLine1": {
+    "message": "完全にカスタマイズ可能な",
+    "description": "Hero title line 1"
+  },
+  "homepage.hero.titleLine2": {
+    "message": "国際化",
+    "description": "Hero title line 2"
+  },
+  "homepage.hero.subtitle": {
+    "message": "コマンド1つでロケールファイルを翻訳します。Google Translate、LLM、カスタムAPI、コーチングパイプラインなど、すべての翻訳メソッドをオプションとして設定可能です。各言語に最適な方法を使用できます。",
+    "description": "Hero subtitle explaining the product"
+  },
+  "homepage.hero.ctaPrimary": {
+    "message": "始める →",
+    "description": "Primary call-to-action button"
+  },
+  "homepage.hero.ctaSecondary": {
+    "message": "メソッドを見る",
+    "description": "Secondary call-to-action button"
+  },
+  "homepage.stats.tests": {
+    "message": "テスト",
+    "description": "Stats bar label for test count"
+  },
+  "homepage.stats.dependencies": {
+    "message": "依存関係",
+    "description": "Stats bar label for dependency count"
+  },
+  "homepage.stats.scriptConverters": {
+    "message": "スクリプトコンバーター",
+    "description": "Stats bar label for script converter count"
+  },
+  "homepage.stats.languageRegisters": {
+    "message": "言語レジスター",
+    "description": "Stats bar label for language register count"
+  },
+  "homepage.quickExample.title": {
+    "message": "言語ペアごとにメソッドを組み合わせる",
+    "description": "Quick example section heading"
+  },
+  "homepage.quickExample.description": {
+    "message": "ソースからターゲットへの各ペアに対して、独自の翻訳メソッド、モデル、品質設定を適用できます。画一的なアプローチではなく、各言語に最適な方法を使用します。",
+    "description": "Quick example section description"
+  },
+  "homepage.quickExample.cta": {
+    "message": "メソッドについて学ぶ →",
+    "description": "Quick example CTA button"
+  },
+  "homepage.useCases.sectionTitle": {
+    "message": "ユースケース",
+    "description": "Use cases section heading"
+  },
+  "homepage.comparison.title": {
+    "message": "よくあるTMSプラットフォームではありません",
+    "description": "Comparison section title"
+  },
+  "homepage.comparison.description": {
+    "message": "Crowdin、Phrase、Locizeは、アカウント、ダッシュボード、月額料金が必要なクラウドプラットフォームです。Rosettaはプロジェクト内で実行されるCLIツールであり、アカウントもダッシュボードもベンダーロックインもありません。",
+    "description": "Comparison section description"
+  },
+  "homepage.comparison.cta": {
+    "message": "詳細な比較を見る →",
+    "description": "Comparison section CTA"
+  },
+  "homepage.arena.eyebrow": {
+    "message": "アリーナ",
+    "description": "Arena section eyebrow label"
+  },
+  "homepage.arena.titleLine1": {
+    "message": "翻訳のための",
+    "description": "Arena title line 1"
+  },
+  "homepage.arena.titleLine2": {
+    "message": "最高のメソッドをお持ちですか？",
+    "description": "Arena title line 2"
+  },
+  "homepage.arena.tagline": {
+    "message": "証明してください。",
+    "description": "Arena section tagline"
+  },
+  "homepage.arena.description": {
+    "message": "7,000以上の言語のうち、機械翻訳が存在するのは約130言語のみです。残りは未解決の課題であり、誰にでも開かれた挑戦です。rosettaの評価ハーネスは、フィンガープリント付きの再現可能なスコアリングで、あらゆるメソッドをベンチマークします。リーダーボードではすべての提出結果を追跡します。",
+    "description": "Arena section description paragraph"
+  },
+  "homepage.arena.calloutLine1": {
+    "message": "これは、世界中の誰もが貢献できる未解決の課題です。",
+    "description": "Arena callout line 1"
+  },
+  "homepage.arena.calloutLine2": {
+    "message": "メソッドを構築し、スコアを出し、還元しましょう。",
+    "description": "Arena callout line 2"
+  },
+  "homepage.leaderboard.title": {
+    "message": "🏆 メソッドリーダーボード",
+    "description": "Leaderboard widget title"
+  },
+  "homepage.leaderboard.subtitle": {
+    "message": "chrF++スコアによる上位翻訳メソッドのランキングです。",
+    "description": "Leaderboard widget subtitle"
+  },
+  "homepage.leaderboard.cta": {
+    "message": "記録に挑む",
+    "description": "Leaderboard widget call to action"
+  },
+  "homepage.leaderboard.runHarness": {
+    "message": "ハーネスを実行する",
+    "description": "Leaderboard run harness link"
+  },
+  "homepage.leaderboard.fullLeaderboard": {
+    "message": "リーダーボード全体を見る →",
+    "description": "Full leaderboard link button"
+  },
+  "homepage.leaderboard.colMethod": {
+    "message": "メソッド",
+    "description": "Leaderboard table header: Method"
+  },
+  "homepage.leaderboard.colModel": {
+    "message": "モデル",
+    "description": "Leaderboard table header: Model"
+  },
+  "homepage.leaderboard.colPair": {
+    "message": "ペア",
+    "description": "Leaderboard table header: Pair"
+  },
+  "homepage.seo.titleSuffix": {
+    "message": "完全にカスタマイズ可能な国際化",
+    "description": "SEO title suffix for the homepage"
+  },
+  "homepage.seo.description": {
+    "message": "すべての翻訳メソッドをオプションとして設定できるi18nフレームワーク。Google Translate、LLM、カスタムパイプラインなどに対応。コマンド1つで、ペアごとの制御と品質管理を実現します。",
+    "description": "SEO meta description for the homepage"
+  },
+  "homepage.features.oneCommand.title": {
+    "message": "ワンコマンド",
+    "description": "Feature card title: One Command"
+  },
+  "homepage.features.oneCommand.description": {
+    "message": "ロケールファイル、フォーマット、ターゲット言語を自動検出します。変更された部分のみを翻訳し、変更のない部分はスキップします。",
+    "description": "Feature card description: One Command"
+  },
+  "homepage.features.perPairMethods.title": {
+    "message": "ペアごとのメソッド",
+    "description": "Feature card title: Per-Pair Methods"
+  },
+  "homepage.features.perPairMethods.description": {
+    "message": "フランス語にはGoogle Translate、日本語にはLLM、平原クリー語にはコーチングプラグインなど、すべてを同じ設定ファイル内で管理できます。",
+    "description": "Feature card description: Per-Pair Methods"
+  },
+  "homepage.features.registersCoaching.title": {
+    "message": "レジスターとコーチング",
+    "description": "Feature card title: Registers & Coaching"
+  },
+  "homepage.features.registersCoaching.description": {
+    "message": "言語ごとのトーン指示でLLMをコントロールします。ドイツ語のフォーマルなSieフォーム、フィリピン語のタグリッシュ（コードスイッチング）、クリンゴン語の戦士の敬意などに対応します。",
+    "description": "Feature card description: Registers & Coaching"
+  },
+  "homepage.features.contentAware.title": {
+    "message": "コンテンツ認識",
+    "description": "Feature card title: Content Aware"
+  },
+  "homepage.features.contentAware.description": {
+    "message": "コードブロック、ショートコード、補間変数、生のHTMLは翻訳中に保護されます。LLMがコードを直接処理することはありません。",
+    "description": "Feature card description: Content Aware"
+  },
+  "homepage.features.zeroDependencies.title": {
+    "message": "依存関係ゼロ",
+    "description": "Feature card title: Zero Dependencies"
+  },
+  "homepage.features.zeroDependencies.description": {
+    "message": "Node.jsの組み込みモジュールのみを使用します。SDK、ネイティブモジュール、ビルドステップは不要です。Node 20+が動作する環境ならどこでも実行できます。",
+    "description": "Feature card description: Zero Dependencies"
+  },
+  "homepage.features.qualityGate.title": {
+    "message": "品質ゲート",
+    "description": "Feature card title: Quality Gate"
+  },
+  "homepage.features.qualityGate.description": {
+    "message": "すべての翻訳は書き込み前に検証されます。誤った文字スクリプトの出力、ソーステキストの残留、不自然な長さの増加、プレースホルダーの破損などを検知して拒否します。",
+    "description": "Feature card description: Quality Gate"
+  },
+  "homepage.useCases.saas.title": {
+    "message": "SaaSの国際化",
+    "description": "Use case title: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.description": {
+    "message": "Next.js、Hugo、Reactアプリを、ペアごとの品質管理を行いながら30以上の言語に翻訳します。",
+    "description": "Use case description: SaaS Internationalization"
+  },
+  "homepage.useCases.saas.linkText": {
+    "message": "30言語に翻訳する →",
+    "description": "Use case link text: SaaS Internationalization"
+  },
+  "homepage.useCases.pipeline.title": {
+    "message": "カスタムパイプラインの構築",
+    "description": "Use case title: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.description": {
+    "message": "LLMをFSTバリデーター、辞書、ポストプロセッサーと連携させ、プラグインとしてパッケージ化します。",
+    "description": "Use case description: Build a Custom Pipeline"
+  },
+  "homepage.useCases.pipeline.linkText": {
+    "message": "FSTパイプラインクックブック →",
+    "description": "Use case link text: Build a Custom Pipeline"
+  },
+  "homepage.useCases.preservation.title": {
+    "message": "言語の保存",
+    "description": "Use case title: Language Preservation"
+  },
+  "homepage.useCases.preservation.description": {
+    "message": "APIカバレッジのない言語（先住民言語、消滅危機言語、人工言語）向けの、コーチングされたLLM翻訳です。",
+    "description": "Use case description: Language Preservation"
+  },
+  "homepage.useCases.preservation.linkText": {
+    "message": "低資源言語ガイド →",
+    "description": "Use case link text: Language Preservation"
+  },
+  "homepage.arena.cards.plugTest.title": {
+    "message": "プラグ＆テスト",
+    "description": "Arena card title: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.description": {
+    "message": "標準化されたベンチマークに対してメソッドを実行します。chrF++、exact match、FST acceptanceなど、すべて同じハーネスで計算されます。",
+    "description": "Arena card description: Plug and Test"
+  },
+  "homepage.arena.cards.plugTest.linkText": {
+    "message": "Eval Harness →",
+    "description": "Arena card link text: Plug and Test"
+  },
+  "homepage.arena.cards.claimScore.title": {
+    "message": "スコアの申請",
+    "description": "Arena card title: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.description": {
+    "message": "すべての提出物はGitコミットにフィンガープリントされ、同じデータセットに対してスコアリングされます。提出するにはPRを作成してください。",
+    "description": "Arena card description: Claim Your Score"
+  },
+  "homepage.arena.cards.claimScore.linkText": {
+    "message": "リーダーボード →",
+    "description": "Arena card link text: Claim Your Score"
+  },
+  "homepage.arena.cards.respectData.title": {
+    "message": "データの尊重",
+    "description": "Arena card title: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.description": {
+    "message": "先住民の言語は、そのコミュニティに属しています。rosettaは、OCAP、CARE、およびMāori Data Sovereigntyの原則をサポートしています。",
+    "description": "Arena card description: Respect the Data"
+  },
+  "homepage.arena.cards.respectData.linkText": {
+    "message": "データ主権 →",
+    "description": "Arena card link text: Respect the Data"
+  },
+  "homepage.hero.titlePrefix": {
+    "message": "ウェブサイト全体を",
+    "description": "Hero title text before the animated language flipper"
+  },
+  "homepage.hero.titleSuffix": {
+    "message": "で構築。ワンコマンドでも、無限のカスタマイズでも",
+    "description": "Hero title text after the animated language flipper"
+  },
+  "homepage.hero.languagesSuffix": {
+    "message": "言語",
+    "description": "Suffix after the language count number in the hero"
+  },
+  "homepage.hero.languagesSupported": {
+    "message": "対応言語",
+    "description": "Languages supported button label"
   }
 }

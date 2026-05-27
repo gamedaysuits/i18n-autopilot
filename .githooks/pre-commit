@@ -45,7 +45,7 @@ echo "🌐 i18n-rosetta pre-commit: translating changed docs..."
 # ── Rosetta site ──
 if [ -n "$ROSETTA_CHANGED" ]; then
   echo "  ↳ Rosetta site (website/)"
-  (cd website && npx i18n-rosetta sync --content 2>&1 | tail -3)
+  (cd website && node ../bin/cli.js sync --content 2>&1 | tail -3)
   git add website/i18n/
 fi
 
@@ -57,7 +57,7 @@ if [ -n "$ARENA_CHANGED" ]; then
   (cd gds-mt-eval-harness/website && node scripts/sync-ssot.js 2>&1 | tail -1)
 
   # Translate
-  (cd gds-mt-eval-harness/website && npx i18n-rosetta sync --content 2>&1 | tail -3)
+  (cd gds-mt-eval-harness/website && node ../../bin/cli.js sync --content 2>&1 | tail -3)
 
   # Note: arena translations are committed to the arena submodule, not this repo.
   # Stage the submodule pointer update instead.

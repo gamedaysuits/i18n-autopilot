@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-title: "Criar um Plugin de Tradução"
-description: "Tutorial de ponta a ponta: desenvolva dados de treinamento, faça benchmark com o eval harness, exporte um plugin e faça o deploy com o rosetta."
+title: "Crie um Plugin de Tradução"
+description: "Tutorial de ponta a ponta: desenvolva dados de treinamento, faça o benchmark com o eval harness, exporte um plugin e faça o deploy com o rosetta."
 ---
-# Tutorial: Crie um Plugin de Tradução
+# Tutorial: Criar um Plugin de Tradução
 
-Crie um método de tradução personalizado do zero, execute um benchmark e faça o deploy como um plugin do rosetta. Este é o fluxo de trabalho completo para adicionar um novo par de idiomas que nenhuma API pronta para uso suporta.
+Crie um método de tradução personalizado do zero, faça o benchmark e faça o deploy como um plugin do rosetta. Este é o fluxo de trabalho completo para adicionar um novo par de idiomas que nenhuma API pronta suporta.
 
-**O que você vai criar:** Um plugin de tradução guiada para o francês formal com aplicação de terminologia, regras gramaticais e pontuações de benchmark.
+**O que você vai criar:** Um plugin de tradução guiada para francês formal com terminologia aplicada, regras gramaticais e pontuações de benchmark.
 
 **Tempo:** 30–45 minutos
 
@@ -18,7 +18,7 @@ Crie um método de tradução personalizado do zero, execute um benchmark e faç
 
 ---
 
-## Passo 1: Identifique o Problema
+## Passo 1: Identificar o Problema
 
 Você está traduzindo um dashboard SaaS para o francês. O método `llm` padrão produz traduções corretas, mas inconsistentes:
 
@@ -26,11 +26,11 @@ Você está traduzindo um dashboard SaaS para o francês. O método `llm` padrã
 - O tom alterna entre as formas `tu` e `vous`
 - Termos técnicos são anglicizados de forma inconsistente
 
-Você precisa de **aplicação de terminologia** e **controle de registro** que o prompt genérico de LLM não fornece.
+Você precisa de **aplicação de terminologia** e **controle de registro** que o prompt genérico do LLM não oferece.
 
-## Passo 2: Crie os Dados de Orientação
+## Passo 2: Criar Dados de Coaching
 
-Crie um arquivo de orientação que codifique seus requisitos linguísticos:
+Crie um arquivo de coaching que codifique seus requisitos linguísticos:
 
 ```bash
 mkdir -p .rosetta/coaching
@@ -65,7 +65,7 @@ mkdir -p .rosetta/coaching
 - **`dictionary`** — Comparado com as chaves de origem; quando um termo do dicionário aparece, ele é injetado como "terminologia obrigatória" no prompt
 - **`style_notes`** — Anexado ao prompt de sistema como orientação geral de estilo
 
-## Passo 3: Configure o Par
+## Passo 3: Configurar o Par
 
 Diga ao rosetta para usar `llm-coached` para o francês:
 
@@ -89,7 +89,7 @@ Diga ao rosetta para usar `llm-coached` para o francês:
 }
 ```
 
-## Passo 4: Teste
+## Passo 4: Testar
 
 ```bash
 npx i18n-rosetta sync --dry
@@ -100,17 +100,17 @@ Revise a saída do dry-run. Verifique se:
 - ✅ A forma `vous` é usada em todo o texto
 - ✅ Os termos técnicos correspondem ao seu dicionário
 
-Em seguida, execute a sincronização real:
+Em seguida, execute o sync real:
 
 ```bash
 npx i18n-rosetta sync
 ```
 
-## Passo 5: Execute o Benchmark com o Eval Harness (Opcional)
+## Passo 5: Fazer o Benchmark com o Eval Harness (Opcional)
 
 Se você quiser pontuações de qualidade — e você quer, porque os plugins vêm com dados de benchmark — use o eval harness complementar.
 
-### Instale o Harness
+### Instalar o Harness
 
 ```bash
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
@@ -118,7 +118,7 @@ cd gds-mt-eval-harness
 pip install -r requirements.txt
 ```
 
-### Crie um Corpus de Referência
+### Criar um Corpus de Referência
 
 Crie um arquivo com as strings de origem e traduções sabidamente boas:
 
@@ -143,7 +143,7 @@ Crie um arquivo com as strings de origem e traduções sabidamente boas:
 ]
 ```
 
-### Execute o Benchmark
+### Executar o Benchmark
 
 ```bash
 python harness.py eval \
@@ -154,14 +154,14 @@ python harness.py eval \
   --model google/gemini-3.5-flash
 ```
 
-O harness gera as seguintes saídas:
+O harness gera como saída:
 - **chrF++** — F-score em nível de caractere (0–100). Acima de 70 é um resultado forte.
 - **BLEU** — Sobreposição de N-gramas (0–100). Acima de 40 é sólido para tradução guiada.
 - **Taxa de correspondência exata** — Proporção de traduções que correspondem exatamente à referência.
 
-### Exporte o Plugin
+### Exportar o Plugin
 
-Quando estiver satisfeito com as pontuações:
+Quando você estiver satisfeito com as pontuações:
 
 ```bash
 python harness.py export \
@@ -178,7 +178,7 @@ french-formal-v1/
     └── fr.json          # Your coaching data
 ```
 
-## Passo 6: Instale o Plugin no Rosetta
+## Passo 6: Instalar o Plugin no Rosetta
 
 ```bash
 npx i18n-rosetta plugin install ./french-formal-v1/
@@ -198,7 +198,7 @@ Atualize sua configuração para usá-lo:
 }
 ```
 
-## Passo 7: Verifique
+## Passo 7: Verificar
 
 ```bash
 # Check plugin is installed and shows benchmark scores
@@ -234,14 +234,14 @@ flowchart LR
 ```
 
 Agora você tem:
-1. **Dados de orientação** — Regras gramaticais e terminologia que garantem a consistência
-2. **Pontuações de benchmark** — Qualidade quantificada incluída no plugin
-3. **Um plugin portátil** — `method.json` + dados de orientação, instalável em qualquer máquina
-4. **Deploy em produção** — Integrado ao seu pipeline de sincronização
+1. **Dados de coaching** — Regras gramaticais e terminologia que garantem a consistência
+2. **Pontuações de benchmark** — Qualidade quantificada que acompanha o plugin
+3. **Um plugin portátil** — `method.json` + dados de coaching, instalável em qualquer máquina
+4. **Deploy em produção** — Integrado ao seu pipeline de sync
 
 ## Próximos Passos
 
 - **[Especificação do Plugin](/docs/reference/plugin-spec)** — Referência completa do formato do manifesto
 - **[Métodos de Tradução](/docs/guides/translation-methods)** — Compare todos os quatro métodos
 - **[Idiomas com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages)** — Aplique este padrão a idiomas sem cobertura de API
-- **[Traduza 30 Idiomas](/docs/tutorials/translate-30-languages)** — Escale seu projeto para um público global
+- **[Traduzir 30 Idiomas](/docs/tutorials/translate-30-languages)** — Escale seu projeto para um público global

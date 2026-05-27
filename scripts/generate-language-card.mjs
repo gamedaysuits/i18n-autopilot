@@ -30,7 +30,7 @@
  *   ✅ glottocode, encyclopedic.family (from Glottolog API)
  *
  * WHAT NEEDS HUMAN CURATION (marked as TODO):
- *   ⬜ nativeName (endonym)
+ *   ⬜ nativeName (endonym in native script — dual-script languages use 'name1 / name2')
  *   ⬜ formality system + register presets
  *   ⬜ gender guidance
  *   ⬜ linguisticChallenges
@@ -502,7 +502,7 @@ async function generateCards(code) {
   const runtimeCard = {
     code,
     name: englishName,
-    nativeName: `TODO: Add endonym for ${englishName}`,
+    nativeName: `TODO: Add endonym for ${englishName} in native script. For dual-script languages (e.g., SRO + Syllabics), use 'name1 / name2' format.`,
     iso639_1,
     iso639_3,
     bcp47: subtags.fullTag || code,

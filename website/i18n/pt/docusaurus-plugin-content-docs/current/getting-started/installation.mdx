@@ -49,15 +49,21 @@ yarn add --dev i18n-rosetta
 
 O Rosetta precisa de um backend de tradução. Escolha um:
 
-| Provedor | Variável de ambiente | Melhor para |
+| Provedor | Variável de Ambiente | Melhor para |
 |----------|---------------------|----------|
 | **OpenRouter** (recomendado) | `OPENROUTER_API_KEY` | Projetos com muito conteúdo, Markdown, mais de 200 modelos |
-| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Pares de chave-valor em alto volume (mais de 130 idiomas) |
+| **Gemini** (plano gratuito) | `GEMINI_API_KEY` | Início sem custo, boa qualidade |
+| **OpenAI** | `OPENAI_API_KEY` | Acesso direto ao GPT-4o |
+| **Anthropic** | `ANTHROPIC_API_KEY` | Acesso direto ao Claude, textos com nuances |
+| **DeepL** | `DEEPL_API_KEY` | Idiomas europeus, formalidade integrada |
+| **Google Translate** | `GOOGLE_TRANSLATE_API_KEY` | Grande volume de pares chave-valor, mais de 130 idiomas |
+| **Microsoft Translator** | `MICROSOFT_TRANSLATOR_API_KEY` | Azure, mais de 100 idiomas |
+| **LibreTranslate** | `LIBRETRANSLATE_API_URL` | Auto-hospedado, foco em privacidade |
 
 <Tabs>
   <TabItem value="openrouter" label="OpenRouter (recommended)" default>
 
-O [OpenRouter](https://openrouter.ai) fornece uma API unificada para mais de 200 modelos de LLM. Plano gratuito disponível.
+O [OpenRouter](https://openrouter.ai) fornece uma API unificada para mais de 200 modelos LLM. Plano gratuito disponível.
 
 ```bash
 # Sign up at https://openrouter.ai, then:
@@ -79,10 +85,10 @@ Melhor para: projetos com muito conteúdo, tradução de Markdown e projetos que
 export GOOGLE_TRANSLATE_API_KEY=...
 ```
 
-Melhor para: pares de strings chave-valor em alto volume (mais de 130 idiomas). **Não recomendado** para conteúdo em Markdown — o Google Translate não reconhece blocos de código, shortcodes ou variáveis de interpolação.
+Melhor para: grande volume de pares de strings chave-valor (mais de 130 idiomas). **Não recomendado** para conteúdo em Markdown — o Google Translate não tem reconhecimento de blocos de código, shortcodes ou variáveis de interpolação.
 
 :::tip Detecção inteligente
-Se apenas `GOOGLE_TRANSLATE_API_KEY` estiver definida (sem chave do OpenRouter), o rosetta alterna automaticamente para o Google Translate. Nenhuma alteração de configuração é necessária.
+Se apenas `GOOGLE_TRANSLATE_API_KEY` estiver definido (sem chave do OpenRouter), o rosetta alterna automaticamente para o Google Translate. Nenhuma alteração de configuração é necessária.
 :::
 
   </TabItem>
@@ -94,4 +100,4 @@ Se apenas `GOOGLE_TRANSLATE_API_KEY` estiver definida (sem chave do OpenRouter),
 npx i18n-rosetta --help
 ```
 
-Você deve ver a lista de comandos disponíveis. Você está pronto para o [Início Rápido](/docs/getting-started/quick-start).
+Você deverá ver a lista de comandos disponíveis. Você está pronto para o [Início Rápido](/docs/getting-started/quick-start).

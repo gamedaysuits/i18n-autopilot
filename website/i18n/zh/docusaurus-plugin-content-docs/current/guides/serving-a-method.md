@@ -3,11 +3,11 @@ sidebar_position: 8
 title: "将自定义方法作为 API 提供"
 description: "将复杂的翻译流水线（FST 门控、多步 LLM 链）封装为 HTTP 服务，并通过 api 方法接入 i18n-rosetta。"
 ---
-# 将自定义方法作为 API 提供
+# 将自定义方法作为 API 提供服务
 
-i18n-rosetta 的 **`api` 方法** 让你能够将任何翻译对指向外部 HTTP 端点。通过这种方式，你可以集成那些对于单个 LLM 提示词来说过于复杂的流水线（pipeline）——例如形态分析器、有限状态转换器（FST）、多步 LLM 链，或者你构建的任何自定义研究方法。
+i18n-rosetta 的 **`api` 方法**允许你将任何翻译对指向外部 HTTP 端点。通过这种方式，你可以集成对于单个 LLM 提示词来说过于复杂的流水线——形态分析器、有限状态转换器 (FST)、多步 LLM 链，或者你构建的任何自定义研究方法。
 
-## 为什么需要 API 服务？
+## 为什么使用 API 服务？
 
 有些翻译流水线无法在简单的提示-响应周期内运行：
 
@@ -15,9 +15,9 @@ i18n-rosetta 的 **`api` 方法** 让你能够将任何翻译对指向外部 HTT
 |---|---|
 | **形态分解** | 在翻译前将多式综合语单词拆分为语素 |
 | **FST 验证** | 拒绝违反音系或形态规则的输出 |
-| **多步 LLM 链** | 使用不同模型进行生成 → 验证 → 纠正的循环 |
+| **多步 LLM 链** | 使用不同模型进行生成 → 验证 → 纠正循环 |
 | **字典查找** | 在流水线中间交叉引用精选的双语字典 |
-| **人机协同** | 将不确定的翻译排队等待专家审查 |
+| **人在回路** | 将不确定的翻译排队等待专家审查 |
 
 `api` 方法将你的流水线视为黑盒——i18n-rosetta 发送源字符串，你的服务返回翻译结果。内部发生的事情完全由你决定。
 
@@ -62,7 +62,7 @@ Authorization: Bearer <ROSETTA_API_KEY>
 | `source_locale` | string | BCP 47 源语言代码 |
 | `target_locale` | string | BCP 47 目标语言代码 |
 | `method` | string | 插件名称或 `"default"` |
-| `keys` | object | 键 → 待翻译源字符串的映射 |
+| `keys` | object | 键 → 要翻译的源字符串的映射 |
 ```
 
 ### Response Format
@@ -101,8 +101,8 @@ app.use(express.json());
 /**
  * rosetta API 契约：
  *
- * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
- * Response: { translations: { "key": "translated" }, meta: { ... } }
+ * 请求： { source_locale, target_locale, method, keys: { "key": "source" } }
+ * 响应： { translations: { "key": "translated" }, meta: { ... } }
  */
 app.post('/translate', async (req, res) => {
   const { source_locale, target_locale, method, keys } = req.body;
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- 你的流水线代码放在这里 ---
-    // 步骤 1：形态分解
+    // --- 你的流水线在这里 ---
+    // 第 1 步：形态分解
     const morphemes = await decompose(source, source_locale);
 
-    // 步骤 2：带上下文的 LLM 翻译
+    // 第 2 步：带上下文的 LLM 翻译
     const draft = await llmTranslate(morphemes, target_locale);
 
-    // 步骤 3：FST 验证
+    // 第 3 步：FST 验证
     const validated = await fstValidate(draft, target_locale);
 
-    // 步骤 4：后处理（正字法规范化等）
+    // 第 4 步：后处理（正字法标准化等）
     translations[key] = await postProcess(validated);
   }
 
@@ -134,7 +134,7 @@ app.post('/translate', async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('翻译 API 运行在 http://localhost:3001');
+  console.log('Translation API running on http://localhost:3001');
 });
 ```
 
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## 最佳实践
 
-1. **失败时返回空字符串** —— 不要将源字符串作为“翻译”返回。返回 `""`，让 i18n-rosetta 的回退前缀机制来处理。
-2. **包含置信度分数** —— 如果你的流水线可以评估质量，请在元数据中返回它。这有助于质量审计。
-3. **实现健康检查** —— 添加一个 `GET /health` 端点，以便 i18n-rosetta 在开始大规模同步之前验证连接性。
-4. **优雅地处理速率限制** —— 如果你的流水线有吞吐量限制，请返回 `429` 状态码。i18n-rosetta 的批处理系统会自动退避（back off）。
-5. **记录一切** —— 多步流水线可能会在不报错的情况下失败（静默失败）。记录每个步骤的输入/输出以便于调试。
+1. **失败时返回空字符串** — 不要将源字符串作为“翻译”返回。返回 `""`，让 i18n-rosetta 的回退前缀机制来处理。
+2. **包含置信度分数** — 如果你的流水线可以评估质量，请在元数据中返回它。这有助于质量审计。
+3. **实现健康检查** — 添加一个 `GET /health` 端点，以便 i18n-rosetta 在开始大规模同步之前验证连接。
+4. **优雅地处理速率限制** — 如果你的流水线有吞吐量限制，请返回 `429` 状态码。i18n-rosetta 的批处理系统会自动退避。
+5. **记录一切** — 多步流水线可能会静默失败。记录每个步骤的输入/输出以便于调试。
 
-## 许可
+## 许可协议
 
 `api` 方法模式是完全开放的——将你自己的翻译流水线封装为 HTTP 服务没有任何许可限制。`gds-mt-eval-harness` 在 MIT 许可下提供，可作为参考实现。
 
 ## 另请参阅
 
-- [翻译方法](/docs/guides/translation-methods) —— 所有内置方法的概述（`openai`、`google`、`api` 等）
-- [插件规范](/docs/reference/plugin-spec) —— `i18n-rosetta.config.json` 的完整模式（schema），包含 `api` 方法字段
-- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) —— 针对资源不足语言的端到端指南，包含 OCAP 原则
-- [架构](/docs/concepts/architecture) —— i18n-rosetta 的同步循环、批处理和方法调度的运作方式
-- [机器翻译评估](https://mtevalarena.org/docs/leaderboard/rules) —— 评估方法、指标以及排行榜提交流程
-- [方法排行榜](/leaderboard) —— 跨方法和语言对的实时质量排名
+- [翻译方法](/docs/guides/translation-methods) — 所有内置方法的概述（`openai`、`google`、`api` 等）
+- [插件规范](/docs/reference/plugin-spec) — `i18n-rosetta.config.json` 的完整架构，包含 `api` 方法字段
+- [支持低资源语言](https://mtevalarena.org/docs/community/low-resource-languages) — 针对资源匮乏语言的端到端指南，包含 OCAP 原则
+- [架构](/docs/concepts/architecture) — i18n-rosetta 的同步循环、批处理和方法分发的工作原理
+- [机器翻译评估](https://mtevalarena.org/docs/leaderboard/rules) — 评估方法、指标和排行榜提交流程
+- [方法排行榜](/leaderboard) — 跨方法和语言对的实时质量排名

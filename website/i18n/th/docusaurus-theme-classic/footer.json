@@ -62,5 +62,9 @@
   "copyright": {
     "message": "สงวนลิขสิทธิ์ © 2026 Curtis Forbes สร้างด้วย Docusaurus",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "สร้าง Pipeline",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

@@ -62,5 +62,9 @@
   "copyright": {
     "message": "Copyright © 2026 Curtis Forbes. Creado con Docusaurus.",
     "description": "The footer copyright"
+  },
+  "link.item.label.Build a Pipeline": {
+    "message": "Construir un pipeline",
+    "description": "The label of footer link with label=Build a Pipeline linking to /docs/tutorials/fst-gated-pipeline"
   }
 }

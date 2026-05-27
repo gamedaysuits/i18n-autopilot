@@ -4,11 +4,11 @@ title: "Données de coaching"
 ---
 # Données de coaching
 
-Les données de coaching constituent le mécanisme de rosetta pour enseigner aux LLM des langues sur lesquelles ils n'ont pas été entraînés. En fournissant des règles de grammaire, des dictionnaires et des notes de style avec chaque demande de traduction, vous transformez un LLM à usage général en un traducteur sensible au contexte pour n'importe quelle langue, y compris les langues ne bénéficiant d'aucune prise en charge existante par la traduction automatique (MT).
+Les données de coaching constituent le mécanisme de rosetta pour enseigner aux LLM des langues sur lesquelles ils n'ont pas été entraînés. En fournissant des règles de grammaire, des dictionnaires et des notes de style conjointement à chaque demande de traduction, vous transformez un LLM généraliste en un traducteur sensible au contexte pour n'importe quelle langue — y compris les langues ne disposant d'aucun support de traduction automatique (MT) existant.
 
-## Comment cela fonctionne
+## Fonctionnement
 
-Lorsque vous définissez la méthode d'une paire sur `llm-coached`, rosetta charge un fichier de coaching à partir de `.rosetta/coaching/<locale>.json` et injecte son contenu dans chaque prompt du LLM en tant que partie intégrante du message système. Le LLM consulte vos règles linguistiques en même temps que la demande de traduction, produisant ainsi un résultat qui respecte votre grammaire et votre terminologie au lieu de deviner.
+Lorsque vous définissez la méthode d'une paire sur `llm-coached`, rosetta charge un fichier de coaching depuis `.rosetta/coaching/<locale>.json` et injecte son contenu dans chaque prompt du LLM en tant que partie intégrante du message système. Le LLM consulte vos règles linguistiques en parallèle de la demande de traduction, produisant ainsi un résultat qui respecte votre grammaire et votre terminologie au lieu de procéder par déduction.
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -28,7 +28,7 @@ Lorsque vous définissez la méthode d'une paire sur `llm-coached`, rosetta char
 └──────────────────────────────────────────────────────┘
 ```
 
-Étant donné que les données de coaching font partie du message système, elles bénéficient de la **mise en cache des prompts** — des fournisseurs tels qu'Anthropic et Google mettent en cache les préfixes système répétés, de sorte que vous ne payez le contexte de coaching qu'une seule fois par session, et non une fois par lot.
+Étant donné que les données de coaching font partie du message système, elles bénéficient de la **mise en cache des prompts** — les fournisseurs tels qu'Anthropic et Google mettent en cache les préfixes système répétés, de sorte que vous ne payez le contexte de coaching qu'une seule fois par session, et non à chaque lot.
 
 ## Format du fichier de coaching
 
@@ -57,34 +57,34 @@ Créez un fichier JSON par paramètre régional dans `.rosetta/coaching/` :
 ### Champs
 
 | Champ | Type | Requis | Description |
-|-------|------|----------|-------------|
+|-------|------|--------|-------------|
 | `grammar_rules` | `string[]` | Non | Tableau de règles de grammaire injectées dans le prompt système. Chaque règle doit être une instruction concise et exploitable que le LLM peut suivre. |
-| `dictionary` | `object` | Non | Mappage clé-valeur du terme en anglais → terme dans la langue cible. Utilisé pour le vocabulaire spécifique au domaine que le LLM ne connaîtrait pas. |
+| `dictionary` | `object` | Non | Mappage clé-valeur du terme anglais → terme de la langue cible. Utilisé pour le vocabulaire spécifique au domaine que le LLM ne connaîtrait pas. |
 | `style_notes` | `string` | Non | Instructions de style sous forme libre (registre, ton, conventions de formalité). |
 
 Tous les champs sont facultatifs — vous pouvez commencer avec un simple dictionnaire et ajouter des règles de grammaire au fur et à mesure de vos affinements.
 
 ## Comportement de repli
 
-Si une paire est configurée pour `llm-coached` mais qu'aucun fichier de coaching n'existe pour ce paramètre régional, rosetta **se rabat sur la méthode `llm` standard** avec un avertissement dans la console :
+Si une paire est configurée pour `llm-coached` mais qu'aucun fichier de coaching n'existe pour ce paramètre régional, rosetta **se replie sur la méthode `llm` standard** avec un avertissement dans la console :
 
 ```
 [INFO] No coaching data for "crk" at .rosetta/coaching/crk.json
        Falling back to standard LLM method. Create coaching data for better results.
 ```
 
-Cela signifie que vous pouvez définir `"defaultMethod": "llm-coached"` globalement en toute sécurité — les langues disposant de données de coaching l'utiliseront, et les autres obtiendront une traduction LLM standard sans erreurs.
+Cela signifie que vous pouvez définir `"defaultMethod": "llm-coached"` globalement en toute sécurité — les langues disposant de données de coaching les utiliseront, et les autres bénéficieront d'une traduction LLM standard sans erreurs.
 
 ## Quand utiliser le coaching
 
 | Scénario | Méthode recommandée |
-|----------|-------------------|
+|----------|---------------------|
 | Langues de niveau 1 (français, espagnol, allemand) | `llm` ou `google-translate` — Les LLM les maîtrisent déjà bien |
-| Langues de niveau 2 (coréen, turc, thaï) | `llm` avec un registre — Les LLM les gèrent de manière adéquate avec des directives de style |
-| Langues de niveau 3 (cri des plaines, yoruba, quechua) | `llm-coached` — Les LLM ont besoin de règles de grammaire et de dictionnaires |
+| Langues de niveau 2 (coréen, turc, thaï) | `llm` avec un registre — Les LLM les traitent de manière adéquate avec des directives de style |
+| Langues de niveau 3 (cri des plaines, yoruba, quechua) | `llm-coached` — Les LLM nécessitent des règles de grammaire et des dictionnaires |
 | Langues construites (klingon, sindarin, kryptonien) | `llm-coached` — Les LLM disposent de quelques données d'entraînement mais nécessitent des corrections |
 
-## Créer de bonnes données de coaching
+## Élaboration de données de coaching de qualité
 
 ### Règles de grammaire
 
@@ -100,7 +100,7 @@ Rédigez les règles sous forme d'**instructions**, et non de descriptions. Le L
 
 ### Dictionnaires
 
-Concentrez-vous sur les **termes spécifiques au domaine** que le LLM traduirait de manière incorrecte ou inventerait. Ne vous préoccupez pas des mots courants que le LLM gère déjà — concentrez-vous sur les termes spécifiques à l'interface utilisateur de votre application.
+Concentrez-vous sur les **termes spécifiques au domaine** que le LLM traduirait de manière erronée ou inventerait. Ne vous préoccupez pas des mots courants que le LLM gère déjà — concentrez-vous sur les termes propres à l'interface utilisateur de votre application.
 
 ### Notes de style
 
@@ -132,7 +132,7 @@ Cela vous fournit les scores chrF++, BLEU et de correspondance exacte. Créez pl
 ## Voir aussi
 
 - [Méthodes de traduction](/docs/guides/translation-methods) — la méthode llm-coached
-- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — le coaching en pratique
-- [Spécification des plugins](/docs/reference/plugin-spec) — empaqueter les données de coaching dans un plugin
+- [Prendre en charge une langue à faibles ressources](https://mtevalarena.org/docs/community/low-resource-languages) — le coaching dans la pratique
+- [Spécification des plugins](/docs/reference/plugin-spec) — empaquetage des données de coaching dans un plugin
 - [Porte de qualité](/docs/concepts/quality-gate) — comment les traductions avec coaching sont validées
 - [Configuration](/docs/getting-started/configuration) — configuration du coaching par paire
