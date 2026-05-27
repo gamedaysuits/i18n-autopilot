@@ -150,7 +150,7 @@ describe('diffLocale', () => {
       'nav.about': '[EN] About',
       // nav.contact missing
       // pages.title missing
-      'footer.copyright': '© 2026',
+      'footer.copyright': '© 2026 Tous droits réservés',
     };
     const diff = diffLocale(source, target);
     assert.equal(diff.toProcess.length, 3); // 2 missing + 1 [EN]
@@ -160,7 +160,14 @@ describe('diffLocale', () => {
   });
 
   it('reports fully synced when no work needed', () => {
-    const target = { ...source };
+    // Use distinct translated values — identical values trigger untranslated detection
+    const target = {
+      'nav.home': 'Accueil',
+      'nav.about': 'À propos',
+      'nav.contact': 'Contact FR',
+      'pages.title': 'Bienvenue',
+      'footer.copyright': '© 2026 Tous droits réservés',
+    };
     const diff = diffLocale(source, target);
     assert.equal(diff.toProcess.length, 0);
     assert.equal(diff.extra.length, 0);
@@ -339,7 +346,7 @@ describe('diffLocale with forceKeys', () => {
       'nav.about': 'À propos',
       'nav.contact': 'Contact FR',
       'pages.title': 'Bienvenue',
-      'footer.copyright': '© 2026',
+      'footer.copyright': '© 2026 Tous droits réservés',
     };
     const diff = diffLocale(source, target, '[EN] ', ['nav.home']);
     assert.ok(diff.toProcess.includes('nav.home'), 'Forced key should appear in toProcess');
@@ -354,7 +361,7 @@ describe('diffLocale with forceKeys', () => {
       'nav.about': 'À propos',
       'nav.contact': 'Contact FR',
       'pages.title': 'Bienvenue',
-      'footer.copyright': '© 2026',
+      'footer.copyright': '© 2026 Tous droits réservés',
     };
     const forceKeys = ['nav.home', 'pages.title'];
     const diff = diffLocale(source, target, '[EN] ', forceKeys);
@@ -370,7 +377,7 @@ describe('diffLocale with forceKeys', () => {
       'nav.about': 'À propos',
       'nav.contact': 'Contact FR',
       'pages.title': 'Bienvenue',
-      'footer.copyright': '© 2026',
+      'footer.copyright': '© 2026 Tous droits réservés',
     };
     const diff = diffLocale(source, target, '[EN] ', ['nonexistent.key', 'also.missing']);
     assert.equal(diff.forced.length, 0, 'Non-source keys should be silently dropped');
@@ -400,7 +407,7 @@ describe('diffLocale with forceKeys', () => {
       'nav.about': 'À propos',
       'nav.contact': 'Contact FR',
       'pages.title': 'Bienvenue',
-      'footer.copyright': '© 2026',
+      'footer.copyright': '© 2026 Tous droits réservés',
     };
     const diff = diffLocale(source, target, '[EN] ', ['nav.home']);
     assert.equal(diff.toProcess.length, 1);

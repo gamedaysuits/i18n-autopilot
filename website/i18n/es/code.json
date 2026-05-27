@@ -562,7 +562,7 @@
     "description": "Use case description: Build a Custom Pipeline"
   },
   "homepage.useCases.pipeline.linkText": {
-    "message": "FST Pipeline Cookbook →",
+    "message": "Recetario de Pipeline FST →",
     "description": "Use case link text: Build a Custom Pipeline"
   },
   "homepage.useCases.preservation.title": {

@@ -382,19 +382,19 @@
     "description": "Secondary call-to-action button"
   },
   "homepage.stats.tests": {
-    "message": "Tests",
+    "message": "Kiểm thử",
     "description": "Stats bar label for test count"
   },
   "homepage.stats.dependencies": {
-    "message": "Dependencies",
+    "message": "Thành phần phụ thuộc",
     "description": "Stats bar label for dependency count"
   },
   "homepage.stats.scriptConverters": {
-    "message": "Script converters",
+    "message": "Trình chuyển đổi script",
     "description": "Stats bar label for script converter count"
   },
   "homepage.stats.languageRegisters": {
-    "message": "Language registers",
+    "message": "Ngữ vực ngôn ngữ",
     "description": "Stats bar label for language register count"
   },
   "homepage.quickExample.title": {
@@ -478,7 +478,7 @@
     "description": "Leaderboard table header: Method"
   },
   "homepage.leaderboard.colModel": {
-    "message": "Model",
+    "message": "Mô hình",
     "description": "Leaderboard table header: Model"
   },
   "homepage.leaderboard.colPair": {
@@ -510,7 +510,7 @@
     "description": "Feature card description: Per-Pair Methods"
   },
   "homepage.features.registersCoaching.title": {
-    "message": "Registers & Coaching",
+    "message": "Ngữ vực & Huấn luyện",
     "description": "Feature card title: Registers & Coaching"
   },
   "homepage.features.registersCoaching.description": {
@@ -518,7 +518,7 @@
     "description": "Feature card description: Registers & Coaching"
   },
   "homepage.features.contentAware.title": {
-    "message": "Content Aware",
+    "message": "Nhận biết nội dung",
     "description": "Feature card title: Content Aware"
   },
   "homepage.features.contentAware.description": {
@@ -526,7 +526,7 @@
     "description": "Feature card description: Content Aware"
   },
   "homepage.features.zeroDependencies.title": {
-    "message": "Zero Dependencies",
+    "message": "Không có thành phần phụ thuộc",
     "description": "Feature card title: Zero Dependencies"
   },
   "homepage.features.zeroDependencies.description": {

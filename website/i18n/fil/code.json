@@ -470,7 +470,7 @@
     "description": "Leaderboard run harness link"
   },
   "homepage.leaderboard.fullLeaderboard": {
-    "message": "Full Leaderboard →",
+    "message": "Buong Leaderboard →",
     "description": "Full leaderboard link button"
   },
   "homepage.leaderboard.colMethod": {
@@ -566,7 +566,7 @@
     "description": "Use case link text: Build a Custom Pipeline"
   },
   "homepage.useCases.preservation.title": {
-    "message": "Language Preservation",
+    "message": "Preservation ng Wika",
     "description": "Use case title: Language Preservation"
   },
   "homepage.useCases.preservation.description": {
@@ -622,11 +622,11 @@
     "description": "Hero title text after the animated language flipper"
   },
   "homepage.hero.languagesSuffix": {
-    "message": "languages",
+    "message": "wika",
     "description": "Suffix after the language count number in the hero"
   },
   "homepage.hero.languagesSupported": {
-    "message": "languages supported",
+    "message": "supported na wika",
     "description": "Languages supported button label"
   }
 }

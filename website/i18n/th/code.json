@@ -390,11 +390,11 @@
     "description": "Stats bar label for dependency count"
   },
   "homepage.stats.scriptConverters": {
-    "message": "Script converters",
+    "message": "ตัวแปลงสคริปต์",
     "description": "Stats bar label for script converter count"
   },
   "homepage.stats.languageRegisters": {
-    "message": "Language registers",
+    "message": "ระดับภาษา",
     "description": "Stats bar label for language register count"
   },
   "homepage.quickExample.title": {
@@ -510,7 +510,7 @@
     "description": "Feature card description: Per-Pair Methods"
   },
   "homepage.features.registersCoaching.title": {
-    "message": "Registers & Coaching",
+    "message": "ระดับภาษาและการโค้ช",
     "description": "Feature card title: Registers & Coaching"
   },
   "homepage.features.registersCoaching.description": {
