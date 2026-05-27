@@ -38,3 +38,18 @@ jobs:
   # Similarly, gds-mt-eval-harness/ is nested inside crk-translate/ with
   # its own repo at github.com/gamedaysuits/gds-mt-eval-harness.
 
+  # Verify that translations are up to date on both doc sites.
+  # Catches cases where a dev committed without the pre-commit hook active.
+  i18n-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Audit rosetta site translations
+        run: cd website && npx i18n-rosetta audit

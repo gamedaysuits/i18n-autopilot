@@ -1,0 +1,67 @@
+#!/bin/sh
+# ──────────────────────────────────────────────────────────────────────
+# Pre-commit hook: i18n-rosetta dogfooding
+#
+# Translates both doc sites (rosetta + arena) using i18n-rosetta before
+# every commit. Only changed/stale keys are translated — hash-aware
+# change detection + TM caching make this fast on incremental commits.
+#
+# Setup (run once after cloning):
+#   git config core.hooksPath .githooks
+#
+# Requires OPENROUTER_API_KEY in environment or .env file.
+# ──────────────────────────────────────────────────────────────────────
+
+set -e
+
+# ── Check for API key ──
+if [ -z "$OPENROUTER_API_KEY" ] && [ -f .env ]; then
+  export $(grep -v '^#' .env | grep OPENROUTER_API_KEY | xargs)
+fi
+
+if [ -z "$OPENROUTER_API_KEY" ]; then
+  echo "⚠️  OPENROUTER_API_KEY not set — skipping i18n sync"
+  echo "   Set it in .env or export it to enable pre-commit translation."
+  exit 0
+fi
+
+# ── Check if any docs or locale files changed ──
+# Only run the sync if source docs or locale files were modified.
+ROSETTA_CHANGED=$(git diff --cached --name-only --diff-filter=ACMR -- \
+  'website/docs/' 'website/i18n/en/' 'website/src/' 'website/docusaurus.config.js' \
+  2>/dev/null | head -1)
+
+ARENA_CHANGED=$(git diff --cached --name-only --diff-filter=ACMR -- \
+  'docs/' 'gds-mt-eval-harness/website/docs/' 'gds-mt-eval-harness/website/i18n/en/' \
+  2>/dev/null | head -1)
+
+if [ -z "$ROSETTA_CHANGED" ] && [ -z "$ARENA_CHANGED" ]; then
+  # No doc changes staged — skip translation entirely
+  exit 0
+fi
+
+echo "🌐 i18n-rosetta pre-commit: translating changed docs..."
+
+# ── Rosetta site ──
+if [ -n "$ROSETTA_CHANGED" ]; then
+  echo "  ↳ Rosetta site (website/)"
+  (cd website && npx i18n-rosetta sync --content 2>&1 | tail -3)
+  git add website/i18n/
+fi
+
+# ── Arena site ──
+if [ -n "$ARENA_CHANGED" ]; then
+  echo "  ↳ Arena site (gds-mt-eval-harness/website/)"
+
+  # Regenerate SSOT docs before translating (in case docs/ changed)
+  (cd gds-mt-eval-harness/website && node scripts/sync-ssot.js 2>&1 | tail -1)
+
+  # Translate
+  (cd gds-mt-eval-harness/website && npx i18n-rosetta sync --content 2>&1 | tail -3)
+
+  # Note: arena translations are committed to the arena submodule, not this repo.
+  # Stage the submodule pointer update instead.
+  (cd gds-mt-eval-harness && git add website/i18n/ && git add -u)
+fi
+
+echo "✅ i18n sync complete"
