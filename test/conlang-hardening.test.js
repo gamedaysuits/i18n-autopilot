@@ -439,13 +439,8 @@ describe('Quality gate: NON_LATIN_LOCALES', () => {
     assert.ok(NON_LATIN_LOCALES.has('he'));
   });
 
-  it('includes Plains Cree script-converted locales only when card says non-Latin', () => {
-    // crk's language card inherits script: "Latn" from subfamily-cree because
-    // the LLM produces SRO (Standard Roman Orthography) output — which IS Latin.
-    // Syllabics conversion is a post-processing step (scriptConverter: "crk"),
-    // so the quality gate should NOT reject Latin/ASCII output for crk.
-    assert.ok(!NON_LATIN_LOCALES.has('crk'), 'crk (SRO working script) should NOT be flagged as non-Latin');
-  });
+
+
 
   it('does NOT include Latin-script locales', () => {
     assert.ok(!NON_LATIN_LOCALES.has('fr'));

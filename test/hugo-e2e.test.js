@@ -375,6 +375,7 @@ describe('Hugo E2E: Content sync pipeline', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
     });
 
@@ -421,6 +422,7 @@ describe('Hugo E2E: Content sync pipeline', () => {
       pairs: buildTestPairs(TEST_LANGUAGES),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
     });
 
@@ -437,6 +439,7 @@ describe('Hugo E2E: Content sync pipeline', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
     });
 
@@ -456,6 +459,7 @@ describe('Hugo E2E: Content sync pipeline', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
     });
 
@@ -586,6 +590,7 @@ It should be fully supported by i18n-rosetta.
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
     });
 

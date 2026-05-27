@@ -45,6 +45,8 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
 --locale <code>         Target locale (xliff export, tm clear)
+--quiet                 Errors and warnings only — suppress banner, progress bar, and info lines
+--json                  Machine-readable NDJSON output — one JSON object per event
 ```
 
 ---
@@ -94,6 +96,24 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **Change detection**: rosetta stores SHA-256 hashes in `.i18n-rosetta.lock`. When source values change, the next sync automatically re-translates those keys. Commit the lock file so all developers share the baseline.
 
 **Parallelism**: Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool with configurable concurrency. Default is 12 parallel API calls. Override with `--concurrency` or the `concurrency` config field. JSON key translation runs sequentially per locale (fast enough that parallelism adds no benefit).
+
+**Output**: Sync displays a version banner, format/framework detection, cost estimate, and per-locale progress bars:
+
+```
+i18n-rosetta v3.3.1
+
+[INFO] Detected format: json (auto)
+[INFO] Source: en.json (2,847 keys)
+[INFO] Pairs: es-MX:llm, fr:deepl
+
+[INFO] es-MX.json — 2,847 missing
+     ████████████████████████████████ 2,847/2,847 keys
+[INFO] fr.json — 2,847 missing
+     ████████████████████████████████ 2,847/2,847 keys
+[OK] Synced 5,694 keys total.
+```
+
+Progress bars update in-place after each batch (~30 keys). Use `--quiet` for errors/warnings only, or `--json` for machine-readable NDJSON output. Both suppress the progress bar and banner.
 
 ---
 

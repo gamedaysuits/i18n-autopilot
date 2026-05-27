@@ -266,6 +266,38 @@ Language values can be a preset key (e.g., `"casual-tu"`), custom register text,
 
 Framework setup guides: [docs/INTEGRATION_GUIDES.md](https://github.com/gamedaysuits/i18n-rosetta/blob/main/docs/INTEGRATION_GUIDES.md)
 
+## CLI Output
+
+When you run `sync`, rosetta shows exactly what's happening:
+
+```
+i18n-rosetta v3.3.1
+
+[INFO] Detected format: json (auto)
+[INFO] Detected framework: Hugo
+[INFO] Source: en.json (2,847 keys)
+[INFO] Pairs: es-MX:llm, fr:deepl, it:llm
+[INFO] Estimated translation cost:
+
+  Pair       Method   Keys  Est. Cost
+  ────────   ──────   ────  ─────────
+  en:es-MX   llm      2847    ~$0.8400
+  en:fr      deepl    2847    ~$0.5694
+  en:it      llm      2847    ~$0.8400
+
+  Total: ~$2.2494
+
+[INFO] es-MX.json — 2,847 missing
+     ████████████████████████████████ 2,847/2,847 keys
+[INFO] fr.json — 2,847 missing
+     ████████████████████████████████ 2,847/2,847 keys
+[OK] Synced 5,694 keys total.
+```
+
+The progress bar updates in-place as each batch completes (~30 keys per update). Framework detection shows `Hugo` when `contentDir` is set. Format detection distinguishes `(auto)` from `(config)` to clarify how the format was resolved.
+
+**Output modes**: `--quiet` suppresses informational output (errors and warnings only). `--json` emits machine-readable NDJSON for CI/CD pipelines.
+
 ## Hardening
 
 - **Exponential backoff** — 3 retries with jitter on 429/5xx errors

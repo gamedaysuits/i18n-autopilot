@@ -4,37 +4,37 @@ title: "Segurança"
 ---
 # Segurança e Proteção
 
-O Rosetta foi projetado para ser seguro em ambientes hostis — onde os dados de locale podem vir de fontes não confiáveis, onde nomes de arquivos manipulados podem escapar dos limites do diretório e onde a saída do LLM pode conter qualquer coisa.
+O Rosetta foi projetado para ser seguro em ambientes adversários — onde os dados de localidade podem vir de fontes não confiáveis, onde nomes de arquivos manipulados podem escapar dos limites do diretório e onde a saída do LLM pode conter qualquer coisa.
 
 ## Modelo de Ameaças
 
 | Ameaça | Vetor de Ataque | Mitigação |
 |--------|--------------|-----------|
-| **Prototype pollution** | Chaves JSON manipuladas (`__proto__`, `constructor`) | Rejeitado no momento do parse |
-| **Path traversal** | Códigos de locale como `../../etc/passwd` | Gravações de arquivos validadas para os diretórios configurados |
-| **Corrupção de blocos de código** | LLM traduz dentro dos code fences | Proteção por sentinela Unicode |
+| **Prototype pollution** | Chaves JSON manipuladas (`__proto__`, `constructor`) | Rejeitado em tempo de análise (parse) |
+| **Path traversal** | Códigos de localidade como `../../etc/passwd` | Gravações de arquivos validadas para diretórios configurados |
+| **Corrupção de bloco de código** | LLM traduz dentro de blocos de código | Proteção por sentinela Unicode |
 | **Chaves alucinadas** | LLM retorna chaves que não foram enviadas | Validação de resposta — apenas chaves aceitas são gravadas |
-| **Gasto descontrolado de tokens** | Loops infinitos de repetição (retry) | Orçamento limitado via `maxRetries` |
+| **Gasto descontrolado de tokens** | Loops de repetição infinitos | Orçamento limitado via `maxRetries` |
 
 ## Proteção contra Prototype Pollution
 
-Todas as chaves de locale são validadas contra uma blocklist antes do processamento:
+Todas as chaves de localidade são validadas contra uma lista de bloqueio (blocklist) antes do processamento:
 
 - `__proto__`
 - `constructor`
 - `prototype`
 
-Qualquer chave que corresponda a esses padrões é rejeitada com um erro. Isso impede que invasores usem arquivos de locale manipulados para modificar os protótipos de objetos JavaScript.
+Qualquer chave que corresponda a esses padrões é rejeitada com um erro. Isso impede que invasores usem arquivos de localidade manipulados para modificar os protótipos de objetos JavaScript.
 
 ## Contenção de Caminho
 
-Ao gravar arquivos de locale, o rosetta valida se o caminho de saída permanece dentro dos diretórios configurados (`localesDir`, `contentDir`). Os códigos de locale são sanitizados — um código como `../../secrets` não pode gravar fora do diretório esperado.
+Ao gravar arquivos de localidade, o rosetta valida se o caminho de saída permanece dentro dos diretórios configurados (`localesDir`, `contentDir`). Os códigos de localidade são sanitizados — um código como `../../secrets` não pode gravar fora do diretório esperado.
 
 ## Proteção de Blocos
 
-Durante a tradução de conteúdo Markdown, os elementos estruturados são substituídos por placeholders de sentinela Unicode antes que o texto seja enviado ao LLM:
+Durante a tradução de conteúdo Markdown, elementos estruturados são substituídos por marcadores de posição sentinela Unicode antes que o texto seja enviado ao LLM:
 
-1. **Blocos de código** (fenced e inline) → sentinela
+1. **Blocos de código** (delimitados e em linha) → sentinela
 2. **Shortcodes do Hugo** (`{{< >}}`, `{{% %}}`) → sentinela  
 3. **HTML bruto** → sentinela
 4. **Variáveis de interpolação** (`{{ .Count }}`) → sentinela
@@ -44,27 +44,27 @@ Após a tradução, as sentinelas são substituídas pelo conteúdo original. O 
 ## Validação de Resposta
 
 Quando o LLM retorna uma resposta JSON, o rosetta valida se:
-- Apenas as chaves que foram enviadas no lote (batch) aparecem na resposta
-- Nenhuma chave extra foi injetada
-- A resposta é processada (parsed) como um JSON válido
+- Apenas as chaves que foram enviadas no lote aparecem na resposta
+- Nenhuma chave extra é injetada
+- A resposta é analisada como um JSON válido
 
-Chaves alucinadas são descartadas silenciosamente. Isso impede que a saída do LLM injete traduções inesperadas em seus arquivos de locale.
+Chaves alucinadas são descartadas silenciosamente. Isso impede que a saída do LLM injete traduções inesperadas em seus arquivos de localidade.
 
 ## Quality Gate
 
 Cada tradução é validada por meio de cinco verificações determinísticas antes de ser gravada no disco. Consulte [Quality Gate](/docs/concepts/quality-gate) para obter detalhes.
 
-## Backoff Exponencial
+## Exponential Backoff
 
-As chamadas de API usam backoff exponencial com jitter em respostas 429 (rate limit) e 5xx (erro de servidor). Três tentativas (retries) com atraso crescente evitam sobrecarregar a API durante interrupções.
+As chamadas de API usam exponential backoff com jitter em respostas 429 (limite de taxa) e 5xx (erro do servidor). Três tentativas (retries) com atraso crescente evitam sobrecarregar a API durante interrupções.
 
 ## Timeout de Requisição
 
-Toda requisição de API tem um timeout de 30 segundos via `AbortController`. Isso impede que o processo de sincronização (sync) trave indefinidamente em uma conexão inativa.
+Toda requisição de API tem um timeout de 30 segundos via `AbortController`. Isso impede que o processo de sincronização trave indefinidamente em uma conexão inativa.
 
 ## Modo de Fallback
 
-Quando a API está indisponível, o `--fallback` grava placeholders com o prefixo `[EN]` em vez de traduções reais:
+Quando a API está indisponível, o `--fallback` grava marcadores de posição com o prefixo `[EN]` em vez de traduções reais:
 
 ```bash
 npx i18n-rosetta sync --fallback
@@ -76,11 +76,11 @@ npx i18n-rosetta sync --fallback
 }
 ```
 
-Esses placeholders são detectados automaticamente e retraduzidos na próxima sincronização com uma chave de API válida. Eles nunca são tratados como "traduzidos" — o `audit` os sinalizará.
+Esses marcadores de posição são detectados automaticamente e retraduzidos na próxima sincronização com uma chave de API válida. Eles nunca são tratados como "traduzidos" — o `audit` os sinalizará.
 
 ## Testes
 
-As propriedades de segurança são verificadas pela suíte de testes adversariais:
+As propriedades de segurança são verificadas pela suíte de testes adversários:
 
 ```bash
 npm run test:redteam    # prototype pollution, path traversal, encoding attacks

@@ -4,51 +4,51 @@ title: "Sicherheit"
 ---
 # Sicherheit & Schutz
 
-Rosetta wurde entwickelt, um in feindlichen Umgebungen sicher zu sein – wo Locale-Daten aus nicht vertrauenswürdigen Quellen stammen könnten, wo manipulierte Dateinamen Verzeichnisgrenzen umgehen könnten und wo LLM-Ausgaben beliebige Inhalte aufweisen können.
+Rosetta wurde entwickelt, um in feindlichen Umgebungen sicher zu sein – wo Lokalisierungsdaten aus nicht vertrauenswürdigen Quellen stammen könnten, wo manipulierte Dateinamen Verzeichnisgrenzen umgehen könnten und wo LLM-Ausgaben beliebige Inhalte enthalten können.
 
 ## Bedrohungsmodell
 
-| Bedrohung | Angriffsvektor | Abwehr |
+| Bedrohung | Angriffsvektor | Gegenmaßnahme |
 |--------|--------------|-----------|
-| **Prototype Pollution** | Manipulierte JSON-Schlüssel (`__proto__`, `constructor`) | Ablehnung zur Parse-Zeit |
-| **Path Traversal** | Locale-Codes wie `../../etc/passwd` | Dateischreibvorgänge werden auf konfigurierte Verzeichnisse validiert |
-| **Beschädigung von Codeblöcken** | LLM übersetzt innerhalb von Code-Blöcken | Abschirmung durch Unicode-Sentinels |
+| **Prototype Pollution** | Manipulierte JSON-Schlüssel (`__proto__`, `constructor`) | Beim Parsen abgelehnt |
+| **Path Traversal** | Lokalisierungscodes wie `../../etc/passwd` | Dateischreibvorgänge auf konfigurierte Verzeichnisse validiert |
+| **Beschädigung von Codeblöcken** | LLM übersetzt innerhalb von Code-Blöcken | Abschirmung durch Unicode-Sentinel-Platzhalter |
 | **Halluzinierte Schlüssel** | LLM gibt Schlüssel zurück, die nicht gesendet wurden | Antwortvalidierung – nur akzeptierte Schlüssel werden geschrieben |
-| **Unkontrollierter Token-Verbrauch** | Endlose Wiederholungsschleifen | Budgetbegrenzung über `maxRetries` |
+| **Unkontrollierter Token-Verbrauch** | Endlose Wiederholungsschleifen | Budget-Begrenzung über `maxRetries` |
 
 ## Schutz vor Prototype Pollution
 
-Alle Locale-Schlüssel werden vor der Verarbeitung gegen eine Sperrliste validiert:
+Alle Lokalisierungsschlüssel werden vor der Verarbeitung gegen eine Sperrliste validiert:
 
 - `__proto__`
 - `constructor`
 - `prototype`
 
-Jeder Schlüssel, der diesen Mustern entspricht, wird mit einem Fehler abgelehnt. Dies verhindert, dass Angreifer manipulierte Locale-Dateien verwenden, um JavaScript-Objekt-Prototypen zu verändern.
+Jeder Schlüssel, der diesen Mustern entspricht, wird mit einem Fehler abgelehnt. Dies hindert Angreifer daran, manipulierte Lokalisierungsdateien zu verwenden, um JavaScript-Objekt-Prototypen zu verändern.
 
-## Pfadbegrenzung
+## Pfadbeschränkung
 
-Beim Schreiben von Locale-Dateien validiert Rosetta, dass der Ausgabepfad innerhalb der konfigurierten Verzeichnisse bleibt (`localesDir`, `contentDir`). Locale-Codes werden bereinigt – ein Code wie `../../secrets` kann nicht außerhalb des erwarteten Verzeichnisses schreiben.
+Beim Schreiben von Lokalisierungsdateien validiert Rosetta, dass der Ausgabepfad innerhalb der konfigurierten Verzeichnisse bleibt (`localesDir`, `contentDir`). Lokalisierungscodes werden bereinigt – ein Code wie `../../secrets` kann nicht außerhalb des erwarteten Verzeichnisses schreiben.
 
 ## Blockschutz
 
 Während der Übersetzung von Markdown-Inhalten werden strukturierte Elemente durch Unicode-Sentinel-Platzhalter ersetzt, bevor der Text an das LLM gesendet wird:
 
-1. **Codeblöcke** (eingefasst und inline) → Sentinel
+1. **Codeblöcke** (mehrzeilig und inline) → Sentinel
 2. **Hugo-Shortcodes** (`{{< >}}`, `{{% %}}`) → Sentinel  
 3. **Rohes HTML** → Sentinel
 4. **Interpolationsvariablen** (`{{ .Count }}`) → Sentinel
 
-Nach der Übersetzung werden die Sentinels wieder durch den ursprünglichen Inhalt ersetzt. Das LLM sieht niemals Codeblöcke, Shortcodes oder HTML – es kann diese somit nicht beschädigen.
+Nach der Übersetzung werden die Sentinels durch den ursprünglichen Inhalt ersetzt. Das LLM sieht niemals Codeblöcke, Shortcodes oder HTML – es kann diese somit nicht beschädigen.
 
 ## Antwortvalidierung
 
 Wenn das LLM eine JSON-Antwort zurückgibt, validiert Rosetta Folgendes:
-- Nur Schlüssel, die im Batch gesendet wurden, erscheinen in der Antwort
+- Nur Schlüssel, die im Batch gesendet wurden, tauchen in der Antwort auf
 - Es werden keine zusätzlichen Schlüssel eingeschleust
 - Die Antwort lässt sich als gültiges JSON parsen
 
-Halluzinierte Schlüssel werden stillschweigend verworfen. Dies verhindert, dass LLM-Ausgaben unerwartete Übersetzungen in Ihre Locale-Dateien einschleusen.
+Halluzinierte Schlüssel werden stillschweigend verworfen. Dies verhindert, dass LLM-Ausgaben unerwartete Übersetzungen in Ihre Lokalisierungsdateien einschleusen.
 
 ## Quality Gate
 
@@ -80,7 +80,7 @@ Diese Platzhalter werden bei der nächsten Synchronisierung mit einem gültigen 
 
 ## Tests
 
-Die Sicherheitseigenschaften werden durch die adversarielle Test-Suite verifiziert:
+Die Sicherheitseigenschaften werden durch die Adversarial-Testsuite verifiziert:
 
 ```bash
 npm run test:redteam    # prototype pollution, path traversal, encoding attacks
@@ -92,6 +92,6 @@ npm run test:redteam    # prototype pollution, path traversal, encoding attacks
 
 - [Architektur](/docs/concepts/architecture) – wie das dreiteilige Ökosystem zusammenhängt
 - [CLI-Referenz – integrity](/docs/reference/cli#integrity) – Befehl zur Integritätsprüfung
-- [CLI-Referenz – provenance](/docs/reference/cli#provenance) – Befehl zur Provenienzprüfung
-- [Plugin-Spezifikation](/docs/reference/plugin-spec) – Provenienzfelder in Plugin-Manifesten
+- [CLI-Referenz – provenance](/docs/reference/cli#provenance) – Befehl zur Herkunftsprüfung
+- [Plugin-Spezifikation](/docs/reference/plugin-spec) – Herkunftsfelder in Plugin-Manifesten
 - [Quality Gate](/docs/concepts/quality-gate) – Sicherheitsprüfungen auf Übersetzungsebene

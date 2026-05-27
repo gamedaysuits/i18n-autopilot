@@ -4,7 +4,7 @@ title: "Configuratie"
 ---
 # Configuratie
 
-Rosetta werkt zero-config — het detecteert automatisch locale-bestanden, het formaat en de doeltalen van uw project. Voor meer controle kunt u `i18n-rosetta.config.json` aanmaken in de hoofdmap van uw project, of het volgende uitvoeren:
+Rosetta werkt zero-config — het detecteert automatisch locale-bestanden, het formaat en de doeltalen van uw project. Voor meer controle kunt u `i18n-rosetta.config.json` aanmaken in de hoofdmap van uw project, of voer het volgende uit:
 
 ```bash
 npx i18n-rosetta init
@@ -46,7 +46,7 @@ npx i18n-rosetta init
 ```
 
 :::note typegen is nog niet geïmplementeerd
-Het configuratieblok `typegen` wordt herkend en behouden door de config loader, maar de generatie van TypeScript-types is nog niet geïmplementeerd. Dit is een tijdelijke aanduiding voor een geplande functie. Het instellen van deze waarden heeft geen effect.
+Het `typegen` configuratieblok wordt herkend en behouden door de config loader, maar de generatie van TypeScript-types is nog niet geïmplementeerd. Dit is een tijdelijke aanduiding voor een geplande functie. Het instellen van deze waarden heeft geen effect.
 :::
 
 
@@ -55,9 +55,9 @@ Het configuratieblok `typegen` wordt herkend en behouden door de config loader, 
 | Veld | Type | Standaard | Beschrijving |
 |-------|------|---------|-------------|
 | `version` | `number` | `3` | Versie van het configuratieschema. Altijd `3`. |
-| `inputLocale` | `string` | `"en"` | Taalcode van de brontaal (BCP 47). |
+| `inputLocale` | `string` | `"en"` | Bron-taalcode (BCP 47). |
 | `localesDir` | `string` | `"./locales"` | Pad naar locale-bestanden. Rosetta scant deze map. |
-| `contentDir` | `string` | `null` | Hugo content-map. Schakelt vertaling van Markdown-body in. |
+| `contentDir` | `string` | `null` | Hugo content-map. Schakelt vertaling van de Markdown-body in. |
 | `translatableFields` | `string[]` | `null` | Overschrijf de standaard vertaalbare frontmatter-velden voor contentvertaling. `null` gebruikt ingebouwde standaarden (`title`, `description`, `summary`). |
 | `format` | `string` | `"auto"` | Bestandsformaat: `json`, `toml`, `yaml`, of `auto` (detecteren via extensie). |
 | `model` | `string` | `"google/gemini-3.5-flash"` | Standaardmodel voor LLM-methoden. Het formaat is afhankelijk van de methode: OpenRouter gebruikt `provider/model` (bijv. `google/gemini-3.5-flash`); directe providers gebruiken kale namen (bijv. `gpt-4o`, `gemini-2.5-flash`). |
@@ -66,14 +66,14 @@ Het configuratieblok `typegen` wordt herkend en behouden door de config loader, 
 | `concurrency` | `number` | `12` | Maximaal aantal parallelle API-aanroepen voor contentvertaling (Markdown/MDX). Wordt overschreven door de `--concurrency` CLI-vlag. |
 | `fallbackPrefix` | `string` | `"[EN] "` | Voorvoegsel toegevoegd aan onvertaalde fallback-waarden. Gebruikt door `audit` om onvolledige vertalingen te detecteren. |
 | `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Naam van de omgevingsvariabele voor de API-sleutel. Overschrijven voor aangepaste namen van omgevingsvariabelen. |
-| `baseUrl` | `string` | `""` | Basis-URL voor het genereren van SEO-artefacten (hreflang, sitemaps, JSON-LD). |
+| `baseUrl` | `string` | `""` | Basis-URL voor de generatie van SEO-artefacten (hreflang, sitemaps, JSON-LD). |
 | `pairs` | `object` | `{}` | Overschrijvingen per paar voor methode, model en kwaliteit. Zie [Paarconfiguratie](#pair-configuration). |
 | `languages` | `object` | `{}` | Overschrijvingen per taal. Zie [Taalconfiguratie](#language-configuration). |
-| `lint.srcDir` | `string` | `null` | Bronmap voor lint-scanning. `null` = automatisch detecteren via framework. |
+| `lint.srcDir` | `string` | `null` | Bronmap voor lint-scanning. `null` = automatisch detecteren vanuit het framework. |
 | `lint.ignore` | `string[]` | `["node_modules", ...]` | Glob-patronen om uit te sluiten van lint. |
 | `lint.minLength` | `number` | `2` | Minimale stringlengte om te markeren als hardcoded. |
-| `seo.urlPattern` | `string` | `"/:locale/:path"` | Sjabloon voor URL-patronen voor het genereren van hreflang-tags. |
-| `seo.pages` | `string[]` | `null` | Expliciete paginalijst voor SEO. `null` = automatisch detecteren via locale-sleutels. |
+| `seo.urlPattern` | `string` | `"/:locale/:path"` | URL-patroonsjabloon voor de generatie van hreflang-tags. |
+| `seo.pages` | `string[]` | `null` | Expliciete paginalijst voor SEO. `null` = automatisch detecteren uit locale-sleutels. |
 | `typegen.output` | `string` | `null` | Uitvoerpad voor gegenereerde TypeScript-types. `null` = uitgeschakeld. |
 | `typegen.autoGenerate` | `boolean` | `false` | Automatisch types opnieuw genereren na elke synchronisatie. |
 
@@ -106,14 +106,14 @@ Elk bron→doel-paar kan onafhankelijk worden geconfigureerd:
 | `method` | `string` | Vertaalmethode: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` |
 | `methodPlugin` | `string` | Naam van een geïnstalleerde plug-in (uit `.rosetta/methods/`) |
 | `model` | `string` | Overschrijf het standaardmodel voor dit paar |
-| `endpoint` | `string` | URL van het externe API-eindpunt. Vereist wanneer `method` `api` is. |
+| `endpoint` | `string` | Remote API-eindpunt-URL. Vereist wanneer `method` is ingesteld op `api`. |
 | `qualityTier` | `string` | Weergaveniveau: `standard`, `high`, `research`, `verified` |
 
 ## Taalconfiguratie
 
 Talen accepteren drie formaten:
 
-### Array van codes (eenvoudigst)
+### Array van codes (eenvoudigste)
 
 ```json
 {
@@ -125,7 +125,7 @@ Elke taal krijgt zijn standaardregister uit de ingebouwde registertabel. Talen z
 
 ### Object met registerstrings
 
-De waarde kan een **preset-sleutel** van de taalkaart zijn, of een aangepaste registertekst:
+De waarde kan een **preset key** van de taalkaart zijn, of aangepaste registertekst:
 
 ```json
 {
@@ -137,7 +137,7 @@ De waarde kan een **preset-sleutel** van de taalkaart zijn, of een aangepaste re
 }
 ```
 
-Rosetta controleert of de string overeenkomt met een preset-sleutel in de taalkaart. Als dit het geval is, wordt de volledige registerprompt van de kaart gebruikt. Zo niet, dan wordt de string ongewijzigd gebruikt. Zie [Ondersteunde talen](/docs/reference/supported-languages#language-cards) voor beschikbare presets.
+Rosetta controleert of de string overeenkomt met een preset key in de taalkaart. Als dit het geval is, wordt de volledige registerprompt van de kaart gebruikt. Zo niet, dan wordt de string ongewijzigd gebruikt. Zie [Ondersteunde talen](/docs/reference/supported-languages#language-cards) voor beschikbare presets.
 
 ### Object met volledige configuratie
 
@@ -163,7 +163,7 @@ U kunt verkorte en volledige objecten in hetzelfde blok combineren.
 
 | Veld | Type | Beschrijving |
 |-------|------|-------------|
-| `register` | `string` | Instructies voor stijl/toon. Kan een **preset-sleutel** zijn (bijv. `casual-tu`, `formal-hapsyo`) of aangepaste tekst. Zie [Taalkaarten](/docs/reference/supported-languages#language-cards). |
+| `register` | `string` | Instructies voor stijl/toon. Kan een **preset key** zijn (bijv. `casual-tu`, `formal-hapsyo`) of aangepaste tekst. Zie [Taalkaarten](/docs/reference/supported-languages#language-cards). |
 | `name` | `string` | Menselijk leesbare taalnaam (voor statusweergave) |
 | `model` | `string` | Overschrijf het standaardmodel |
 | `batchSize` | `number` | Overschrijf de standaard batchgrootte |
@@ -175,7 +175,7 @@ Instellingen worden in deze volgorde opgelost (de eerste wint):
 
 **paarniveau** → **taalniveau** → **globale configuratie** → **standaardwaarden**
 
-Als bijvoorbeeld `pairs["en:fr"]` `model` instelt, overschrijft dit zowel de waarden op taalniveau als de globale `model`-waarden.
+Als bijvoorbeeld `pairs["en:fr"]` `model` instelt, overschrijft dit zowel de `model`-waarden op taalniveau als de globale waarden.
 :::
 
 ## Niet-Engelse bron
@@ -211,7 +211,7 @@ src/utils/constants.js
 
 ## `.rosetta/`-map
 
-Rosetta maakt een `.rosetta/`-map aan in de hoofdmap van uw project voor de interne status. U dient deze over het algemeen **toe te voegen aan `.gitignore`** — het is een lokale optimalisatie, geen projectbron:
+Rosetta maakt een `.rosetta/`-map aan in de hoofdmap van uw project voor de interne status. U dient dit over het algemeen **toe te voegen aan `.gitignore`** — het is een lokale optimalisatie, geen projectbron:
 
 ```gitignore
 .rosetta/
@@ -219,18 +219,18 @@ Rosetta maakt een `.rosetta/`-map aan in de hoofdmap van uw project voor de inte
 
 | Bestand | Doel | Committen? |
 |------|---------|--------|
-| `tm.json` | Translation Memory-cache — slaat eerdere vertalingen op, gekoppeld aan brontekst + locale + methode | Nee (lokale cache) |
+| `tm.json` | Translation Memory-cache — slaat eerdere vertalingen op, met brontekst + locale + methode als sleutel | Nee (lokale cache) |
 | `xliff/*.xliff` | XLIFF-exportbestanden voor beoordeling door professionele vertalers | Nee (tijdelijk) |
 | `methods/` | Manifesten van geïnstalleerde methode-plug-ins | Ja (gedeelde configuratie) |
-| `backups/` | Pre-wrap back-ups (gemaakt door `wrap --undo`) | Nee (vangnet) |
+| `backups/` | Pre-wrap back-ups (aangemaakt door `wrap --undo`) | Nee (vangnet) |
 
-Zie [Translation Memory](/docs/concepts/translation-memory) voor details over `tm.json` en hoe dit API-kosten bespaart.
+Zie [Translation Memory](/docs/concepts/translation-memory) voor details over `tm.json` en hoe het API-kosten bespaart.
 
 ---
 
 ## Programmatische API
 
-Voor build-scripts en aangepaste integraties kunt u rechtstreeks importeren uit het pakket:
+Voor build-scripts en aangepaste integraties kunt u rechtstreeks vanuit het pakket importeren:
 
 ```javascript
 import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
@@ -253,11 +253,11 @@ const result = await gemini.translate(
 | `TranslationMethod` | Basisklasse voor alle methoden |
 | `LLMMethod` | Basisklasse voor LLM-methoden (OpenRouter) |
 | `DirectLLMMethod` | Basisklasse voor directe LLM-providers (OpenAI, Anthropic, Gemini) |
-| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | Directe LLM-providerklassen |
+| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | Klassen voor directe LLM-providers |
 | `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | Traditionele MT-klassen |
 | `GoogleTranslateMethod` | Google Cloud Translation |
-| `LLMCoachedMethod` | Gecoachte LLM (OpenRouter + coachinggegevens) |
-| `APIMethod` | Externe API-client |
+| `LLMCoachedMethod` | Gecoachte LLM (OpenRouter + coachingdata) |
+| `APIMethod` | Remote API-client |
 | `runSync`, `runContentSync` | Volledige synchronisatiepijplijn |
 | `resolveConfig`, `resolvePairs` | Configuratie-resolutie |
 | `validateTranslations` | Quality gate |
@@ -265,7 +265,7 @@ const result = await gemini.translate(
 
 ### Aangepaste provider-extensie
 
-Breid `DirectLLMMethod` uit om een nieuwe LLM-provider toe te voegen in ~40 regels:
+Breid `DirectLLMMethod` uit om in ~40 regels een nieuwe LLM-provider toe te voegen:
 
 ```javascript
 import { DirectLLMMethod } from 'i18n-rosetta';
@@ -315,7 +315,7 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-U krijgt vertaling, coaching, retry-loops, modelvalidatie, kwaliteitsniveaus en instellingshulp gratis. Alleen de vorm van de HTTP-aanvraag is providerspecifiek. Voor niet-LLM-adapters die ruwe `fetch()` gebruiken, kunt u de gedeelde `fetchWithRetry()`-helper uit `lib/methods/fetch-with-retry.js` gebruiken in plaats van uw eigen retry-loop te schrijven.
+U krijgt gratis de beschikking over vertaling, coaching, retry-loops, modelvalidatie, kwaliteitsniveaus en instellingshulp. Alleen de vorm van de HTTP-aanvraag is provider-specifiek. Voor niet-LLM adapters die ruwe `fetch()` gebruiken, kunt u de gedeelde `fetchWithRetry()`-helper van `lib/methods/fetch-with-retry.js` gebruiken in plaats van uw eigen retry-loop te schrijven.
 
 ---
 
@@ -325,7 +325,7 @@ U krijgt vertaling, coaching, retry-loops, modelvalidatie, kwaliteitsniveaus en 
 - [Vertaalmethoden](/docs/guides/translation-methods) — methoden kiezen en combineren
 - [Translation Memory](/docs/concepts/translation-memory) — caching en kostenbesparingen
 - [Werken met professionele vertalers](/docs/guides/professional-translators) — XLIFF-workflow
-- [Plug-inspecificatie](/docs/reference/plugin-spec) — manifestformaat voor methode-plug-ins
+- [Plug-in-specificatie](/docs/reference/plugin-spec) — manifestformaat voor methode-plug-ins
 - [Architectuur](/docs/concepts/architecture) — hoe de onderdelen met elkaar verbonden zijn
 - [Ondersteunde talen](/docs/reference/supported-languages) — ingebouwde taalondersteuning
 - [Hoe synchronisatie werkt](/docs/concepts/how-sync-works) — de vertaalpijplijn

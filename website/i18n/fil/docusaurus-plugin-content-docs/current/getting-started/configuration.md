@@ -4,7 +4,7 @@ title: "Configuration"
 ---
 # Configuration
 
-Gumagana po ang Rosetta nang zero-config — nag-a-auto-detect ito ng locale files, format, at target languages mula sa inyong project. Para sa mas maraming control, gumawa po ng `i18n-rosetta.config.json` sa inyong project root, o i-run ang:
+Gumagana ang Rosetta nang zero-config — nag-a-auto-detect ito ng locale files, format, at target languages mula sa project mo. Para sa more control, gumawa ng `i18n-rosetta.config.json` sa iyong project root, o i-run ang:
 
 ```bash
 npx i18n-rosetta init
@@ -45,8 +45,8 @@ npx i18n-rosetta init
 }
 ```
 
-:::note hindi pa implemented ang typegen
-Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, pero hindi pa implemented ang TypeScript type generation. Placeholder po ito para sa isang planned feature. Walang effect ang pag-set ng mga values na ito.
+:::note typegen is not yet implemented
+Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, pero hindi pa implemented ang TypeScript type generation. Placeholder ito para sa isang planned feature. Walang effect ang pag-set ng mga values na ito.
 :::
 
 
@@ -56,11 +56,11 @@ Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, 
 |-------|------|---------|-------------|
 | `version` | `number` | `3` | Config schema version. Laging `3`. |
 | `inputLocale` | `string` | `"en"` | Source language code (BCP 47). |
-| `localesDir` | `string` | `"./locales"` | Path papunta sa locale files. Ini-scan ng Rosetta ang directory na ito. |
-| `contentDir` | `string` | `null` | Hugo content directory. Ini-enable nito ang Markdown body translation. |
-| `translatableFields` | `string[]` | `null` | I-override ang default translatable frontmatter fields para sa content translation. Gumagamit ang `null` ng built-in defaults (`title`, `description`, `summary`). |
+| `localesDir` | `string` | `"./locales"` | Path sa locale files. Ini-scan ng Rosetta ang directory na ito. |
+| `contentDir` | `string` | `null` | Hugo content directory. Nag-e-enable ng Markdown body translation. |
+| `translatableFields` | `string[]` | `null` | I-override ang default translatable frontmatter fields para sa content translation. Ang `null` ay gumagamit ng built-in defaults (`title`, `description`, `summary`). |
 | `format` | `string` | `"auto"` | File format: `json`, `toml`, `yaml`, o `auto` (ide-detect mula sa extension). |
-| `model` | `string` | `"google/gemini-3.5-flash"` | Default model para sa LLM methods. Nakadepende ang format sa method: Gumagamit ang OpenRouter ng `provider/model` (hal., `google/gemini-3.5-flash`); gumagamit ang direct providers ng bare names (hal., `gpt-4o`, `gemini-2.5-flash`). |
+| `model` | `string` | `"google/gemini-3.5-flash"` | Default model para sa LLM methods. Depende ang format sa method: Gumagamit ang OpenRouter ng `provider/model` (hal., `google/gemini-3.5-flash`); gumagamit ang direct providers ng bare names (hal., `gpt-4o`, `gemini-2.5-flash`). |
 | `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Mao-override ito ng `--method` CLI flag. |
 | `batchSize` | `number` | `30` | Keys per translation batch. Mas mataas = mas kaunting API calls, pero mas malalaking prompts. |
 | `concurrency` | `number` | `12` | Max parallel API calls para sa content (Markdown/MDX) translation. Mao-override ito ng `--concurrency` CLI flag. |
@@ -79,7 +79,7 @@ Ang `typegen` config block ay nire-recognize at pini-preserve ng config loader, 
 
 ## Pair Configuration
 
-Ang bawat source→target pair ay puwedeng i-configure nang independently:
+Pwedeng i-configure nang independently ang bawat source→target pair:
 
 ```json
 {
@@ -106,14 +106,14 @@ Ang bawat source→target pair ay puwedeng i-configure nang independently:
 | `method` | `string` | Translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` |
 | `methodPlugin` | `string` | Pangalan ng installed plugin (mula sa `.rosetta/methods/`) |
 | `model` | `string` | I-override ang default model para sa pair na ito |
-| `endpoint` | `string` | Remote API endpoint URL. Required ito kapag ang `method` ay `api`. |
+| `endpoint` | `string` | Remote API endpoint URL. Required kapag ang `method` ay `api`. |
 | `qualityTier` | `string` | Display tier: `standard`, `high`, `research`, `verified` |
 
 ## Language Configuration
 
 Tumatanggap ang languages ng tatlong formats:
 
-### Array of codes (pinakasimple)
+### Array of codes (simplest)
 
 ```json
 {
@@ -123,9 +123,9 @@ Tumatanggap ang languages ng tatlong formats:
 
 Kinukuha ng bawat language ang default register nito mula sa built-in register table. Ang mga languages na walang default ay makakakuha ng `"Professional register."`.
 
-### Object na may register strings
+### Object with register strings
 
-Ang value ay puwedeng maging isang **preset key** mula sa language's card, o custom register text:
+Ang value ay pwedeng maging isang **preset key** mula sa card ng language, o custom register text:
 
 ```json
 {
@@ -137,9 +137,9 @@ Ang value ay puwedeng maging isang **preset key** mula sa language's card, o cus
 }
 ```
 
-Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa language card. Kung oo, gagamitin ang full register prompt mula sa card. Kung hindi, gagamitin ang string as-is. Tingnan po ang [Supported Languages](/docs/reference/supported-languages#language-cards) para sa available presets.
+Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa language card. Kung oo, gagamitin ang full register prompt mula sa card. Kung hindi, gagamitin ang string as-is. Tingnan ang [Supported Languages](/docs/reference/supported-languages#language-cards) para sa available presets.
 
-### Object na may full config
+### Object with full config
 
 ```json
 {
@@ -156,22 +156,22 @@ Tinitingnan ng Rosetta kung nagma-match ang string sa isang preset key sa langua
 }
 ```
 
-Puwede ninyong i-mix ang shorthand at full objects sa iisang block.
+Pwede mong i-mix ang shorthand at full objects sa iisang block.
 
 
 ### Language Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `register` | `string` | Style/tone instructions. Puwedeng maging **preset key** (hal., `casual-tu`, `formal-hapsyo`) o custom text. Tingnan ang [Language Cards](/docs/reference/supported-languages#language-cards). |
+| `register` | `string` | Style/tone instructions. Pwedeng maging **preset key** (hal., `casual-tu`, `formal-hapsyo`) o custom text. Tingnan ang [Language Cards](/docs/reference/supported-languages#language-cards). |
 | `name` | `string` | Human-readable language name (para sa status display) |
 | `model` | `string` | I-override ang default model |
 | `batchSize` | `number` | I-override ang default batch size |
 | `maxRetries` | `number` | Maximum retry budget para sa failed batches (default: 3) |
-| `script` | `string` | ISO 15924 script code. Tini-trigger nito ang script validation sa quality gate. |
+| `script` | `string` | ISO 15924 script code. Nagti-trigger ng script validation sa quality gate. |
 
 :::info Inheritance chain
-Nare-resolve ang settings sa order na ito (first wins):
+Nare-resolve ang settings sa ganitong order (first wins):
 
 **pair-level** → **language-level** → **global config** → **defaults**
 
@@ -180,7 +180,7 @@ Halimbawa, kung nag-set ang `pairs["en:fr"]` ng `model`, ino-override nito ang p
 
 ## Non-English Source
 
-Kung hindi English ang inyong source language:
+Kung hindi English ang source language mo:
 
 ```bash
 # CLI flag (one-time)
@@ -195,13 +195,13 @@ npx i18n-rosetta sync --source fr
 
 ## Lock File
 
-Gumagawa ang Rosetta ng `.i18n-rosetta.lock` para i-track ang SHA-256 hashes ng translated source values. **I-commit po ang file na ito** para ma-share ng lahat ng developers ang parehong translation baseline.
+Gumagawa ang Rosetta ng `.i18n-rosetta.lock` para i-track ang SHA-256 hashes ng translated source values. **I-commit ang file na ito** para pareho ang translation baseline ng lahat ng developers.
 
 Kapag nagbago ang isang source value, hindi na magmamatch ang hash, at ire-retranslate ng rosetta ang key na iyon sa susunod na sync.
 
 ## `.rosettaignore`
 
-Gumawa po ng `.rosettaignore` sa inyong project root para i-exclude ang files mula sa `lint` scanning. Gumagamit ito ng glob patterns, tulad ng `.gitignore`:
+Gumawa ng `.rosettaignore` sa iyong project root para i-exclude ang files mula sa `lint` scanning. Gumagamit ito ng glob patterns, tulad ng `.gitignore`:
 
 ```text title=".rosettaignore"
 src/components/legacy/**
@@ -211,7 +211,7 @@ src/utils/constants.js
 
 ## `.rosetta/` Directory
 
-Gumagawa ang Rosetta ng `.rosetta/` directory sa inyong project root para sa internal state. Kadalasan ay dapat ninyo itong **idagdag sa `.gitignore`** — local optimization po ito, hindi project source:
+Gumagawa ang Rosetta ng `.rosetta/` directory sa iyong project root para sa internal state. Dapat mo itong **idagdag sa `.gitignore`** — local optimization ito, hindi project source:
 
 ```gitignore
 .rosetta/
@@ -230,7 +230,7 @@ Tingnan ang [Translation Memory](/docs/concepts/translation-memory) para sa deta
 
 ## Programmatic API
 
-Para sa build scripts at custom integrations, mag-import nang direkta mula sa package:
+Para sa build scripts at custom integrations, mag-import directly mula sa package:
 
 ```javascript
 import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
@@ -248,7 +248,7 @@ const result = await gemini.translate(
 
 ### Available Exports
 
-| Export | Ano ang Ginagawa Nito |
+| Export | What It Does |
 |--------|-------------|
 | `TranslationMethod` | Base class para sa lahat ng methods |
 | `LLMMethod` | Base class para sa LLM methods (OpenRouter) |
@@ -265,7 +265,7 @@ const result = await gemini.translate(
 
 ### Custom Provider Extension
 
-I-extend ang `DirectLLMMethod` para magdagdag ng bagong LLM provider sa ~40 lines:
+I-extend ang `DirectLLMMethod` para magdagdag ng bagong LLM provider in ~40 lines:
 
 ```javascript
 import { DirectLLMMethod } from 'i18n-rosetta';
@@ -315,7 +315,7 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-Makukuha ninyo ang translate, coaching, retry loops, model validation, quality tiers, at setup help nang libre. Ang HTTP request shape lang ang provider-specific. Para sa non-LLM adapters na gumagamit ng raw `fetch()`, gamitin ang shared `fetchWithRetry()` helper mula sa `lib/methods/fetch-with-retry.js` sa halip na gumawa ng sarili ninyong retry loop.
+Makukuha mo ang translate, coaching, retry loops, model validation, quality tiers, at setup help nang libre. Tanging ang HTTP request shape lang ang provider-specific. Para sa non-LLM adapters na gumagamit ng raw `fetch()`, gamitin ang shared `fetchWithRetry()` helper mula sa `lib/methods/fetch-with-retry.js` sa halip na magsulat ng sarili mong retry loop.
 
 ---
 

@@ -41,6 +41,19 @@ Rosetta loads `i18n-rosetta.config.json` (or auto-detects settings). It resolves
 - The pair graph (which source→target combinations to process)
 - Per-pair method, model, and quality settings
 
+Before scanning files, rosetta prints a startup header:
+
+```
+i18n-rosetta v3.3.1
+
+[INFO] Detected format: json (auto)
+[INFO] Detected framework: Hugo
+```
+
+- **Version banner**: Shows the installed version for debugging and issue reports.
+- **Format detection**: Reports the file format and whether it was auto-detected `(auto)` or explicitly configured `(config)`. Supports `json`, `toml`, and `yaml`.
+- **Framework detection**: When `contentDir` is set, identifies the framework (`Hugo`) to confirm content sync is active.
+
 ### 2. Source Scanning
 
 The source locale file is loaded and flattened into a key→value map:
@@ -69,6 +82,15 @@ This is why rosetta only translates what changed — it's not re-translating you
 ### 4. Batching
 
 Keys are grouped into batches (default: 30 keys/batch for LLM, 128 for Google Translate). Batching reduces API round trips while keeping prompts manageable.
+
+During translation, rosetta displays an inline progress bar that updates after each batch completes:
+
+```
+[INFO] fr.json — 2,847 missing
+     ████████████████░░░░░░░░░░░░░░░░ 1,440/2,847 keys
+```
+
+The bar renders using `\r` carriage return for in-place updates — no scrolling. Suppressed in `--quiet` and `--json` modes.
 
 ### 4b. Translation Memory
 

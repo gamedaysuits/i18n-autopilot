@@ -4,13 +4,13 @@ title: "설정"
 ---
 # 설정
 
-Rosetta는 설정 없이(zero-config) 작동해요. 프로젝트에서 로케일 파일, 형식, 대상 언어를 자동으로 감지하죠. 더 세밀하게 제어하려면 프로젝트 루트에 `i18n-rosetta.config.json` 파일을 생성하거나 다음 명령어를 실행하세요.
+Rosetta는 무설정(zero-config)으로 작동해요. 프로젝트에서 로케일 파일, 형식, 대상 언어를 자동으로 감지하거든요. 더 세밀하게 제어하려면 프로젝트 루트에 `i18n-rosetta.config.json` 파일을 만들거나 다음 명령어를 실행하세요.
 
 ```bash
 npx i18n-rosetta init
 ```
 
-## 전체 설정 참조
+## 전체 설정 레퍼런스
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -46,40 +46,39 @@ npx i18n-rosetta init
 ```
 
 :::note typegen은 아직 구현되지 않았어요
-`typegen` 설정 블록은 설정 로더에서 인식하고 보존하지만, TypeScript 타입 생성은 아직 구현되지 않았어요. 이는 계획된 기능을 위한 자리 표시자(placeholder)입니다. 이 값들을 설정해도 아무런 효과가 없어요.
+설정 로더가 `typegen` 설정 블록을 인식하고 유지하지만, TypeScript 타입 생성 기능은 아직 구현되지 않았어요. 이는 향후 추가될 기능을 위한 자리 표시자(placeholder)예요. 이 값을 설정해도 아무런 효과가 없어요.
 :::
-
 
 ### 필드
 
 | 필드 | 타입 | 기본값 | 설명 |
 |-------|------|---------|-------------|
-| `version` | `number` | `3` | 설정 스키마 버전이에요. 항상 `3`입니다. |
+| `version` | `number` | `3` | 설정 스키마 버전이에요. 항상 `3`이에요. |
 | `inputLocale` | `string` | `"en"` | 소스 언어 코드(BCP 47)예요. |
 | `localesDir` | `string` | `"./locales"` | 로케일 파일의 경로예요. Rosetta가 이 디렉터리를 스캔해요. |
 | `contentDir` | `string` | `null` | Hugo 콘텐츠 디렉터리예요. Markdown 본문 번역을 활성화해요. |
 | `translatableFields` | `string[]` | `null` | 콘텐츠 번역 시 번역 가능한 기본 frontmatter 필드를 재정의해요. `null`은 내장된 기본값(`title`, `description`, `summary`)을 사용해요. |
-| `format` | `string` | `"auto"` | 파일 형식이에요. `json`, `toml`, `yaml`, 또는 `auto`(확장자에서 감지)을 지원해요. |
-| `model` | `string` | `"google/gemini-3.5-flash"` | LLM 메서드의 기본 모델이에요. 형식은 메서드에 따라 달라요. OpenRouter는 `provider/model`(예: `google/gemini-3.5-flash`)를 사용하고, 직접 제공자(direct provider)는 기본 이름(예: `gpt-4o`, `gemini-2.5-flash`)을 사용해요. |
-| `defaultMethod` | `string` | `"llm"` | 기본 번역 메서드예요. `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` 중 선택할 수 있어요. `--method` CLI 플래그로 재정의할 수 있어요. |
+| `format` | `string` | `"auto"` | 파일 형식이에요. `json`, `toml`, `yaml` 또는 `auto`(확장자에서 감지)을 지원해요. |
+| `model` | `string` | `"google/gemini-3.5-flash"` | LLM 방식의 기본 모델이에요. 형식은 방식에 따라 달라요. OpenRouter는 `provider/model`(예: `google/gemini-3.5-flash`)를 사용하고, 다이렉트 프로바이더는 기본 이름(예: `gpt-4o`, `gemini-2.5-flash`)을 사용해요. |
+| `defaultMethod` | `string` | `"llm"` | 기본 번역 방식이에요. `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` 중 선택할 수 있어요. `--method` CLI 플래그로 재정의할 수 있어요. |
 | `batchSize` | `number` | `30` | 번역 배치당 키 개수예요. 값이 클수록 API 호출 횟수는 줄어들지만 프롬프트 크기는 커져요. |
 | `concurrency` | `number` | `12` | 콘텐츠(Markdown/MDX) 번역 시 최대 병렬 API 호출 수예요. `--concurrency` CLI 플래그로 재정의할 수 있어요. |
-| `fallbackPrefix` | `string` | `"[EN] "` | 번역되지 않은 폴백(fallback) 값에 추가되는 접두사예요. `audit`가 불완전한 번역을 감지할 때 사용해요. |
-| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | API 키의 환경 변수 이름이에요. 사용자 지정 환경 변수 이름을 사용할 때 재정의해요. |
+| `fallbackPrefix` | `string` | `"[EN] "` | 번역되지 않은 폴백(fallback) 값에 추가되는 접두사예요. `audit`에서 불완전한 번역을 감지하는 데 사용해요. |
+| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | API 키의 환경 변수 이름이에요. 사용자 지정 환경 변수 이름을 사용하려면 재정의하세요. |
 | `baseUrl` | `string` | `""` | SEO 아티팩트(hreflang, 사이트맵, JSON-LD) 생성을 위한 기본 URL이에요. |
-| `pairs` | `object` | `{}` | 쌍(pair)별 메서드, 모델, 품질 재정의예요. [쌍 설정](#pair-configuration)을 참조하세요. |
-| `languages` | `object` | `{}` | 언어별 재정의예요. [언어 설정](#language-configuration)을 참조하세요. |
-| `lint.srcDir` | `string` | `null` | 린트(lint) 스캔을 위한 소스 디렉터리예요. `null`로 설정하면 프레임워크에서 자동으로 감지해요. |
+| `pairs` | `object` | `{}` | 언어 쌍별 방식, 모델, 품질 재정의 설정이에요. [언어 쌍 설정](#pair-configuration)을 참고하세요. |
+| `languages` | `object` | `{}` | 언어별 재정의 설정이에요. [언어 설정](#language-configuration)을 참고하세요. |
+| `lint.srcDir` | `string` | `null` | 린트(lint) 스캔을 위한 소스 디렉터리예요. `null`로 설정하면 프레임워크에서 자동 감지해요. |
 | `lint.ignore` | `string[]` | `["node_modules", ...]` | 린트에서 제외할 Glob 패턴이에요. |
-| `lint.minLength` | `number` | `2` | 하드코딩된 것으로 표시할 최소 문자열 길이예요. |
+| `lint.minLength` | `number` | `2` | 하드코딩된 것으로 플래그를 지정할 최소 문자열 길이예요. |
 | `seo.urlPattern` | `string` | `"/:locale/:path"` | hreflang 태그 생성을 위한 URL 패턴 템플릿이에요. |
-| `seo.pages` | `string[]` | `null` | SEO를 위한 명시적 페이지 목록이에요. `null`로 설정하면 로케일 키에서 자동으로 감지해요. |
+| `seo.pages` | `string[]` | `null` | SEO를 위한 명시적 페이지 목록이에요. `null`로 설정하면 로케일 키에서 자동 감지해요. |
 | `typegen.output` | `string` | `null` | 생성된 TypeScript 타입의 출력 경로예요. `null`로 설정하면 비활성화돼요. |
 | `typegen.autoGenerate` | `boolean` | `false` | 동기화할 때마다 타입을 자동으로 다시 생성해요. |
 
-## 쌍 설정
+## 언어 쌍 설정
 
-각 소스→대상 쌍(pair)을 독립적으로 설정할 수 있어요.
+각 소스→대상 언어 쌍을 독립적으로 설정할 수 있어요.
 
 ```json
 {
@@ -99,21 +98,21 @@ npx i18n-rosetta init
 }
 ```
 
-### 쌍 필드
+### 언어 쌍 필드
 
 | 필드 | 타입 | 설명 |
 |-------|------|-------------|
-| `method` | `string` | 번역 메서드예요. `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` 중 선택할 수 있어요. |
+| `method` | `string` | 번역 방식이에요. `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` 중 선택할 수 있어요. |
 | `methodPlugin` | `string` | 설치된 플러그인 이름이에요(`.rosetta/methods/`에서 가져옴). |
-| `model` | `string` | 이 쌍의 기본 모델을 재정의해요. |
-| `endpoint` | `string` | 원격 API 엔드포인트 URL이에요. `method`이 `api`일 때 필수예요. |
-| `qualityTier` | `string` | 표시 티어(tier)예요. `standard`, `high`, `research`, `verified` 중 선택할 수 있어요. |
+| `model` | `string` | 이 언어 쌍의 기본 모델을 재정의해요. |
+| `endpoint` | `string` | 원격 API 엔드포인트 URL이에요. `method`이 `api`일 때 필수 항목이에요. |
+| `qualityTier` | `string` | 표시 등급이에요. `standard`, `high`, `research`, `verified` 중 선택할 수 있어요. |
 
 ## 언어 설정
 
 언어 설정은 세 가지 형식을 지원해요.
 
-### 코드 배열 (가장 간단함)
+### 코드 배열 (가장 간단한 방식)
 
 ```json
 {
@@ -121,11 +120,11 @@ npx i18n-rosetta init
 }
 ```
 
-각 언어는 내장된 레지스터(register) 테이블에서 기본 레지스터를 가져와요. 기본값이 없는 언어는 `"Professional register."`을 사용해요.
+각 언어는 내장된 어조(register) 테이블에서 기본 어조를 가져와요. 기본값이 없는 언어는 `"Professional register."`을 사용해요.
 
-### 레지스터 문자열이 포함된 객체
+### 어조 문자열을 포함한 객체
 
-값은 언어 카드의 **프리셋 키(preset key)**이거나 사용자 지정 레지스터 텍스트일 수 있어요.
+값은 언어 카드의 **프리셋 키(preset key)**이거나 사용자 지정 어조 텍스트일 수 있어요.
 
 ```json
 {
@@ -137,9 +136,9 @@ npx i18n-rosetta init
 }
 ```
 
-Rosetta는 문자열이 언어 카드의 프리셋 키와 일치하는지 확인해요. 일치하면 카드의 전체 레지스터 프롬프트를 사용하고, 그렇지 않으면 문자열을 그대로 사용해요. 사용 가능한 프리셋은 [지원되는 언어](/docs/reference/supported-languages#language-cards)를 참조하세요.
+Rosetta는 문자열이 언어 카드의 프리셋 키와 일치하는지 확인해요. 일치하면 카드의 전체 어조 프롬프트를 사용하고, 그렇지 않으면 문자열을 그대로 사용해요. 사용 가능한 프리셋은 [지원되는 언어](/docs/reference/supported-languages#language-cards)를 참고하세요.
 
-### 전체 설정이 포함된 객체
+### 전체 설정을 포함한 객체
 
 ```json
 {
@@ -156,31 +155,30 @@ Rosetta는 문자열이 언어 카드의 프리셋 키와 일치하는지 확인
 }
 ```
 
-같은 블록 내에서 약식(shorthand)과 전체 객체를 섞어서 사용할 수 있어요.
-
+같은 블록 내에서 축약형과 전체 객체를 섞어서 사용할 수 있어요.
 
 ### 언어 필드
 
 | 필드 | 타입 | 설명 |
 |-------|------|-------------|
-| `register` | `string` | 스타일/어조(tone) 지침이에요. **프리셋 키**(예: `casual-tu`, `formal-hapsyo`) 또는 사용자 지정 텍스트일 수 있어요. [언어 카드](/docs/reference/supported-languages#language-cards)를 참조하세요. |
+| `register` | `string` | 스타일/어조 지침이에요. **프리셋 키**(예: `casual-tu`, `formal-hapsyo`) 또는 사용자 지정 텍스트일 수 있어요. [언어 카드](/docs/reference/supported-languages#language-cards)를 참고하세요. |
 | `name` | `string` | 사람이 읽을 수 있는 언어 이름이에요(상태 표시용). |
 | `model` | `string` | 기본 모델을 재정의해요. |
 | `batchSize` | `number` | 기본 배치 크기를 재정의해요. |
 | `maxRetries` | `number` | 실패한 배치에 대한 최대 재시도 횟수예요(기본값: 3). |
-| `script` | `string` | ISO 15924 스크립트 코드예요. 품질 게이트(quality gate)에서 스크립트 유효성 검사를 트리거해요. |
+| `script` | `string` | ISO 15924 문자(script) 코드예요. 품질 게이트(quality gate)에서 문자 유효성 검사를 트리거해요. |
 
 :::info 상속 체인
-설정은 다음 순서로 적용돼요(가장 먼저 일치하는 값 우선).
+설정은 다음 순서로 적용돼요(가장 먼저 일치하는 항목 우선).
 
-**쌍(pair) 수준** → **언어 수준** → **전역 설정** → **기본값**
+**언어 쌍 수준** → **언어 수준** → **전역 설정** → **기본값**
 
-예를 들어, `pairs["en:fr"]`에서 `model`를 설정하면 언어 수준과 전역 `model` 값을 모두 덮어써요.
+예를 들어, `pairs["en:fr"]`에서 `model`를 설정하면 언어 수준과 전역 `model` 값을 모두 재정의해요.
 :::
 
 ## 영어가 아닌 소스 언어
 
-소스 언어가 영어가 아닌 경우:
+소스 언어가 영어가 아닌 경우 다음과 같이 설정하세요.
 
 ```bash
 # CLI flag (one-time)
@@ -193,15 +191,15 @@ npx i18n-rosetta sync --source fr
 }
 ```
 
-## 잠금 파일(Lock File)
+## 잠금 파일 (Lock File)
 
-Rosetta는 번역된 소스 값의 SHA-256 해시를 추적하기 위해 `.i18n-rosetta.lock` 파일을 생성해요. 모든 개발자가 동일한 번역 기준선을 공유할 수 있도록 **이 파일을 커밋해 주세요**.
+Rosetta는 번역된 소스 값의 SHA-256 해시를 추적하기 위해 `.i18n-rosetta.lock`를 생성해요. 모든 개발자가 동일한 번역 기준선을 공유할 수 있도록 **이 파일을 커밋해 주세요**.
 
-소스 값이 변경되면 해시가 더 이상 일치하지 않으므로, Rosetta는 다음 동기화 시 해당 키를 다시 번역해요.
+소스 값이 변경되면 해시가 더 이상 일치하지 않으므로, 다음 동기화 시 Rosetta가 해당 키를 다시 번역해요.
 
 ## `.rosettaignore`
 
-프로젝트 루트에 `.rosettaignore` 파일을 생성하여 `lint` 스캔에서 파일을 제외할 수 있어요. `.gitignore`과 같은 glob 패턴을 사용해요.
+`lint` 스캔에서 파일을 제외하려면 프로젝트 루트에 `.rosettaignore` 파일을 만드세요. `.gitignore`과 같은 Glob 패턴을 사용해요.
 
 ```text title=".rosettaignore"
 src/components/legacy/**
@@ -211,7 +209,7 @@ src/utils/constants.js
 
 ## `.rosetta/` 디렉터리
 
-Rosetta는 내부 상태 관리를 위해 프로젝트 루트에 `.rosetta/` 디렉터리를 생성해요. 이는 프로젝트 소스가 아닌 로컬 최적화 파일이므로, 일반적으로 **`.gitignore`에 추가**하는 것이 좋아요.
+Rosetta는 내부 상태를 저장하기 위해 프로젝트 루트에 `.rosetta/` 디렉터리를 생성해요. 이 디렉터리는 프로젝트 소스가 아닌 로컬 최적화를 위한 것이므로 일반적으로 **`.gitignore`에 추가**해야 해요.
 
 ```gitignore
 .rosetta/
@@ -219,18 +217,18 @@ Rosetta는 내부 상태 관리를 위해 프로젝트 루트에 `.rosetta/` 디
 
 | 파일 | 목적 | 커밋 여부 |
 |------|---------|--------|
-| `tm.json` | 번역 메모리(Translation Memory) 캐시 — 소스 텍스트 + 로케일 + 메서드를 키로 하여 이전 번역을 저장해요. | 아니요 (로컬 캐시) |
-| `xliff/*.xliff` | 전문 번역가 검토를 위한 XLIFF 내보내기 파일이에요. | 아니요 (임시 파일) |
-| `methods/` | 설치된 메서드 플러그인 매니페스트예요. | 예 (공유 설정) |
-| `backups/` | 래핑 전 백업 파일이에요(`wrap --undo`에 의해 생성됨). | 아니요 (안전망) |
+| `tm.json` | 번역 메모리(Translation Memory) 캐시예요. 소스 텍스트 + 로케일 + 방식을 키로 사용하여 이전 번역을 저장해요. | 아니요(로컬 캐시) |
+| `xliff/*.xliff` | 전문 번역가 검토를 위한 XLIFF 내보내기 파일이에요. | 아니요(임시 파일) |
+| `methods/` | 설치된 방식 플러그인 매니페스트예요. | 예(공유 설정) |
+| `backups/` | 래핑 전 백업 파일이에요(`wrap --undo`에서 생성됨). | 아니요(안전망) |
 
-`tm.json`에 대한 자세한 내용과 API 비용 절감 방법은 [번역 메모리](/docs/concepts/translation-memory)를 참조하세요.
+`tm.json`에 대한 자세한 내용과 API 비용 절감 방법은 [번역 메모리](/docs/concepts/translation-memory)를 참고하세요.
 
 ---
 
 ## 프로그래밍 방식 API
 
-빌드 스크립트 및 사용자 지정 통합을 위해 패키지에서 직접 가져올 수 있어요.
+빌드 스크립트 및 사용자 지정 통합을 위해 패키지에서 직접 가져올(import) 수 있어요.
 
 ```javascript
 import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
@@ -248,24 +246,24 @@ const result = await gemini.translate(
 
 ### 사용 가능한 내보내기(Exports)
 
-| 내보내기(Export) | 기능 |
+| 내보내기 | 기능 |
 |--------|-------------|
-| `TranslationMethod` | 모든 메서드의 기본 클래스예요. |
-| `LLMMethod` | LLM 메서드(OpenRouter)의 기본 클래스예요. |
-| `DirectLLMMethod` | 직접 LLM 제공자(OpenAI, Anthropic, Gemini)의 기본 클래스예요. |
-| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | 직접 LLM 제공자 클래스예요. |
-| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | 전통적인 기계 번역(MT) 클래스예요. |
+| `TranslationMethod` | 모든 방식의 기본 클래스예요. |
+| `LLMMethod` | LLM 방식(OpenRouter)의 기본 클래스예요. |
+| `DirectLLMMethod` | 다이렉트 LLM 프로바이더(OpenAI, Anthropic, Gemini)의 기본 클래스예요. |
+| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | 다이렉트 LLM 프로바이더 클래스예요. |
+| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | 기존 기계 번역(MT) 클래스예요. |
 | `GoogleTranslateMethod` | Google Cloud Translation이에요. |
 | `LLMCoachedMethod` | 코칭된 LLM(OpenRouter + 코칭 데이터)이에요. |
 | `APIMethod` | 원격 API 클라이언트예요. |
 | `runSync`, `runContentSync` | 전체 동기화 파이프라인이에요. |
-| `resolveConfig`, `resolvePairs` | 설정 해석(resolution)이에요. |
+| `resolveConfig`, `resolvePairs` | 설정 확인(resolution) 기능이에요. |
 | `validateTranslations` | 품질 게이트(Quality gate)예요. |
 | `loadCoachingData`, `findDictionaryMatches` | 코칭 유틸리티예요. |
 
-### 사용자 지정 제공자 확장
+### 사용자 지정 프로바이더 확장
 
-`DirectLLMMethod`을 확장하여 약 40줄의 코드로 새로운 LLM 제공자를 추가할 수 있어요.
+`DirectLLMMethod`을 확장하면 약 40줄의 코드로 새로운 LLM 프로바이더를 추가할 수 있어요.
 
 ```javascript
 import { DirectLLMMethod } from 'i18n-rosetta';
@@ -315,17 +313,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-번역, 코칭, 재시도 루프, 모델 유효성 검사, 품질 티어, 설정 도움말을 기본으로 제공받을 수 있어요. HTTP 요청 형태만 제공자에 따라 달라요. 원시 `fetch()`을 사용하는 비 LLM 어댑터의 경우, 자체 재시도 루프를 작성하는 대신 `lib/methods/fetch-with-retry.js`의 공유 `fetchWithRetry()` 헬퍼를 사용하세요.
+번역, 코칭, 재시도 루프, 모델 유효성 검사, 품질 등급, 설정 지원 기능이 기본으로 제공돼요. HTTP 요청 형태만 프로바이더별로 다르게 작성하면 됩니다. 원시 `fetch()`을 사용하는 비 LLM 어댑터의 경우, 재시도 루프를 직접 작성하는 대신 `lib/methods/fetch-with-retry.js`에서 제공하는 공용 `fetchWithRetry()` 헬퍼를 사용하세요.
 
 ---
 
-## 참고 항목
+## 함께 보기
 
-- [CLI 참조](/docs/reference/cli) — 모든 명령어와 플래그
-- [번역 메서](/docs/guides/translation-methods) — 메서드 선택 및 혼합
+- [CLI 레퍼런스](/docs/reference/cli) — 모든 명령어와 플래그
+- [번역 방식](/docs/guides/translation-methods) — 방식 선택 및 혼합 사용
 - [번역 메모리](/docs/concepts/translation-memory) — 캐싱 및 비용 절감
 - [전문 번역가와 협업하기](/docs/guides/professional-translators) — XLIFF 워크플로우
-- [플러그인 사양](/docs/reference/plugin-spec) — 메서드 플러그인 매니페스트 형식
-- [아키텍처](/docs/concepts/architecture) — 구성 요소 연결 방식
-- [지원되는 언어](/docs/reference/supported-languages) — 내장 언어 지원
+- [플러그인 사양](/docs/reference/plugin-spec) — 방식 플러그인 매니페스트 형식
+- [아키텍처](/docs/concepts/architecture) — 구성 요소 간의 연결 방식
+- [지원되는 언어](/docs/reference/supported-languages) — 내장된 언어 지원
 - [동기화 작동 방식](/docs/concepts/how-sync-works) — 번역 파이프라인

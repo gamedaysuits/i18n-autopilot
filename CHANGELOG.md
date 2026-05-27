@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dynamic model picker in `init` wizard**: When selecting a direct provider (Gemini, OpenAI, Anthropic), the wizard now fetches real models from the API and shows a numbered picker. No more hardcoded model lists.
 - **YAML format auto-detection** (`detectYAMLStyle()` in `lib/format.js`): Distinguishes Hugo i18n YAML (CLDR plural sub-keys only) from standard nested YAML by inspecting sub-key names.
 - **Standard nested YAML serializer** (`flatToNestedYAML()` in `lib/format.js`): Writes proper tree-structured YAML without Hugo's `other:` wrapping. Used automatically when `detectYAMLStyle()` returns `'nested'`.
+- **Version banner** (`output.banner()` in `lib/output.js`): Sync now prints `i18n-rosetta v<version>` at startup, reading the version from `package.json` via `createRequire`. Suppressed in `quiet` and `json` modes.
+- **Format detection logging** (`lib/sync.js`): Sync now logs `[INFO] Detected format: json (auto)` or `(config)` to show whether the file format was auto-detected or explicitly configured.
+- **Framework detection logging** (`lib/sync.js`): When `contentDir` is set, sync logs `[INFO] Detected framework: Hugo` to confirm framework-aware sync is active.
+- **Per-key progress bar** (`output.progressBar()` in `lib/output.js`): During translation, a `█░` progress bar renders inline showing `completed/total keys`. Uses `\r` carriage return for in-place updates. Suppressed in `quiet` and `json` modes.
+- **`onProgress` callback** (`lib/methods/llm.js`): LLM method's `translate()` now fires an optional `onProgress(completed, total)` callback after each batch chunk completes (~30 keys), enabling real-time progress reporting. Threaded through `translate-pair.js` and wired to `progressBar()` in `sync.js`.
 
 ### Changed
 - **`DEFAULT_MODEL` → `DEFAULT_OPENROUTER_MODEL`**: Renamed across 16 files to clarify this constant is the OpenRouter fallback, not a universal default. Direct providers (Gemini, OpenAI, Anthropic) now resolve their own default model from their method class at runtime.

@@ -98,6 +98,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs(TEST_LANGUAGES),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -116,6 +117,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -140,6 +142,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -159,6 +162,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -178,6 +182,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs(TEST_LANGUAGES),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: true,
       cwd: tmpDir,
     });
@@ -195,6 +200,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -215,6 +221,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -234,6 +241,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: ['title'],  // Only translate title, not description
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -253,6 +261,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -272,6 +281,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs(TEST_LANGUAGES),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -285,6 +295,7 @@ describe('runContentSync (fallback mode)', () => {
       pairs: buildTestPairs(TEST_LANGUAGES),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
@@ -311,6 +322,7 @@ And inline \`code\` too.
       pairs: buildTestPairs({ fr: TEST_LANGUAGES.fr }),
       translatableFields: null,
       apiKey: null,
+      useFallback: true,
       dryRun: false,
       cwd: tmpDir,
     });
