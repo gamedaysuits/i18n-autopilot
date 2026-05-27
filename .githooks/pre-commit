@@ -53,9 +53,6 @@ fi
 if [ -n "$ARENA_CHANGED" ]; then
   echo "  ↳ Arena site (gds-mt-eval-harness/website/)"
 
-  # Regenerate SSOT docs before translating (in case docs/ changed)
-  (cd gds-mt-eval-harness/website && node scripts/sync-ssot.js 2>&1 | tail -1)
-
   # Translate
   (cd gds-mt-eval-harness/website && node ../../bin/cli.js sync --content 2>&1 | tail -3)
 

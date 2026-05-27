@@ -35,7 +35,7 @@ SCORING_SPEC.md (this dir)    → metrics, weights, tiers
 BENCHMARK_SPEC.md (this dir)  → corpus format, run card schema, protocol
 HOW_IT_WORKS.md (this dir)    → competitive crowdsourcing narrative
 
-All sync to Arena site via: gds-mt-eval-harness/website/scripts/sync-ssot.js
-Edit SSOT in docs/ → run npm run sync → changes propagate.
-Never edit the generated copies directly.
+These docs are also committed in the Arena repo at their Docusaurus paths
+(e.g., website/docs/specifications/scoring.md). Edit here first — these
+are the canonical source. Then update the Arena copies to match.
 ```
