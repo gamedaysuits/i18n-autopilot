@@ -13,7 +13,7 @@ The `sync` command is rosetta's core operation. Here's what happens when you run
 flowchart TD
     A["Load config\n+ resolve pairs"] --> B["Scan source locale\n(flatten nested keys)"]
     B --> C["Load lock file\n(.i18n-rosetta.lock)"]
-    C --> D["Diff: find missing,\nstale, and fallback keys"]
+    C --> D["Diff: find missing\nand stale keys"]
     D --> TM{"TM lookup"}
     TM -->|Hits| TC["Serve from cache"]
     TM -->|Misses| E{"Keys to translate?"}
@@ -74,7 +74,7 @@ Rosetta reads `.i18n-rosetta.lock`, which stores SHA-256 hashes of previously tr
 |-----------|--------|
 | Key missing from target | **Translate** |
 | Source hash changed since last sync | **Re-translate** (stale) |
-| Target value starts with `[EN]` | **Re-translate** (fallback placeholder) |
+| Target value starts with `[EN]` | **Re-translate** (legacy fallback marker) |
 | Source hash unchanged, key exists | **Skip** |
 
 This is why rosetta only translates what changed — it's not re-translating your entire file on every sync.
@@ -159,6 +159,19 @@ The retry budget is capped by `maxRetries` (default: 3) to prevent runaway token
 
 Passing translations are written to the target locale file, preserving the original nesting structure. The lock file is updated with new SHA-256 hashes.
 
+### 9. Verification
+
+After all pairs are processed, rosetta re-reads the written locale files from disk and runs a verification pass (unless `--no-verify` is set). This catches the gap between sync reporting success and keys being wrong in fact:
+
+- **Key parity** — all source keys present in each target
+- **`[EN]` fallback markers** — legacy markers from prior runs
+- **Empty translations** — blank values that slipped through
+- **Script compliance** — non-Latin locales with ASCII-only translations
+- **Placeholder preservation** — ICU placeholders match source
+- **Encoding issues** — BOM markers, invisible characters
+
+This is also available as a standalone `i18n-rosetta verify` command for CI gates.
+
 ## Content Translation (Phase 2)
 
 For Docusaurus and Hugo projects, `sync` runs a second phase after JSON key translation. This phase translates Markdown and MDX files (docs, blog posts, tutorials) using the same methods and quality gate.
@@ -181,19 +194,21 @@ Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
   [OK] Created 79 content file(s), 341 unchanged
 ```
 
-### Flat-pool parallelism
+### Parallelism
 
-Unlike Phase 1 (JSON keys, sequential per locale), Phase 2 processes all file×locale combinations as a flat list. This means different files and different locales are translated simultaneously:
+Both Phase 1 (JSON keys) and Phase 2 (content) now run in parallel:
 
-- `docs/configuration.md → fr` and `docs/cli.md → ja` run at the same time
-- A 420-translation corpus completes in ~11 minutes at concurrency 12
-- Incremental manifest writes every 10 completions prevent lost progress if the process is killed
+- **Phase 1**: All locale translations fire concurrently (default: 50 simultaneous locales). Within each locale, API batches also run in parallel (4 concurrent batches). A 12-locale sync with 120 keys completes in ~1 minute instead of ~15 minutes.
+- **Phase 2**: All file×locale combinations are translated as a flat pool (default: 12 simultaneous API calls). Different files and different locales translate simultaneously.
 
-Control parallelism with `--concurrency` or the `concurrency` config field:
+Control parallelism with `--json-concurrency`, `--content-concurrency`, or `--concurrency` (sets both):
 
 ```bash
-# Faster (more parallel calls, higher API load)
-npx i18n-rosetta sync --concurrency 20
+# Faster JSON sync (more parallel locale translations)
+npx i18n-rosetta sync --json-concurrency 30
+
+# Faster content sync (more parallel API calls)
+npx i18n-rosetta sync --content-concurrency 20
 
 # Slower (gentler on rate limits)
 npx i18n-rosetta sync --concurrency 4

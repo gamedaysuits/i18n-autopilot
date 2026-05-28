@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Cree Translation Prize - OEG Sponsorship</title>
+  <link rel="stylesheet" href="pitch-deck.css">
+</head>
+<body>
+
+  <div class="grid"></div>
+  <div class="border-top"></div>
+  <div class="border-bottom"></div>
+  <div class="border-left"></div>
+  <div class="border-right"></div>
+
+  <!-- Realtime MT Output effect -->
+  <div class="teletype" id="teletype">
+    SYS.INIT // OEG_SPONSOR_BRIEFING<br>
+    AWAITING INPUT...
+  </div>
+
+  <div class="counter" id="counter">01 / 08</div>
+
+  <div class="controls">
+    <button class="btn btn-secondary" id="prevBtn">BACK</button>
+    <button class="btn btn-primary" id="nextBtn">NEXT <span class="arrow">➔</span></button>
+  </div>
+
+  <div class="slide-container" id="slides">
+    
+    <!-- Slide 1: Hero -->
+    <div class="slide active">
+      <img src="diagrams/chomsky-hierarchy.png" class="slide-graphic" style="right: -5%; top: -10%; height: 120vh; transform: rotate(-15deg);">
+      <div class="card" style="max-width: 60%;">
+        <div class="label">001 // SPONSORSHIP OPPORTUNITY</div>
+        <h1>THE CREE <br>TRANSLATION <br><span class="highlight">PRIZE</span></h1>
+        <div class="divider" style="width: 200px; margin: 20px 0;"></div>
+        <p style="font-family: var(--mono); color: var(--blue); text-transform: uppercase; font-weight: 600; font-size: 1.2vw; margin-bottom: 30px; line-height: 1.5;">
+          > PRESENTED TO OILERS ENTERTAINMENT GROUP.<br>
+          > GLOBAL VISIBILITY. LOCAL IMPACT.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 2: The Problem -->
+    <div class="slide">
+      <div class="label" style="background: var(--bg); display: inline-block; padding-right: 20px;">002 // THE PROBLEM</div>
+      <div class="split">
+        <div class="col">
+          <div style="background: var(--bg); display: inline-block; padding-right: 20px;">
+            <div class="number-block" style="margin-bottom: 0;">117K</div>
+            <h2 style="margin-bottom: 0;"><span class="highlight-red">CREE SPEAKERS</span><br>IN CANADA</h2>
+          </div>
+        </div>
+        <div class="col card" style="flex: 1.2; margin-top: 100px;">
+          <p style="margin-top:0;">Cree is the most widely spoken Indigenous language in Canada.</p>
+          <p>Yet it is completely unsupported by commercial Machine Translation (Google, Apple, etc.) because it isn't "profitable" for Big Tech.</p>
+          <div class="divider" style="margin: 20px 0;"></div>
+          <table style="width: 100%; background: #fff;">
+            <tr><th>The Gap</th><th>The Cost</th></tr>
+            <tr><td style="font-weight:bold;">NO DIGITAL TOOLS</td><td class="mono-code">BARRIER TO YOUTH ENGAGEMENT</td></tr>
+            <tr><td style="font-weight:bold;">NO INFRASTRUCTURE</td><td class="mono-code">LOSS OF LINGUISTIC HERITAGE</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: The Solution -->
+    <div class="slide">
+      <img src="diagrams/shannon-system.png" class="slide-graphic" style="left: 5%; top: -38%; width: 90vw; object-fit: contain; opacity: 0.12;">
+      <div class="label">003 // THE SOLUTION</div>
+      <h2>THE <span class="highlight-red">MT EVAL ARENA</span></h2>
+      <p>We don't build the translation tool. We build the arena that forces the world's best AI researchers to build it for us.</p>
+      
+      <div class="divider"></div>
+      
+      <div style="display: flex; gap: 40px; width: 100%;">
+        <div class="card card-light" style="flex: 1; padding: 30px;">
+          <div class="label" style="margin-bottom: 10px; color: var(--black);">THE CHALLENGE</div>
+          <h3 style="margin-top:0; font-size: 2vw; text-transform: uppercase;">Crowdsourcing</h3>
+          <p style="font-size: 1.1vw; font-family: var(--mono); line-height: 1.4;">We host a global competition to create the best English-to-Cree translation pipeline using the latest LLM and FST technology.</p>
+        </div>
+        <div class="card card-dark" style="flex: 1; padding: 30px;">
+          <div class="label" style="margin-bottom: 10px; color: var(--red);">THE VALIDATION</div>
+          <h3 style="margin-top:0; font-size: 2vw; text-transform: uppercase; color: var(--red);">Rigorous Testing</h3>
+          <p style="font-size: 1.1vw; font-family: var(--mono); line-height: 1.4;">Submissions are automatically graded against a secret dataset to prove they actually work before winning.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: The Test Case -->
+    <div class="slide">
+      <img src="diagrams/rosetta-stone.png" class="slide-graphic" style="left: -10%; top: -10%; height: 120vh;">
+      <div class="label" style="background: var(--bg); display: inline-block; padding-right: 20px;">004 // THE TEST CASE</div>
+      <div class="split" style="width: 100%;">
+        <div class="col card" style="flex: 1;">
+          <h2 style="margin-top:0;">COMMUNITY <span class="highlight">TRUST</span></h2>
+          <p style="margin-bottom:30px;">This isn't an extractive tech project. It's built in partnership with the community.</p>
+        </div>
+        <div class="col card card-light" style="flex: 1.2;">
+          <table style="width: 100%; background: transparent;">
+            <tr><th>Sovereignty Protocol</th><th>Execution</th></tr>
+            <tr><td>SECRET DATASET</td><td class="mono-code">CONSTRUCTED BY MESC / TRUST</td></tr>
+            <tr><td>DATA OWNERSHIP</td><td class="mono-code">HELD SECURELY BY COMMUNITY</td></tr>
+            <tr><td>COMPLIANCE</td><td class="mono-code">STRICT OCAP® ADHERENCE</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: The Opportunity -->
+    <div class="slide">
+      <div style="background: var(--bg); display: inline-block; padding-right: 30px; margin-bottom: 20px;">
+        <div class="label" style="margin-bottom: 10px;">005 // THE OEG ALIGNMENT</div>
+        <h2 style="margin-bottom: 0;">AN <span class="highlight-red">EASY WIN</span></h2>
+      </div>
+      <div class="card" style="border-left: 12px solid var(--black); margin: 20px 0; max-width: 900px; z-index: 3;">
+        <h3 style="font-size: 2.7vw; line-height: 1.2; margin: 0 0 30px 0; text-transform: uppercase;">
+          THE INTERSECTION OF LOCAL PRIDE,<br>
+          <span style="color: var(--blue);">INDIGENOUS RELATIONS, AND CSR.</span>
+        </h3>
+        <p style="margin-bottom:0;">OEG already leads with Indigenous art in Ford Hall and brand integrations. Sponsoring this prize associates the OEG brand with cutting-edge AI solving a deeply local, culturally vital problem. It's a high-visibility, high-impact legacy investment.</p>
+      </div>
+    </div>
+
+    <!-- Slide 6: The Prize Structure -->
+    <div class="slide">
+      <div class="label" style="background: var(--bg); display: inline-block; padding-right: 20px;">006 // THE PRIZE STRUCTURE</div>
+      <div class="split" style="width: 100%;">
+        <div class="col card" style="flex: 1; padding: 30px;">
+          <div class="number-block" style="color: var(--black); font-size: 8vw; margin-bottom: 0;">$100K</div>
+          <h2 style="margin-bottom: 0; font-size: 3.5vw;">PRIZE POOL</h2>
+        </div>
+        <div class="col card card-light" style="flex: 1.5;">
+          <ul style="font-size: 1.4vw; font-family: var(--mono); line-height: 2; list-style: none; padding-left: 0; margin-bottom: 30px;">
+            <li><span style="color:var(--red); font-weight: bold;">></span> <span style="font-weight:bold;">FOUR CO-SPONSORS:</span> $25,000 contribution each.</li>
+            <li><span style="color:var(--red); font-weight: bold;">></span> <span style="font-weight:bold;">RIGOROUS THRESHOLD:</span> Payout only triggers if a method hits an 85% weighted composite score.</li>
+            <li><span style="color:var(--red); font-weight: bold;">></span> <span style="font-weight:bold;">NO RISK:</span> You only pay for a breakthrough that works.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: The Result -->
+    <div class="slide">
+      <img src="diagrams/von-neumann.png" class="slide-graphic" style="right: -5%; top: -5%; height: 110vh; transform: rotate(5deg);">
+      <div class="label">007 // THE RESULT</div>
+      <h2>A PERMANENT <span class="highlight">LEGACY</span></h2>
+      <p>What happens when someone wins?</p>
+      <div class="divider"></div>
+      <div class="split" style="gap: 40px; width: 100%;">
+        <div class="col card" style="flex: 1;">
+          <h3 style="margin-top:0; font-size: 2.5vw; text-transform: uppercase;">[1] OWNERSHIP TRANSFER</h3>
+          <p style="font-size: 1.3vw; line-height: 1.6; margin-bottom: 0;">The winning translation algorithm's IP is transferred directly to the community trust.</p>
+        </div>
+        <div class="col card card-dark" style="flex: 1;">
+          <h3 style="margin-top:0; font-size: 2.5vw; text-transform: uppercase; color: var(--red);">[2] FREE TOOLS</h3>
+          <p style="font-size: 1.3vw; line-height: 1.6; margin-bottom: 0;">The community gets a deployable, high-quality translation engine for apps, education, and preservation—forever.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: The Ask -->
+    <div class="slide">
+      <div class="label" style="background: var(--bg); display: inline-block; padding-right: 20px;">008 // THE ASK</div>
+      <div class="split" style="width: 100%;">
+        <div class="col card" style="flex: 1; padding: 30px;">
+          <div class="number-block" style="color: var(--black); font-size: 8vw; margin-bottom: 0;">$25K</div>
+          <h2 style="margin-bottom: 0; font-size: 3.5vw;">FOUNDING SPONSOR</h2>
+        </div>
+        <div class="col card card-dark" style="flex: 1.5;">
+          <ul style="font-size: 1.4vw; font-family: var(--mono); line-height: 2; list-style: none; padding-left: 0; margin-bottom: 30px;">
+            <li><span style="color:var(--red); font-weight: bold;">></span> JOIN AS ONE OF 4 ANCHOR CONTRIBUTORS.</li>
+            <li><span style="color:var(--red); font-weight: bold;">></span> BRAND ATTACHED TO GLOBAL AI COMPETITION.</li>
+            <li><span style="color:var(--red); font-weight: bold;">></span> DIRECT SUPPORT FOR CREE LANGUAGE REVITALIZATION.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    window.teletypeMessages = [
+      "SYS.INIT // OEG_SPONSOR_BRIEFING\\nAWAITING INPUT...",
+      "ANALYZING: CREE_LANGUAGE_SUPPORT...\\n[FAILED] COMMERCIAL_MT_UNAVAILABLE",
+      "ESTABLISHING: COMPETITIVE_ARENA...\\n[ACTIVE] GLOBAL_SOURCING",
+      "DATA_SET: SECURE_ENCLAVE_MESC_TRUST...\\n[VERIFIED] OCAP_COMPLIANT",
+      "OPPORTUNITY: CSR_INDIGENOUS_RELATIONS...\\n[ALIGNMENT_MAX]",
+      "TARGET_THRESHOLD: 85%_COMPOSITE_SCORE\\nPAYOUT_CONDITION: LOCKED",
+      "IMPACT: OPEN_INFRASTRUCTURE // COMMUNITY_OWNED\\nLEGACY: SECURED",
+      "REQ_FUNDS: 25K_USD_CO-SPONSOR // 100K_PRIZE_POOL\\nSTATUS: AWAITING_PARTNERSHIP"
+    ];
+  </script>
+  <script src="pitch-deck.js"></script>
+</body>
+</html>

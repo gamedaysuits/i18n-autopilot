@@ -137,23 +137,22 @@ describe('cli-e2e: sync --dry', () => {
   });
 
   it('exits 0 in dry mode without writing target files', () => {
-    const { status } = runCLI(['sync', '--dry', '--fallback'], tempDir);
+    const { status } = runCLI(['sync', '--dry'], tempDir);
     assert.equal(status, 0);
     // In dry mode, fr.json should NOT be created
     const frPath = path.join(tempDir, 'locales', 'fr.json');
     assert.ok(!fs.existsSync(frPath), 'Dry run should not create fr.json');
   });
 
-  it('sync --fallback creates target file with [EN] prefixes', () => {
-    const { status } = runCLI(['sync', '--fallback'], tempDir);
-    assert.equal(status, 0);
-    // fallback mode should create fr.json with [EN]-prefixed values
-    const frPath = path.join(tempDir, 'locales', 'fr.json');
-    assert.ok(fs.existsSync(frPath), 'Fallback sync should create fr.json');
-    const content = JSON.parse(fs.readFileSync(frPath, 'utf-8'));
+  it('sync without API key exits with error (no silent failures)', () => {
+    // Without an API key, sync should fail loudly — not silently write garbage
+    const { status, stderr, stdout } = runCLI(['sync'], tempDir);
+    // Preflight check should catch the missing key and exit 1
+    assert.equal(status, 1, 'Sync without API key should exit 1');
+    const combined = stdout + stderr;
     assert.ok(
-      content.greeting.startsWith('[EN]'),
-      `Expected [EN] prefix, got: ${content.greeting}`
+      combined.includes('[ERR]') || combined.includes('API key') || combined.includes('No '),
+      `Expected API key error, got: ${combined}`
     );
   });
 });

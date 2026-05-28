@@ -23,8 +23,9 @@ npx i18n-rosetta init
   "format": "auto",
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
-  "batchSize": 30,
-  "concurrency": 12,
+  "batchSize": 80,
+  "jsonConcurrency": 50,
+  "contentConcurrency": 12,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -63,9 +64,10 @@ The `typegen` config block is recognized and preserved by the config loader, but
 | `format` | `string` | `"auto"` | File format: `json`, `toml`, `yaml`, or `auto` (detect from extension). |
 | `model` | `string` | `"google/gemini-3.5-flash"` | Default model for LLM methods. Format depends on method: OpenRouter uses `provider/model` (e.g., `google/gemini-3.5-flash`); direct providers use bare names (e.g., `gpt-4o`, `gemini-2.5-flash`). |
 | `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Overridden by `--method` CLI flag. |
-| `batchSize` | `number` | `30` | Keys per translation batch. Higher = fewer API calls, but larger prompts. |
-| `concurrency` | `number` | `12` | Max parallel API calls for content (Markdown/MDX) translation. Overridden by `--concurrency` CLI flag. |
-| `fallbackPrefix` | `string` | `"[EN] "` | Prefix added to untranslated fallback values. Used by `audit` to detect incomplete translations. |
+| `batchSize` | `number` | `80` | Keys per translation batch. Higher = fewer API calls, but larger prompts. |
+| `jsonConcurrency` | `number` | `50` | Max parallel locale translations for JSON key sync. Overridden by `--json-concurrency` CLI flag. |
+| `contentConcurrency` | `number` | `12` | Max parallel API calls for content (Markdown/MDX) translation. Overridden by `--content-concurrency` CLI flag. |
+| `fallbackPrefix` | `string` | `"[EN] "` | Marker prefix used by `audit` and `verify` to detect legacy untranslated values from prior runs. Rosetta does not write this prefix — it only reads it for detection. |
 | `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Environment variable name for the API key. Override for custom env var names. |
 | `baseUrl` | `string` | `""` | Base URL for SEO artifact generation (hreflang, sitemaps, JSON-LD). |
 | `pairs` | `object` | `{}` | Per-pair method, model, and quality overrides. See [Pair Configuration](#pair-configuration). |

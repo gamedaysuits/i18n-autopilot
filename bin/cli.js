@@ -33,9 +33,9 @@ const { values, positionals } = parseArgs({
     'dry-run':        { type: 'boolean' },    // alias for --dry (more intuitive)
     help:             { type: 'boolean', short: 'h' },
     version:          { type: 'boolean', short: 'v' },
-    fallback:         { type: 'boolean' },
     yes:              { type: 'boolean', short: 'y' },
     'warn-only':      { type: 'boolean' },
+    'no-verify':      { type: 'boolean' },  // skip post-sync verification
     undo:             { type: 'boolean' },
     'force-content':  { type: 'boolean' },  // re-translate all content files (clears content lock)
     'no-tm':          { type: 'boolean' },  // skip Translation Memory for this sync run
@@ -57,7 +57,9 @@ const { values, positionals } = parseArgs({
     src:           { type: 'string' },
     'min-length':  { type: 'string' },
     'force-keys':  { type: 'string' },
-    concurrency:   { type: 'string' },     // max parallel API calls for content sync
+    concurrency:           { type: 'string' },     // sets both json + content concurrency (backward compat)
+    'json-concurrency':    { type: 'string' },     // max parallel API calls for JSON key-value translation (default: 50)
+    'content-concurrency': { type: 'string' },     // max parallel API calls for markdown content (default: 12)
     temperature:   { type: 'string' },     // sampling temperature for LLM methods
     locale:        { type: 'string' },     // target locale for xliff export, tm clear
   },
@@ -124,6 +126,7 @@ if (args.help && command !== 'help') {
     tm:         () => import('../lib/commands/tm.js'),
     xliff:      () => import('../lib/commands/xliff.js'),
     models:     () => import('../lib/commands/models.js'),
+    verify:     () => import('../lib/commands/verify.js'),
   };
 
   if (commands[command]) {

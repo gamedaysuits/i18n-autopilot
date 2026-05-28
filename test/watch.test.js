@@ -42,9 +42,9 @@ const CLI_PATH = path.join(import.meta.dirname, '..', 'bin', 'cli.js');
  * Create a temporary project directory with a valid config and source file.
  *
  * Sets up the minimum viable structure for the watch command:
- *   - i18n-rosetta.config.json with fallback mode
+ *   - i18n-rosetta.config.json with dry-run mode for testing
  *   - locales/en.json as the source file
- *   - locales/fr.json as a target (so sync has something to do)
+ *   - locales/fr.json as a target (so sync has something to report)
  *
  * @returns {{ tmpDir: string, sourcePath: string }}
  */
@@ -75,7 +75,7 @@ function createWatchFixture() {
     JSON.stringify(targetData, null, 2)
   );
 
-  // Config — use fallback mode so no API key is needed
+  // Config — dry-run mode so no API key is needed for testing watch lifecycle
   const config = {
     version: 3,
     inputLocale: 'en',
@@ -104,13 +104,13 @@ function createWatchFixture() {
  * @param {string} cwd - Working directory for the child process
  */
 function spawnWatch(cwd) {
-  const child = spawn('node', [CLI_PATH, 'watch', '--fallback'], {
+  const child = spawn('node', [CLI_PATH, 'watch', '--dry'], {
     cwd,
     // Pipe stdout/stderr so we can read them
     stdio: ['ignore', 'pipe', 'pipe'],
     env: {
       ...process.env,
-      // Ensure no API key so we get deterministic fallback behavior
+      // Ensure no API key so we verify watch lifecycle (not translation)
       OPENROUTER_API_KEY: '',
       ROSETTA_API_KEY: '',
     },

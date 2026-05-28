@@ -31,7 +31,7 @@ These are the most commonly requested locales for web and mobile applications, l
 | Flag | Language | Code | Google | LLM | Coached | Script | Notes |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
 | 🇸🇦 | Arabic | `ar` | ✅ | ✅ | ✅ | — | RTL. Modern Standard Arabic (فصحى). |
-| 🇵🇭 | Filipino (Taglish) | `tl` | ✅ | ✅ | ✅ | — | Code-switching: Tagalog primary, technical terms in English. |
+| 🇵🇭 | Filipino (Taglish) | `tl` / `fil` | ✅ | ✅ | ✅ | — | Use `fil` in Docusaurus configs. rosetta resolves both. |
 | 🇫🇷 | French | `fr` | ✅ | ✅ | ✅ | — | Vous-form. Gender-inclusive (Connecté·e). |
 | 🇪🇸 | Spanish | `es` | ✅ | ✅ | ✅ | — | Neutral Latin American. |
 | 🇩🇪 | German | `de` | ✅ | ✅ | ✅ | — | Sie-form. Gender-inclusive (Benutzer:innen). |

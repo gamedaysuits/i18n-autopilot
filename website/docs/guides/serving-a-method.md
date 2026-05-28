@@ -244,7 +244,7 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Best Practices
 
-1. **Return empty strings for failures** — Don't return the source string as a "translation." Return `""` and let i18n-rosetta's fallback prefix mechanism handle it.
+1. **Return empty strings for failures** — Don't return the source string as a "translation." Return `""` and i18n-rosetta's quality gate will catch it. The key will be skipped and retried on the next sync.
 2. **Include confidence scores** — If your pipeline can estimate quality, return it in metadata. This helps with quality auditing.
 3. **Implement health checks** — Add a `GET /health` endpoint so i18n-rosetta can verify connectivity before starting a large sync.
 4. **Rate limit gracefully** — If your pipeline has throughput limits, return `429` status codes. i18n-rosetta's batch system will back off.

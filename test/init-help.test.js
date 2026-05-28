@@ -83,7 +83,7 @@ describe('buildDefaultConfig', () => {
     assert.equal(config.inputLocale, 'en');
     assert.equal(config.localesDir, './locales');
     assert.equal(config.model, 'google/gemini-3.5-flash');
-    assert.equal(config.batchSize, 30);
+    assert.equal(config.batchSize, 80);
     assert.equal(config.format, 'auto');
     assert.deepEqual(config.languages, []);
   });

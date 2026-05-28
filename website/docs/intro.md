@@ -75,11 +75,12 @@ rosetta isn't just `sync`. It's a complete i18n pipeline:
 
 | Command | What It Does |
 |---------|-------------|
-| `sync` | Translate missing, stale, and fallback keys |
+| `sync` | Translate missing and stale keys (with post-sync verification) |
 | `watch` | Auto-sync when your source file changes |
 | `lint` | Scan source code for hardcoded strings |
 | `wrap` | Auto-wrap hardcoded strings in `t()` calls |
-| `audit` | List all untranslated `[EN]` fallback values |
+| `audit` | List all `[EN]` fallback markers from prior runs |
+| `verify` | Verify translations are present and correct (CI gate) |
 | `integrity` | Detect placeholder corruption, encoding issues, and ICU plural completeness |
 | `seo` | Generate hreflang tags, sitemaps, and JSON-LD schema |
 | `status` | Show pair config, plugins, and benchmark scores |
@@ -89,7 +90,7 @@ rosetta isn't just `sync`. It's a complete i18n pipeline:
 | `tm` | Manage Translation Memory cache (stats, clear, per-locale) |
 | `xliff` | Export/import XLIFF 1.2 for professional translator review |
 
-Three of these — `lint`, `sync`, `audit` — form a CI pipeline that catches hardcoded strings, translates them, and fails the build if any locale is incomplete.
+Four of these — `lint`, `sync`, `verify`, `audit` — form a CI pipeline that catches hardcoded strings, translates them, verifies correctness, and fails the build if any locale is incomplete.
 
 ---
 

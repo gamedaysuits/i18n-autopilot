@@ -311,7 +311,8 @@ The progress bar updates in-place as each batch completes (~30 keys per update).
 - **Prototype pollution guard** — blocks `__proto__`, `constructor`, `prototype`
 - **Path containment** — file writes validated to stay within configured directories
 - **Block protection** — code blocks, shortcodes, HTML shielded during content translation
-- **Explicit fallback** — `--fallback` writes `[EN]`-prefixed placeholders when the API is unavailable (re-sync with a key for real translations)
+- **Fail-loud architecture** — translation failures always throw with actionable error messages, never silently write garbage
+- **Post-sync verification** — `verify` command re-reads written files and confirms translations are present, correct script, and placeholder-intact
 - **Partial success** — one failed batch doesn't block the rest
 
 ## Testing

@@ -16,6 +16,7 @@ i18n-rosetta lint              Scan source code for hardcoded strings
 i18n-rosetta wrap              Auto-wrap hardcoded strings in t() calls (with undo)
 i18n-rosetta seo <sub>         Generate hreflang, sitemap.xml, or JSON-LD schema
 i18n-rosetta integrity         Audit locale files for format/encoding issues
+i18n-rosetta verify            Verify translations are present and correct (CI gate)
 i18n-rosetta status            Show pair configuration, plugins, and quality tiers
 i18n-rosetta provenance        Audit translation resource licensing
 i18n-rosetta plugin <sub>      Manage method plugins (install, remove, list)
@@ -40,10 +41,13 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
+--content-concurrency <n> Max parallel API calls for content translation (default: 12)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
+--no-verify             Skip post-sync verification pass
 --locale <code>         Target locale (xliff export, tm clear)
 --quiet                 Errors and warnings only — suppress banner, progress bar, and info lines
 --json                  Machine-readable NDJSON output — one JSON object per event
@@ -76,7 +80,7 @@ Mix presets and individual codes: `european, ja` → fr, de, es, it, pt, nl, ja
 
 ## sync
 
-Translates missing, stale, and fallback keys across all locale files.
+Translates missing and stale keys across all locale files. Runs post-sync verification by default.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
@@ -86,8 +90,10 @@ i18n-rosetta sync --force-keys "a.title,a.subtitle" # multiple keys
 i18n-rosetta sync --force-content                   # re-translate all Markdown/MDX
 i18n-rosetta sync --content-dir ./content           # include Hugo Markdown
 i18n-rosetta sync --method google-translate          # force Google Translate
-i18n-rosetta sync --concurrency 20                  # 20 parallel API calls
-i18n-rosetta sync --fallback                         # write [EN] prefixes on failure
+i18n-rosetta sync --concurrency 20                  # 20 parallel API calls (both phases)
+i18n-rosetta sync --json-concurrency 30              # 30 parallel locale translations (JSON)
+i18n-rosetta sync --content-concurrency 8            # 8 parallel content translations
+i18n-rosetta sync --no-verify                        # skip post-sync verification
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
@@ -95,7 +101,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 
 **Change detection**: rosetta stores SHA-256 hashes in `.i18n-rosetta.lock`. When source values change, the next sync automatically re-translates those keys. Commit the lock file so all developers share the baseline.
 
-**Parallelism**: Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool with configurable concurrency. Default is 12 parallel API calls. Override with `--concurrency` or the `concurrency` config field. JSON key translation runs sequentially per locale (fast enough that parallelism adds no benefit).
+**Parallelism**: Both JSON key translation and content translation run in parallel. JSON locales are translated simultaneously (default: 50 concurrent locales), with batches within each locale also parallelized (4 concurrent batches). Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool (default: 12 concurrent API calls). Override with `--json-concurrency`, `--content-concurrency`, or `--concurrency` (sets both).
 
 **Output**: Sync displays a version banner, format/framework detection, cost estimate, and per-locale progress bars:
 
@@ -113,7 +119,7 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-Progress bars update in-place after each batch (~30 keys). Use `--quiet` for errors/warnings only, or `--json` for machine-readable NDJSON output. Both suppress the progress bar and banner.
+Progress bars update in-place after each batch (~80 keys). Use `--quiet` for errors/warnings only, or `--json` for machine-readable NDJSON output. Both suppress the progress bar and banner.
 
 ---
 
@@ -129,11 +135,32 @@ i18n-rosetta watch
 
 ## audit
 
-List all untranslated `[EN]`-prefixed fallback values. Exits with code 1 if any are found — use as a CI gate to fail builds with incomplete translations.
+List all untranslated `[EN]`-prefixed fallback values from prior runs. Exits with code 1 if any are found — use as a CI gate to fail builds with incomplete translations.
 
 ```bash
 i18n-rosetta audit
 ```
+
+---
+
+## verify
+
+Re-reads all locale files from disk and verifies translations are actually present and correct. This is the same verification that runs automatically at the end of every `sync` (unless `--no-verify` is passed).
+
+```bash
+i18n-rosetta verify                    # verify all locale files
+i18n-rosetta verify --warn-only        # non-blocking
+i18n-rosetta verify && echo "All good" # CI gate
+```
+
+**What it checks:**
+- Key parity — all source keys present in each target
+- `[EN]` fallback markers from prior runs
+- Empty translations
+- Script compliance — non-Latin locales should have non-ASCII translations
+- Placeholder preservation — ICU placeholders match source
+- Encoding issues — BOM markers, invisible characters
+- Source echoes — values identical to source (warning)
 
 ---
 
@@ -346,7 +373,8 @@ Use `lint`, `sync`, and `audit` together for bulletproof i18n:
 |-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | Block commits with hardcoded strings |
 | **Sync** | `sync` | Post-commit / CI | Translate missing and changed keys |
-| **Audit** | `audit` | Build step | Fail deployment if any locale is incomplete |
+| **Verify** | `verify` | Post-sync / CI | Confirm translations are present and correct |
+| **Audit** | `audit` | Build step | Fail deployment if any locale has `[EN]` markers |
 
 ---
 

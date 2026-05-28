@@ -186,14 +186,18 @@ i18n-rosetta sync
 
 ### Sync is slow for many languages
 
-Rosetta translates pairs sequentially by default. To speed up multi-language syncs:
+Rosetta translates all locales in parallel by default. If sync is still slow:
 
 1. **Use Google Translate for high-volume pairs** — It's 10–50× faster than LLM translation
-2. **Increase batch size** (up to 50, default is 30):
+2. **Increase batch size** (default is 80):
    ```json
-   { "batchSize": 50 }
+   { "batchSize": 120 }
    ```
-3. **Use a fast model** — `gpt-4o-mini` is significantly faster than `gpt-4o`
+3. **Tune concurrency** — JSON locale parallelism defaults to 50 and content to 12. If your API provider supports higher rate limits:
+   ```bash
+   npx i18n-rosetta sync --json-concurrency 80 --content-concurrency 20
+   ```
+4. **Use a fast model** — `gpt-4o-mini` is significantly faster than `gpt-4o`
 
 ### High API costs
 

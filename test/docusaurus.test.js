@@ -193,9 +193,9 @@ describe('getDocusaurusTargetPath', () => {
 });
 
 // -----------------------------------------------------------------
-// End-to-end sync test (fallback mode, no API key)
+// End-to-end sync test (no-fallback — verifies failure behavior)
 // -----------------------------------------------------------------
-describe('Docusaurus sync integration (fallback mode)', () => {
+describe('Docusaurus sync integration (no-fallback)', () => {
   let tmpDir;
 
   beforeEach(() => {
@@ -219,7 +219,6 @@ describe('Docusaurus sync integration (fallback mode)', () => {
     const enDir = path.join(tmpDir, 'i18n', 'en', 'docusaurus-theme-classic');
     fs.mkdirSync(enDir, { recursive: true });
 
-    // code.json — Docusaurus {message, description} format
     fs.writeFileSync(
       path.join(tmpDir, 'i18n', 'en', 'code.json'),
       JSON.stringify({
@@ -228,7 +227,6 @@ describe('Docusaurus sync integration (fallback mode)', () => {
       }, null, 2)
     );
 
-    // navbar.json
     fs.writeFileSync(
       path.join(enDir, 'navbar.json'),
       JSON.stringify({
@@ -237,7 +235,6 @@ describe('Docusaurus sync integration (fallback mode)', () => {
       }, null, 2)
     );
 
-    // Source docs
     const docsDir = path.join(tmpDir, 'docs');
     fs.mkdirSync(docsDir, { recursive: true });
     fs.writeFileSync(path.join(docsDir, 'intro.md'), '---\ntitle: Introduction\n---\n# Welcome\n\nThis is the intro.\n');
@@ -247,11 +244,10 @@ describe('Docusaurus sync integration (fallback mode)', () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it('syncs JSON files with [EN] fallback when no API key', async () => {
+  it('dry-run mode previews without writing files', async () => {
     const saved = process.env.OPENROUTER_API_KEY;
     delete process.env.OPENROUTER_API_KEY;
 
-    // Suppress console output
     const origLog = console.log;
     const origWarn = console.warn;
     const origWrite = process.stdout.write;
@@ -262,61 +258,12 @@ describe('Docusaurus sync integration (fallback mode)', () => {
     try {
       await runSync({
         cwd: tmpDir,
-        cliArgs: { fallback: true },
+        dryRun: true,
+        cliArgs: { dry: true, 'no-verify': true },
       });
 
-      // Verify French code.json was created
       const frCodePath = path.join(tmpDir, 'i18n', 'fr', 'code.json');
-      assert.ok(fs.existsSync(frCodePath), 'fr/code.json should exist');
-
-      // Verify it's in Docusaurus format with [EN] prefix on messages
-      const frCode = JSON.parse(fs.readFileSync(frCodePath, 'utf-8'));
-      assert.ok(frCode['theme.title'].message.startsWith('[EN] '), 'Should have [EN] prefix');
-      assert.equal(frCode['theme.title'].description, 'The site title', 'Description preserved');
-
-      // Verify French navbar.json was created in correct subdirectory
-      const frNavPath = path.join(tmpDir, 'i18n', 'fr', 'docusaurus-theme-classic', 'navbar.json');
-      assert.ok(fs.existsSync(frNavPath), 'fr/docusaurus-theme-classic/navbar.json should exist');
-
-      const frNav = JSON.parse(fs.readFileSync(frNavPath, 'utf-8'));
-      assert.ok(frNav['item.label.Docs'].message.startsWith('[EN] '), 'Navbar should have [EN] prefix');
-      assert.equal(frNav['item.label.Docs'].description, 'Navbar docs link', 'Navbar description preserved');
-
-    } finally {
-      console.log = origLog;
-      console.warn = origWarn;
-      process.stdout.write = origWrite;
-      if (saved) process.env.OPENROUTER_API_KEY = saved;
-    }
-  });
-
-  it('creates Markdown content files in correct Docusaurus paths', async () => {
-    const saved = process.env.OPENROUTER_API_KEY;
-    delete process.env.OPENROUTER_API_KEY;
-
-    const origLog = console.log;
-    const origWarn = console.warn;
-    const origWrite = process.stdout.write;
-    console.log = () => {};
-    console.warn = () => {};
-    process.stdout.write = () => true;
-
-    try {
-      await runSync({
-        cwd: tmpDir,
-        cliArgs: { fallback: true },
-      });
-
-      // Verify docs content was mirrored
-      const targetDoc = path.join(
-        tmpDir, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'intro.md'
-      );
-      assert.ok(fs.existsSync(targetDoc), 'Translated doc should exist at correct path');
-
-      // Verify content has front matter with [EN] prefix on title
-      const content = fs.readFileSync(targetDoc, 'utf-8');
-      assert.ok(content.includes('[EN]'), 'Content should have [EN] markers');
-      assert.ok(content.includes('# Welcome') || content.includes('Welcome'), 'Body content should be present');
+      assert.ok(!fs.existsSync(frCodePath), 'fr/code.json should NOT exist in dry run');
 
     } finally {
       console.log = origLog;
@@ -333,33 +280,39 @@ describe('Docusaurus sync integration (fallback mode)', () => {
     const origLog = console.log;
     const origWarn = console.warn;
     const origWrite = process.stdout.write;
+    const origErr = console.error;
     console.log = () => {};
     console.warn = () => {};
+    console.error = () => {};
     process.stdout.write = () => true;
 
     try {
-      // Pre-create a translated doc with custom content
       const targetDoc = path.join(
         tmpDir, 'i18n', 'fr', 'docusaurus-plugin-content-docs', 'current', 'intro.md'
       );
       fs.mkdirSync(path.dirname(targetDoc), { recursive: true });
       fs.writeFileSync(targetDoc, '# Bienvenue\n\nCeci est la traduction.');
 
-      await runSync({
-        cwd: tmpDir,
-        cliArgs: { fallback: true },
-      });
+      try {
+        await runSync({
+          cwd: tmpDir,
+          cliArgs: { 'no-verify': true },
+        });
+      } catch {
+        // Expected — no API key
+      }
 
-      // Verify the existing file was NOT overwritten
       const content = fs.readFileSync(targetDoc, 'utf-8');
       assert.ok(content.includes('Bienvenue'), 'Existing translation should be preserved');
-      assert.ok(!content.includes('[EN]'), 'Should not have been overwritten with fallback');
+      assert.ok(!content.includes('[EN]'), 'Should not have been overwritten');
 
     } finally {
       console.log = origLog;
       console.warn = origWarn;
+      console.error = origErr;
       process.stdout.write = origWrite;
       if (saved) process.env.OPENROUTER_API_KEY = saved;
     }
   });
 });
+

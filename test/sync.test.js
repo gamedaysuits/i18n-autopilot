@@ -229,7 +229,7 @@ describe('resolveConfig', () => {
     const config = resolveConfig({}, '/tmp/nonexistent');
     assert.equal(config.inputLocale, 'en');
     assert.equal(config.model, 'google/gemini-3.5-flash');
-    assert.equal(config.batchSize, 30);
+    assert.equal(config.batchSize, 80);
     assert.equal(config.fallbackPrefix, '[EN] ');
   });
 
@@ -634,9 +634,9 @@ describe('diffLocale with changedKeys', () => {
 });
 
 // -----------------------------------------------------------------
-// Integration test: fallback-only sync (no API key)
+// Integration test: sync without API key (no silent fallbacks)
 // -----------------------------------------------------------------
-describe('sync integration (fallback mode)', () => {
+describe('sync integration (no-fallback, fail-loud)', () => {
   const tmpDir = path.join(import.meta.dirname, 'fixtures', '_tmp_sync_test');
 
   beforeEach(() => {
@@ -653,7 +653,7 @@ describe('sync integration (fallback mode)', () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it('backfills missing keys with [EN] prefix when no API key', async () => {
+  it('does NOT write [EN]-prefixed fallbacks when no API key (fails loud)', async () => {
     // Clear any env key
     const saved = process.env.OPENROUTER_API_KEY;
     delete process.env.OPENROUTER_API_KEY;
@@ -666,31 +666,31 @@ describe('sync integration (fallback mode)', () => {
     process.stdout.write = (s) => logs.push(s);
 
     try {
+      // Without fallback mode (removed), sync should fail at preflight
+      // or during translation — not silently write garbage
+      try {
+        await runSync({
+          cwd: import.meta.dirname,
+          cliArgs: { dir: tmpDir },
+        });
+      } catch (err) {
+        // Expected: preflight or translation error
+        assert.ok(err.message, 'Error should have a message');
+      }
 
-      await runSync({
-        cwd: import.meta.dirname,
-        cliArgs: { dir: tmpDir, fallback: true },
-      });
-
-      // Read the updated French file
+      // Read the French file — it should NOT have new [EN] prefixed values
+      // from this sync run. Existing [EN] values from fixture are OK.
       const frUpdated = JSON.parse(fs.readFileSync(path.join(tmpDir, 'fr.json'), 'utf-8'));
       const frFlat = flattenKeys(frUpdated);
 
-      // Keys that were missing should now exist with [EN] prefix
-      assert.ok(frFlat['pages.home.cta'], 'Should have backfilled pages.home.cta');
+      // Keys that were missing should NOT have been backfilled with [EN] prefix
+      // (pages.home.cta was missing from fr.json in the fixture)
       assert.ok(
-        frFlat['pages.home.cta'].startsWith('[EN] '),
-        `Expected [EN] prefix, got: ${frFlat['pages.home.cta']}`
+        !frFlat['pages.home.cta'] || !frFlat['pages.home.cta'].startsWith('[EN] '),
+        'Missing keys should NOT be backfilled with [EN] prefix'
       );
 
-      // Previously [EN]-prefixed values should still have [EN] prefix
-      // (since no API key = no real translation)
-      assert.ok(
-        frFlat['nav.contact'].startsWith('[EN] '),
-        'nav.contact should still have [EN] prefix without API'
-      );
-
-      // German should be unchanged (already fully synced)
+      // German should be completely unchanged (already fully synced)
       const deUpdated = JSON.parse(fs.readFileSync(path.join(tmpDir, 'de.json'), 'utf-8'));
       const deFlat = flattenKeys(deUpdated);
       assert.equal(deFlat['nav.home'], 'Startseite', 'German should be untouched');
@@ -699,6 +699,7 @@ describe('sync integration (fallback mode)', () => {
       console.log = origLog;
       process.stdout.write = origWrite;
       if (saved) process.env.OPENROUTER_API_KEY = saved;
+      else delete process.env.OPENROUTER_API_KEY;
     }
   });
 });

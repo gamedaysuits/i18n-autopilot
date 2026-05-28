@@ -86,7 +86,8 @@ Key fields:
 | `localesDir` | Where locale files live | (auto-detected) |
 | `model` | LLM model for `llm`/`llm-coached` methods | `google/gemini-2.5-flash` |
 | `batchSize` | Keys per API call | 30 (LLM), 128 (Google) |
-| `concurrency` | Parallel API calls for content translation | 12 |
+| `jsonConcurrency` | Parallel locale translations for JSON keys | 50 |
+| `contentConcurrency` | Parallel API calls for content translation | 12 |
 
 Full reference: [Configuration](/docs/getting-started/configuration)
 
@@ -194,13 +195,13 @@ npx i18n-rosetta sync --pair en-fr
 ```bash
 npx i18n-rosetta sync
 ```
-Rosetta processes pairs sequentially. With TM caching, only changed keys hit the API.
+Rosetta translates all locales in parallel. With TM caching, only changed keys hit the API.
 
 **Content mode (Markdown/MDX for Docusaurus, Hugo, etc.):**
 ```bash
 npx i18n-rosetta sync --content
 ```
-Translates docs, blog posts, and content files alongside locale JSON. Uses parallel concurrency (default: 12 simultaneous API calls).
+Translates docs, blog posts, and content files alongside locale JSON. Uses parallel concurrency (default: 12 simultaneous API calls). Tune with `--content-concurrency`.
 
 **Dry run (preview without writing):**
 ```bash

@@ -500,7 +500,7 @@ describe('RED TEAM: sync with empty/new locale files', () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it('populates an empty locale file with [EN]-prefixed fallbacks', async () => {
+  it('does NOT write [EN]-prefixed fallbacks without API key (loud failure)', async () => {
     const saved = process.env.OPENROUTER_API_KEY;
     delete process.env.OPENROUTER_API_KEY;
 
@@ -511,15 +511,25 @@ describe('RED TEAM: sync with empty/new locale files', () => {
     process.stdout.write = (s) => logs.push(s);
 
     try {
+      // Without fallback mode (removed), sync should fail at preflight
+      // or during translation — not silently write garbage
+      try {
+        await runSync({
+          cwd: import.meta.dirname,
+          cliArgs: { dir: tmpDir },
+        });
+      } catch (err) {
+        // Expected: preflight or translation error
+        assert.ok(err.message, 'Error should have a message');
+      }
 
-      await runSync({
-        cwd: import.meta.dirname,
-        cliArgs: { dir: tmpDir, fallback: true },
-      });
-
+      // Regardless of the path taken, fr.json should NOT have [EN] prefixes
       const frUpdated = JSON.parse(fs.readFileSync(path.join(tmpDir, 'fr.json'), 'utf-8'));
-      assert.equal(frUpdated.greeting, '[EN] Hello');
-      assert.equal(frUpdated.farewell, '[EN] Goodbye');
+      // It should either be unchanged (empty {}) or not have [EN] garbage
+      const values = Object.values(frUpdated).filter(v => typeof v === 'string');
+      for (const val of values) {
+        assert.ok(!val.startsWith('[EN] '), `Should not have [EN] prefix, got: ${val}`);
+      }
     } finally {
       console.log = origLog;
       process.stdout.write = origWrite;
@@ -580,7 +590,7 @@ describe('RED TEAM: CLI arg parsing edge cases', () => {
         dry:         { type: 'boolean' },
         help:        { type: 'boolean', short: 'h' },
         version:     { type: 'boolean', short: 'v' },
-        fallback:    { type: 'boolean' },
+        'no-verify': { type: 'boolean' },
         yes:         { type: 'boolean', short: 'y' },
         'warn-only': { type: 'boolean' },
         undo:        { type: 'boolean' },

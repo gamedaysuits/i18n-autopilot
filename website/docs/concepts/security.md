@@ -63,21 +63,28 @@ API calls use exponential backoff with jitter on 429 (rate limit) and 5xx (serve
 
 Every API request has a 30-second timeout via `AbortController`. This prevents the sync process from hanging indefinitely on a dead connection.
 
-## Fallback Mode
+## Fail-Loud Translation Failures
 
-When the API is unavailable, `--fallback` writes `[EN]`-prefixed placeholders instead of real translations:
+When the API is unavailable or a translation fails, rosetta throws a loud error with actionable guidance instead of silently writing garbage. No `[EN]`-prefixed placeholders are ever written during sync.
 
-```bash
-npx i18n-rosetta sync --fallback
+```
+[ERR] Content sync for fr: no API key available.
+  Set OPENROUTER_API_KEY in .env.local to translate content.
 ```
 
-```json
-{
-  "hero.title": "[EN] Welcome to our platform"
-}
-```
+One file's failure doesn't stop the entire sync — the error is logged and the pipeline continues to the next file, so you get maximum progress per run.
 
-These placeholders are automatically detected and re-translated on the next sync with a valid API key. They're never treated as "translated" — `audit` will flag them.
+## Post-Sync Verification
+
+After all translations complete, rosetta re-reads the written locale files from disk and runs a verification pass. This catches the gap between sync reporting success and translations being wrong in fact:
+
+- **Key parity** — all source keys present in each target
+- **`[EN]` markers** — legacy fallback markers from prior runs
+- **Empty translations** — blank values that slipped through
+- **Script compliance** — non-Latin locales with ASCII-only translations
+- **Placeholder preservation** — ICU placeholders match source
+
+Skip with `--no-verify` or run standalone with `npx i18n-rosetta verify`.
 
 ## Testing
 
