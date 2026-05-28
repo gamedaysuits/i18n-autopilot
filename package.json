@@ -75,6 +75,11 @@
     "!docs/readme-locales/",
     "!docs/readme-i18n.config.json",
     "!docs/.i18n-rosetta.lock",
+    "!docs/.i18n-rosetta-content.lock",
+    "!docs/BENCHMARK_SPEC.md",
+    "!docs/SCORING_SPEC.md",
+    "!docs/history-of-language-and-computation.md",
+    "!docs/README.tl.md",
     "README.md",
     "LICENSE"
   ],
