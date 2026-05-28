@@ -44,7 +44,7 @@ export {
 export {
   resolveConfig,
   generateConfigTemplate,
-  DEFAULT_MODEL,
+  DEFAULT_OPENROUTER_MODEL,
   DEFAULT_BATCH_SIZE,
 } from './lib/config.js';
 export { resolvePairs } from './lib/pairs.js';
