@@ -4,7 +4,7 @@ title: "Ondersteunde talen"
 ---
 # Ondersteunde talen
 
-rosetta wordt geleverd met **Language Cards** — gestructureerde configuratiebestanden voor 50 talen. Elke kaart bevat register-presets, metagegevens van het formaliteitssysteem, vlaggen voor methode-ondersteuning, typografieregels en scriptinformatie. Elke taal die uw LLM kent, kan met één enkele configuratieregel worden toegevoegd — dit zijn de talen met gecureerde, voor productie geschikte registers.
+rosetta wordt geleverd met **Language Cards** — gestructureerde configuratiebestanden voor 50 talen. Elke kaart bevat register-presets, metadata voor het formaliteitssysteem, ondersteuningsvlaggen voor methoden, typografieregels en scriptinformatie. Elke taal die uw LLM kent, kan met een enkele configuratieregel worden toegevoegd — dit zijn de talen met gecureerde, productieklare registers.
 
 ---
 
@@ -14,10 +14,10 @@ Elke taal kan een of meer van deze vertaalmethoden gebruiken:
 
 | Icoon | Methode | Hoe het werkt | Kosten |
 |------|--------|-------------|------|
-| 🟢 | **Google Translate** | Neural MT baseline. 130+ talen. Alleen key-value strings — kan Markdown-content niet veilig vertalen. | ~$20/1M tekens |
-| 🔵 | **LLM (OpenRouter)** | Elke taal die het model kent. Register-gestuurde prompts. Verwerkt key-value + Markdown-content. | Varieert per model |
-| 🟣 | **LLM-Coached** | LLM + grammaticewoordenboeken + coaching-data geïnjecteerd in prompts. Het beste voor morfologisch complexe talen. | Varieert per model |
-| 🟠 | **API (Plugin)** | Door de community gehoste vertaalpijplijnen die via HTTP worden aangeboden. [OCAP-compatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Varieert per aanbieder |
+| 🟢 | **Google Translate** | Neurale MT-basislijn. 130+ talen. Alleen key-value strings — kan Markdown-content niet veilig vertalen. | ~$20/1M tekens |
+| 🔵 | **LLM (OpenRouter)** | Elke taal die het model kent. Registergestuurde prompts. Verwerkt key-value + Markdown-content. | Varieert per model |
+| 🟣 | **LLM-Coached** | LLM + grammaticewoordenboeken + coachingdata geïnjecteerd in prompts. Het beste voor morfologisch complexe talen. | Varieert per model |
+| 🟠 | **API (Plugin)** | Door de community gehoste vertaalpijplijnen die via HTTP worden aangeboden. [OCAP-compatibel](https://mtevalarena.org/docs/community/low-resource-languages). | Varieert per provider |
 
 Stel `GOOGLE_TRANSLATE_API_KEY` in voor Google Translate, of `OPENROUTER_API_KEY` voor LLM-methoden. Zie [Vertaalmethoden](/docs/guides/translation-methods) voor volledige details.
 
@@ -25,12 +25,12 @@ Stel `GOOGLE_TRANSLATE_API_KEY` in voor Google Translate, of `OPENROUTER_API_KEY
 
 ## Prioriteitstalen
 
-Dit zijn de meest aangevraagde locales voor web- en mobiele applicaties, gerangschikt in de door rosetta aanbevolen accessibility-first volgorde.
+Dit zijn de meest gevraagde locales voor web- en mobiele applicaties, vermeld in de door rosetta aanbevolen 'accessibility-first' volgorde.
 
 | Vlag | Taal | Code | Google | LLM | Coached | Script | Opmerkingen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
 | 🇸🇦 | Arabisch | `ar` | ✅ | ✅ | ✅ | — | RTL. Modern Standaard Arabisch (فصحى). |
-| 🇵🇭 | Filipijns (Taglish) | `tl` | ✅ | ✅ | ✅ | — | Code-switching: Tagalog primair, technische termen in het Engels. |
+| 🇵🇭 | Filipijns (Taglish) | `tl` / `fil` | ✅ | ✅ | ✅ | — | Gebruik `fil` in Docusaurus-configuraties. rosetta lost beide op. |
 | 🇫🇷 | Frans | `fr` | ✅ | ✅ | ✅ | — | Vous-vorm. Genderinclusief (Connecté·e). |
 | 🇪🇸 | Spaans | `es` | ✅ | ✅ | ✅ | — | Neutraal Latijns-Amerikaans. |
 | 🇩🇪 | Duits | `de` | ✅ | ✅ | ✅ | — | Sie-vorm. Genderinclusief (Benutzer:innen). |
@@ -40,7 +40,7 @@ Dit zijn de meest aangevraagde locales voor web- en mobiele applicaties, gerangs
 | 🇧🇷 | Portugees (BR) | `pt` | ✅ | ✅ | ✅ | — | Braziliaans-Portugees. |
 | 🇰🇷 | Koreaans | `ko` | ✅ | ✅ | ✅ | — | 해요체 beleefdheidsregister. |
 
-## Belangrijkste wereldtalen
+## Belangrijke wereldtalen
 
 | Vlag | Taal | Code | Google | LLM | Coached | Script | Opmerkingen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
@@ -72,7 +72,7 @@ Dit zijn de meest aangevraagde locales voor web- en mobiele applicaties, gerangs
 | 🇵🇰 | Urdu | `ur` | ✅ | ✅ | ✅ | — | RTL. آپ-vorm. |
 | 🇻🇳 | Vietnamees | `vi` | ✅ | ✅ | ✅ | — | |
 | 🇹🇼 | Chinees (Traditioneel) | `zh-TW` | ✅ | ✅ | ✅ | — | 繁體中文. |
-| 🇬🇪 | Georgisch | `ka` | ✅ | ✅ | — | — | ქართული. Kartvelische taalfamilie. |
+| 🇬🇪 | Georgisch | `ka` | ✅ | ✅ | — | — | ქართული. Kartveelse taalfamilie. |
 | 🇳🇬 | Yoruba | `yo` | ✅ | ✅ | — | — | Èdè Yorùbá. Tonaal (3 tonen). |
 
 ## Regionale varianten
@@ -80,32 +80,32 @@ Dit zijn de meest aangevraagde locales voor web- en mobiele applicaties, gerangs
 | Vlag | Taal | Code | Google | LLM | Coached | Script | Opmerkingen |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
 | 🇲🇽 | Mexicaans-Spaans | `es-MX` | ✅ | ✅ | ✅ | — | Tú-vorm. Warm register. |
-| 🇨🇦 | Canadees-Frans | `fr-CA` | ✅ | ✅ | ✅ | — | Québécois-idiomen. |
+| 🇨🇦 | Canadees-Frans | `fr-CA` | ✅ | ✅ | ✅ | — | Québécois idiomen. |
 
 ---
 
-## Inheemse & Low-Resource Talen
+## Inheemse en low-resource talen
 
-Deze talen worden niet ondersteund door commerciële MT-diensten. rosetta biedt de tooling voor taalgemeenschappen om hun eigen methoden te bouwen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages).
+Deze talen worden niet ondersteund door commerciële MT-diensten. rosetta biedt de tools voor taalgemeenschappen om hun eigen methoden te bouwen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages).
 
 | | Taal | Code | Google | LLM | Coached | Script | Status |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
 | 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 In ontwikkeling |
 | 🌄 | Quechua | `qu` | ✅ | ✅ | — | — | Runasimi. Evidentiële achtervoegsels. |
 
-:::info Plains Cree is volop in ontwikkeling
-Het register, de coaching-infrastructuur, de scriptconverter en het evaluatieharnas voor Plains Cree zijn allemaal functioneel, maar de vertaalpijplijn is **nog niet vrijgegeven**. Wij werken samen met taalgemeenschappen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages) om de kwaliteit vóór de release te waarborgen. Zie [Ondersteun een Low-Resource Taal](https://mtevalarena.org/docs/community/low-resource-languages) voor het volledige verhaal — en hoe u kunt bijdragen.
+:::info Plains Cree is actief in ontwikkeling
+Het register, de coachinginfrastructuur, de scriptconverter en het evaluatieharnas voor Plains Cree zijn allemaal functioneel, maar de vertaalpijplijn is **nog niet vrijgegeven**. Wij werken samen met taalgemeenschappen volgens de [OCAP-principes](https://mtevalarena.org/docs/community/low-resource-languages) om de kwaliteit voor de release te waarborgen. Zie [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) voor het volledige verhaal — en hoe u kunt bijdragen.
 :::
 
 :::tip Meer low-resource talen toevoegen
-Het methode-pluginsysteem van rosetta is hiervoor ontworpen. Een taalgemeenschap kan een aangepaste vertaalmethode bouwen, deze onder eigen beheer hosten en aanbieden via de [API-methode](/docs/guides/serving-a-method). Het [Method Leaderboard](/leaderboard) houdt de scores bij voor elk talenpaar — bouw een methode, voer het harnas uit en claim de topscore.
+Het method-pluginsysteem van rosetta is hiervoor ontworpen. Een taalgemeenschap kan een aangepaste vertaalmethode bouwen, deze onder eigen beheer hosten en aanbieden via de [API-methode](/docs/guides/serving-a-method). Het [Methoden-leaderboard](/leaderboard) houdt scores bij voor elk talenpaar — bouw een methode, voer het harnas uit en claim de topscore.
 :::
 
 ---
 
-## Geconstrueerde talen
+## Kunsttalen
 
-Conlangs worden ondersteund via LLM-registers en optionele scriptconverters. Ze gebruiken dezelfde infrastructuur als echte talen — de quality gate, het coachingsysteem en de scriptconversiepijplijn werken identiek.
+Kunsttalen (conlangs) worden ondersteund via LLM-registers en optionele scriptconverters. Ze gebruiken dezelfde infrastructuur als echte talen — de kwaliteitscontrole, het coachingsysteem en de scriptconversiepijplijn werken identiek.
 
 | | Taal | Code | Google | LLM | Script | Opmerkingen |
 |---|----------|------|:------:|:---:|--------|-------|
@@ -114,9 +114,9 @@ Conlangs worden ondersteund via LLM-registers en optionele scriptconverters. Ze 
 | 🏴‍☠️ | Piraten-Engels | `x-pirate` | ❌ | ✅ | — | Alleen register. Nautische metaforen. |
 | 🦸 | Kryptoniaans | `x-kryptonian` | ❌ | ✅ | 🔤 Latijns→Kryptoniaans | PUA-lettertype vereist. |
 | 🎭 | Shakespeareaans Engels | `x-shakespeare` | ❌ | ✅ | — | Alleen register. Thee/thou, -eth/-est-vormen. |
-| 🐸 | Yoda-taal | `x-yoda` | ❌ | ✅ | — | Alleen register. OSV-woordvolgorde. |
+| 🐸 | Yoda-spraak | `x-yoda` | ❌ | ✅ | — | Alleen register. OSV-woordvolgorde. |
 
-Zie [Conlangs, Scripts & Orthografie](/docs/guides/conlangs-scripts-orthography) voor PUA-lettertypevereisten, Unicode-beperkingen en hoe u uw eigen taal kunt toevoegen.
+Zie [Kunsttalen, scripts & orthografie](/docs/guides/conlangs-scripts-orthography) voor PUA-lettertypevereisten, Unicode-beperkingen en hoe u uw eigen kunsttaal kunt toevoegen.
 
 ---
 
@@ -155,7 +155,7 @@ rosetta kan vertalen naar **elke taal die uw LLM kent** — de bovenstaande tabe
 }
 ```
 
-De LLM zal vertalen met behulp van zijn getrainde kennis van de taal. Door een `register` in te stellen, krijgt u controle over de toon, formaliteit en orthografische conventies. Zie [Configuratie](/docs/getting-started/configuration) voor details.
+De LLM zal vertalen met behulp van zijn getrainde kennis van de taal. Het instellen van een `register` geeft u controle over de toon, formaliteit en orthografische conventies. Zie [Configuratie](/docs/getting-started/configuration) voor details.
 
 ---
 
@@ -163,14 +163,14 @@ De LLM zal vertalen met behulp van zijn getrainde kennis van de taal. Door een `
 
 Elke ingebouwde taal heeft een **Language Card** — een gestructureerde JSON-configuratie die voor prestatiedoeleinden in twee lagen is opgesplitst:
 
-### Tweelagenarchitectuur
+### Tweelaagse architectuur
 
-| Laag | Map | Geladen | Doel |
+| Laag | Directory | Geladen | Doel |
 |------|-----------|--------|--------|
 | **Runtime** | `lib/data/language-cards/` | Direct bij `import` | Vertaal-engine: registers, formaliteit, regels, methode-ondersteuning |
-| **Referentie** | `lib/data/language-reference/` | Lazy on-demand | Ontwikkelaarsdocumentatie: linguïstische uitdagingen, encyclopedische gegevens, NLP-bronnen |
+| **Referentie** | `lib/data/language-reference/` | Lazy on-demand | Ontwikkelaarsdocumentatie: linguïstische uitdagingen, encyclopedische data, NLP-bronnen |
 
-De runtime-laag blijft klein (~2 KB/kaart) zodat het importeren van rosetta geen megabytes aan documentatiegegevens laadt. De referentielaag is beschikbaar via `getLanguageReference(code)` voor tools, de website en het evaluatieharnas.
+De runtime-laag blijft klein (~2 KB/kaart) zodat het importeren van rosetta geen megabytes aan documentatiedata laadt. De referentielaag is beschikbaar via `getLanguageReference(code)` voor tools, de website en het evaluatieharnas.
 
 ### Runtime Card-velden
 
@@ -180,10 +180,10 @@ De runtime-laag blijft klein (~2 KB/kaart) zodat het importeren van rosetta geen
 | **Formaliteitssysteem** | T-V-onderscheid, spraakniveaus, keigo, partikels, enz. |
 | **Register-presets** | Benoemde LLM-prompt-presets specifiek voor het karakter van de taal |
 | **Methode-ondersteuning** | Welke vertaal-API's deze taal ondersteunen |
-| **Genderrichtlijnen** | Grammaticale geslachtsregels en tips voor inclusief schrijven |
+| **Geslachtsrichtlijnen** | Grammaticale geslachtsregels en tips voor inclusief schrijven |
 | **Script/richting** | ISO 15924-scriptcode en RTL/LTR |
 | **Regels** | Typografie (aanhalingstekens, spatiëring), hoofdlettergebruik, meervoudscategorieën |
-| **Eval-datasets** | Welke benchmarks deze taal dekken |
+| **Evaluatiedatasets** | Welke benchmarks deze taal dekken |
 | **`glottocode`** | Canonieke Glottolog-identifier voor kruisverwijzingen |
 | **`humanReviewed`** | Of de kaart is beoordeeld door een spreker |
 
@@ -197,7 +197,7 @@ De runtime-laag blijft klein (~2 KB/kaart) zodat het importeren van rosetta geen
 
 ### Een nieuwe Language Card opzetten
 
-Gebruik de generator om beide lagen op te zetten vanuit gezaghebbende gegevensbronnen (IANA, CLDR, Glottolog):
+Gebruik de generator om beide lagen op te zetten vanuit gezaghebbende databronnen (IANA, CLDR, Glottolog):
 
 ```bash
 # Preview what would be generated
@@ -207,11 +207,11 @@ node scripts/generate-language-card.mjs sw --dry-run
 node scripts/generate-language-card.mjs sw
 ```
 
-De generator vult automatisch metagegevens in (codes, script, richting, meervouden, aanhalingstekens, methode-ondersteuning, taalfamilie) en markeert linguïstische beoordelingsvelden als TODO voor menselijke curatie.
+De generator vult automatisch metadata in (codes, script, richting, meervouden, aanhalingstekens, methode-ondersteuning, taalfamilie) en markeert linguïstische beoordelingsvelden als TODO voor menselijke curatie.
 
 ### Preset-sleutels gebruiken
 
-In plaats van volledige registertekst te schrijven, kunt u een preset-sleutelnaam gebruiken:
+In plaats van de volledige registertekst te schrijven, kunt u een preset-sleutelnaam gebruiken:
 
 ```json
 {
@@ -223,7 +223,7 @@ In plaats van volledige registertekst te schrijven, kunt u een preset-sleutelnaa
 }
 ```
 
-Rosetta herleidt de sleutel naar de volledige register-prompt. Voer `npx i18n-rosetta init` uit om de beschikbare presets voor elke taal te bekijken.
+Rosetta herleidt de sleutel naar de volledige registerprompt. Voer `npx i18n-rosetta init` uit om de beschikbare presets voor elke taal te bekijken.
 
 ### Voorbeeld-presets
 
@@ -236,7 +236,7 @@ Rosetta herleidt de sleutel naar de volledige register-prompt. Voer `npx i18n-ro
 | Thais | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
 | Spaans | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
 
-Zie [Bijdragen aan een Language Card](https://github.com/gamedaysuits/i18n-rosetta) voor de volledige specificatie, inclusief veldvalidatie en PR-checklist.
+Zie [Bijdragen aan een Language Card](https://github.com/gamedaysuits/i18n-rosetta) voor de volledige specificatie, inclusief veldvalidatie en de PR-checklist.
 
 ---
 
@@ -245,5 +245,5 @@ Zie [Bijdragen aan een Language Card](https://github.com/gamedaysuits/i18n-roset
 - [Configuratie](/docs/getting-started/configuration) — volledige configuratiereferentie inclusief taalinstellingen
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke methode werkt
 - [Scriptconverters](/docs/concepts/script-converters) — deterministische scriptconversiepijplijn
-- [Conlangs, Scripts & Orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-lettertypen, Unicode, conlangs toevoegen
-- [Ondersteun een Low-Resource Taal](https://mtevalarena.org/docs/community/low-resource-languages) — methoden bouwen voor onderbediende talen
+- [Kunsttalen, scripts & orthografie](/docs/guides/conlangs-scripts-orthography) — PUA-lettertypen, Unicode, kunsttalen toevoegen
+- [Een low-resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — methoden bouwen voor onderbediende talen

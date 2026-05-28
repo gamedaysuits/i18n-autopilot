@@ -10,26 +10,26 @@ Rosetta unterstützt zehn Übersetzungsmethoden. Jedes Sprachpaar kann eine ande
 
 ### LLM-Anbieter
 
-Qualitätsfokussiert, Markdown-kompatibel, Coaching-unterstützend. Am besten für inhaltsschwere Projekte geeignet.
+Qualitätsorientiert, Markdown-fähig, Coaching-kompatibel. Am besten für inhaltsschwere Projekte geeignet.
 
 | Methode | Schlüssel | Funktion |
 |--------|-----|-------------|
-| `llm` (Standard) | `OPENROUTER_API_KEY` | LLM über OpenRouter – 200+ Modelle, Auto-Routing |
+| `llm` (Standard) | `OPENROUTER_API_KEY` | LLM über OpenRouter – über 200 Modelle, Auto-Routing |
 | `llm-coached` | `OPENROUTER_API_KEY` | LLM + Grammatikregeln, Wörterbücher, Stilhinweise |
 | `openai` | `OPENAI_API_KEY` | Direkte OpenAI-API (gpt-4o, gpt-4o-mini) |
 | `anthropic` | `ANTHROPIC_API_KEY` | Direkte Anthropic-API (Claude Sonnet, Haiku, Opus) |
-| `gemini` | `GEMINI_API_KEY` | Direkte Google Gemini-API (Flash, Pro) – kostenloses Kontingent |
+| `gemini` | `GEMINI_API_KEY` | Direkte Google Gemini-API (Flash, Pro) – kostenloser Tarif |
 
 ### Traditionelle maschinelle Übersetzung (MT)
 
-Geschwindigkeits- und kostenfokussiert. Am besten für große Mengen an Schlüssel-Wert-Paaren geeignet.
+Geschwindigkeits- und kostenorientiert. Am besten für große Mengen an Schlüssel-Wert-Paaren geeignet.
 
 | Methode | Schlüssel | Funktion |
 |--------|-----|-------------|
-| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ Sprachen) |
-| `deepl` | `DEEPL_API_KEY` | DeepL-API mit Glossar-Unterstützung (30+ Sprachen) |
-| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ Sprachen) |
-| `libretranslate` | *(selbstgehostet)* | Selbstgehostetes LibreTranslate (AGPL, kostenlos) |
+| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (über 130 Sprachen) |
+| `deepl` | `DEEPL_API_KEY` | DeepL-API mit Glossar-Unterstützung (über 30 Sprachen) |
+| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (über 100 Sprachen) |
+| `libretranslate` | *(selbst gehostet)* | Selbst gehostetes LibreTranslate (AGPL, kostenlos) |
 
 ### Infrastruktur
 
@@ -59,13 +59,13 @@ flowchart TD
 Übersetzt über ein beliebiges LLM auf [OpenRouter](https://openrouter.ai). Dies ist die Standardmethode und die vielseitigste.
 
 **Wie es funktioniert:**
-1. Fasst Schlüssel in Stapeln zusammen (Standard: 30 pro Stapel) mit Register- und Kontextanweisungen
+1. Fasst Schlüssel in Stapeln zusammen (Standard: 80/Stapel) mit Register- und Kontextanweisungen
 2. Sendet diese als strukturierten Prompt an OpenRouter
-3. Parst die JSON-Antwort
-4. Validiert jede Übersetzung durch das [Quality Gate](/docs/concepts/quality-gate)
+3. Verarbeitet die JSON-Antwort
+4. Validiert jede Übersetzung durch die [Qualitätskontrolle](/docs/concepts/quality-gate)
 5. Schreibt erfolgreiche Übersetzungen, wiederholt oder verwirft fehlgeschlagene
 
-**Wann zu verwenden:** Für die meisten Projekte. Insbesondere für inhaltsschwere Websites mit Markdown, bei denen Codeblöcke und Shortcodes geschützt werden müssen.
+**Wann zu verwenden:** Die meisten Projekte. Insbesondere inhaltsschwere Websites mit Markdown, bei denen Codeblöcke und Shortcodes geschützt werden müssen.
 
 **Konfiguration:**
 
@@ -78,7 +78,7 @@ flowchart TD
 
 ## `llm-coached` — Gecoachte LLM-Übersetzung
 
-Identisch mit `llm`, jedoch werden Grammatikregeln, Begriffswörterbücher und Stilhinweise in jeden Prompt eingefügt.
+Wie `llm`, jedoch werden Grammatikregeln, Begriffswörterbücher und Stilhinweise in jeden Prompt injiziert.
 
 **Wie es funktioniert:**
 1. Lädt Coaching-Daten aus `.rosetta/coaching/<locale>.json` oder dem `coaching/`-Verzeichnis eines Plugins
@@ -86,7 +86,7 @@ Identisch mit `llm`, jedoch werden Grammatikregeln, Begriffswörterbücher und S
 3. Wörterbuchbegriffe, die mit Quellschlüsseln übereinstimmen, werden als erforderliche Terminologie einbezogen
 4. Die Übersetzung verläuft wie bei `llm`, wobei die Coaching-Daten für zusätzliche Präzision sorgen
 
-**Wann zu verwenden:** Bei ressourcenarmen Sprachen, domänenspezifischer Terminologie (rechtlich, medizinisch), formellen Registern oder in jedem Fall, in dem die generische LLM-Ausgabe nicht präzise genug ist.
+**Wann zu verwenden:** Sprachen mit geringen Ressourcen, domänenspezifische Terminologie (rechtlich, medizinisch), formelle Register oder jeder Fall, in dem die generische LLM-Ausgabe nicht präzise genug ist.
 
 **Format der Coaching-Daten:**
 
@@ -116,9 +116,9 @@ Siehe auch: [Leitfaden für ressourcenarme Sprachen](https://mtevalarena.org/doc
 **Modelle:** `gpt-4o` (Standard), `gpt-4o-mini`
 
 **Funktionen:**
-- ✅ Markdown-kompatibel (Inhaltsübersetzung)
-- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuchüberschreibungen, Stilhinweise)
-- ✅ JSON-Modus für strukturierte Schlüssel-Wert-Ausgaben
+- ✅ Markdown-fähig (Inhaltsübersetzung)
+- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuch-Überschreibungen, Stilhinweise)
+- ✅ JSON-Modus für strukturierte Schlüssel-Wert-Ausgabe
 - ✅ Exponentielles Backoff mit Wiederholungsversuchen
 
 **Konfiguration:**
@@ -144,8 +144,8 @@ Holen Sie sich Ihren Schlüssel unter [platform.openai.com/api-keys](https://pla
 **Modelle:** `claude-sonnet-4-6` (Standard), `claude-haiku-4-5`, `claude-opus-4-7`
 
 **Funktionen:**
-- ✅ Markdown-kompatibel (Inhaltsübersetzung)
-- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuchüberschreibungen, Stilhinweise)
+- ✅ Markdown-fähig (Inhaltsübersetzung)
+- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuch-Überschreibungen, Stilhinweise)
 - ✅ System-Prompt-Caching (amortisiert Coaching-Kosten über Stapel hinweg)
 - ✅ Exponentielles Backoff mit Wiederholungsversuchen
 
@@ -167,15 +167,15 @@ Holen Sie sich Ihren Schlüssel unter [console.anthropic.com](https://console.an
 
 ## `gemini` — Direkte Google Gemini-API
 
-Übersetzt direkt über die Google Gemini `generateContent` API. **Kostenloses Kontingent verfügbar** – der beste kostenfreie Einstiegspunkt.
+Übersetzt direkt über die Google Gemini `generateContent` API. **Kostenloser Tarif verfügbar** – der beste kostenlose Einstiegspunkt.
 
 **Modelle:** `gemini-2.5-flash` (Standard), `gemini-2.5-pro`
 
 **Funktionen:**
-- ✅ Markdown-kompatibel (Inhaltsübersetzung)
-- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuchüberschreibungen, Stilhinweise)
+- ✅ Markdown-fähig (Inhaltsübersetzung)
+- ✅ Coaching-Unterstützung (Grammatikregeln, Wörterbuch-Überschreibungen, Stilhinweise)
 - ✅ JSON-Antwortmodus über `responseMimeType`
-- ✅ Kostenloses Kontingent (großzügige tägliche Quote)
+- ✅ Kostenloser Tarif (großzügiges tägliches Kontingent)
 - ✅ Exponentielles Backoff mit Wiederholungsversuchen
 
 **Konfiguration:**
@@ -196,7 +196,7 @@ Holen Sie sich Ihren Schlüssel unter [aistudio.google.com/apikey](https://aistu
 
 ### Modellvalidierung
 
-Die direkten LLM-Anbieter (`openai`, `anthropic`, `gemini`) validieren Ihre Modellzeichenfolge bei der ersten Verwendung. Dies erfasst drei Kategorien von Fehlern:
+Die direkten LLM-Anbieter (`openai`, `anthropic`, `gemini`) validieren Ihre Modellzeichenfolge bei der ersten Verwendung. Dies fängt drei Kategorien von Fehlern ab:
 
 **Falsches Methodenformat** – Verwendung eines Modellpfads im OpenRouter-Stil bei einem direkten Anbieter:
 
@@ -223,7 +223,7 @@ Die direkten LLM-Anbieter (`openai`, `anthropic`, `gemini`) validieren Ihre Mode
 ```
 
 :::note Dies sind Warnungen, keine Fehler
-Die Modellvalidierung protokolliert Warnungen, blockiert jedoch nicht den API-Aufruf. Die Anbieter-API fällt das endgültige Urteil – ein zukünftiger Modellname könnte einem anderen Muster entsprechen, und wir möchten keine Blockaden aufgrund von Heuristiken errichten.
+Die Modellvalidierung protokolliert Warnungen, blockiert jedoch nicht den API-Aufruf. Die API des Anbieters fällt das endgültige Urteil – ein zukünftiger Modellname könnte einem anderen Muster entsprechen, und wir möchten keine Blockaden aufgrund von Heuristiken einrichten.
 :::
 
 ---
@@ -232,12 +232,12 @@ Die Modellvalidierung protokolliert Warnungen, blockiert jedoch nicht den API-Au
 
 Direkte Integration mit der Google Cloud Translation API v2. Verwendet die REST-API – kein SDK, kein Dienstkonto. Nur der API-Schlüssel.
 
-**Wann zu verwenden:** Bei großen Mengen an Schlüssel-Wert-Zeichenfolgenpaaren, bei denen Geschwindigkeit und Kosten wichtiger sind als Nuancen. Unterstützt standardmäßig über 130 Sprachen.
+**Wann zu verwenden:** Große Mengen an Schlüssel-Wert-Zeichenfolgenpaaren, bei denen Geschwindigkeit und Kosten wichtiger sind als Nuancen. Unterstützt standardmäßig über 130 Sprachen.
 
 **Einschränkungen:**
-- ⚠️ **Keine Markdown-Kompatibilität.** Codeblöcke, Shortcodes und Interpolationsvariablen werden beschädigt.
+- ⚠️ **Keine Markdown-Fähigkeit.** Beschädigt Codeblöcke, Shortcodes und Interpolationsvariablen.
 - Keine Kontrolle über Register/Tonfall
-- Kein Coaching oder Erzwingung von Terminologie
+- Kein Coaching oder Durchsetzung von Terminologie
 
 ```bash
 npx i18n-rosetta sync --method google-translate
@@ -251,13 +251,13 @@ Wenn nur `GOOGLE_TRANSLATE_API_KEY` festgelegt ist (kein OpenRouter-Schlüssel),
 
 Direkte Integration mit der DeepL-Übersetzungs-API. Unterstützt Glossare für eine konsistente Terminologie.
 
-**Wann zu verwenden:** Bei europäischen Sprachen, in denen DeepL hervorragend ist (Deutsch, Französisch, Spanisch, Niederländisch, Polnisch usw.). Die Glossar-Unterstützung erzwingt eine konsistente Terminologie ohne Coaching-Daten.
+**Wann zu verwenden:** Europäische Sprachen, in denen DeepL hervorragend ist (Deutsch, Französisch, Spanisch, Niederländisch, Polnisch usw.). Die Glossar-Unterstützung erzwingt eine konsistente Terminologie ohne Coaching-Daten.
 
 **Funktionen:**
-- ✅ Automatische Erkennung des Free/Pro-Endpunkts (Suffix `:fx` bei kostenlosen Schlüsseln)
+- ✅ Automatische Erkennung von Free/Pro-Endpunkten (Suffix `:fx` bei kostenlosen Schlüsseln)
 - ✅ Erstellung und Verwaltung von Glossaren
-- ✅ Kontrolle des Formalitätsgrades
-- ⚠️ **Keine Markdown-Kompatibilität** – nur Schlüssel-Wert-Paare
+- ✅ Kontrolle der Formalitätsstufe
+- ⚠️ **Keine Markdown-Fähigkeit** – nur Schlüssel-Wert-Paare
 
 **Konfiguration:**
 
@@ -279,12 +279,12 @@ Holen Sie sich Ihren Schlüssel unter [deepl.com/pro-api](https://www.deepl.com/
 
 Direkte Integration mit der Microsoft Translator Text API v3.
 
-**Wann zu verwenden:** In Unternehmensumgebungen mit bestehender Azure-Infrastruktur. Unterstützt über 100 Sprachen, einschließlich vieler, die Google Translate nicht abdeckt.
+**Wann zu verwenden:** Unternehmensumgebungen mit bestehender Azure-Infrastruktur. Unterstützt über 100 Sprachen, einschließlich vieler, die Google Translate nicht abdeckt.
 
 **Funktionen:**
 - ✅ Bis zu 100 Segmente pro Anfrage (hoher Durchsatz)
 - ✅ Optionaler Regionsparameter zur Latenzoptimierung
-- ⚠️ **Keine Markdown-Kompatibilität** – nur Schlüssel-Wert-Paare
+- ⚠️ **Keine Markdown-Fähigkeit** – nur Schlüssel-Wert-Paare
 - ⚠️ **Keine Inhaltsübersetzung** – nur Schlüssel-Wert-Paare
 
 **Konfiguration:**
@@ -304,17 +304,17 @@ export MICROSOFT_TRANSLATOR_REGION=global  # optional
 
 Holen Sie sich Ihren Schlüssel über das [Azure-Portal](https://portal.azure.com) → Cognitive Services → Translator.
 
-## `libretranslate` — Selbstgehostete Übersetzung
+## `libretranslate` — Selbst gehostete Übersetzung
 
-Selbstgehostete Open-Source-Übersetzung mit LibreTranslate. Läuft lokal oder auf Ihrer eigenen Infrastruktur – keine API-Kosten, volle Datensouveränität.
+Selbst gehostete Open-Source-Übersetzung mit LibreTranslate. Läuft lokal oder auf Ihrer eigenen Infrastruktur – keine API-Kosten, volle Datenhoheit.
 
-**Wann zu verwenden:** Für Projekte, die Offline-Übersetzung, Datenschutzkonformität (DSGVO) oder einen kostenlosen Betrieb erfordern. Besonders nützlich für CI-Pipelines, die nicht von externen APIs abhängig sein sollten.
+**Wann zu verwenden:** Projekte, die Offline-Übersetzung, Einhaltung des Datenschutzes (DSGVO) oder einen kostenlosen Betrieb erfordern. Besonders nützlich für CI-Pipelines, die nicht von externen APIs abhängig sein sollten.
 
 **Funktionen:**
-- ✅ Selbstgehostet – keine externen API-Aufrufe
+- ✅ Selbst gehostet – keine externen API-Aufrufe
 - ✅ Kostenlos und Open Source (AGPL-3.0)
 - ✅ Docker-Bereitstellung verfügbar
-- ⚠️ **Keine Markdown-Kompatibilität** – nur Schlüssel-Wert-Paare
+- ⚠️ **Keine Markdown-Fähigkeit** – nur Schlüssel-Wert-Paare
 - ⚠️ **Keine Inhaltsübersetzung** – nur Schlüssel-Wert-Paare
 - ⚠️ Qualität variiert je nach Sprachpaar
 
@@ -340,7 +340,7 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — Remote-Übersetzungs-API
 
-Ein schlanker HTTP-Client für von der Community gehostete oder IP-geschützte Übersetzungsendpunkte. Rosetta sendet Schlüssel nach außen und empfängt Übersetzungen zurück – es enthält keinerlei Übersetzungslogik.
+Ein schlanker HTTP-Client für von der Community gehostete oder IP-geschützte Übersetzungsendpunkte. Rosetta sendet Schlüssel ab und empfängt Übersetzungen zurück – es enthält keinerlei Übersetzungslogik.
 
 **Wann zu verwenden:** Wenn Übersetzungsmethoden serverseitig gehostet werden (z. B. proprietäre Coaching-Daten, feinabgestimmte Modelle, FST-Pipelines, die nicht verteilt werden können).
 
@@ -359,14 +359,14 @@ Ein schlanker HTTP-Client für von der Community gehostete oder IP-geschützte �
 :::note OCAP-kompatible Community-Übersetzung
 Die Methode `api` ist die Brücke zur **OCAP-kompatiblen, von der Community gehosteten Übersetzung**. Indigene und Minderheitensprachgemeinschaften können ihre eigenen Übersetzungsendpunkte hosten – wodurch Coaching-Daten, feinabgestimmte Modelle und linguistisches geistiges Eigentum (IP) unter der Kontrolle der Community bleiben –, während Rosetta als schlanker Client eine Verbindung zu ihnen herstellt.
 
-Siehe [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständige Anleitung zum Community-Hosting und [Bereitstellung einer Methode über API](/docs/guides/serving-a-method) für die Endpunktanforderungen.
+Siehe [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages) für die vollständige Anleitung zum Community-Hosting und [Bereitstellung einer Methode über API](/docs/guides/serving-a-method) für die Anforderungen an Endpunkte.
 :::
 
 ---
 
 ## Konfiguration pro Sprachpaar
 
-Die wahre Stärke liegt in der Kombination von Methoden pro Sprachpaar:
+Die wahre Stärke liegt in der Mischung von Methoden pro Sprachpaar:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -381,14 +381,14 @@ Die wahre Stärke liegt in der Kombination von Methoden pro Sprachpaar:
 }
 ```
 
-Dies übersetzt Französisch über DeepL (Glossar-Unterstützung), Japanisch über OpenAI (Qualität), Koreanisch über Gemini (kostenloses Kontingent), Arabisch über Microsoft Translator (Abdeckung) und Plains Cree über ein gecoachtes Plugin (spezialisiert).
+Dies übersetzt Französisch über DeepL (Glossar-Unterstützung), Japanisch über OpenAI (Qualität), Koreanisch über Gemini (kostenloser Tarif), Arabisch über Microsoft Translator (Abdeckung) und Plains Cree über ein gecoachtes Plugin (spezialisiert).
 
 ## Plugins
 
-Plugins sind vorgefertigte Übersetzungsrezepte für bestimmte Sprachpaare. Es handelt sich um JSON-Manifeste – keinen Code –, die Rosetta mitteilen, welche Methode mit welchen Einstellungen verwendet werden soll und welche Qualität als Benchmark ermittelt wurde.
+Plugins sind vorgefertigte Übersetzungsrezepte für bestimmte Sprachpaare. Es handelt sich um JSON-Manifeste – keinen Code –, die Rosetta mitteilen, welche Methode verwendet werden soll, mit welchen Einstellungen und welche Qualität als Benchmark ermittelt wurde.
 
-:::tip Vom Evaluierungs-Harness zur Produktion mit einem Befehl
-Plugins, die im [Evaluierungs-Harness](https://mtevalarena.org/docs/specifications/harness) entwickelt und erprobt wurden, können direkt installiert werden – die Methode, die Sie dort validieren, wird hier mit einem einzigen `plugin install`-Befehl bereitgestellt. Siehe [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) für den vollständigen Evaluierungs-Workflow.
+:::tip Vom Eval-Harness zur Produktion mit einem Befehl
+Plugins, die im [Eval-Harness](https://mtevalarena.org/docs/specifications/harness) entwickelt und erprobt wurden, können direkt installiert werden – die Methode, die Sie dort validieren, wird hier mit einem einzigen `plugin install`-Befehl bereitgestellt. Siehe [MT-Evaluierung](https://mtevalarena.org/docs/leaderboard/rules) für den vollständigen Evaluierungs-Workflow.
 :::
 
 ```bash
@@ -403,7 +403,7 @@ Siehe die [Plugin-Spezifikation](/docs/reference/plugin-spec) für das vollstän
 
 ## Anbieter wechseln
 
-Wechseln Sie zwischen Methoden? Das Modellformat und die Umgebungsvariablen ändern sich – hier ist die Übersicht:
+Wechseln Sie zwischen Methoden? Das Modellformat und die Umgebungsvariable (Env Var) ändern sich – hier ist die Übersicht:
 
 ### OpenRouter → Direkter Anbieter
 
@@ -445,28 +445,28 @@ Wechseln Sie zwischen Methoden? Das Modellformat und die Umgebungsvariablen änd
  }
 ```
 
-:::tip Wann OpenRouter vs. Direkt verwendet werden sollte
-**Verwenden Sie OpenRouter**, wenn Sie zwischen Modellen wechseln möchten, ohne Umgebungsvariablen zu ändern, oder wenn Sie mit einem einzigen Schlüssel Zugriff auf über 200 Modelle haben möchten. **Verwenden Sie direkte Anbieter**, wenn Sie eine einfachere Abrechnung, geringere Latenz (kein Vermittler) oder Zugriff auf anbieterspezifische Funktionen wie das Prompt-Caching von Anthropic wünschen.
+:::tip Wann OpenRouter vs. Direktanbieter zu verwenden ist
+**Verwenden Sie OpenRouter**, wenn Sie zwischen Modellen wechseln möchten, ohne Umgebungsvariablen zu ändern, oder wenn Sie mit einem einzigen Schlüssel Zugriff auf über 200 Modelle haben möchten. **Verwenden Sie direkte Anbieter**, wenn Sie eine einfachere Abrechnung, eine geringere Latenz (kein Vermittler) oder Zugriff auf anbieterspezifische Funktionen wie das Prompt-Caching von Anthropic wünschen.
 :::
 
 ---
 
 ## Kostenvergleich
 
-Ungefähre Kosten pro 1.000 übersetzte Schlüssel (geht von ~10 Token pro Schlüssel und 30 Schlüsseln pro Stapel aus):
+Ungefähre Kosten pro 1.000 übersetzte Schlüssel (geht von ca. 10 Token pro Schlüssel und 80 Schlüsseln pro Stapel aus):
 
 | Methode | Kosten / 1K Schlüssel | Geschwindigkeit | Qualität | Am besten für |
 |--------|----------------|-------|---------|----------|
-| `gemini` (Flash) | **Kostenlos** (innerhalb des Kontingents) | Schnell | Gut | Einstieg, persönliche Projekte |
-| `google-translate` | ~$0.02 | Am schnellsten | Ausreichend | Großes Volumen, europäische Sprachen |
+| `gemini` (Flash) | **Kostenlos** (innerhalb des Tarifs) | Schnell | Gut | Einstieg, persönliche Projekte |
+| `google-translate` | ~$0.02 | Am schnellsten | Ausreichend | Große Mengen, europäische Sprachen |
 | `deepl` | ~$0.02 | Schnell | Gut | Europäische Sprachen, Terminologie |
 | `microsoft-translator` | ~$0.01 | Schnell | Ausreichend | Azure-Umgebungen, breite Sprachabdeckung |
-| `libretranslate` | **Kostenlos** (selbstgehostet) | Variiert | Akzeptabel | Air-Gapped, DSGVO, CI-Pipelines |
-| `gemini` (Pro) | ~$0.07 | Mittel | Sehr gut | Qualitätsbewusst, kostenloses Kontingent |
+| `libretranslate` | **Kostenlos** (selbst gehostet) | Variiert | Akzeptabel | Air-Gapped, DSGVO, CI-Pipelines |
+| `gemini` (Pro) | ~$0.07 | Mittel | Sehr gut | Qualitätssensibel, kostenloses Kontingent |
 | `openai` (GPT-4o-mini) | ~$0.01 | Schnell | Gut | Budget-LLM |
-| `openai` (GPT-4o) | ~$0.10 | Mittel | Sehr gut | Qualitätsbewusst |
+| `openai` (GPT-4o) | ~$0.10 | Mittel | Sehr gut | Qualitätssensibel |
 | `anthropic` (Haiku) | ~$0.01 | Schnell | Gut | Budget-LLM |
-| `anthropic` (Sonnet) | ~$0.10 | Mittel | Sehr gut | Qualitätsbewusst |
+| `anthropic` (Sonnet) | ~$0.10 | Mittel | Sehr gut | Qualitätssensibel |
 | `anthropic` (Opus) | ~$0.50 | Langsam | Exzellent | Maximale Qualität |
 | `llm` (OpenRouter) | Variiert je nach Modell | Variiert | Variiert | Modellvergleich, Experimente |
 
@@ -483,6 +483,6 @@ Die tatsächlichen Kosten hängen von der Länge Ihres Quelltextes, der Stapelgr
 - [Unterstützung einer ressourcenarmen Sprache](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plugin-Spezifikation](/docs/reference/plugin-spec)
 - [Bereitstellung einer Methode über API](/docs/guides/serving-a-method)
-- [Quality Gate](/docs/concepts/quality-gate)
+- [Qualitätskontrolle](/docs/concepts/quality-gate)
 - [Architektur](/docs/concepts/architecture)
 - [Fehlerbehebung](/docs/guides/troubleshooting) – Modellfehler, API-Probleme

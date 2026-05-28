@@ -4,7 +4,7 @@ title: "Métodos de traducción"
 ---
 # Métodos de traducción
 
-Rosetta es compatible con diez métodos de traducción. Cada par de idiomas puede usar un método diferente; no está limitado a un solo enfoque para todo su proyecto.
+Rosetta es compatible con diez métodos de traducción. Cada par de idiomas puede usar un método diferente; usted no está limitado a un solo enfoque para todo su proyecto.
 
 ## Comparación de métodos
 
@@ -22,14 +22,14 @@ Enfocados en la calidad, compatibles con Markdown y con el entrenamiento (coachi
 
 ### Traducción automática (MT) tradicional
 
-Enfocada en la velocidad y el costo. Ideal para grandes volúmenes de pares clave-valor.
+Enfocados en la velocidad y el costo. Ideales para grandes volúmenes de pares clave-valor.
 
 | Método | Clave | Qué hace |
 |--------|-----|-------------|
-| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | API de Google Cloud Translation v2 (más de 130 idiomas) |
+| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (más de 130 idiomas) |
 | `deepl` | `DEEPL_API_KEY` | API de DeepL con soporte para glosarios (más de 30 idiomas) |
 | `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (más de 100 idiomas) |
-| `libretranslate` | *(autoalojado)* | LibreTranslate autoalojado (AGPL, gratuito) |
+| `libretranslate` | *(autohospedado)* | LibreTranslate autohospedado (AGPL, gratuito) |
 
 ### Infraestructura
 
@@ -54,18 +54,18 @@ flowchart TD
 
 ---
 
-## `llm` — Traducción con LLM (Predeterminado)
+## `llm` — Traducción por LLM (Predeterminado)
 
 Traduce a través de cualquier LLM en [OpenRouter](https://openrouter.ai). Este es el método predeterminado y el más versátil.
 
 **Cómo funciona:**
-1. Agrupa las claves en lotes (30 por lote de forma predeterminada) con instrucciones de registro y contexto
+1. Agrupa las claves en lotes (80 por lote de forma predeterminada) con instrucciones de registro y contexto
 2. Las envía a OpenRouter como un prompt estructurado
-3. Analiza la respuesta en formato JSON
-4. Valida cada traducción a través del [filtro de calidad](/docs/concepts/quality-gate)
+3. Analiza la respuesta en JSON
+4. Valida cada traducción a través del [control de calidad](/docs/concepts/quality-gate)
 5. Escribe las traducciones aprobadas, reintenta o rechaza las fallidas
 
-**Cuándo usarlo:** En la mayoría de los proyectos. Especialmente en sitios con mucho contenido en Markdown, donde los bloques de código y los shortcodes deben protegerse.
+**Cuándo usarlo:** En la mayoría de los proyectos. Especialmente en sitios con mucho contenido en Markdown, donde los bloques de código y los shortcodes necesitan ser protegidos.
 
 **Configuración:**
 
@@ -76,17 +76,17 @@ Traduce a través de cualquier LLM en [OpenRouter](https://openrouter.ai). Este 
 }
 ```
 
-## `llm-coached` — Traducción con LLM entrenado (Coached)
+## `llm-coached` — Traducción por LLM con entrenamiento (Coached)
 
-Igual que `llm`, pero con reglas gramaticales, diccionarios de términos y notas de estilo inyectados en cada prompt.
+Igual que `llm`, pero con reglas gramaticales, diccionarios de términos y notas de estilo inyectadas en cada prompt.
 
 **Cómo funciona:**
-1. Carga los datos de entrenamiento desde `.rosetta/coaching/<locale>.json` o desde el directorio `coaching/` de un plugin
+1. Carga los datos de entrenamiento (coaching) desde `.rosetta/coaching/<locale>.json` o desde el directorio `coaching/` de un plugin
 2. Inyecta reglas gramaticales, términos de diccionario y notas de estilo en el prompt del sistema
-3. Los términos del diccionario que coinciden con las claves de origen se incluyen como terminología obligatoria
-4. La traducción continúa como con `llm`, pero los datos de entrenamiento añaden precisión
+3. Los términos del diccionario que coinciden con las claves de origen se incluyen como terminología requerida
+4. La traducción procede igual que con `llm`, pero los datos de entrenamiento añaden precisión
 
-**Cuándo usarlo:** Idiomas de bajos recursos, terminología de dominios específicos (legal, médico), registros formales o cualquier caso en el que el resultado genérico del LLM no sea lo suficientemente preciso.
+**Cuándo usarlo:** Idiomas de bajos recursos, terminología de dominios específicos (legal, médico), registros formales, o cualquier caso donde la salida genérica del LLM no sea lo suficientemente precisa.
 
 **Formato de los datos de entrenamiento:**
 
@@ -111,15 +111,15 @@ Consulte también: [Guía de idiomas de bajos recursos](https://mtevalarena.org/
 
 ## `openai` — API directa de OpenAI
 
-Traduce directamente a través de la API de Chat Completions de OpenAI. Sin OpenRouter como intermediario: su clave, su cuenta, su panel de uso.
+Traduce directamente a través de la API Chat Completions de OpenAI. Sin intermediarios de OpenRouter: su clave, su cuenta, su panel de uso.
 
 **Modelos:** `gpt-4o` (predeterminado), `gpt-4o-mini`
 
 **Características:**
 - ✅ Compatible con Markdown (traducción de contenido)
-- ✅ Soporte de entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
+- ✅ Soporte para entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
 - ✅ Modo JSON para salida estructurada de clave-valor
-- ✅ Retroceso exponencial con reintento (exponential backoff)
+- ✅ Retroceso exponencial (exponential backoff) con reintentos
 
 **Configuración:**
 
@@ -139,15 +139,15 @@ Obtenga su clave en [platform.openai.com/api-keys](https://platform.openai.com/a
 
 ## `anthropic` — API directa de Anthropic
 
-Traduce directamente a través de la API de Messages de Anthropic. Utiliza el parámetro `system` para los datos de entrenamiento, lo que habilita el almacenamiento en caché de prompts de Anthropic.
+Traduce directamente a través de la API Messages de Anthropic. Utiliza el parámetro `system` para los datos de entrenamiento, lo que habilita el almacenamiento en caché de prompts de Anthropic.
 
 **Modelos:** `claude-sonnet-4-6` (predeterminado), `claude-haiku-4-5`, `claude-opus-4-7`
 
 **Características:**
 - ✅ Compatible con Markdown (traducción de contenido)
-- ✅ Soporte de entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
-- ✅ Caché del prompt del sistema (amortiza el costo de entrenamiento en todos los lotes)
-- ✅ Retroceso exponencial con reintento
+- ✅ Soporte para entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
+- ✅ Almacenamiento en caché del prompt del sistema (amortiza el costo del entrenamiento entre lotes)
+- ✅ Retroceso exponencial con reintentos
 
 **Configuración:**
 
@@ -173,10 +173,10 @@ Traduce directamente a través de la API `generateContent` de Google Gemini. **N
 
 **Características:**
 - ✅ Compatible con Markdown (traducción de contenido)
-- ✅ Soporte de entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
+- ✅ Soporte para entrenamiento (reglas gramaticales, anulaciones de diccionario, notas de estilo)
 - ✅ Modo de respuesta JSON a través de `responseMimeType`
 - ✅ Nivel gratuito (cuota diaria generosa)
-- ✅ Retroceso exponencial con reintento
+- ✅ Retroceso exponencial con reintentos
 
 **Configuración:**
 
@@ -228,11 +228,11 @@ La validación de modelos registra advertencias pero no bloquea la llamada a la 
 
 ---
 
-## `google-translate` — API de Google Cloud Translation
+## `google-translate` — Google Cloud Translation API
 
-Integración directa con la API de Google Cloud Translation v2. Utiliza la API REST: sin SDK, sin cuenta de servicio. Solo la clave de API.
+Integración directa con Google Cloud Translation API v2. Utiliza la API REST: sin SDK, sin cuenta de servicio. Solo la clave de API.
 
-**Cuándo usarlo:** Pares de cadenas clave-valor de alto volumen donde la velocidad y el costo importan más que los matices. Compatible con más de 130 idiomas de forma predeterminada.
+**Cuándo usarlo:** Pares de cadenas clave-valor de alto volumen donde la velocidad y el costo importan más que los matices. Soporta más de 130 idiomas de forma nativa.
 
 **Limitaciones:**
 - ⚠️ **No es compatible con Markdown.** Corromperá los bloques de código, los shortcodes y las variables de interpolación.
@@ -249,14 +249,14 @@ Si solo se configura `GOOGLE_TRANSLATE_API_KEY` (sin clave de OpenRouter), roset
 
 ## `deepl` — API de DeepL
 
-Integración directa con la API de traducción de DeepL. Admite glosarios para mantener una terminología coherente.
+Integración directa con la API de traducción de DeepL. Soporta glosarios para una terminología consistente.
 
-**Cuándo usarlo:** Idiomas europeos en los que DeepL destaca (alemán, francés, español, holandés, polaco, etc.). El soporte de glosarios impone una terminología coherente sin necesidad de datos de entrenamiento.
+**Cuándo usarlo:** Idiomas europeos donde DeepL destaca (alemán, francés, español, holandés, polaco, etc.). El soporte para glosarios aplica una terminología consistente sin necesidad de datos de entrenamiento.
 
 **Características:**
-- ✅ Detección automática de endpoint gratuito/pro (sufijo `:fx` en claves gratuitas)
+- ✅ Detección automática del endpoint gratuito/pro (sufijo `:fx` en claves gratuitas)
 - ✅ Creación y gestión de glosarios
-- ✅ Control de nivel de formalidad
+- ✅ Control del nivel de formalidad
 - ⚠️ **No es compatible con Markdown**: solo pares clave-valor
 
 **Configuración:**
@@ -277,13 +277,13 @@ Obtenga su clave en [deepl.com/pro-api](https://www.deepl.com/pro-api).
 
 ## `microsoft-translator` — Azure Cognitive Services
 
-Integración directa con la API de Microsoft Translator Text v3.
+Integración directa con Microsoft Translator Text API v3.
 
-**Cuándo usarlo:** Entornos empresariales con infraestructura de Azure existente. Compatible con más de 100 idiomas, incluidos muchos que Google Translate no cubre.
+**Cuándo usarlo:** Entornos empresariales con infraestructura de Azure existente. Soporta más de 100 idiomas, incluyendo muchos que Google Translate no cubre.
 
 **Características:**
 - ✅ Hasta 100 segmentos por solicitud (alto rendimiento)
-- ✅ Parámetro de región opcional para la optimización de latencia
+- ✅ Parámetro de región opcional para optimización de latencia
 - ⚠️ **No es compatible con Markdown**: solo pares clave-valor
 - ⚠️ **Sin traducción de contenido**: solo pares clave-valor
 
@@ -304,14 +304,14 @@ export MICROSOFT_TRANSLATOR_REGION=global  # optional
 
 Obtenga su clave desde el [Portal de Azure](https://portal.azure.com) → Cognitive Services → Translator.
 
-## `libretranslate` — Traducción autoalojada
+## `libretranslate` — Traducción autohospedada
 
-Traducción de código abierto autoalojada utilizando LibreTranslate. Se ejecuta localmente o en su propia infraestructura: cero costos de API, soberanía total de los datos.
+Traducción de código abierto autohospedada utilizando LibreTranslate. Se ejecuta localmente o en su propia infraestructura: cero costos de API, soberanía total de los datos.
 
-**Cuándo usarlo:** Proyectos que requieren traducción sin conexión, cumplimiento de privacidad de datos (GDPR) u operación sin costo. Especialmente útil para pipelines de CI que no deben depender de API externas.
+**Cuándo usarlo:** Proyectos que requieren traducción sin conexión, cumplimiento de privacidad de datos (GDPR) u operación sin costo. Especialmente útil para pipelines de CI que no deberían depender de API externas.
 
 **Características:**
-- ✅ Autoalojado: sin llamadas a API externas
+- ✅ Autohospedado: sin llamadas a API externas
 - ✅ Gratuito y de código abierto (AGPL-3.0)
 - ✅ Implementación en Docker disponible
 - ⚠️ **No es compatible con Markdown**: solo pares clave-valor
@@ -340,9 +340,9 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — API de traducción remota
 
-Un cliente HTTP ligero para endpoints de traducción alojados por la comunidad o protegidos por propiedad intelectual (IP). Rosetta envía las claves y recibe las traducciones; no contiene ninguna lógica de traducción.
+Un cliente HTTP ligero para endpoints de traducción alojados por la comunidad o protegidos por propiedad intelectual (IP). Rosetta envía las claves y recibe las traducciones: no contiene ninguna lógica de traducción.
 
-**Cuándo usarlo:** Cuando los métodos de traducción están alojados en el lado del servidor (por ejemplo, datos de entrenamiento patentados, modelos ajustados (fine-tuned), pipelines FST que no se pueden distribuir).
+**Cuándo usarlo:** Cuando los métodos de traducción están alojados del lado del servidor (por ejemplo, datos de entrenamiento patentados, modelos ajustados, pipelines FST que no se pueden distribuir).
 
 ```json
 {
@@ -357,9 +357,9 @@ Un cliente HTTP ligero para endpoints de traducción alojados por la comunidad o
 ```
 
 :::note Traducción comunitaria compatible con OCAP
-El método `api` es el puente hacia la **traducción alojada por la comunidad compatible con OCAP**. Las comunidades indígenas y de idiomas minoritarios pueden alojar sus propios endpoints de traducción, manteniendo los datos de entrenamiento, los modelos ajustados y la propiedad intelectual lingüística bajo el control de la comunidad, mientras que Rosetta se conecta a ellos como un cliente ligero.
+El método `api` es el puente hacia la **traducción alojada por la comunidad compatible con OCAP**. Las comunidades indígenas y de idiomas minoritarios pueden alojar sus propios endpoints de traducción (manteniendo los datos de entrenamiento, los modelos ajustados y la propiedad intelectual lingüística bajo el control de la comunidad), mientras que Rosetta se conecta a ellos como un cliente ligero.
 
-Consulte [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) para ver el tutorial completo sobre el alojamiento comunitario, y [Servir un método a través de API](/docs/guides/serving-a-method) para conocer los requisitos del endpoint.
+Consulte [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) para ver el tutorial completo de alojamiento comunitario, y [Servir un método a través de API](/docs/guides/serving-a-method) para conocer los requisitos del endpoint.
 :::
 
 ---
@@ -381,14 +381,14 @@ El verdadero poder radica en mezclar métodos por par de idiomas:
 }
 ```
 
-Esto traduce el francés a través de DeepL (soporte de glosario), el japonés a través de OpenAI (calidad), el coreano a través de Gemini (nivel gratuito), el árabe a través de Microsoft Translator (cobertura) y el cree de las llanuras a través de un plugin entrenado (especializado).
+Esto traduce el francés a través de DeepL (soporte de glosario), el japonés a través de OpenAI (calidad), el coreano a través de Gemini (nivel gratuito), el árabe a través de Microsoft Translator (cobertura) y el cree de las llanuras a través de un plugin con entrenamiento (especializado).
 
 ## Plugins
 
-Los plugins son recetas de traducción preempaquetadas para pares de idiomas específicos. Son manifiestos JSON (no código) que le indican a rosetta qué método usar, con qué configuración y qué calidad se ha evaluado.
+Los plugins son recetas de traducción preempaquetadas para pares de idiomas específicos. Son manifiestos JSON (no código) que le indican a rosetta qué método usar, con qué configuraciones y qué calidad se ha evaluado.
 
-:::tip Del entorno de evaluación (eval harness) a producción con un solo comando
-Los plugins desarrollados y probados en el [entorno de evaluación](https://mtevalarena.org/docs/specifications/harness) se pueden instalar directamente: el método que valide allí se implementa aquí con un solo comando `plugin install`. Consulte [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) para ver el flujo de trabajo de evaluación completo.
+:::tip Del entorno de evaluación a producción en un solo comando
+Los plugins desarrollados y probados en el [entorno de evaluación (eval harness)](https://mtevalarena.org/docs/specifications/harness) se pueden instalar directamente: el método que usted valide allí se implementa aquí con un solo comando `plugin install`. Consulte [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) para ver el flujo de trabajo de evaluación completo.
 :::
 
 ```bash
@@ -397,13 +397,13 @@ i18n-rosetta plugin list
 i18n-rosetta plugin remove french-formal-v1
 ```
 
-Consulte la [Especificación de plugins](/docs/reference/plugin-spec) para conocer el formato completo del manifiesto.
+Consulte la [Especificación de plugins](/docs/reference/plugin-spec) para ver el formato completo del manifiesto.
 
 ---
 
 ## Cambio de proveedores
 
-¿Se está cambiando de método? El formato del modelo y la variable de entorno cambian; aquí tiene el mapa:
+¿Se está moviendo entre métodos? El formato del modelo y la variable de entorno cambian; aquí tiene el mapa:
 
 ### OpenRouter → Proveedor directo
 
@@ -426,9 +426,9 @@ Consulte la [Especificación de plugins](/docs/reference/plugin-spec) para conoc
 ```
 
 **Diferencias clave:**
-- OpenRouter utiliza el formato `provider/model` (por ejemplo, `openai/gpt-4o`). Los proveedores directos utilizan nombres de modelos simples (por ejemplo, `gpt-4o`).
+- OpenRouter usa el formato `provider/model` (por ejemplo, `openai/gpt-4o`). Los proveedores directos usan nombres de modelos simples (por ejemplo, `gpt-4o`).
 - Cada proveedor directo tiene su propia variable de entorno (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`).
-- Si utiliza el formato de modelo incorrecto, rosetta le advertirá; consulte [Validación de modelos](#model-validation).
+- Si usted usa el formato de modelo incorrecto, rosetta le advertirá; consulte [Validación de modelos](#model-validation).
 
 ### Proveedor directo → OpenRouter
 
@@ -445,23 +445,23 @@ Consulte la [Especificación de plugins](/docs/reference/plugin-spec) para conoc
  }
 ```
 
-:::tip Cuándo usar OpenRouter frente a un proveedor directo
-**Use OpenRouter** cuando desee cambiar entre modelos sin modificar las variables de entorno, o cuando desee acceder a más de 200 modelos con una sola clave. **Use proveedores directos** cuando desee una facturación más sencilla, menor latencia (sin intermediarios) o acceso a funciones específicas del proveedor, como el almacenamiento en caché de prompts de Anthropic.
+:::tip Cuándo usar OpenRouter vs. Proveedor directo
+**Use OpenRouter** cuando desee cambiar entre modelos sin modificar las variables de entorno, o cuando desee acceder a más de 200 modelos con una sola clave. **Use proveedores directos** cuando desee una facturación más simple, menor latencia (sin intermediarios) o acceso a características específicas del proveedor, como el almacenamiento en caché de prompts de Anthropic.
 :::
 
 ---
 
 ## Comparación de costos
 
-Costo aproximado por cada 1000 claves traducidas (asume ~10 tokens por clave, 30 claves por lote):
+Costo aproximado por cada 1000 claves traducidas (asume ~10 tokens por clave, 80 claves por lote):
 
-| Método | Costo / 1000 claves | Velocidad | Calidad | Ideal para |
-|--------|--------------------|-----------|---------|------------|
-| `gemini` (Flash) | **Gratis** (dentro del nivel) | Rápida | Buena | Empezar, proyectos personales |
+| Método | Costo / 1K claves | Velocidad | Calidad | Ideal para |
+|--------|----------------|-------|---------|----------|
+| `gemini` (Flash) | **Gratis** (dentro del nivel) | Rápida | Buena | Primeros pasos, proyectos personales |
 | `google-translate` | ~$0.02 | Muy rápida | Adecuada | Alto volumen, idiomas europeos |
 | `deepl` | ~$0.02 | Rápida | Buena | Idiomas europeos, terminología |
 | `microsoft-translator` | ~$0.01 | Rápida | Adecuada | Entornos Azure, amplia cobertura de idiomas |
-| `libretranslate` | **Gratis** (autoalojado) | Variable | Aceptable | Entornos aislados (air-gapped), GDPR, pipelines de CI |
+| `libretranslate` | **Gratis** (autohospedado) | Variable | Aceptable | Entornos aislados (air-gapped), GDPR, pipelines de CI |
 | `gemini` (Pro) | ~$0.07 | Media | Muy buena | Sensible a la calidad, cuota gratuita |
 | `openai` (GPT-4o-mini) | ~$0.01 | Rápida | Buena | LLM económico |
 | `openai` (GPT-4o) | ~$0.10 | Media | Muy buena | Sensible a la calidad |
@@ -471,7 +471,7 @@ Costo aproximado por cada 1000 claves traducidas (asume ~10 tokens por clave, 30
 | `llm` (OpenRouter) | Varía según el modelo | Variable | Variable | Comparación de modelos, experimentación |
 
 :::note Estas son estimaciones
-Los costos reales dependen de la longitud del texto de origen, el tamaño del lote y los cambios en los precios del proveedor. Consulte la página de precios actual de cada proveedor para conocer las tarifas exactas.
+Los costos reales dependen de la longitud de su texto de origen, el tamaño del lote y los cambios de precios del proveedor. Consulte la página de precios actual de cada proveedor para conocer las tarifas exactas.
 :::
 
 ---
@@ -479,10 +479,10 @@ Los costos reales dependen de la longitud del texto de origen, el tamaño del lo
 ## Consulte también
 
 - [Idiomas compatibles](/docs/reference/supported-languages)
-- [Datos de entrenamiento](/docs/concepts/coaching-data)
+- [Datos de entrenamiento (Coaching)](/docs/concepts/coaching-data)
 - [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Especificación de plugins](/docs/reference/plugin-spec)
 - [Servir un método a través de API](/docs/guides/serving-a-method)
-- [Filtro de calidad](/docs/concepts/quality-gate)
+- [Control de calidad](/docs/concepts/quality-gate)
 - [Arquitectura](/docs/concepts/architecture)
 - [Solución de problemas](/docs/guides/troubleshooting): errores de modelo, problemas de API

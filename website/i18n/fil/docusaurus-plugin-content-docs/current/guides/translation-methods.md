@@ -4,38 +4,38 @@ title: "Mga Translation Method"
 ---
 # Mga Translation Method
 
-Sinusuportahan po ng Rosetta ang sampung translation methods. Pwedeng gumamit ng magkakaibang method ang bawat language pair — hindi po kayo locked-in sa iisang approach para sa buong project ninyo.
+Sinusuportahan ng Rosetta ang sampung translation method. Pwedeng gumamit ng magkaibang method ang bawat language pair — hindi ka po naka-lock sa isang approach lang para sa buong project ninyo.
 
 ## Pagkukumpara ng mga Method
 
 ### Mga LLM Provider
 
-Quality-focused, Markdown-aware, at coaching-compatible. Best po ito para sa mga content-heavy na projects.
+Quality-focused, Markdown-aware, at coaching-compatible. Pinakamaganda para sa mga content-heavy na project.
 
 | Method | Key | Ano ang Ginagawa Nito |
 |--------|-----|-------------|
 | `llm` (default) | `OPENROUTER_API_KEY` | LLM via OpenRouter — 200+ models, auto-routing |
-| `llm-coached` | `OPENROUTER_API_KEY` | LLM + grammar rules, dictionaries, style notes |
+| `llm-coached` | `OPENROUTER_API_KEY` | LLM + grammar rules, mga dictionary, style notes |
 | `openai` | `OPENAI_API_KEY` | Direct OpenAI API (gpt-4o, gpt-4o-mini) |
 | `anthropic` | `ANTHROPIC_API_KEY` | Direct Anthropic API (Claude Sonnet, Haiku, Opus) |
 | `gemini` | `GEMINI_API_KEY` | Direct Google Gemini API (Flash, Pro) — free tier |
 
 ### Traditional MT
 
-Speed at cost-focused. Best po ito para sa high-volume na key-value pairs.
+Naka-focus sa speed at cost. Pinakamaganda para sa high-volume na mga key-value pair.
 
 | Method | Key | Ano ang Ginagawa Nito |
 |--------|-----|-------------|
-| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ languages) |
-| `deepl` | `DEEPL_API_KEY` | DeepL API na may glossary support (30+ languages) |
-| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ languages) |
-| `libretranslate` | *(self-hosted)* | Self-hosted na LibreTranslate (AGPL, libre) |
+| `google-translate` | `GOOGLE_TRANSLATE_API_KEY` | Google Cloud Translation API v2 (130+ na language) |
+| `deepl` | `DEEPL_API_KEY` | DeepL API na may glossary support (30+ na language) |
+| `microsoft-translator` | `MICROSOFT_TRANSLATOR_API_KEY` | Azure Cognitive Services Translator (100+ na language) |
+| `libretranslate` | *(self-hosted)* | Self-hosted LibreTranslate (AGPL, libre) |
 
 ### Infrastructure
 
 | Method | Key | Ano ang Ginagawa Nito |
 |--------|-----|-------------|
-| `api` | *(per provider)* | Thin HTTP client para sa kahit anong REST translation endpoint |
+| `api` | *(per provider)* | Thin HTTP client para sa anumang REST translation endpoint |
 
 ## Decision Tree
 
@@ -56,16 +56,16 @@ flowchart TD
 
 ## `llm` — LLM Translation (Default)
 
-Nagta-translate via kahit anong LLM sa [OpenRouter](https://openrouter.ai). Ito po ang default method at ang pinaka-versatile.
+Nagta-translate gamit ang anumang LLM sa [OpenRouter](https://openrouter.ai). Ito po ang default method at ang pinaka-versatile.
 
 **Paano ito gumagana:**
-1. Nagba-batch ng mga keys (default ay 30/batch) kasama ang register at context instructions
+1. Nagba-batch ng mga key (default 80/batch) kasama ang register at context instructions
 2. Ipinapadala sa OpenRouter bilang isang structured prompt
 3. Pina-parse ang JSON response
-4. Vina-validate ang bawat translation gamit ang [quality gate](/docs/concepts/quality-gate)
-5. Isinusulat ang mga pumasa na translations, nagre-retry o nire-reject ang mga nag-fail
+4. Vina-validate ang bawat translation dumaan sa [quality gate](/docs/concepts/quality-gate)
+5. Isinusulat ang mga pumapasang translation, nagre-retry o nire-reject ang mga nag-fail
 
-**Kailan ito gagamitin:** Sa karamihan ng mga projects. Lalo na sa mga content-heavy sites na may Markdown, kung saan kailangang ma-shield ang mga code blocks at shortcodes.
+**Kailan ito gagamitin:** Sa karamihan ng mga project. Lalo na sa mga content-heavy site na may Markdown, kung saan kailangang i-shield ang mga code block at shortcode.
 
 **Configuration:**
 
@@ -78,15 +78,15 @@ Nagta-translate via kahit anong LLM sa [OpenRouter](https://openrouter.ai). Ito 
 
 ## `llm-coached` — Coached LLM Translation
 
-Kapareho po ng `llm`, pero may grammar rules, term dictionaries, at style notes na naka-inject sa bawat prompt.
+Pareho lang sa `llm`, pero may mga grammar rule, term dictionary, at style note na ini-inject sa bawat prompt.
 
 **Paano ito gumagana:**
-1. Naglo-load ng coaching data mula sa `.rosetta/coaching/<locale>.json` o sa `coaching/` directory ng isang plugin
-2. Nag-i-inject ng grammar rules, dictionary terms, at style notes sa system prompt
-3. Isinasama ang mga dictionary terms na nagma-match sa source keys bilang required terminology
-4. Nagpapatuloy ang translation katulad ng sa `llm`, kung saan nagdadagdag ng precision ang coaching data
+1. Nilo-load ang coaching data mula sa `.rosetta/coaching/<locale>.json` o sa `coaching/` directory ng isang plugin
+2. Ini-inject ang mga grammar rule, dictionary term, at style note sa system prompt
+3. Isinasama ang mga dictionary term na nagma-match sa source keys bilang required terminology
+4. Magpapatuloy ang translation gaya ng sa `llm`, kung saan nagdadagdag ng precision ang coaching data
 
-**Kailan ito gagamitin:** Para sa mga low-resource languages, domain-specific terminology (legal, medical), formal registers, o kahit anong case kung saan hindi sapat ang precision ng generic LLM output.
+**Kailan ito gagamitin:** Para sa mga low-resource language, domain-specific terminology (legal, medical), formal register, o anumang case kung saan hindi sapat ang precision ng generic na LLM output.
 
 **Format ng coaching data:**
 
@@ -105,20 +105,20 @@ Kapareho po ng `llm`, pero may grammar rules, term dictionaries, at style notes 
 }
 ```
 
-Tingnan din po ang: [Low-Resource Languages Guide](https://mtevalarena.org/docs/community/low-resource-languages)
+Tingnan din: [Low-Resource Languages Guide](https://mtevalarena.org/docs/community/low-resource-languages)
 
 ---
 
 ## `openai` — Direct OpenAI API
 
-Nagta-translate nang direkta via OpenAI Chat Completions API. Walang OpenRouter na middleman — inyong key, inyong account, inyong usage dashboard po ang gagamitin.
+Direktang nagta-translate gamit ang OpenAI Chat Completions API. Walang OpenRouter middleman — sarili mong key, sarili mong account, at sarili mong usage dashboard.
 
 **Mga Model:** `gpt-4o` (default), `gpt-4o-mini`
 
 **Mga Feature:**
 - ✅ Markdown-aware (content translation)
-- ✅ Coaching support (grammar rules, dictionary overrides, style notes)
-- ✅ JSON mode para sa structured key-value output
+- ✅ Coaching support (mga grammar rule, dictionary override, style notes)
+- ✅ JSON mode para sa structured na key-value output
 - ✅ Exponential backoff na may retry
 
 **Configuration:**
@@ -135,18 +135,18 @@ Nagta-translate nang direkta via OpenAI Chat Completions API. Walang OpenRouter 
 export OPENAI_API_KEY=sk-proj-...
 ```
 
-Kunin po ang inyong key sa [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+Kunin ang inyong key sa [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
 ## `anthropic` — Direct Anthropic API
 
-Nagta-translate nang direkta via Anthropic Messages API. Ginagamit ang `system` parameter para sa coaching data, kaya naka-enable ang prompt caching ng Anthropic.
+Direktang nagta-translate gamit ang Anthropic Messages API. Ginagamit ang `system` parameter para sa coaching data, na nag-e-enable sa prompt caching ng Anthropic.
 
 **Mga Model:** `claude-sonnet-4-6` (default), `claude-haiku-4-5`, `claude-opus-4-7`
 
 **Mga Feature:**
 - ✅ Markdown-aware (content translation)
-- ✅ Coaching support (grammar rules, dictionary overrides, style notes)
-- ✅ System prompt caching (ina-amortize ang coaching cost across batches)
+- ✅ Coaching support (mga grammar rule, dictionary override, style notes)
+- ✅ System prompt caching (ina-amortize ang coaching cost sa mga batch)
 - ✅ Exponential backoff na may retry
 
 **Configuration:**
@@ -163,17 +163,17 @@ Nagta-translate nang direkta via Anthropic Messages API. Ginagamit ang `system` 
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-Kunin po ang inyong key sa [console.anthropic.com](https://console.anthropic.com/settings/keys).
+Kunin ang inyong key sa [console.anthropic.com](https://console.anthropic.com/settings/keys).
 
 ## `gemini` — Direct Google Gemini API
 
-Nagta-translate nang direkta via Google Gemini `generateContent` API. **May free tier na available** — ang pinaka-best na zero-cost starting point.
+Direktang nagta-translate gamit ang Google Gemini `generateContent` API. **May available na free tier** — pinakamagandang zero-cost starting point.
 
 **Mga Model:** `gemini-2.5-flash` (default), `gemini-2.5-pro`
 
 **Mga Feature:**
 - ✅ Markdown-aware (content translation)
-- ✅ Coaching support (grammar rules, dictionary overrides, style notes)
+- ✅ Coaching support (mga grammar rule, dictionary override, style notes)
 - ✅ JSON response mode via `responseMimeType`
 - ✅ Free tier (malaking daily quota)
 - ✅ Exponential backoff na may retry
@@ -192,11 +192,11 @@ Nagta-translate nang direkta via Google Gemini `generateContent` API. **May free
 export GEMINI_API_KEY=AI...
 ```
 
-Kunin po ang inyong key sa [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+Kunin ang inyong key sa [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 
 ### Model Validation
 
-Vina-validate ng mga direct LLM providers (`openai`, `anthropic`, `gemini`) ang inyong model string sa unang paggamit. Naka-catch po nito ang tatlong categories ng pagkakamali:
+Vina-validate ng mga direct LLM provider (`openai`, `anthropic`, `gemini`) ang inyong model string sa unang paggamit. Sinasalo nito ang tatlong category ng mga pagkakamali:
 
 **Maling method format** — Paggamit ng OpenRouter-style na model path sa isang direct provider:
 
@@ -222,8 +222,8 @@ Vina-validate ng mga direct LLM providers (`openai`, `anthropic`, `gemini`) ang 
        The API call will proceed — the provider will give the final verdict.
 ```
 
-:::note Mga warning po ito, hindi errors
-Nalo-log ng model validation ang mga warnings pero hindi nito bina-block ang API call. Ang provider API pa rin ang magbibigay ng final verdict — pwedeng mag-match ang isang future model name sa ibang pattern, at ayaw po nating mag-gate base sa heuristics.
+:::note Mga warning po ito, hindi error
+Naglo-log ng mga warning ang model validation pero hindi nito bino-block ang API call. Ang provider API ang nagbibigay ng final verdict — pwedeng mag-match sa ibang pattern ang isang future model name, at ayaw po nating mag-gate base sa heuristics.
 :::
 
 ---
@@ -232,10 +232,10 @@ Nalo-log ng model validation ang mga warnings pero hindi nito bina-block ang API
 
 Direct integration sa Google Cloud Translation API v2. Ginagamit ang REST API — walang SDK, walang service account. API key lang po.
 
-**Kailan ito gagamitin:** Para sa high-volume na key-value string pairs kung saan mas mahalaga ang speed at cost kaysa sa nuance. Sinusuportahan nito ang 130+ languages out of the box.
+**Kailan ito gagamitin:** Para sa high-volume na mga key-value string pair kung saan mas mahalaga ang speed at cost kaysa sa nuance. Sinusuportahan nito ang 130+ na language out of the box.
 
 **Mga Limitasyon:**
-- ⚠️ **Walang Markdown awareness.** Mako-corrupt po nito ang mga code blocks, shortcodes, at interpolation variables.
+- ⚠️ **Walang Markdown awareness.** Mako-corrupt nito ang mga code block, shortcode, at interpolation variable.
 - Walang register/tone control
 - Walang coaching o terminology enforcement
 
@@ -244,20 +244,20 @@ npx i18n-rosetta sync --method google-translate
 ```
 
 :::tip Auto-detection
-Kung `GOOGLE_TRANSLATE_API_KEY` lang ang naka-set (walang OpenRouter key), mag-o-auto-switch po ang rosetta sa Google Translate. Walang kailangang baguhin sa config.
+Kung `GOOGLE_TRANSLATE_API_KEY` lang ang naka-set (walang OpenRouter key), mag-o-auto-switch ang rosetta sa Google Translate. Hindi na kailangan ng config change.
 :::
 
 ## `deepl` — DeepL API
 
-Direct integration sa DeepL translation API. Sinusuportahan nito ang mga glossaries para sa consistent na terminology.
+Direct integration sa DeepL translation API. May support para sa mga glossary para sa consistent na terminology.
 
-**Kailan ito gagamitin:** Para sa mga European languages kung saan magaling ang DeepL (German, French, Spanish, Dutch, Polish, atbp.). Ang glossary support ay nag-e-enforce ng consistent terminology kahit walang coaching data.
+**Kailan ito gagamitin:** Sa mga European language kung saan magaling ang DeepL (German, French, Spanish, Dutch, Polish, atbp.). Ang glossary support ay nag-e-enforce ng consistent na terminology kahit walang coaching data.
 
 **Mga Feature:**
-- ✅ Automatic free/pro endpoint detection (`:fx` suffix sa mga free keys)
+- ✅ Automatic na free/pro endpoint detection (`:fx` suffix sa mga free key)
 - ✅ Glossary creation at management
 - ✅ Formality level control
-- ⚠️ **Walang Markdown awareness** — key-value pairs lang
+- ⚠️ **Walang Markdown awareness** — mga key-value pair lang
 
 **Configuration:**
 
@@ -273,19 +273,19 @@ Direct integration sa DeepL translation API. Sinusuportahan nito ang mga glossar
 export DEEPL_API_KEY=your-key-here
 ```
 
-Kunin po ang inyong key sa [deepl.com/pro-api](https://www.deepl.com/pro-api).
+Kunin ang inyong key sa [deepl.com/pro-api](https://www.deepl.com/pro-api).
 
 ## `microsoft-translator` — Azure Cognitive Services
 
 Direct integration sa Microsoft Translator Text API v3.
 
-**Kailan ito gagamitin:** Sa mga enterprise environments na may existing Azure infrastructure. Sinusuportahan nito ang 100+ languages kasama ang marami na hindi covered ng Google Translate.
+**Kailan ito gagamitin:** Sa mga enterprise environment na may existing na Azure infrastructure. Sinusuportahan ang 100+ na language kasama ang marami na hindi sakop ng Google Translate.
 
 **Mga Feature:**
-- ✅ Hanggang 100 segments per request (high throughput)
+- ✅ Hanggang 100 segment per request (high throughput)
 - ✅ Optional na region parameter para sa latency optimization
-- ⚠️ **Walang Markdown awareness** — key-value pairs lang
-- ⚠️ **Walang content translation** — key-value pairs lang
+- ⚠️ **Walang Markdown awareness** — mga key-value pair lang
+- ⚠️ **Walang content translation** — mga key-value pair lang
 
 **Configuration:**
 
@@ -302,21 +302,21 @@ export MICROSOFT_TRANSLATOR_API_KEY=your-key
 export MICROSOFT_TRANSLATOR_REGION=global  # optional
 ```
 
-Kunin po ang inyong key mula sa [Azure Portal](https://portal.azure.com) → Cognitive Services → Translator.
+Kunin ang inyong key mula sa [Azure Portal](https://portal.azure.com) → Cognitive Services → Translator.
 
 ## `libretranslate` — Self-Hosted Translation
 
-Self-hosted na open-source translation gamit ang LibreTranslate. Tumatakbo nang locally o sa inyong sariling infrastructure — zero API costs, at may full data sovereignty po kayo.
+Self-hosted na open-source translation gamit ang LibreTranslate. Tumatakbo locally o sa sarili ninyong infrastructure — zero API costs, full data sovereignty.
 
-**Kailan ito gagamitin:** Para sa mga projects na kailangan ng offline translation, data privacy compliance (GDPR), o zero-cost operation. Lalo na pong kapaki-pakinabang ito para sa mga CI pipelines na hindi dapat dumedepende sa mga external APIs.
+**Kailan ito gagamitin:** Sa mga project na nangangailangan ng offline translation, data privacy compliance (GDPR), o zero-cost operation. Lalo itong kapaki-pakinabang para sa mga CI pipeline na hindi dapat dumedepende sa mga external API.
 
 **Mga Feature:**
 - ✅ Self-hosted — walang external API calls
 - ✅ Libre at open source (AGPL-3.0)
-- ✅ May Docker deployment na available
-- ⚠️ **Walang Markdown awareness** — key-value pairs lang
-- ⚠️ **Walang content translation** — key-value pairs lang
-- ⚠️ Nag-iiba ang quality depende sa language pair
+- ✅ May available na Docker deployment
+- ⚠️ **Walang Markdown awareness** — mga key-value pair lang
+- ⚠️ **Walang content translation** — mga key-value pair lang
+- ⚠️ Nag-iiba-iba ang quality depende sa language pair
 
 **Setup:**
 
@@ -340,9 +340,9 @@ export LIBRETRANSLATE_API_URL=http://localhost:5000/translate
 
 ## `api` — Remote Translation API
 
-Isang thin HTTP client para sa mga community-hosted o IP-protected na translation endpoints. Nagpapadala po ang Rosetta ng mga keys at tumatanggap ng mga translations pabalik — wala itong kahit anong translation logic.
+Isang thin HTTP client para sa mga community-hosted o IP-protected na translation endpoint. Nagpapadala ang Rosetta ng mga key at tumatanggap ng mga translation pabalik — wala itong kahit anong translation logic.
 
-**Kailan ito gagamitin:** Kapag ang mga translation methods ay naka-host sa server-side (hal., proprietary coaching data, fine-tuned models, FST pipelines na hindi pwedeng i-distribute).
+**Kailan ito gagamitin:** Kapag naka-host server-side ang mga translation method (hal., proprietary coaching data, mga fine-tuned model, mga FST pipeline na hindi pwedeng i-distribute).
 
 ```json
 {
@@ -356,17 +356,17 @@ Isang thin HTTP client para sa mga community-hosted o IP-protected na translatio
 }
 ```
 
-:::note OCAP-Compatible Community Translation
-Ang `api` method po ang nagsisilbing tulay para sa **OCAP-compatible community-hosted translation**. Pwedeng i-host ng mga Indigenous at minority-language communities ang sarili nilang translation endpoints — para manatili ang coaching data, fine-tuned models, at linguistic IP sa ilalim ng community control — habang kumokonekta ang Rosetta sa kanila bilang isang thin client.
+:::note OCAP-Compatible na Community Translation
+Ang `api` method ay ang tulay papunta sa **OCAP-compatible na community-hosted translation**. Pwedeng i-host ng mga indigenous at minority-language community ang sarili nilang mga translation endpoint — pinapanatili ang coaching data, mga fine-tuned model, at linguistic IP sa ilalim ng community control — habang kumokonekta ang Rosetta sa kanila bilang isang thin client.
 
-Tingnan po ang [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong community-hosting walkthrough, at ang [Serving a Method via API](/docs/guides/serving-a-method) para sa mga endpoint requirements.
+Tingnan ang [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) para sa buong community-hosting walkthrough, at [Serving a Method via API](/docs/guides/serving-a-method) para sa mga endpoint requirement.
 :::
 
 ---
 
 ## Per-Pair Configuration
 
-Ang tunay na power po nito ay ang pag-mix ng mga methods per language pair:
+Ang totoong power nito ay ang pag-mix ng mga method per language pair:
 
 ```json title="i18n-rosetta.config.json"
 {
@@ -381,14 +381,14 @@ Ang tunay na power po nito ay ang pag-mix ng mga methods per language pair:
 }
 ```
 
-Nagta-translate po ito ng French via DeepL (glossary support), Japanese via OpenAI (quality), Korean via Gemini (free tier), Arabic via Microsoft Translator (coverage), at Plains Cree via isang coached plugin (specialized).
+Tinta-translate nito ang French via DeepL (glossary support), Japanese via OpenAI (quality), Korean via Gemini (free tier), Arabic via Microsoft Translator (coverage), at Plains Cree via isang coached plugin (specialized).
 
 ## Mga Plugin
 
-Ang mga plugins ay mga pre-packaged na translation recipes para sa mga specific na language pairs. JSON manifests po ang mga ito — hindi code — na nagsasabi sa rosetta kung anong method ang gagamitin, anong settings, at anong quality ang na-benchmark na.
+Ang mga plugin ay mga pre-packaged na translation recipe para sa mga specific na language pair. Sila ay mga JSON manifest — hindi code — na nagsasabi sa rosetta kung aling method ang gagamitin, anong mga setting, at anong quality ang na-benchmark na.
 
 :::tip Mula eval harness hanggang production sa isang command
-Ang mga plugins na na-develop at na-prove na sa [eval harness](https://mtevalarena.org/docs/specifications/harness) ay pwedeng i-install nang direkta — ang method na vina-validate ninyo doon ay madi-deploy dito gamit ang isang `plugin install` command. Tingnan po ang [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) para sa buong evaluation workflow.
+Ang mga plugin na na-develop at na-prove na sa [eval harness](https://mtevalarena.org/docs/specifications/harness) ay pwedeng i-install nang direkta — ang method na vina-validate ninyo doon ay nade-deploy dito gamit ang isang `plugin install` command. Tingnan ang [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) para sa buong evaluation workflow.
 :::
 
 ```bash
@@ -397,13 +397,13 @@ i18n-rosetta plugin list
 i18n-rosetta plugin remove french-formal-v1
 ```
 
-Tingnan po ang [Plugin Specification](/docs/reference/plugin-spec) para sa buong manifest format.
+Tingnan ang [Plugin Specification](/docs/reference/plugin-spec) para sa buong manifest format.
 
 ---
 
 ## Pag-switch ng mga Provider
 
-Lilipat po ba sa ibang methods? Magbabago ang model format at env var — heto po ang map:
+Lilipat sa ibang method? Mag-iiba ang model format at env var — heto po ang map:
 
 ### OpenRouter → Direct Provider
 
@@ -426,9 +426,9 @@ Lilipat po ba sa ibang methods? Magbabago ang model format at env var — heto p
 ```
 
 **Mga pangunahing pagkakaiba:**
-- Gumagamit ang OpenRouter ng `provider/model` format (hal., `openai/gpt-4o`). Gumagamit ang mga direct providers ng bare model names (hal., `gpt-4o`).
-- Bawat direct provider ay may sariling env var (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`).
-- Kung maling model format ang gagamitin ninyo, magwa-warn po ang rosetta sa inyo — tingnan ang [Model Validation](#model-validation).
+- Gumagamit ang OpenRouter ng `provider/model` format (hal., `openai/gpt-4o`). Ang mga direct provider ay gumagamit ng mga bare model name (hal., `gpt-4o`).
+- May sariling env var ang bawat direct provider (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`).
+- Kung maling model format ang gagamitin ninyo, magbibigay ng warning ang rosetta — tingnan ang [Model Validation](#model-validation).
 
 ### Direct Provider → OpenRouter
 
@@ -446,43 +446,43 @@ Lilipat po ba sa ibang methods? Magbabago ang model format at env var — heto p
 ```
 
 :::tip Kailan gagamitin ang OpenRouter vs Direct
-**Gamitin ang OpenRouter** kung gusto ninyong mag-switch ng mga models nang hindi nagpapalit ng env vars, o kung gusto ninyo ng access sa 200+ models gamit ang iisang key. **Gamitin ang mga direct providers** kung gusto ninyo ng mas simpleng billing, lower latency (walang middleman), o access sa mga provider-specific features tulad ng prompt caching ng Anthropic.
+**Gamitin ang OpenRouter** kapag gusto ninyong mag-switch sa iba't ibang model nang hindi nagpapalit ng mga env var, o kapag gusto ninyo ng access sa 200+ na model mula sa isang key lang. **Gamitin ang mga direct provider** kapag gusto ninyo ng mas simpleng billing, mas mababang latency (walang middleman), o access sa mga provider-specific na feature tulad ng prompt caching ng Anthropic.
 :::
 
 ---
 
 ## Pagkukumpara ng Cost
 
-Approximate na cost per 1,000 translated keys (ina-assume na ~10 tokens per key, 30 keys per batch):
+Approximate cost per 1,000 translated keys (ina-assume na ~10 token per key, 80 key per batch):
 
-| Method | Cost / 1K Keys | Speed | Quality | Best Para Sa |
+| Method | Cost / 1K Keys | Speed | Quality | Pinakamaganda Para Sa |
 |--------|----------------|-------|---------|----------|
-| `gemini` (Flash) | **Libre** (within tier) | Fast | Good | Getting started, personal projects |
-| `google-translate` | ~$0.02 | Fastest | Adequate | High-volume, European languages |
-| `deepl` | ~$0.02 | Fast | Good | European languages, terminology |
-| `microsoft-translator` | ~$0.01 | Fast | Adequate | Azure shops, broad language coverage |
-| `libretranslate` | **Libre** (self-hosted) | Varies | Fair | Air-gapped, GDPR, CI pipelines |
+| `gemini` (Flash) | **Libre** (sa loob ng tier) | Fast | Good | Getting started, mga personal project |
+| `google-translate` | ~$0.02 | Fastest | Adequate | High-volume, mga European language |
+| `deepl` | ~$0.02 | Fast | Good | Mga European language, terminology |
+| `microsoft-translator` | ~$0.01 | Fast | Adequate | Mga Azure shop, malawak na language coverage |
+| `libretranslate` | **Libre** (self-hosted) | Varies | Fair | Air-gapped, GDPR, mga CI pipeline |
 | `gemini` (Pro) | ~$0.07 | Medium | Very good | Quality-sensitive, free quota |
 | `openai` (GPT-4o-mini) | ~$0.01 | Fast | Good | Budget LLM |
 | `openai` (GPT-4o) | ~$0.10 | Medium | Very good | Quality-sensitive |
 | `anthropic` (Haiku) | ~$0.01 | Fast | Good | Budget LLM |
 | `anthropic` (Sonnet) | ~$0.10 | Medium | Very good | Quality-sensitive |
 | `anthropic` (Opus) | ~$0.50 | Slow | Excellent | Maximum quality |
-| `llm` (OpenRouter) | Varies by model | Varies | Varies | Model comparison, experimentation |
+| `llm` (OpenRouter) | Nag-iiba per model | Varies | Varies | Model comparison, experimentation |
 
-:::note Mga estimates po ito
-Nakadepende ang actual costs sa haba ng inyong source text, batch size, at mga pagbabago sa pricing ng provider. I-check po ang current pricing page ng bawat provider para sa mga eksaktong rates.
+:::note Mga estimate lang po ito
+Nakadepende ang actual costs sa haba ng inyong source text, batch size, at mga pagbabago sa pricing ng provider. I-check ang current pricing page ng bawat provider para sa mga eksaktong rate.
 :::
 
 ---
 
 ## Tingnan Din
 
-- [Supported Languages](/docs/reference/supported-languages)
+- [Mga Supported Language](/docs/reference/supported-languages)
 - [Coaching Data](/docs/concepts/coaching-data)
-- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages)
+- [Suportahan ang isang Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages)
 - [Plugin Specification](/docs/reference/plugin-spec)
-- [Serving a Method via API](/docs/guides/serving-a-method)
+- [Pag-serve ng Method via API](/docs/guides/serving-a-method)
 - [Quality Gate](/docs/concepts/quality-gate)
 - [Architecture](/docs/concepts/architecture)
-- [Troubleshooting](/docs/guides/troubleshooting) — model errors, API issues
+- [Troubleshooting](/docs/guides/troubleshooting) — mga model error, API issue

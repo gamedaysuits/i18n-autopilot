@@ -10,7 +10,7 @@ title: "Especificación del plugin"
 
 ## Descripción general
 
-i18n-rosetta utiliza un **sistema de métodos conectables**. Cada par de idiomas puede usar un método de traducción diferente (LLM, guiado, convertidor de scripts, etc.). Los métodos se registran en `lib/translate.js` y se resuelven por par mediante `lib/pairs.js`.
+i18n-rosetta utiliza un **sistema de métodos conectables** (pluggable). Cada par de idiomas puede usar un método de traducción diferente (LLM, guiado, convertidor de scripts, etc.). Los métodos se registran en `lib/translate.js` y se resuelven por par a través de `lib/pairs.js`.
 
 El trabajo del entorno de evaluación (eval harness) es **desarrollar, probar y exportar** métodos de traducción. El trabajo de i18n-rosetta es **consumirlos y ejecutarlos**. El entorno de evaluación nunca se ejecuta dentro de rosetta.
 
@@ -25,7 +25,7 @@ flowchart LR
 
 ## Formato del plugin de método
 
-Un plugin de método es un único archivo JSON (`method.json`) con archivos de datos de guía (coaching) opcionales.
+Un plugin de método es un único archivo JSON (`method.json`) con archivos opcionales de datos de guía (coaching data).
 
 ### `method.json` — Requerido
 
@@ -40,7 +40,7 @@ Un plugin de método es un único archivo JSON (`method.json`) con archivos de d
   "config": {
     "model": "google/gemini-3.5-flash",
     "register": "formal",
-    "batchSize": 30,
+    "batchSize": 80,
     "temperature": 0.2
   },
 
@@ -82,11 +82,11 @@ Un plugin de método es un único archivo JSON (`method.json`) con archivos de d
 | `author` | string | — | Quién desarrolló/probó este método |
 | `config.model` | string | — | Identificador del modelo de OpenRouter |
 | `config.register` | string | — | Registro/tono del idioma de destino |
-| `config.batchSize` | number | — | Claves por lote de API (1–200, predeterminado: 30) |
+| `config.batchSize` | number | — | Claves por lote de API (1–200, predeterminado: 80) |
 | `config.temperature` | number | — | Temperatura del LLM (0.0–2.0, predeterminado: 0.3) |
-| `benchmarks` | object | — | Resultados del benchmark por configuración regional |
+| `benchmarks` | object | — | Resultados del benchmark por configuración regional (locale) |
 | `provenance` | object | — | Licencias y dependencias de recursos |
-| `coaching.dir` | string | — | Ruta relativa al directorio de datos de guía (coaching) |
+| `coaching.dir` | string | — | Ruta relativa al directorio de datos de guía (coaching data) |
 
 ### Objeto Benchmark (por configuración regional)
 
@@ -98,17 +98,17 @@ Un plugin de método es un único archivo JSON (`method.json`) con archivos de d
 | `corpus_chrf` | number | — | Puntuación chrF++ (0–100) |
 | `corpus_bleu` | number | — | Puntuación BLEU (0–100) |
 | `model` | string | ✅ | Modelo utilizado durante la evaluación |
-| `harness_version` | string | ✅ | Versión del entorno de evaluación utilizada |
+| `harness_version` | string | ✅ | Versión del entorno de evaluación (eval harness) utilizada |
 
 :::info ¿Qué métricas se muestran?
-El comando `rosetta status` muestra **chrF++** y la **tasa de coincidencias exactas** del bloque de benchmark. `corpus_bleu` se acepta en el manifiesto, pero actualmente no se muestra ni se utiliza por ningún comando de rosetta. La [Tabla de clasificación de métodos](/leaderboard) rastrea chrF++, las coincidencias exactas y la tasa de aceptación de FST.
+El comando `rosetta status` muestra **chrF++** y la **tasa de coincidencia exacta** del bloque de benchmark. `corpus_bleu` se acepta en el manifiesto, pero actualmente no se muestra ni se utiliza por ningún comando de rosetta. La [Tabla de clasificación de métodos](/leaderboard) rastrea chrF++, la coincidencia exacta y la tasa de aceptación de FST.
 :::
 
 ---
 
 ### Objeto Provenance (Procedencia)
 
-El bloque de procedencia comunica el estado de las licencias de los recursos incluidos en el plugin.
+El bloque de procedencia comunica el estado de la licencia de los recursos incluidos en el plugin.
 
 | Campo | Tipo | Predeterminado | Descripción |
 |-------|------|---------|-------------|
@@ -116,13 +116,13 @@ El bloque de procedencia comunica el estado de las licencias de los recursos inc
 | `commercialReady` | boolean | `false` | Si el plugin está autorizado para distribución comercial |
 | `flags` | string[] | `["license-unclear"]` | Indicadores de estado legibles por máquina |
 
-**Estado predeterminado**: los plugins exportados se envían con `commercialReady: false` y `flags: ["license-unclear"]`.
+**Estado predeterminado** — los plugins exportados se envían con `commercialReady: false` y `flags: ["license-unclear"]`.
 
-**Estado autorizado**: cuando se han verificado las licencias: establezca `commercialReady: true` y borre los indicadores.
+**Estado autorizado** — cuando se ha verificado la licencia: establezca `commercialReady: true` y borre los indicadores.
 
 ---
 
-## Formato de datos de guía (Coaching)
+## Formato de los datos de guía (Coaching Data)
 
 Si `type` es `llm-coached`, el plugin debe incluir archivos de datos de guía en el subdirectorio `coaching/`.
 
@@ -147,7 +147,7 @@ Si `type` es `llm-coached`, el plugin debe incluir archivos de datos de guía en
 |-------|------|----------|-------------|
 | `grammar_rules` | string[] | — | Reglas inyectadas en cada prompt del LLM para esta configuración regional |
 | `dictionary` | object | — | Mapa de término → traducción. Los términos coincidentes se inyectan como terminología requerida. |
-| `style_notes` | string | — | Instrucciones de estilo de formato libre añadidas al final del prompt |
+| `style_notes` | string | — | Instrucciones de estilo de formato libre añadidas al prompt |
 
 ---
 
@@ -174,7 +174,7 @@ european-formal-v2/
 
 ---
 
-## Cómo Rosetta consume los plugins
+## Cómo consume Rosetta los plugins
 
 ### Instalación
 
@@ -196,22 +196,22 @@ Se guarda en `.rosetta/methods/french-formal-v1/`.
 }
 ```
 
-:::info Semántica de fusión
-El plugin define *qué* método usar (`type`). La configuración del par ajusta *cómo* ejecutarlo (`model`, `register`, `batchSize`). Si el par establece `model`, anula el valor predeterminado del plugin.
+:::info Semántica de fusión (merge)
+El plugin define *qué* método usar (`type`). La configuración del par ajusta *cómo* ejecutarlo (`model`, `register`, `batchSize`). Si el par establece `model`, este anula el valor predeterminado del plugin.
 :::
 
 ### Tiempo de ejecución
 
-1. Rosetta lee `method.json` de `.rosetta/methods/french-formal-v1/`
+1. Rosetta lee `method.json` desde `.rosetta/methods/french-formal-v1/`
 2. El campo `type` del plugin establece el método de traducción (ej., `llm-coached`)
 3. Carga los datos de guía desde el directorio `coaching/` del plugin
 4. Utiliza el bloque `config` para llenar los vacíos en el modelo/registro/temperatura
 5. El bloque `benchmarks` se muestra en la salida de `rosetta status`
-6. `rosetta provenance` verifica el bloque `provenance` en busca de indicadores de licencia
+6. El bloque `provenance` es verificado por `rosetta provenance` en busca de indicadores de licencia
 
 ---
 
-## Validación de esquemas
+## Validación del esquema
 
 Los manifiestos de los plugins se validan en el momento de la instalación contra [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json).
 
@@ -228,11 +228,11 @@ Haga referencia al esquema en su `method.json` para el autocompletado del IDE:
 
 ## Qué NO incluir
 
-- ❌ Sin código Python ni dependencias del entorno de evaluación
+- ❌ Sin código Python ni dependencias del entorno de evaluación (harness)
 - ❌ Sin datos de corpus sin procesar ni registros de ejecución
 - ❌ Sin claves de API ni credenciales
 - ❌ Sin configuración del entorno de evaluación
-- ❌ Sin plantillas de prompts internas (estas residen en las implementaciones de métodos de rosetta)
+- ❌ Sin plantillas de prompts internas (estas se encuentran en las implementaciones de métodos de rosetta)
 
 El plugin es **solo de datos**: configuración, contenido de guía y resultados de benchmark.
 
@@ -240,9 +240,9 @@ El plugin es **solo de datos**: configuración, contenido de guía y resultados 
 
 ## Consulte también
 
-- [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método incorporado
+- [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método integrado
 - [Configuración](/docs/getting-started/configuration) — configuración por par y por idioma
 - [Servir un método a través de API](/docs/guides/serving-a-method) — alojar métodos como servicios HTTP
-- [Libro de recetas: Pipeline controlado por FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — construcción y empaquetado de un pipeline
-- [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) — evaluación comparativa de métodos para su envío a la tabla de clasificación
-- [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — el caso de uso para plugins de la comunidad
+- [Recetario: Pipeline controlado por FST](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — construcción y empaquetado de un pipeline
+- [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules) — evaluación comparativa (benchmarking) de métodos para su envío a la tabla de clasificación
+- [Soporte para un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages) — el caso de uso para los plugins de la comunidad

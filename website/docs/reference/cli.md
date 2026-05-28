@@ -41,9 +41,9 @@ Run `i18n-rosetta <command> --help` for detailed help on any command.
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
 --json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -101,7 +101,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 
 **Change detection**: rosetta stores SHA-256 hashes in `.i18n-rosetta.lock`. When source values change, the next sync automatically re-translates those keys. Commit the lock file so all developers share the baseline.
 
-**Parallelism**: Both JSON key translation and content translation run in parallel. JSON locales are translated simultaneously (default: 50 concurrent locales), with batches within each locale also parallelized (4 concurrent batches). Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool (default: 12 concurrent API calls). Override with `--json-concurrency`, `--content-concurrency`, or `--concurrency` (sets both).
+**Parallelism**: Both JSON key translation and content translation run in parallel. JSON locales are translated simultaneously (default: 50 concurrent locales), with batches within each locale also parallelized (4 concurrent batches). Content translation (Markdown, MDX, blog posts) runs in a flat work-item pool (default: 48 concurrent API calls). Override with `--json-concurrency`, `--content-concurrency`, or `--concurrency` (sets both).
 
 **Output**: Sync displays a version banner, format/framework detection, cost estimate, and per-locale progress bars:
 

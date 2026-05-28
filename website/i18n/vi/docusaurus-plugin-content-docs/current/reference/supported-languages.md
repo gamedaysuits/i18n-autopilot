@@ -4,123 +4,123 @@ title: "Ngôn ngữ được hỗ trợ"
 ---
 # Các ngôn ngữ được hỗ trợ
 
-rosetta đi kèm với các **Language Card** — các tệp cấu hình có cấu trúc cho 50 ngôn ngữ. Mỗi thẻ chứa các preset (cài đặt sẵn) về văn phong, siêu dữ liệu về hệ thống mức độ trang trọng, cờ hỗ trợ phương thức, quy tắc trình bày và thông tin hệ thống chữ viết. Bất kỳ ngôn ngữ nào mà LLM của bạn biết đều có thể được thêm vào chỉ bằng một dòng cấu hình — đây là những ngôn ngữ có các văn phong đã được tinh chỉnh, sẵn sàng cho môi trường production.
+rosetta đi kèm với các **Language Card** (Thẻ ngôn ngữ) — các tệp cấu hình có cấu trúc cho 50 ngôn ngữ. Mỗi thẻ chứa các preset (cài đặt sẵn) về register (văn phong), siêu dữ liệu về hệ thống formality (độ trang trọng), các cờ hỗ trợ phương thức, quy tắc typography (đánh máy) và thông tin về script (chữ viết). Bất kỳ ngôn ngữ nào mà LLM của bạn biết đều có thể được thêm vào chỉ bằng một dòng cấu hình — đây là những ngôn ngữ có các register đã được tinh chỉnh và sẵn sàng cho môi trường production.
 
 ---
 
-## Các phương thức dịch thuật
+## Các phương thức dịch
 
-Mỗi ngôn ngữ có thể sử dụng một hoặc nhiều phương thức dịch thuật sau:
+Mỗi ngôn ngữ có thể sử dụng một hoặc nhiều phương thức dịch sau:
 
 | Biểu tượng | Phương thức | Cách hoạt động | Chi phí |
 |------|--------|-------------|------|
-| 🟢 | **Google Translate** | Neural MT cơ sở. Hơn 130 ngôn ngữ. Chỉ dành cho chuỗi key-value — không thể dịch nội dung Markdown một cách an toàn. | ~$20/1 triệu ký tự |
-| 🔵 | **LLM (OpenRouter)** | Bất kỳ ngôn ngữ nào mô hình biết. Prompt được điều hướng theo văn phong. Xử lý cả nội dung key-value và Markdown. | Tùy theo mô hình |
-| 🟣 | **LLM-Coached** | LLM + từ điển ngữ pháp + dữ liệu huấn luyện (coaching data) được đưa vào prompt. Tốt nhất cho các ngôn ngữ có hình thái phức tạp. | Tùy theo mô hình |
-| 🟠 | **API (Plugin)** | Các pipeline dịch thuật do cộng đồng lưu trữ, phục vụ qua HTTP. [Tương thích OCAP](https://mtevalarena.org/docs/community/low-resource-languages). | Tùy theo nhà cung cấp |
+| 🟢 | **Google Translate** | Neural MT cơ bản. Hơn 130 ngôn ngữ. Chỉ hỗ trợ chuỗi key-value — không thể dịch an toàn nội dung Markdown. | ~$20/1M ký tự |
+| 🔵 | **LLM (OpenRouter)** | Bất kỳ ngôn ngữ nào mô hình biết. Prompt được điều hướng theo register. Xử lý cả key-value và nội dung Markdown. | Tùy thuộc vào mô hình |
+| 🟣 | **LLM-Coached** | LLM + từ điển ngữ pháp + dữ liệu huấn luyện (coaching data) được đưa vào prompt. Tốt nhất cho các ngôn ngữ có hình thái phức tạp. | Tùy thuộc vào mô hình |
+| 🟠 | **API (Plugin)** | Các pipeline dịch thuật do cộng đồng lưu trữ và phục vụ qua HTTP. [Tương thích với OCAP](https://mtevalarena.org/docs/community/low-resource-languages). | Tùy thuộc vào nhà cung cấp |
 
-Thiết lập `GOOGLE_TRANSLATE_API_KEY` cho Google Translate, hoặc `OPENROUTER_API_KEY` cho các phương thức LLM. Xem [Các phương thức dịch thuật](/docs/guides/translation-methods) để biết thông tin chi tiết.
+Thiết lập `GOOGLE_TRANSLATE_API_KEY` cho Google Translate, hoặc `OPENROUTER_API_KEY` cho các phương thức LLM. Xem [Các phương thức dịch](/docs/guides/translation-methods) để biết thông tin chi tiết.
 
 ---
 
 ## Các ngôn ngữ ưu tiên
 
-Đây là các locale được yêu cầu nhiều nhất cho các ứng dụng web và di động, được liệt kê theo thứ tự ưu tiên khả năng tiếp cận (accessibility-first) mà rosetta đề xuất.
+Đây là các locale (ngôn ngữ/khu vực) được yêu cầu nhiều nhất cho các ứng dụng web và di động, được liệt kê theo thứ tự ưu tiên khả năng tiếp cận (accessibility-first) mà rosetta khuyên dùng.
 
-| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Hệ thống chữ viết | Ghi chú |
+| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Script | Ghi chú |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
-| 🇸🇦 | Tiếng Ả Rập | `ar` | ✅ | ✅ | ✅ | — | RTL. Tiếng Ả Rập chuẩn hiện đại (فصحى). |
-| 🇵🇭 | Tiếng Philippines (Taglish) | `tl` | ✅ | ✅ | ✅ | — | Chuyển mã (Code-switching): Tiếng Tagalog là chính, thuật ngữ kỹ thuật bằng tiếng Anh. |
-| 🇫🇷 | Tiếng Pháp | `fr` | ✅ | ✅ | ✅ | — | Dạng Vous. Bao hàm giới tính (Connecté·e). |
-| 🇪🇸 | Tiếng Tây Ban Nha | `es` | ✅ | ✅ | ✅ | — | Tiếng Mỹ Latinh trung lập. |
-| 🇩🇪 | Tiếng Đức | `de` | ✅ | ✅ | ✅ | — | Dạng Sie. Bao hàm giới tính (Benutzer:innen). |
-| 🇯🇵 | Tiếng Nhật | `ja` | ✅ | ✅ | ✅ | — | です/ます cho văn bản nội dung, する cho nhãn UI. |
-| 🇨🇳 | Tiếng Trung (Giản thể) | `zh` | ✅ | ✅ | ✅ | — | 简体中文. |
-| 🇮🇹 | Tiếng Ý | `it` | ✅ | ✅ | ✅ | — | Dạng Lei. |
-| 🇧🇷 | Tiếng Bồ Đào Nha (BR) | `pt` | ✅ | ✅ | ✅ | — | Tiếng Bồ Đào Nha Brazil. |
-| 🇰🇷 | Tiếng Hàn | `ko` | ✅ | ✅ | ✅ | — | Văn phong lịch sự 해요체. |
+| 🇸🇦 | Arabic (Tiếng Ả Rập) | `ar` | ✅ | ✅ | ✅ | — | RTL. Modern Standard Arabic (فصحى). |
+| 🇵🇭 | Filipino (Taglish) | `tl` / `fil` | ✅ | ✅ | ✅ | — | Sử dụng `fil` trong cấu hình Docusaurus. rosetta có thể phân giải cả hai. |
+| 🇫🇷 | French (Tiếng Pháp) | `fr` | ✅ | ✅ | ✅ | — | Dạng Vous. Bao hàm giới tính (Connecté·e). |
+| 🇪🇸 | Spanish (Tiếng Tây Ban Nha) | `es` | ✅ | ✅ | ✅ | — | Tiếng Tây Ban Nha Mỹ Latinh trung lập. |
+| 🇩🇪 | German (Tiếng Đức) | `de` | ✅ | ✅ | ✅ | — | Dạng Sie. Bao hàm giới tính (Benutzer:innen). |
+| 🇯🇵 | Japanese (Tiếng Nhật) | `ja` | ✅ | ✅ | ✅ | — | です/ます cho văn bản nội dung, する cho nhãn UI. |
+| 🇨🇳 | Chinese (Simplified) (Tiếng Trung Giản thể) | `zh` | ✅ | ✅ | ✅ | — | 简体中文. |
+| 🇮🇹 | Italian (Tiếng Ý) | `it` | ✅ | ✅ | ✅ | — | Dạng Lei. |
+| 🇧🇷 | Portuguese (BR) (Tiếng Bồ Đào Nha - Brazil) | `pt` | ✅ | ✅ | ✅ | — | Tiếng Bồ Đào Nha Brazil. |
+| 🇰🇷 | Korean (Tiếng Hàn) | `ko` | ✅ | ✅ | ✅ | — | Văn phong lịch sự 해요체. |
 
-## Các ngôn ngữ phổ biến trên thế giới
+## Các ngôn ngữ chính trên thế giới
 
-| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Hệ thống chữ viết | Ghi chú |
+| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Script | Ghi chú |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
-| 🇧🇩 | Tiếng Bengal | `bn` | ✅ | ✅ | ✅ | — | Ưu tiên শুদ্ধ ভাষা. |
-| 🇧🇬 | Tiếng Bulgaria | `bg` | ✅ | ✅ | ✅ | — | |
-| 🇨🇿 | Tiếng Séc | `cs` | ✅ | ✅ | ✅ | — | Vykání (dạng vy). |
-| 🇩🇰 | Tiếng Đan Mạch | `da` | ✅ | ✅ | ✅ | — | |
-| 🇬🇷 | Tiếng Hy Lạp | `el` | ✅ | ✅ | ✅ | — | Δημοτική hiện đại. |
-| 🇮🇷 | Tiếng Ba Tư | `fa` | ✅ | ✅ | ✅ | — | RTL. |
-| 🇫🇮 | Tiếng Phần Lan | `fi` | ✅ | ✅ | ✅ | — | Không có giới tính ngữ pháp. |
-| 🇮🇱 | Tiếng Do Thái | `he` | ✅ | ✅ | ✅ | — | RTL. |
-| 🇮🇳 | Tiếng Hindi | `hi` | ✅ | ✅ | ✅ | — | शुद्ध हिन्दी. Hạn chế tối đa từ mượn tiếng Anh. |
-| 🇭🇺 | Tiếng Hungary | `hu` | ✅ | ✅ | ✅ | — | Dạng Ön. |
-| 🇮🇩 | Tiếng Indonesia | `id` | ✅ | ✅ | ✅ | — | |
-| 🇲🇾 | Tiếng Mã Lai | `ms` | ✅ | ✅ | ✅ | — | |
-| 🇳🇱 | Tiếng Hà Lan | `nl` | ✅ | ✅ | ✅ | — | Dạng U. |
-| 🇳🇴 | Tiếng Na Uy | `nb` | ✅ | ✅ | ✅ | — | Bokmål. |
-| 🇵🇱 | Tiếng Ba Lan | `pl` | ✅ | ✅ | ✅ | — | Dạng Pan/Pani. |
-| 🇵🇹 | Tiếng Bồ Đào Nha (EU) | `pt-PT` | ✅ | ✅ | ✅ | — | Tiếng Bồ Đào Nha Châu Âu. |
-| 🇷🇴 | Tiếng Romania | `ro` | ✅ | ✅ | ✅ | — | |
-| 🇷🇺 | Tiếng Nga | `ru` | ✅ | ✅ | ✅ | — | Dạng Вы. |
-| 🇸🇰 | Tiếng Slovak | `sk` | ✅ | ✅ | ✅ | — | Vykanie (dạng vy). |
-| 🇷🇸 | Tiếng Serbia | `sr` | ✅ | ✅ | ✅ | 🔤 Latin→Cyrillic | Trình chuyển đổi hệ thống chữ viết tất định (deterministic). |
-| 🇸🇪 | Tiếng Thụy Điển | `sv` | ✅ | ✅ | ✅ | — | |
-| 🇰🇪 | Tiếng Swahili | `sw` | ✅ | ✅ | ✅ | — | |
-| 🇹🇭 | Tiếng Thái | `th` | ✅ | ✅ | ✅ | — | Trợ từ lịch sự ครับ/ค่ะ. |
-| 🇹🇷 | Tiếng Thổ Nhĩ Kỳ | `tr` | ✅ | ✅ | ✅ | — | Dạng Siz. |
-| 🇺🇦 | Tiếng Ukraina | `uk` | ✅ | ✅ | ✅ | — | Dạng Ви. |
-| 🇵🇰 | Tiếng Urdu | `ur` | ✅ | ✅ | ✅ | — | RTL. Dạng آپ. |
-| 🇻🇳 | Tiếng Việt | `vi` | ✅ | ✅ | ✅ | — | |
-| 🇹🇼 | Tiếng Trung (Phồn thể) | `zh-TW` | ✅ | ✅ | ✅ | — | 繁體中文. |
-| 🇬🇪 | Tiếng Gruzia | `ka` | ✅ | ✅ | — | — | ქართული. Ngữ hệ Kartvelian. |
-| 🇳🇬 | Tiếng Yoruba | `yo` | ✅ | ✅ | — | — | Èdè Yorùbá. Ngôn ngữ thanh điệu (3 thanh). |
+| 🇧🇩 | Bengali | `bn` | ✅ | ✅ | ✅ | — | Ưu tiên শুদ্ধ ভাষা. |
+| 🇧🇬 | Bulgarian | `bg` | ✅ | ✅ | ✅ | — | |
+| 🇨🇿 | Czech | `cs` | ✅ | ✅ | ✅ | — | Vykání (dạng vy). |
+| 🇩🇰 | Danish | `da` | ✅ | ✅ | ✅ | — | |
+| 🇬🇷 | Greek | `el` | ✅ | ✅ | ✅ | — | Δημοτική hiện đại. |
+| 🇮🇷 | Persian | `fa` | ✅ | ✅ | ✅ | — | RTL. |
+| 🇫🇮 | Finnish | `fi` | ✅ | ✅ | ✅ | — | Không có giống ngữ pháp. |
+| 🇮🇱 | Hebrew | `he` | ✅ | ✅ | ✅ | — | RTL. |
+| 🇮🇳 | Hindi | `hi` | ✅ | ✅ | ✅ | — | शुद्ध हिन्दी. Hạn chế tối đa từ mượn tiếng Anh. |
+| 🇭🇺 | Hungarian | `hu` | ✅ | ✅ | ✅ | — | Dạng Ön. |
+| 🇮🇩 | Indonesian | `id` | ✅ | ✅ | ✅ | — | |
+| 🇲🇾 | Malay | `ms` | ✅ | ✅ | ✅ | — | |
+| 🇳🇱 | Dutch | `nl` | ✅ | ✅ | ✅ | — | Dạng U. |
+| 🇳🇴 | Norwegian | `nb` | ✅ | ✅ | ✅ | — | Bokmål. |
+| 🇵🇱 | Polish | `pl` | ✅ | ✅ | ✅ | — | Dạng Pan/Pani. |
+| 🇵🇹 | Portuguese (EU) | `pt-PT` | ✅ | ✅ | ✅ | — | Tiếng Bồ Đào Nha Châu Âu. |
+| 🇷🇴 | Romanian | `ro` | ✅ | ✅ | ✅ | — | |
+| 🇷🇺 | Russian | `ru` | ✅ | ✅ | ✅ | — | Dạng Вы. |
+| 🇸🇰 | Slovak | `sk` | ✅ | ✅ | ✅ | — | Vykanie (dạng vy). |
+| 🇷🇸 | Serbian | `sr` | ✅ | ✅ | ✅ | 🔤 Latin→Cyrillic | Trình chuyển đổi script tất định (deterministic). |
+| 🇸🇪 | Swedish | `sv` | ✅ | ✅ | ✅ | — | |
+| 🇰🇪 | Swahili | `sw` | ✅ | ✅ | ✅ | — | |
+| 🇹🇭 | Thai | `th` | ✅ | ✅ | ✅ | — | Trợ từ lịch sự ครับ/ค่ะ. |
+| 🇹🇷 | Turkish | `tr` | ✅ | ✅ | ✅ | — | Dạng Siz. |
+| 🇺🇦 | Ukrainian | `uk` | ✅ | ✅ | ✅ | — | Dạng Ви. |
+| 🇵🇰 | Urdu | `ur` | ✅ | ✅ | ✅ | — | RTL. Dạng آپ. |
+| 🇻🇳 | Vietnamese | `vi` | ✅ | ✅ | ✅ | — | |
+| 🇹🇼 | Chinese (Traditional) | `zh-TW` | ✅ | ✅ | ✅ | — | 繁體中文. |
+| 🇬🇪 | Georgian | `ka` | ✅ | ✅ | — | — | ქართული. Ngữ hệ Kartvelian. |
+| 🇳🇬 | Yoruba | `yo` | ✅ | ✅ | — | — | Èdè Yorùbá. Ngôn ngữ thanh điệu (3 thanh). |
 
-## Các biến thể khu vực
+## Các biến thể theo khu vực
 
-| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Hệ thống chữ viết | Ghi chú |
+| Cờ | Ngôn ngữ | Mã | Google | LLM | Coached | Script | Ghi chú |
 |------|----------|------|:------:|:---:|:-------:|--------|-------|
-| 🇲🇽 | Tiếng Tây Ban Nha (Mexico) | `es-MX` | ✅ | ✅ | ✅ | — | Dạng Tú. Văn phong gần gũi. |
-| 🇨🇦 | Tiếng Pháp (Canada) | `fr-CA` | ✅ | ✅ | ✅ | — | Thành ngữ Québécois. |
+| 🇲🇽 | Mexican Spanish | `es-MX` | ✅ | ✅ | ✅ | — | Dạng Tú. Văn phong ấm áp. |
+| 🇨🇦 | Canadian French | `fr-CA` | ✅ | ✅ | ✅ | — | Thành ngữ Québécois. |
 
 ---
 
-## Ngôn ngữ bản địa & Ngôn ngữ ít tài nguyên
+## Các ngôn ngữ bản địa & ít tài nguyên
 
 Các ngôn ngữ này không được hỗ trợ bởi các dịch vụ MT thương mại. rosetta cung cấp công cụ để các cộng đồng ngôn ngữ tự xây dựng phương thức dịch của riêng họ theo [các nguyên tắc OCAP](https://mtevalarena.org/docs/community/low-resource-languages).
 
-| | Ngôn ngữ | Mã | Google | LLM | Coached | Hệ thống chữ viết | Trạng thái |
+| | Ngôn ngữ | Mã | Google | LLM | Coached | Script | Trạng thái |
 |---|----------|------|:------:|:---:|:-------:|--------|--------|
-| 🪶 | Tiếng Cree Đồng bằng | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 Đang phát triển |
-| 🌄 | Tiếng Quechua | `qu` | ✅ | ✅ | — | — | Runasimi. Hậu tố hiển ngôn (Evidential suffixes). |
+| 🪶 | Plains Cree | `crk` | ❌ | ✅ | ✅ | 🔤 SRO→Syllabics | 🚧 Đang phát triển |
+| 🌄 | Quechua | `qu` | ✅ | ✅ | — | — | Runasimi. Hậu tố hiển ngôn (Evidential suffixes). |
 
-:::info Tiếng Cree Đồng bằng đang được tích cực phát triển
-Văn phong, cơ sở hạ tầng huấn luyện (coaching), trình chuyển đổi hệ thống chữ viết và bộ khung đánh giá (evaluation harness) cho tiếng Cree Đồng bằng đều đã hoạt động, nhưng pipeline dịch thuật **vẫn chưa được phát hành**. Chúng tôi đang làm việc với các cộng đồng ngôn ngữ theo [các nguyên tắc OCAP](https://mtevalarena.org/docs/community/low-resource-languages) để đảm bảo chất lượng trước khi phát hành. Xem [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) để biết toàn bộ câu chuyện — và cách bạn có thể đóng góp.
+:::info Plains Cree đang được tích cực phát triển
+Register, cơ sở hạ tầng coaching, trình chuyển đổi script và bộ công cụ đánh giá (evaluation harness) cho Plains Cree đều đã hoạt động, nhưng pipeline dịch thuật **vẫn chưa được phát hành**. Chúng tôi đang làm việc với các cộng đồng ngôn ngữ theo [các nguyên tắc OCAP](https://mtevalarena.org/docs/community/low-resource-languages) để đảm bảo chất lượng trước khi phát hành. Xem [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) để biết toàn bộ câu chuyện — và cách bạn có thể đóng góp.
 :::
 
 :::tip Thêm các ngôn ngữ ít tài nguyên khác
-Hệ thống plugin phương thức của rosetta được thiết kế cho việc này. Một cộng đồng ngôn ngữ có thể xây dựng một phương thức dịch tùy chỉnh, tự lưu trữ và kiểm soát, đồng thời phục vụ nó thông qua [phương thức API](/docs/guides/serving-a-method). [Bảng xếp hạng phương thức](/leaderboard) theo dõi điểm số cho bất kỳ cặp ngôn ngữ nào — hãy xây dựng một phương thức, chạy bộ khung đánh giá và giành lấy điểm số cao nhất.
+Hệ thống plugin phương thức của rosetta được thiết kế cho việc này. Một cộng đồng ngôn ngữ có thể xây dựng một phương thức dịch tùy chỉnh, lưu trữ dưới sự kiểm soát của riêng họ và phục vụ nó thông qua [phương thức API](/docs/guides/serving-a-method). [Bảng xếp hạng phương thức](/leaderboard) theo dõi điểm số cho bất kỳ cặp ngôn ngữ nào — hãy xây dựng một phương thức, chạy bộ công cụ đánh giá và giành lấy điểm số cao nhất.
 :::
 
 ---
 
-## Ngôn ngữ nhân tạo (Conlangs)
+## Ngôn ngữ nhân tạo (Constructed Languages)
 
-Các ngôn ngữ nhân tạo (Conlangs) được hỗ trợ thông qua các văn phong LLM và các trình chuyển đổi hệ thống chữ viết tùy chọn. Chúng sử dụng cùng một cơ sở hạ tầng như các ngôn ngữ thực — cổng kiểm soát chất lượng (quality gate), hệ thống huấn luyện và pipeline chuyển đổi hệ thống chữ viết hoạt động hoàn toàn giống nhau.
+Các conlang (ngôn ngữ nhân tạo) được hỗ trợ thông qua các register của LLM và các trình chuyển đổi script tùy chọn. Chúng sử dụng cùng một cơ sở hạ tầng như các ngôn ngữ thực — quality gate (cổng kiểm soát chất lượng), hệ thống coaching và pipeline chuyển đổi script hoạt động hoàn toàn giống nhau.
 
-| | Ngôn ngữ | Mã | Google | LLM | Hệ thống chữ viết | Ghi chú |
+| | Ngôn ngữ | Mã | Google | LLM | Script | Ghi chú |
 |---|----------|------|:------:|:---:|--------|-------|
-| 🖖 | Tiếng Klingon | `tlh` | ❌ | ✅ | 🔤 Romanization→pIqaD | Yêu cầu font PUA. Từ vựng của Marc Okrand. |
-| 🧝 | Tiếng Sindarin (Tiếng Tiên của Tolkien) | `x-elvish-s` | ❌ | ✅ | 🔤 Latin→Tengwar | Yêu cầu font CSUR PUA. |
-| 🏴‍☠️ | Tiếng Anh Cướp biển | `x-pirate` | ❌ | ✅ | — | Chỉ có văn phong. Các phép ẩn dụ hàng hải. |
-| 🦸 | Tiếng Krypton | `x-kryptonian` | ❌ | ✅ | 🔤 Latin→Kryptonian | Yêu cầu font PUA. |
-| 🎭 | Tiếng Anh Shakespeare | `x-shakespeare` | ❌ | ✅ | — | Chỉ có văn phong. Dạng Thee/thou, -eth/-est. |
-| 🐸 | Tiếng Yoda | `x-yoda` | ❌ | ✅ | — | Chỉ có văn phong. Trật tự từ OSV. |
+| 🖖 | Klingon | `tlh` | ❌ | ✅ | 🔤 Romanization→pIqaD | Yêu cầu font PUA. Từ vựng Marc Okrand. |
+| 🧝 | Sindarin (Tolkien Elvish) | `x-elvish-s` | ❌ | ✅ | 🔤 Latin→Tengwar | Yêu cầu font CSUR PUA. |
+| 🏴‍☠️ | Pirate English | `x-pirate` | ❌ | ✅ | — | Chỉ có register. Ẩn dụ hàng hải. |
+| 🦸 | Kryptonian | `x-kryptonian` | ❌ | ✅ | 🔤 Latin→Kryptonian | Yêu cầu font PUA. |
+| 🎭 | Shakespearean English | `x-shakespeare` | ❌ | ✅ | — | Chỉ có register. Dạng Thee/thou, -eth/-est. |
+| 🐸 | Yoda-speak | `x-yoda` | ❌ | ✅ | — | Chỉ có register. Trật tự từ OSV. |
 
-Xem [Ngôn ngữ nhân tạo, Hệ thống chữ viết & Chính tả](/docs/guides/conlangs-scripts-orthography) để biết các yêu cầu về font PUA, giới hạn Unicode và cách thêm ngôn ngữ của riêng bạn.
+Xem [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) để biết các yêu cầu về font PUA, giới hạn Unicode và cách thêm ngôn ngữ của riêng bạn.
 
 ---
 
-## Các preset ngôn ngữ
+## Các Preset ngôn ngữ
 
 Trình hướng dẫn `init` hỗ trợ các tên preset để thiết lập nhanh. Bạn có thể kết hợp các preset với các mã ngôn ngữ riêng lẻ.
 
@@ -142,7 +142,7 @@ i18n-rosetta init
 
 ## Thêm bất kỳ ngôn ngữ nào
 
-rosetta có thể dịch sang **bất kỳ ngôn ngữ nào mà LLM của bạn biết** — bảng trên chỉ liệt kê các ngôn ngữ có sẵn preset văn phong. Để thêm một ngôn ngữ không có trong danh sách, hãy đưa mã BCP-47 của nó vào cấu hình của bạn:
+rosetta có thể dịch sang **bất kỳ ngôn ngữ nào mà LLM của bạn biết** — bảng trên chỉ liệt kê các ngôn ngữ có sẵn các preset về register. Để thêm một ngôn ngữ không có trong danh sách, hãy đưa mã BCP-47 của nó vào cấu hình của bạn:
 
 ```json
 {
@@ -155,45 +155,45 @@ rosetta có thể dịch sang **bất kỳ ngôn ngữ nào mà LLM của bạn 
 }
 ```
 
-LLM sẽ dịch bằng cách sử dụng kiến thức đã được huấn luyện về ngôn ngữ đó. Việc thiết lập `register` cho phép bạn kiểm soát âm điệu, mức độ trang trọng và các quy ước chính tả. Xem [Cấu hình](/docs/getting-started/configuration) để biết chi tiết.
+LLM sẽ dịch bằng cách sử dụng kiến thức đã được huấn luyện về ngôn ngữ đó. Việc thiết lập `register` cho phép bạn kiểm soát giọng điệu, độ trang trọng và các quy ước chính tả. Xem [Cấu hình](/docs/getting-started/configuration) để biết chi tiết.
 
 ---
 
-## Language Card
+## Language Card (Thẻ ngôn ngữ)
 
 Mỗi ngôn ngữ tích hợp sẵn đều có một **Language Card** — cấu hình JSON có cấu trúc được chia thành hai tầng (tier) để tối ưu hiệu suất:
 
 ### Kiến trúc hai tầng
 
-| Tầng | Thư mục | Tải (Loaded) | Mục đích |
+| Tầng | Thư mục | Tải lúc | Mục đích |
 |------|-----------|--------|--------|
-| **Runtime** | `lib/data/language-cards/` | Tải sớm (Eagerly) tại `import` | Engine dịch thuật: văn phong, mức độ trang trọng, quy tắc, hỗ trợ phương thức |
-| **Reference** | `lib/data/language-reference/` | Tải lười (Lazily) khi có yêu cầu | Tài liệu cho nhà phát triển: các thách thức ngôn ngữ học, dữ liệu bách khoa, tài nguyên NLP |
+| **Runtime** | `lib/data/language-cards/` | Tải ngay (Eagerly) tại `import` | Engine dịch thuật: register, độ trang trọng, quy tắc, hỗ trợ phương thức |
+| **Reference** | `lib/data/language-reference/` | Tải trễ (Lazily) khi cần | Tài liệu cho nhà phát triển: thách thức ngôn ngữ học, dữ liệu bách khoa, tài nguyên NLP |
 
-Tầng runtime được giữ ở mức nhỏ (~2 KB/thẻ) để việc import rosetta không tải hàng megabyte dữ liệu tài liệu. Tầng reference có sẵn thông qua `getLanguageReference(code)` dành cho các công cụ, trang web và bộ khung đánh giá.
+Tầng runtime được giữ ở kích thước nhỏ (~2 KB/thẻ) để việc import rosetta không phải tải hàng megabyte dữ liệu tài liệu. Tầng reference có sẵn thông qua `getLanguageReference(code)` dành cho các công cụ, trang web và bộ công cụ đánh giá.
 
 ### Các trường của thẻ Runtime
 
 | Trường | Nội dung |
 |-------|------------------|
-| **`nativeName`** | Tên tự gọi (Endonym) — tên của ngôn ngữ do chính người bản ngữ gọi, viết bằng hệ thống chữ viết của ngôn ngữ đó (ví dụ: ქართული, Runasimi) |
-| **Hệ thống mức độ trang trọng** | Phân biệt T-V, các cấp độ giao tiếp, kính ngữ (keigo), trợ từ, v.v. |
-| **Các preset văn phong** | Các preset prompt LLM được đặt tên dành riêng cho đặc điểm của ngôn ngữ đó |
+| **`nativeName`** | Tên tự gọi (Endonym) — tên của ngôn ngữ do chính người bản xứ gọi, viết bằng script của ngôn ngữ đó (ví dụ: ქართული, Runasimi) |
+| **Hệ thống formality** | Phân biệt T-V, các cấp độ giao tiếp, keigo, trợ từ, v.v. |
+| **Các preset register** | Các preset prompt LLM được đặt tên, đặc trưng cho tính chất của ngôn ngữ |
 | **Hỗ trợ phương thức** | Các API dịch thuật nào hỗ trợ ngôn ngữ này |
-| **Hướng dẫn về giới tính** | Các quy tắc về giới tính ngữ pháp và mẹo viết bao hàm giới tính |
-| **Hệ thống chữ viết/hướng viết** | Mã hệ thống chữ viết ISO 15924 và RTL/LTR |
-| **Quy tắc** | Quy tắc trình bày (dấu ngoặc kép, khoảng trắng), viết hoa, các dạng số nhiều |
+| **Hướng dẫn về giới tính** | Các quy tắc giống ngữ pháp và mẹo viết bao hàm giới tính (inclusive writing) |
+| **Script/hướng viết** | Mã script ISO 15924 và RTL/LTR |
+| **Quy tắc** | Typography (dấu ngoặc kép, khoảng trắng), viết hoa, các danh mục số nhiều |
 | **Tập dữ liệu đánh giá** | Các benchmark nào bao gồm ngôn ngữ này |
 | **`glottocode`** | Định danh Glottolog chuẩn để tham chiếu chéo |
-| **`humanReviewed`** | Thẻ đã được người bản ngữ đánh giá hay chưa |
+| **`humanReviewed`** | Thẻ đã được người bản xứ đánh giá hay chưa |
 
 ### Các trường của thẻ Reference
 
 | Trường | Nội dung |
 |-------|------------------|
-| **Các thách thức ngôn ngữ học** | Các cạm bẫy đặc thù của MT (ví dụ: tính hiển ngôn, dấu thanh điệu, tính chắp dính) |
-| **Bách khoa** | Ngữ hệ, phân loại, số lượng người nói, khu vực |
-| **Tài nguyên** | Các công cụ NLP, kho ngữ liệu song song, các mô hình đã được huấn luyện trước (pre-trained models) |
+| **Thách thức ngôn ngữ học** | Các cạm bẫy đặc thù của MT (ví dụ: tính hiển ngôn, dấu thanh điệu, tính chắp dính) |
+| **Dữ liệu bách khoa** | Ngữ hệ, phân loại, số lượng người nói, khu vực |
+| **Tài nguyên** | Các công cụ NLP, ngữ liệu song song, các mô hình đã được huấn luyện trước |
 
 ### Tạo khung (Scaffolding) cho một Language Card mới
 
@@ -207,11 +207,11 @@ node scripts/generate-language-card.mjs sw --dry-run
 node scripts/generate-language-card.mjs sw
 ```
 
-Trình tạo sẽ tự động điền siêu dữ liệu (mã, hệ thống chữ viết, hướng viết, số nhiều, dấu ngoặc kép, hỗ trợ phương thức, ngữ hệ) và đánh dấu các trường đánh giá ngôn ngữ học là TODO để con người tinh chỉnh.
+Trình tạo sẽ tự động điền các siêu dữ liệu (mã, script, hướng viết, số nhiều, dấu ngoặc kép, hỗ trợ phương thức, ngữ hệ) và đánh dấu các trường đánh giá ngôn ngữ học là TODO để con người tinh chỉnh.
 
 ### Sử dụng các khóa Preset
 
-Thay vì viết toàn bộ văn bản cho văn phong, bạn có thể sử dụng tên khóa preset:
+Thay vì viết toàn bộ văn bản register, bạn có thể sử dụng tên khóa preset:
 
 ```json
 {
@@ -223,27 +223,27 @@ Thay vì viết toàn bộ văn bản cho văn phong, bạn có thể sử dụn
 }
 ```
 
-Rosetta sẽ phân giải khóa thành prompt văn phong đầy đủ. Chạy `npx i18n-rosetta init` để xem các preset có sẵn cho từng ngôn ngữ.
+Rosetta sẽ phân giải khóa thành prompt register đầy đủ. Chạy `npx i18n-rosetta init` để xem các preset có sẵn cho từng ngôn ngữ.
 
-### Các Preset ví dụ
+### Ví dụ về các Preset
 
 | Ngôn ngữ | Các Preset | Mặc định |
 |----------|---------|--------|
-| Tiếng Pháp | `formal-vous`, `casual-tu` | `formal-vous` |
-| Tiếng Hàn | `polite-haeyo`, `formal-hapsyo`, `casual-hae` | `polite-haeyo` |
-| Tiếng Nhật | `polite`, `formal-keigo`, `casual` | `polite` |
-| Tiếng Đức | `formal-Sie`, `casual-du` | `formal-Sie` |
-| Tiếng Thái | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
-| Tiếng Tây Ban Nha | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
+| French | `formal-vous`, `casual-tu` | `formal-vous` |
+| Korean | `polite-haeyo`, `formal-hapsyo`, `casual-hae` | `polite-haeyo` |
+| Japanese | `polite`, `formal-keigo`, `casual` | `polite` |
+| German | `formal-Sie`, `casual-du` | `formal-Sie` |
+| Thai | `neutral-professional`, `polite-male`, `polite-female` | `neutral-professional` |
+| Spanish | `neutral-professional`, `formal-usted`, `casual-tuteo` | `neutral-professional` |
 
-Xem [Đóng góp một Language Card](https://github.com/gamedaysuits/i18n-rosetta) để biết thông số kỹ thuật đầy đủ, bao gồm xác thực trường và danh sách kiểm tra PR.
+Xem [Đóng góp một Language Card](https://github.com/gamedaysuits/i18n-rosetta) để biết toàn bộ đặc tả, bao gồm xác thực trường và danh sách kiểm tra PR.
 
 ---
 
 ## Xem thêm
 
-- [Cấu hình](/docs/getting-started/configuration) — tài liệu tham khảo cấu hình đầy đủ bao gồm thiết lập ngôn ngữ
-- [Các phương thức dịch thuật](/docs/guides/translation-methods) — cách hoạt động của từng phương thức
-- [Trình chuyển đổi hệ thống chữ viết](/docs/concepts/script-converters) — pipeline chuyển đổi hệ thống chữ viết tất định
-- [Ngôn ngữ nhân tạo, Hệ thống chữ viết & Chính tả](/docs/guides/conlangs-scripts-orthography) — font PUA, Unicode, cách thêm các ngôn ngữ nhân tạo
+- [Cấu hình](/docs/getting-started/configuration) — tham chiếu cấu hình đầy đủ bao gồm thiết lập ngôn ngữ
+- [Các phương thức dịch](/docs/guides/translation-methods) — cách hoạt động của từng phương thức
+- [Trình chuyển đổi Script](/docs/concepts/script-converters) — pipeline chuyển đổi script tất định
+- [Conlangs, Scripts & Orthography](/docs/guides/conlangs-scripts-orthography) — font PUA, Unicode, cách thêm conlang
 - [Hỗ trợ ngôn ngữ ít tài nguyên](https://mtevalarena.org/docs/community/low-resource-languages) — xây dựng các phương thức cho các ngôn ngữ chưa được hỗ trợ tốt

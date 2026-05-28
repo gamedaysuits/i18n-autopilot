@@ -1,23 +1,23 @@
 ---
 sidebar_position: 8
-title: "Een aangepaste methode aanbieden als API"
-description: "Verpak complexe vertaalpipelines (FST gates, multi-step LLM chains) als een HTTP-service en integreer deze in i18n-rosetta via de api-methode."
+title: "Een aangepaste methode als API aanbieden"
+description: "U kunt complexe vertaalpijplijnen (FST gates, multi-step LLM chains) verpakken als een HTTP-service en deze integreren in i18n-rosetta via de api-methode."
 ---
 # Een Custom Method als een API aanbieden
 
-De **`api` method** van i18n-rosetta stelt u in staat om elk vertaalpaar naar een extern HTTP-endpoint te verwijzen. Dit is hoe u pipelines integreert die te complex zijn voor een enkele LLM-prompt — morfologische analyzers, finite-state transducers (FST's), multi-step LLM-chains, of elke andere custom research method die u heeft gebouwd.
+De **`api` method** van i18n-rosetta stelt u in staat om elk vertaalpaar naar een extern HTTP-endpoint te verwijzen. Dit is hoe u pipelines integreert die te complex zijn voor een enkele LLM-prompt — morfologische analyzers, finite-state transducers (FST's), multi-step LLM chains, of elke andere custom research method die u heeft gebouwd.
 
 ## Waarom een API-service?
 
-Sommige vertaal-pipelines kunnen niet draaien binnen een eenvoudige prompt-response-cyclus:
+Sommige vertaal-pipelines kunnen niet draaien binnen een eenvoudige prompt-response cyclus:
 
 | Pipeline-stap | Voorbeeld |
 |---|---|
-| **Morfologische decompositie** | Splits polysynthetische woorden in morfemen vóór vertaling |
+| **Morfologische decompositie** | Splits polysynthetische woorden in morfemen vóór de vertaling |
 | **FST-validatie** | Weiger outputs die fonologische of morfologische regels schenden |
-| **Multi-step LLM-chains** | Genereer → verifieer → corrigeer-cycli met verschillende modellen |
-| **Woordenboek raadplegen** | Raadpleeg een gecureerd tweetalig woordenboek halverwege de pipeline |
-| **Human-in-the-loop** | Plaats onzekere vertalingen in de wachtrij voor beoordeling door een expert |
+| **Multi-step LLM chains** | Genereer → verifieer → corrigeer-cycli met verschillende modellen |
+| **Dictionary lookup** | Raadpleeg een gecureerd tweetalig woordenboek halverwege de pipeline |
+| **Human-in-the-loop** | Plaats onzekere vertalingen in een wachtrij voor beoordeling door experts |
 
 De `api` method behandelt uw pipeline als een black box — i18n-rosetta verstuurt source strings, uw service retourneert vertalingen. Wat er binnenin gebeurt, is volledig aan u.
 
@@ -59,8 +59,8 @@ Authorization: Bearer <ROSETTA_API_KEY>
 
 | Veld | Type | Beschrijving |
 |-------|------|-------------|
-| `source_locale` | string | BCP 47-bronstaalcode |
-| `target_locale` | string | BCP 47-doeltaalcode |
+| `source_locale` | string | BCP 47 brontaalcode |
+| `target_locale` | string | BCP 47 doeltaalcode |
 | `method` | string | Plugin-naam of `"default"` |
 | `keys` | object | Map van key → source string om te vertalen |
 ```
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Best Practices
 
-1. **Retourneer lege strings bij fouten** — Retourneer niet de source string als een "vertaling". Retourneer `""` en laat het fallback-prefixmechanisme van i18n-rosetta dit afhandelen.
-2. **Voeg confidence scores toe** — Als uw pipeline de kwaliteit kan inschatten, retourneer deze dan in de metadata. Dit helpt bij kwaliteitsaudits.
+1. **Retourneer lege strings bij fouten** — Retourneer niet de source string als een "vertaling". Retourneer `""` en de quality gate van i18n-rosetta zal dit opvangen. De key wordt overgeslagen en bij de volgende sync opnieuw geprobeerd.
+2. **Voeg confidence scores toe** — Als uw pipeline de kwaliteit kan inschatten, retourneer dit dan in de metadata. Dit helpt bij kwaliteitsaudits.
 3. **Implementeer health checks** — Voeg een `GET /health` endpoint toe zodat i18n-rosetta de connectiviteit kan verifiëren voordat een grote sync wordt gestart.
 4. **Pas rate limiting netjes toe** — Als uw pipeline doorvoerlimieten heeft, retourneer dan `429` statuscodes. Het batch-systeem van i18n-rosetta zal dan een back-off toepassen.
-5. **Log alles** — Multi-step pipelines kunnen ongemerkt falen. Log de input/output van elke stap voor debugging.
+5. **Log alles** — Multi-step pipelines kunnen ongemerkt falen (fail silently). Log de input/output van elke stap voor debugging.
 
 ## Licenties
 
-Het `api` method-patroon is volledig open — er zijn geen licentiebeperkingen op het verpakken van uw eigen vertaal-pipeline als een HTTP-service. De `gds-mt-eval-harness` is beschikbaar onder de MIT-licentie voor referentie-implementaties.
+Het `api` method-patroon is volledig open — er zijn geen licentiebeperkingen voor het verpakken van uw eigen vertaal-pipeline als een HTTP-service. De `gds-mt-eval-harness` is beschikbaar onder de MIT-licentie voor referentie-implementaties.
 
 ## Zie ook
 
-- [Vertaalmethoden](/docs/guides/translation-methods) — overzicht van elke ingebouwde methode (`openai`, `google`, `api`, enz.)
-- [Plugin-specificatie](/docs/reference/plugin-spec) — volledig schema voor `i18n-rosetta.config.json` inclusief `api` method-velden
-- [Een Low-Resource taal ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — end-to-end gids voor talen met weinig middelen, inclusief OCAP-principes
-- [Architectuur](/docs/concepts/architecture) — hoe de sync-loop, batching en method dispatch van i18n-rosetta werken
-- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — evaluatiemethodologie, metrics en het indieningsproces voor het leaderboard
-- [Method Leaderboard](/leaderboard) — live kwaliteitsranglijsten over verschillende methoden en vertaalparen
+- [Translation Methods](/docs/guides/translation-methods) — overzicht van elke ingebouwde method (`openai`, `google`, `api`, enz.)
+- [Plugin Specification](/docs/reference/plugin-spec) — volledig schema voor `i18n-rosetta.config.json` inclusief `api` method-velden
+- [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — end-to-end gids voor talen met weinig bronnen (low-resource languages), inclusief OCAP-principes
+- [Architecture](/docs/concepts/architecture) — hoe de sync loop, batching en method dispatch van i18n-rosetta werken
+- [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — evaluatiemethodologie, metrics en het indieningsproces voor het leaderboard
+- [Method Leaderboard](/leaderboard) — live kwaliteitsranglijsten voor verschillende methods en vertaalparen

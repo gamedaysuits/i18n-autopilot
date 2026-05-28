@@ -5,7 +5,7 @@ description: "Cómo los agentes de IA pueden instalar, configurar y ejecutar i18
 ---
 # Guía para agentes: Uso de i18n-rosetta
 
-i18n-rosetta es una herramienta de línea de comandos (CLI) que traduce los archivos de configuración regional (locale) de su aplicación con un solo comando. Esta guía es para agentes de IA (o desarrolladores que trabajan con agentes de IA) que desean pasar de cero a tener archivos de configuración regional traducidos rápidamente.
+i18n-rosetta es una herramienta CLI que traduce los archivos de configuración regional (locale files) de su aplicación con un solo comando. Esta guía es para agentes de IA (o desarrolladores que trabajan con agentes de IA) que desean pasar de cero a tener archivos de configuración regional traducidos rápidamente.
 
 :::tip ¿Ya está familiarizado?
 Si solo necesita los comandos, vaya a la [Referencia de la CLI](/docs/reference/cli). Si desea crear y evaluar un método de traducción, consulte la [Guía para agentes de Arena](https://mtevalarena.org/docs/getting-started/agent-guide).
@@ -52,12 +52,12 @@ npx i18n-rosetta sync
 2. Escanea su archivo de configuración regional de origen, aplana las claves anidadas
 3. Compara con `.i18n-rosetta.lock` (hashes SHA-256 de valores traducidos previamente)
 4. Revisa `.rosetta/tm.json` en busca de traducciones en caché (Memoria de traducción)
-5. Traduce únicamente **las claves modificadas, faltantes u obsoletas** mediante el método configurado
-6. Ejecuta el control de calidad (5 verificaciones) en cada traducción
+5. Traduce solo las **claves modificadas, faltantes o desactualizadas** mediante el método configurado
+6. Ejecuta el filtro de calidad (5 verificaciones) en cada traducción
 7. Escribe las traducciones aprobadas en el archivo de configuración regional de destino
 8. Actualiza el archivo de bloqueo (lock file) y la caché de la memoria de traducción (TM)
 
-En una ejecución típica después de cambiar una clave, el paso 4 sirve 142 claves desde la caché y el paso 5 traduce 1 clave. Esta es la razón por la cual las sincronizaciones posteriores son rápidas y económicas.
+En una ejecución típica después de cambiar una clave, el paso 4 sirve 142 claves desde la caché y el paso 5 traduce 1 clave. Es por esto que las sincronizaciones posteriores son rápidas y económicas.
 
 ---
 
@@ -82,10 +82,11 @@ Campos clave:
 |-------|---------|---------|
 | `inputLocale` | Idioma de origen | `en` |
 | `pairs` | Mapa de origen→destino con la configuración del método | (requerido) |
-| `localesDir` | Dónde se ubican los archivos de configuración regional | (autodetectado) |
+| `localesDir` | Dónde se encuentran los archivos de configuración regional | (detectado automáticamente) |
 | `model` | Modelo LLM para los métodos `llm`/`llm-coached` | `google/gemini-2.5-flash` |
-| `batchSize` | Claves por llamada a la API | 30 (LLM), 128 (Google) |
-| `concurrency` | Llamadas paralelas a la API para la traducción de contenido | 12 |
+| `batchSize` | Claves por llamada a la API | 80 (LLM), 128 (Google) |
+| `jsonConcurrency` | Traducciones regionales paralelas para claves JSON | 50 |
+| `contentConcurrency` | Llamadas a la API paralelas para traducción de contenido | 12 |
 
 Referencia completa: [Configuración](/docs/getting-started/configuration)
 
@@ -129,27 +130,27 @@ Haga referencia a él en la configuración de su par:
 "en-fr": { "method": "llm-coached", "coachingFile": "coaching/fr.json" }
 ```
 
-El control de calidad verifica que los términos del diccionario realmente aparezcan en el resultado; las infracciones se registran como advertencias `[TERM]`.
+El filtro de calidad verifica que los términos del diccionario realmente aparezcan en el resultado; las infracciones se registran como advertencias `[TERM]`.
 
 Detalles: [Datos de entrenamiento](/docs/concepts/coaching-data)
 
 ---
 
-## Control de calidad
+## Filtro de calidad
 
 Cada traducción pasa por cinco verificaciones automatizadas antes de escribirse en el disco:
 
 | Verificación | Qué detecta | Ejemplo |
 |-------|----------------|---------|
 | **Vacío/en blanco** | El modelo no devolvió nada | `""` |
-| **Eco de origen** | El modelo devolvió la entrada en inglés sin cambios | `"Welcome"` para japonés |
+| **Eco del origen** | El modelo devolvió la entrada en inglés sin cambios | `"Welcome"` para japonés |
 | **Bucle de alucinación** | Trigramas repetidos | `"Qo' Qo' Qo' Qo'"` |
 | **Inflación de longitud** | El resultado es 4 veces o más largo que el origen | Origen de 10 caracteres → resultado de 50 caracteres |
 | **Cumplimiento de escritura** | Sistema de escritura incorrecto para la configuración regional | Texto latino para configuración regional en árabe |
 
-Las fallas se registran con el prefijo `[GATE]`. No hay alternativas silenciosas: si una traducción falla, se reporta, no se acepta en silencio.
+Las fallas se registran con el prefijo `[GATE]`. No hay alternativas silenciosas (silent fallbacks): si una traducción falla, se reporta, no se acepta en silencio.
 
-Detalles: [Control de calidad](/docs/concepts/quality-gate)
+Detalles: [Filtro de calidad](/docs/concepts/quality-gate)
 
 ---
 
@@ -170,7 +171,7 @@ Detalles: [Memoria de traducción](/docs/concepts/translation-memory)
 
 ## Archivos generados
 
-Rosetta crea varios archivos en su proyecto. Conozca cuáles son para que no elimine o confirme (commit) accidentalmente los incorrectos:
+Rosetta crea varios archivos en su proyecto. Conozca cuáles son para que no elimine o confirme (commit) accidentalmente los equivocados:
 
 | Archivo | Propósito | ¿Git? |
 |------|---------|------|
@@ -193,13 +194,13 @@ npx i18n-rosetta sync --pair en-fr
 ```bash
 npx i18n-rosetta sync
 ```
-Rosetta procesa los pares secuencialmente. Con el almacenamiento en caché de la TM, solo las claves modificadas llegan a la API.
+Rosetta traduce todas las configuraciones regionales en paralelo. Con el almacenamiento en caché de la TM, solo las claves modificadas consultan la API.
 
 **Modo de contenido (Markdown/MDX para Docusaurus, Hugo, etc.):**
 ```bash
 npx i18n-rosetta sync --content
 ```
-Traduce documentos, publicaciones de blog y archivos de contenido junto con el JSON de configuración regional. Utiliza concurrencia paralela (predeterminado: 12 llamadas simultáneas a la API).
+Traduce documentos, publicaciones de blog y archivos de contenido junto con el JSON de configuración regional. Utiliza concurrencia paralela (predeterminado: 12 llamadas simultáneas a la API). Ajústelo con `--content-concurrency`.
 
 **Ejecución de prueba (vista previa sin escribir):**
 ```bash
@@ -220,13 +221,13 @@ npx i18n-rosetta sync --force-content
 ```bash
 npx i18n-rosetta status
 ```
-Muestra la cobertura, los niveles de calidad y la información del complemento (plugin) para cada par.
+Muestra la cobertura, los niveles de calidad y la información de los plugins para cada par.
 
-**Auditar alternativas (fallbacks) sin traducir:**
+**Auditar alternativas (fallbacks) no traducidas:**
 ```bash
 npx i18n-rosetta audit
 ```
-Enumera todos los valores de alternativa `[EN]` que necesitan traducción.
+Enumera todos los valores de alternativa de `[EN]` que necesitan traducción.
 
 ---
 
@@ -236,14 +237,14 @@ Enumera todos los valores de alternativa `[EN]` que necesitan traducción.
 |---------|-----|
 | `OPENROUTER_API_KEY not set` | Exporte la clave o agréguela a `.env` en la raíz de su proyecto |
 | `No locale files found` | Configure `localesDir` en la configuración, o asegúrese de que sus archivos de configuración regional coincidan con la nomenclatura estándar (`en.json`, `fr.json`) |
-| `[GATE] Script compliance failed` | Su configuración regional de destino obtuvo texto latino en lugar del sistema de escritura esperado: intente con un modelo diferente o agregue datos de entrenamiento |
-| `[GATE] Source echo` | El modelo devolvió el inglés sin cambios: los datos de entrenamiento o un modelo diferente generalmente solucionan esto |
+| `[GATE] Script compliance failed` | Su configuración regional de destino obtuvo texto latino en lugar del sistema de escritura esperado; pruebe con un modelo diferente o agregue datos de entrenamiento |
+| `[GATE] Source echo` | El modelo devolvió el inglés sin cambios; los datos de entrenamiento o un modelo diferente generalmente solucionan esto |
 | Todas las traducciones en caché | Ejecute con `--no-tm` para omitir la caché, o `--force-keys` para claves específicas |
-| Conflictos en el archivo de bloqueo | `.i18n-rosetta.lock` utiliza hashes SHA-256: los conflictos de fusión (merge) son seguros de resolver manteniendo cualquiera de las versiones y luego volviendo a ejecutar la sincronización |
+| Conflictos en el archivo de bloqueo | `.i18n-rosetta.lock` utiliza hashes SHA-256; los conflictos de fusión (merge conflicts) son seguros de resolver conservando cualquiera de las versiones y luego volviendo a ejecutar la sincronización |
 
 ---
 
-## Qué sigue
+## Próximos pasos
 
 - [Inicio rápido](/docs/getting-started/quick-start) — guía completa para empezar
 - [Referencia de la CLI](/docs/reference/cli) — todos los comandos y banderas (flags)

@@ -4,7 +4,7 @@ title: "Configuração"
 ---
 # Configuração
 
-O Rosetta funciona sem configuração (zero-config) — ele detecta automaticamente os arquivos de localização, o formato e os idiomas de destino do seu projeto. Para mais controle, crie `i18n-rosetta.config.json` na raiz do seu projeto, ou execute:
+O Rosetta funciona sem configuração (zero-config) — ele detecta automaticamente os arquivos de localidade, o formato e os idiomas de destino do seu projeto. Para ter mais controle, crie o `i18n-rosetta.config.json` na raiz do seu projeto, ou execute:
 
 ```bash
 npx i18n-rosetta init
@@ -22,8 +22,9 @@ npx i18n-rosetta init
   "format": "auto",
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
-  "batchSize": 30,
-  "concurrency": 12,
+  "batchSize": 80,
+  "jsonConcurrency": 50,
+  "contentConcurrency": 12,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -45,9 +46,10 @@ npx i18n-rosetta init
 }
 ```
 
-:::note typegen ainda não está implementado
-O bloco de configuração `typegen` é reconhecido e preservado pelo carregador de configurações, mas a geração de tipos TypeScript ainda não está implementada. Este é um espaço reservado para um recurso planejado. Definir esses valores não tem efeito.
+:::note a geração de tipos (typegen) ainda não foi implementada
+O bloco de configuração `typegen` é reconhecido e preservado pelo carregador de configurações, mas a geração de tipos do TypeScript ainda não foi implementada. Este é um espaço reservado para um recurso planejado. Definir esses valores não tem efeito.
 :::
+
 
 ### Campos
 
@@ -55,28 +57,29 @@ O bloco de configuração `typegen` é reconhecido e preservado pelo carregador 
 |-------|------|---------|-------------|
 | `version` | `number` | `3` | Versão do schema de configuração. Sempre `3`. |
 | `inputLocale` | `string` | `"en"` | Código do idioma de origem (BCP 47). |
-| `localesDir` | `string` | `"./locales"` | Caminho para os arquivos de localização. O Rosetta escaneia este diretório. |
-| `contentDir` | `string` | `null` | Diretório de conteúdo do Hugo. Habilita a tradução do corpo em Markdown. |
+| `localesDir` | `string` | `"./locales"` | Caminho para os arquivos de localidade. O Rosetta escaneia este diretório. |
+| `contentDir` | `string` | `null` | Diretório de conteúdo do Hugo. Habilita a tradução do corpo do Markdown. |
 | `translatableFields` | `string[]` | `null` | Substitui os campos traduzíveis padrão do frontmatter para a tradução de conteúdo. `null` usa os padrões integrados (`title`, `description`, `summary`). |
 | `format` | `string` | `"auto"` | Formato do arquivo: `json`, `toml`, `yaml` ou `auto` (detecta pela extensão). |
-| `model` | `string` | `"google/gemini-3.5-flash"` | Modelo padrão para métodos LLM. O formato depende do método: o OpenRouter usa `provider/model` (ex.: `google/gemini-3.5-flash`); provedores diretos usam nomes simples (ex.: `gpt-4o`, `gemini-2.5-flash`). |
+| `model` | `string` | `"google/gemini-3.5-flash"` | Modelo padrão para métodos LLM. O formato depende do método: o OpenRouter usa `provider/model` (ex.: `google/gemini-3.5-flash`); provedores diretos usam apenas os nomes (ex.: `gpt-4o`, `gemini-2.5-flash`). |
 | `defaultMethod` | `string` | `"llm"` | Método de tradução padrão: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Substituído pela flag de CLI `--method`. |
-| `batchSize` | `number` | `30` | Chaves por lote de tradução. Maior = menos chamadas de API, mas prompts maiores. |
-| `concurrency` | `number` | `12` | Máximo de chamadas de API paralelas para tradução de conteúdo (Markdown/MDX). Substituído pela flag de CLI `--concurrency`. |
-| `fallbackPrefix` | `string` | `"[EN] "` | Prefixo adicionado aos valores de fallback não traduzidos. Usado por `audit` para detectar traduções incompletas. |
-| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Nome da variável de ambiente para a chave de API. Substitua para nomes de variáveis de ambiente personalizados. |
-| `baseUrl` | `string` | `""` | URL base para geração de artefatos de SEO (hreflang, sitemaps, JSON-LD). |
-| `pairs` | `object` | `{}` | Substituições de método, modelo e qualidade por par. Veja [Configuração de Par](#pair-configuration). |
-| `languages` | `object` | `{}` | Substituições por idioma. Veja [Configuração de Idioma](#language-configuration). |
-| `lint.srcDir` | `string` | `null` | Diretório de origem para verificação do lint. `null` = detecção automática pelo framework. |
+| `batchSize` | `number` | `80` | Chaves por lote de tradução. Maior = menos chamadas de API, mas prompts maiores. |
+| `jsonConcurrency` | `number` | `50` | Máximo de traduções de localidade em paralelo para a sincronização de chaves JSON. Substituído pela flag de CLI `--json-concurrency`. |
+| `contentConcurrency` | `number` | `12` | Máximo de chamadas de API em paralelo para a tradução de conteúdo (Markdown/MDX). Substituído pela flag de CLI `--content-concurrency`. |
+| `fallbackPrefix` | `string` | `"[EN] "` | Prefixo marcador usado por `audit` e `verify` para detectar valores legados não traduzidos de execuções anteriores. O Rosetta não escreve este prefixo — ele apenas o lê para detecção. |
+| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Nome da variável de ambiente para a chave da API. Substitua para nomes de variáveis de ambiente personalizadas. |
+| `baseUrl` | `string` | `""` | URL base para a geração de artefatos de SEO (hreflang, sitemaps, JSON-LD). |
+| `pairs` | `object` | `{}` | Substituições de método, modelo e qualidade por par. Consulte [Configuração de Pares](#pair-configuration). |
+| `languages` | `object` | `{}` | Substituições por idioma. Consulte [Configuração de Idiomas](#language-configuration). |
+| `lint.srcDir` | `string` | `null` | Diretório de origem para a verificação do lint. `null` = detecta automaticamente pelo framework. |
 | `lint.ignore` | `string[]` | `["node_modules", ...]` | Padrões glob para excluir do lint. |
-| `lint.minLength` | `number` | `2` | Comprimento mínimo da string para ser sinalizada como hardcoded. |
-| `seo.urlPattern` | `string` | `"/:locale/:path"` | Modelo de padrão de URL para geração de tags hreflang. |
-| `seo.pages` | `string[]` | `null` | Lista explícita de páginas para SEO. `null` = detecção automática pelas chaves de localização. |
+| `lint.minLength` | `number` | `2` | Comprimento mínimo da string para sinalizar como hardcoded. |
+| `seo.urlPattern` | `string` | `"/:locale/:path"` | Template de padrão de URL para a geração de tags hreflang. |
+| `seo.pages` | `string[]` | `null` | Lista explícita de páginas para SEO. `null` = detecta automaticamente pelas chaves de localidade. |
 | `typegen.output` | `string` | `null` | Caminho de saída para os tipos TypeScript gerados. `null` = desativado. |
-| `typegen.autoGenerate` | `boolean` | `false` | Gerar tipos automaticamente após cada sincronização. |
+| `typegen.autoGenerate` | `boolean` | `false` | Gera automaticamente os tipos após cada sincronização. |
 
-## Configuração de Par
+## Configuração de Pares
 
 Cada par origem→destino pode ser configurado de forma independente:
 
@@ -98,17 +101,17 @@ Cada par origem→destino pode ser configurado de forma independente:
 }
 ```
 
-### Campos do Par
+### Campos de Pares
 
 | Campo | Tipo | Descrição |
 |-------|------|-------------|
 | `method` | `string` | Método de tradução: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` |
-| `methodPlugin` | `string` | Nome de um plugin instalado (a partir de `.rosetta/methods/`) |
+| `methodPlugin` | `string` | Nome de um plugin instalado (do `.rosetta/methods/`) |
 | `model` | `string` | Substitui o modelo padrão para este par |
 | `endpoint` | `string` | URL do endpoint da API remota. Obrigatório quando `method` for `api`. |
 | `qualityTier` | `string` | Nível de exibição (tier): `standard`, `high`, `research`, `verified` |
 
-## Configuração de Idioma
+## Configuração de Idiomas
 
 Os idiomas aceitam três formatos:
 
@@ -120,11 +123,11 @@ Os idiomas aceitam três formatos:
 }
 ```
 
-Cada idioma obtém seu registro padrão a partir da tabela de registros integrada. Idiomas sem um padrão recebem `"Professional register."`.
+Cada idioma recebe seu registro padrão da tabela de registros integrada. Idiomas sem um padrão recebem `"Professional register."`.
 
 ### Objeto com strings de registro
 
-O valor pode ser uma **chave predefinida** (preset key) do card do idioma, ou um texto de registro personalizado:
+O valor pode ser uma **chave predefinida** do cartão do idioma, ou um texto de registro personalizado:
 
 ```json
 {
@@ -136,7 +139,7 @@ O valor pode ser uma **chave predefinida** (preset key) do card do idioma, ou um
 }
 ```
 
-O Rosetta verifica se a string corresponde a uma chave predefinida no card do idioma. Se corresponder, o prompt de registro completo do card é usado. Caso contrário, a string é usada como está. Veja [Idiomas Suportados](/docs/reference/supported-languages#language-cards) para os presets disponíveis.
+O Rosetta verifica se a string corresponde a uma chave predefinida no cartão do idioma. Se corresponder, o prompt de registro completo do cartão será usado. Caso contrário, a string será usada como está. Consulte [Idiomas Suportados](/docs/reference/supported-languages#language-cards) para ver as predefinições disponíveis.
 
 ### Objeto com configuração completa
 
@@ -155,28 +158,29 @@ O Rosetta verifica se a string corresponde a uma chave predefinida no card do id
 }
 ```
 
-Você pode misturar objetos abreviados (shorthand) e completos no mesmo bloco.
+Você pode misturar objetos abreviados e completos no mesmo bloco.
 
-### Campos do Idioma
+
+### Campos de Idiomas
 
 | Campo | Tipo | Descrição |
 |-------|------|-------------|
-| `register` | `string` | Instruções de estilo/tom. Pode ser uma **chave predefinida** (ex.: `casual-tu`, `formal-hapsyo`) ou um texto personalizado. Veja [Cards de Idiomas](/docs/reference/supported-languages#language-cards). |
+| `register` | `string` | Instruções de estilo/tom. Pode ser uma **chave predefinida** (ex.: `casual-tu`, `formal-hapsyo`) ou um texto personalizado. Consulte [Cartões de Idiomas](/docs/reference/supported-languages#language-cards). |
 | `name` | `string` | Nome do idioma legível por humanos (para exibição de status) |
 | `model` | `string` | Substitui o modelo padrão |
 | `batchSize` | `number` | Substitui o tamanho do lote padrão |
-| `maxRetries` | `number` | Orçamento máximo de tentativas para lotes com falha (padrão: 3) |
+| `maxRetries` | `number` | Orçamento máximo de tentativas para lotes que falharam (padrão: 3) |
 | `script` | `string` | Código de script ISO 15924. Aciona a validação de script no quality gate. |
 
 :::info Cadeia de herança
 As configurações são resolvidas nesta ordem (a primeira vence):
 
-**nível do par** → **nível do idioma** → **configuração global** → **padrões**
+**nível de par** → **nível de idioma** → **configuração global** → **padrões**
 
-Por exemplo, se `pairs["en:fr"]` definir `model`, ele substitui os valores de `model` tanto no nível do idioma quanto no global.
+Por exemplo, se `pairs["en:fr"]` definir `model`, ele substituirá os valores de `model` tanto no nível de idioma quanto na configuração global.
 :::
 
-## Origem Não-Inglesa
+## Origem Não Inglesa
 
 Se o seu idioma de origem não for o inglês:
 
@@ -193,13 +197,13 @@ npx i18n-rosetta sync --source fr
 
 ## Arquivo de Lock
 
-O Rosetta cria `.i18n-rosetta.lock` para rastrear os hashes SHA-256 dos valores de origem traduzidos. **Faça o commit deste arquivo** para que todos os desenvolvedores compartilhem a mesma base de tradução.
+O Rosetta cria o `.i18n-rosetta.lock` para rastrear os hashes SHA-256 dos valores de origem traduzidos. **Faça o commit deste arquivo** para que todos os desenvolvedores compartilhem a mesma base de tradução.
 
-Quando um valor de origem muda, o hash não corresponde mais, e o Rosetta retraduz essa chave na próxima sincronização.
+Quando um valor de origem muda, o hash não corresponde mais, e o Rosetta traduz novamente essa chave na próxima sincronização.
 
 ## `.rosettaignore`
 
-Crie `.rosettaignore` na raiz do seu projeto para excluir arquivos da varredura do `lint`. Usa padrões glob, como `.gitignore`:
+Crie o `.rosettaignore` na raiz do seu projeto para excluir arquivos da varredura do `lint`. Usa padrões glob, como o `.gitignore`:
 
 ```text title=".rosettaignore"
 src/components/legacy/**
@@ -209,7 +213,7 @@ src/utils/constants.js
 
 ## Diretório `.rosetta/`
 
-O Rosetta cria um diretório `.rosetta/` na raiz do seu projeto para o estado interno. Geralmente, você deve **adicioná-lo ao `.gitignore`** — é uma otimização local, não o código-fonte do projeto:
+O Rosetta cria um diretório `.rosetta/` na raiz do seu projeto para o estado interno. Geralmente, você deve **adicionar isso ao `.gitignore`** — é uma otimização local, não o código-fonte do projeto:
 
 ```gitignore
 .rosetta/
@@ -217,12 +221,12 @@ O Rosetta cria um diretório `.rosetta/` na raiz do seu projeto para o estado in
 
 | Arquivo | Propósito | Commit? |
 |------|---------|--------|
-| `tm.json` | Cache da Memória de Tradução — armazena traduções anteriores indexadas por texto de origem + localização + método | Não (cache local) |
-| `xliff/*.xliff` | Arquivos de exportação XLIFF para revisão de tradutores profissionais | Não (transitório) |
+| `tm.json` | Cache de Memória de Tradução — armazena traduções anteriores indexadas por texto de origem + localidade + método | Não (cache local) |
+| `xliff/*.xliff` | Arquivos de exportação XLIFF para revisão por tradutores profissionais | Não (temporário) |
 | `methods/` | Manifestos de plugins de métodos instalados | Sim (configuração compartilhada) |
 | `backups/` | Backups pré-wrap (criados por `wrap --undo`) | Não (rede de segurança) |
 
-Veja [Memória de Tradução](/docs/concepts/translation-memory) para detalhes sobre `tm.json` e como ele economiza custos de API.
+Consulte [Memória de Tradução](/docs/concepts/translation-memory) para obter detalhes sobre o `tm.json` e como ele economiza custos de API.
 
 ---
 
@@ -246,24 +250,24 @@ const result = await gemini.translate(
 
 ### Exportações Disponíveis
 
-| Exportação | O que faz |
+| Exportação | O Que Faz |
 |--------|-------------|
 | `TranslationMethod` | Classe base para todos os métodos |
 | `LLMMethod` | Classe base para métodos LLM (OpenRouter) |
 | `DirectLLMMethod` | Classe base para provedores LLM diretos (OpenAI, Anthropic, Gemini) |
 | `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | Classes de provedores LLM diretos |
-| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | Classes de MT (Tradução de Máquina) tradicionais |
+| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | Classes de MT tradicionais |
 | `GoogleTranslateMethod` | Google Cloud Translation |
-| `LLMCoachedMethod` | LLM Treinado (OpenRouter + dados de coaching) |
+| `LLMCoachedMethod` | LLM Treinado (OpenRouter + dados de treinamento) |
 | `APIMethod` | Cliente de API remota |
-| `runSync`, `runContentSync` | Pipeline de sincronização completo |
-| `resolveConfig`, `resolvePairs` | Resolução de configuração |
+| `runSync`, `runContentSync` | Pipeline completo de sincronização |
+| `resolveConfig`, `resolvePairs` | Resolução de configurações |
 | `validateTranslations` | Quality gate |
-| `loadCoachingData`, `findDictionaryMatches` | Utilitários de coaching |
+| `loadCoachingData`, `findDictionaryMatches` | Utilitários de treinamento (coaching) |
 
 ### Extensão de Provedor Personalizado
 
-Estenda `DirectLLMMethod` para adicionar um novo provedor LLM em cerca de 40 linhas:
+Estenda o `DirectLLMMethod` para adicionar um novo provedor LLM em ~40 linhas:
 
 ```javascript
 import { DirectLLMMethod } from 'i18n-rosetta';
@@ -313,17 +317,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-Você ganha tradução, coaching, loops de repetição, validação de modelo, níveis de qualidade e ajuda de configuração de graça. Apenas o formato da requisição HTTP é específico do provedor. Para adaptadores não-LLM que usam `fetch()` bruto, use o auxiliar compartilhado `fetchWithRetry()` de `lib/methods/fetch-with-retry.js` em vez de escrever seu próprio loop de repetição.
+Você obtém tradução, treinamento (coaching), loops de repetição (retry loops), validação de modelo, níveis de qualidade e ajuda de configuração gratuitamente. Apenas o formato da requisição HTTP é específico do provedor. Para adaptadores não-LLM que usam `fetch()` bruto, use o auxiliar compartilhado `fetchWithRetry()` do `lib/methods/fetch-with-retry.js` em vez de escrever seu próprio loop de repetição.
 
 ---
 
 ## Veja Também
 
 - [Referência da CLI](/docs/reference/cli) — todos os comandos e flags
-- [Métodos de Tradução](/docs/guides/translation-methods) — escolhendo e misturando métodos
+- [Métodos de Tradução](/docs/guides/translation-methods) — como escolher e misturar métodos
 - [Memória de Tradução](/docs/concepts/translation-memory) — cache e economia de custos
 - [Trabalhando com Tradutores Profissionais](/docs/guides/professional-translators) — fluxo de trabalho com XLIFF
-- [Especificação de Plugin](/docs/reference/plugin-spec) — formato do manifesto de plugin de método
+- [Especificação de Plugins](/docs/reference/plugin-spec) — formato do manifesto de plugins de método
 - [Arquitetura](/docs/concepts/architecture) — como as peças se conectam
-- [Idiomas Suportados](/docs/reference/supported-languages) — suporte a idiomas integrado
-- [Como Funciona a Sincronização](/docs/concepts/how-sync-works) — o pipeline de tradução
+- [Idiomas Suportados](/docs/reference/supported-languages) — suporte integrado a idiomas
+- [Como a Sincronização Funciona](/docs/concepts/how-sync-works) — o pipeline de tradução

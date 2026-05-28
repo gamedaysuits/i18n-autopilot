@@ -526,7 +526,7 @@
     "description": "Feature card description: Content Aware"
   },
   "homepage.features.zeroDependencies.title": {
-    "message": "Zero Dependencies",
+    "message": "ไร้ Dependencies",
     "description": "Feature card title: Zero Dependencies"
   },
   "homepage.features.zeroDependencies.description": {
@@ -598,7 +598,7 @@
     "description": "Arena card description: Claim Your Score"
   },
   "homepage.arena.cards.claimScore.linkText": {
-    "message": "Leaderboard →",
+    "message": "ตารางจัดอันดับ →",
     "description": "Arena card link text: Claim Your Score"
   },
   "homepage.arena.cards.respectData.title": {
@@ -610,7 +610,7 @@
     "description": "Arena card description: Respect the Data"
   },
   "homepage.arena.cards.respectData.linkText": {
-    "message": "Data Sovereignty →",
+    "message": "อธิปไตยของข้อมูล →",
     "description": "Arena card link text: Respect the Data"
   },
   "homepage.hero.titlePrefix": {

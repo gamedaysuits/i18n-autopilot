@@ -1,25 +1,25 @@
 ---
 sidebar_position: 8
 title: "Pag-serve ng Custom Method bilang API"
-description: "I-wrap ang mga complex translation pipeline (FST gates, multi-step LLM chains) bilang isang HTTP service at i-plug ito sa i18n-rosetta gamit ang api method."
+description: "I-wrap ang complex translation pipelines (FST gates, multi-step LLM chains) bilang isang HTTP service at i-plug ang mga ito sa i18n-rosetta gamit ang api method."
 ---
 # Pag-serve ng Custom Method bilang isang API
 
-Ang **`api` method** ng i18n-rosetta ay nagbibigay-daan sa inyo na i-point ang anumang translation pair sa isang external na HTTP endpoint. Ganito niyo po mai-integrate ang mga pipelines na masyadong complex para sa isang single LLM prompt — mga morphological analyzers, finite-state transducers (FSTs), multi-step LLM chains, o anumang custom research method na na-build ninyo.
+Ang **`api` method** ng i18n-rosetta ay nagbibigay-daan sa iyo na i-point ang anumang translation pair sa isang external HTTP endpoint. Ganito po ninyo mai-integrate ang mga pipelines na masyadong complex para sa isang LLM prompt lang — mga morphological analyzers, finite-state transducers (FSTs), multi-step LLM chains, o anumang custom research method na na-build ninyo.
 
 ## Bakit isang API Service?
 
 May mga translation pipelines na hindi pwedeng mag-run sa loob ng isang simpleng prompt-response cycle:
 
-| Pipeline step | Example |
+| Pipeline step | Halimbawa |
 |---|---|
 | **Morphological decomposition** | I-split ang mga polysynthetic words sa mga morphemes bago ang translation |
-| **FST validation** | I-reject ang mga outputs na nag-violate ng mga phonological o morphological rules |
+| **FST validation** | I-reject ang mga outputs na nagvi-violate ng mga phonological o morphological rules |
 | **Multi-step LLM chains** | Generate → verify → correct cycles gamit ang iba't ibang models |
 | **Dictionary lookup** | Mag-cross-reference sa isang curated bilingual dictionary mid-pipeline |
-| **Human-in-the-loop** | I-queue ang mga uncertain na translations para sa expert review |
+| **Human-in-the-loop** | I-queue ang mga uncertain translations para sa expert review |
 
-Tini-treat ng `api` method ang inyong pipeline bilang isang black box — magse-send ang i18n-rosetta ng mga source strings, at magre-return naman ng translations ang inyong service. Kung ano ang mangyayari sa loob ay nakadepende na po sa inyo.
+Tinatrato ng `api` method ang inyong pipeline bilang isang black box — nagse-send ang i18n-rosetta ng mga source strings, at nagre-return naman ang inyong service ng mga translations. Kung ano ang nangyayari sa loob ay nakadepende na po nang buo sa inyo.
 
 ## Architecture
 
@@ -35,7 +35,7 @@ graph LR
 
 ## Pag-set Up ng Inyong Service
 
-Kailangang mag-implement ang inyong API service ng isang single endpoint na nag-a-accept at nagre-return ng JSON:
+Kailangan pong mag-implement ang inyong API service ng isang endpoint na nag-a-accept at nagre-return ng JSON:
 
 ### Request Format
 
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- Dito ilalagay ang inyong pipeline ---
+    // --- Your pipeline goes here ---
     // Step 1: Morphological decomposition
     const morphemes = await decompose(source, source_locale);
 
-    // Step 2: LLM translation na may context
+    // Step 2: LLM translation with context
     const draft = await llmTranslate(morphemes, target_locale);
 
     // Step 3: FST validation
     const validated = await fstValidate(draft, target_locale);
 
-    // Step 4: Post-processing (orthography normalization, atbp.)
+    // Step 4: Post-processing (orthography normalization, etc.)
     translations[key] = await postProcess(validated);
   }
 
@@ -183,12 +183,12 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# I-clone ang harness
+# Clone the harness
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
 
-# I-run ang evaluation laban sa output ng inyong method
+# Run the evaluation against your method's output
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Best Practices
 
-1. **Mag-return ng empty strings para sa mga failures** — Huwag i-return ang source string bilang isang "translation." Mag-return ng `""` at hayaan ang fallback prefix mechanism ng i18n-rosetta na mag-handle nito.
-2. **Mag-include ng confidence scores** — Kung kaya ng inyong pipeline na mag-estimate ng quality, i-return ito sa metadata. Makakatulong po ito sa quality auditing.
-3. **Mag-implement ng health checks** — Mag-add ng `GET /health` endpoint para ma-verify ng i18n-rosetta ang connectivity bago mag-start ng isang malaking sync.
+1. **Mag-return ng empty strings para sa mga failures** — Huwag i-return ang source string bilang isang "translation." Mag-return ng `""` at sasaluhin ito ng quality gate ng i18n-rosetta. I-i-skip ang key at ire-retry sa susunod na sync.
+2. **Isama ang mga confidence scores** — Kung kaya ng inyong pipeline na mag-estimate ng quality, i-return ito sa metadata. Makakatulong po ito sa quality auditing.
+3. **Mag-implement ng health checks** — Magdagdag ng `GET /health` endpoint para ma-verify ng i18n-rosetta ang connectivity bago mag-start ng isang malaking sync.
 4. **Mag-rate limit nang maayos** — Kung may throughput limits ang inyong pipeline, mag-return ng `429` status codes. Magba-back off ang batch system ng i18n-rosetta.
 5. **I-log ang lahat** — Pwedeng mag-fail silently ang mga multi-step pipelines. I-log ang input/output ng bawat step para sa debugging.
 
 ## Licensing
 
-Ang `api` method pattern ay fully open — walang licensing restrictions sa pag-wrap ng inyong sariling translation pipeline bilang isang HTTP service. Available ang `gds-mt-eval-harness` sa ilalim ng MIT license para sa mga reference implementations.
+Ang `api` method pattern ay fully open — walang licensing restrictions sa pag-wrap ng inyong sariling translation pipeline bilang isang HTTP service. Ang `gds-mt-eval-harness` ay available sa ilalim ng MIT license para sa mga reference implementations.
 
 ## Tingnan Din
 
 - [Translation Methods](/docs/guides/translation-methods) — overview ng bawat built-in method (`openai`, `google`, `api`, atbp.)
-- [Plugin Specification](/docs/reference/plugin-spec) — buong schema para sa `i18n-rosetta.config.json` kasama ang `api` method fields
+- [Plugin Specification](/docs/reference/plugin-spec) — full schema para sa `i18n-rosetta.config.json` kasama ang mga `api` method fields
 - [Support a Low-Resource Language](https://mtevalarena.org/docs/community/low-resource-languages) — end-to-end guide para sa mga under-resourced languages, kasama ang OCAP principles
 - [Architecture](/docs/concepts/architecture) — kung paano gumagana ang sync loop, batching, at method dispatch ng i18n-rosetta
 - [MT Evaluation](https://mtevalarena.org/docs/leaderboard/rules) — evaluation methodology, metrics, at ang leaderboard submission process
-- [Method Leaderboard](/leaderboard) — live quality rankings sa iba't ibang methods at language pairs
+- [Method Leaderboard](/leaderboard) — live quality rankings across methods at language pairs

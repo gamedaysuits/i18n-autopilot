@@ -4,44 +4,44 @@ title: "Quality Gate"
 ---
 # Quality Gate
 
-Jede Übersetzung durchläuft ein deterministisches Validierungs-Gate, bevor sie auf die Festplatte geschrieben wird. Das Quality Gate fängt häufige Fehlermodi maschineller Übersetzungen ab — keine stillschweigenden Fallbacks, kein Datenmüll, der in Ihre Lokalisierungsdateien geschrieben wird.
+Jede Übersetzung durchläuft eine deterministische Validierungsprüfung, bevor sie auf den Datenträger geschrieben wird. Das Quality Gate fängt häufige Fehlerquellen maschineller Übersetzungen ab — keine unbemerkten Ausweichlösungen, kein Datenmüll, der in Ihre Lokalisierungsdateien geschrieben wird.
 
 ## Validierungsprüfungen
 
-| Prüfung | Was sie abfängt | Gate-Label |
+| Prüfung | Was sie abfängt | Gate-Bezeichnung |
 |-------|----------------|-----------|
 | **Leer/Blank** | Modell hat eine leere Zeichenfolge oder Leerzeichen zurückgegeben | `[GATE] empty` |
-| **Quell-Echo** | Modell hat die ursprüngliche englische Eingabe zurückgegeben | `[GATE] source-echo` |
+| **Quelltext-Echo** | Modell hat die ursprüngliche englische Eingabe zurückgegeben | `[GATE] source-echo` |
 | **Halluzinationsschleife** | Wiederholte Trigramm-Muster (z. B. `"Qo' Qo' Qo'"`) | `[GATE] hallucination` |
-| **Längeninflation** | Ausgabe ist deutlich länger als die Quelle | `[GATE] length` |
-| **Schrift-Konformität** | Falsches Schriftsystem für das Ziel-Locale | `[GATE] script` |
-| **ICU-Pluralkategorien** | Fehlende erforderliche Pluralformen für das Locale | `[GATE] icu-plural` |
+| **Längeninflation** | Ausgabe ist deutlich länger als der Quelltext | `[GATE] length` |
+| **Schrift-Konformität** | Falsches Schriftsystem für die Zielsprache | `[GATE] script` |
+| **ICU-Pluralkategorien** | Fehlende erforderliche Pluralformen für die Zielsprache | `[GATE] icu-plural` |
 
 ### Leer/Blank
 
 Weist Übersetzungen ab, die leere Zeichenfolgen, nur Leerzeichen oder `null` sind. Dies fängt Modelle ab, die für schwierige Schlüssel nichts zurückgeben.
 
-### Quell-Echo
+### Quelltext-Echo
 
-Erkennt, wenn das Modell den englischen Quelltext zurückgibt, anstatt ihn zu übersetzen. Häufig bei kurzen Zeichenfolgen und unzureichend spezifizierten Prompts.
+Erkennt, wenn das Modell den englischen Quelltext zurückgibt, anstatt ihn zu übersetzen. Häufig bei kurzen Zeichenfolgen und unzureichend spezifizierten Eingabeaufforderungen (Prompts).
 
 ### Halluzinationsschleife
 
-Analysiert Trigramm-Muster (3 Zeichen) in der Ausgabe. Wenn sich ein Trigramm im Verhältnis zur Ausgabelänge häufiger als ein bestimmter Schwellenwert wiederholt, wird die Übersetzung abgewiesen. Dies fängt degenerierte Ausgaben wie `"Qo' Qo' Qo' Qo' Qo'"` ab.
+Analysiert Trigramm-Muster (3 Zeichen) in der Ausgabe. Wenn sich ein Trigramm im Verhältnis zur Ausgabelänge häufiger als ein festgelegter Schwellenwert wiederholt, wird die Übersetzung abgewiesen. Dies fängt fehlerhafte Ausgaben wie `"Qo' Qo' Qo' Qo' Qo'"` ab.
 
 ### Längeninflation
 
-Weist Übersetzungen ab, bei denen die Ausgabelänge `maxLengthRatio × source length` überschreitet (Standard: 4×). Dies fängt Modell-Halluzinationen ab, die für eine kurze Eingabe riesige Textblöcke erzeugen.
+Weist Übersetzungen ab, bei denen die Ausgabelänge `maxLengthRatio × source length` überschreitet (Standard: 4×). Dies fängt Modell-Halluzinationen ab, die bei einer kurzen Eingabe riesige Textblöcke erzeugen.
 
 Konfigurierbar über `maxLengthRatio` in Ihrer Konfiguration.
 
 ### Schrift-Konformität
 
-Für Locales mit einem konfigurierten `script`-Feld (z. B. `"script": "cans"` für Plains Cree Syllabics) wird validiert, dass die Ausgabe Nicht-ASCII-Zeichen enthält, die für das Ziel-Schriftsystem angemessen sind. Eine rein lateinische Ausgabe für ein arabisches, CJK- oder Syllabics-Locale wird abgewiesen.
+Für Zielsprachen mit einem konfigurierten `script`-Feld (z. B. `"script": "cans"` für die Silbenschrift der Plains Cree) wird validiert, dass die Ausgabe Nicht-ASCII-Zeichen enthält, die für das Ziel-Schriftsystem angemessen sind. Eine rein lateinische Ausgabe für eine arabische, CJK- oder Silbenschrift-Zielsprache wird abgewiesen.
 
 ## Was bei einem Fehler passiert
 
-1. Die fehlerhafte Übersetzung wird mit einem `[GATE]`-Präfix, dem Schlüsselnamen, dem Grund und einer Vorschau des Wertes in stderr protokolliert.
+1. Die fehlgeschlagene Übersetzung wird mit einem `[GATE]`-Präfix, dem Schlüsselnamen, dem Grund und einer Vorschau des Wertes in stderr protokolliert.
 2. Der Schlüssel wird **nicht** in die Lokalisierungsdatei geschrieben.
 3. Die Wiederholungskaskade setzt ein (siehe unten).
 
@@ -52,61 +52,61 @@ Für Locales mit einem konfigurierten `script`-Feld (z. B. `"script": "cans"` f�
 
 ## Wiederholungskaskade
 
-Wenn ein Batch fehlschlägt (JSON-Parsing-Fehler oder Abweisungen durch das Quality Gate), versucht rosetta es mit zunehmend kleineren Batches erneut:
+Wenn ein Stapel fehlschlägt (JSON-Analysefehler oder Abweisungen durch das Quality Gate), versucht rosetta es mit schrittweise kleineren Stapeln erneut:
 
 ```
-Full batch (30 keys) → parse error
-  └→ Half batch (15 keys) → 2 failures
+Full batch (80 keys) → parse error
+  └→ Half batch (40 keys) → 2 failures
       └→ Individual keys (1 each) → isolates the 2 problem keys
 ```
 
-Das Budget für Wiederholungsversuche ist durch `maxRetries` begrenzt (Standard: 3, pro Sprache konfigurierbar). Dies verhindert ausufernde Token-Ausgaben für Schlüssel, die durchgängig fehlschlagen.
+Das Budget für Wiederholungsversuche ist durch `maxRetries` begrenzt (Standard: 3, pro Sprache konfigurierbar). Dies verhindert ausufernde Token-Ausgaben für Schlüssel, die durchgehend fehlschlagen.
 
-Nach Ausschöpfen der Wiederholungsversuche werden die problematischen Schlüssel protokolliert und übersprungen. Sie werden beim nächsten `sync`-Lauf erneut versucht.
+Nach Ausschöpfung der Wiederholungsversuche werden die problematischen Schlüssel protokolliert und übersprungen. Sie werden beim nächsten `sync`-Durchlauf erneut versucht.
 
-## Prompt Caching
+## Prompt-Caching
 
 Die Systemnachricht (Register, Grammatikregeln, Stilhinweise) wird von der Benutzernachricht (die zu übersetzenden Schlüssel) getrennt. Diese Trennung ist beabsichtigt:
 
-- Die Systemnachricht ist für ein bestimmtes Locale **über alle Batches hinweg identisch**.
-- Anbieter wie Anthropic und Google speichern wiederholte Systemnachrichten im Cache.
-- Ergebnis: Der erste Batch zahlt die vollen Token-Kosten, nachfolgende Batches zahlen nur für die Benutzernachricht.
+- Die Systemnachricht ist für eine bestimmte Zielsprache **über alle Stapel hinweg identisch**.
+- Anbieter wie Anthropic und Google speichern wiederholte Systemnachrichten zwischen.
+- Ergebnis: Für den ersten Stapel fallen die vollen Token-Kosten an, nachfolgende Stapel zahlen nur für die Benutzernachricht.
 
-Dies kann die Token-Kosten für Projekte mit vielen Batches erheblich senken.
+Dies kann die Token-Kosten für Projekte mit vielen Stapeln erheblich reduzieren.
 
-## ICU MessageFormat-Validierung
+## ICU-MessageFormat-Validierung
 
-Der Befehl `integrity` validiert ICU MessageFormat-Pluralmuster anhand von CLDR-Pluralregeln. Wenn Ihre Quelldatei eine ICU-Syntax wie diese verwendet:
+Der Befehl `integrity` validiert ICU-MessageFormat-Pluralmuster anhand der CLDR-Pluralregeln. Wenn Ihre Quelldatei die ICU-Syntax wie folgt verwendet:
 
 ```json
 "items": "{count, plural, one {# item} other {# items}}"
 ```
 
-Rosetta überprüft, ob die übersetzten Versionen alle erforderlichen Pluralkategorien für das Ziel-Locale enthalten. Zum Beispiel erfordert Arabisch sechs Kategorien (`zero`, `one`, `two`, `few`, `many`, `other`) — nicht nur `one` und `other`.
+Rosetta überprüft, ob die übersetzten Versionen alle erforderlichen Pluralkategorien für die Zielsprache enthalten. Zum Beispiel erfordert Arabisch sechs Kategorien (`zero`, `one`, `two`, `few`, `many`, `other`) — nicht nur `one` und `other`.
 
-Führen Sie `i18n-rosetta integrity` aus, um die Plural-Vollständigkeit über alle Locales hinweg zu überprüfen.
+Führen Sie `i18n-rosetta integrity` aus, um die Vollständigkeit der Pluralformen über alle Zielsprachen hinweg zu überprüfen.
 
-## Terminologiedurchsetzung
+## Durchsetzung der Terminologie
 
-Für gecoachte Paare mit einem Wörterbuch führt rosetta nach der Übersetzung eine Terminologieprüfung durch. Nachdem das Quality Gate passiert wurde, wird überprüft, ob das LLM tatsächlich die erforderlichen Wörterbuchbegriffe verwendet hat.
+Für trainierte Sprachpaare mit einem Wörterbuch führt rosetta nach der Übersetzung eine Terminologieprüfung durch. Nachdem das Quality Gate passiert wurde, wird überprüft, ob das LLM tatsächlich die erforderlichen Wörterbuchbegriffe verwendet hat.
 
 ```
 [TERM] en→fr: 2 term violation(s)
   • hero.title: "dashboard" → expected "tableau de bord" but got "panneau de contrôle"
 ```
 
-Terminologieverstöße sind **Warnungen, keine blockierenden Fehler**. Die Übersetzung wird dennoch auf die Festplatte geschrieben. Dies ist beabsichtigt — das LLM hat möglicherweise triftige Gründe für die Wahl einer Alternative (Kontext, Grammatik), und ein Blockieren aufgrund von Begriffsabweichungen würde mehr schaden als nützen.
+Terminologieverstöße sind **Warnungen, keine blockierenden Fehler**. Die Übersetzung wird dennoch auf den Datenträger geschrieben. Dies ist beabsichtigt — das LLM hat möglicherweise triftige Gründe für die Wahl einer Alternative (Kontext, Grammatik), und eine Blockierung aufgrund von Begriffsabweichungen würde mehr Schaden als Nutzen anrichten.
 
-Um Verstöße zu beheben, aktualisieren Sie das Coaching-Wörterbuch oder bearbeiten Sie die Lokalisierungsdatei manuell.
+Um Verstöße zu beheben, aktualisieren Sie das Trainingswörterbuch oder bearbeiten Sie die Lokalisierungsdatei manuell.
 
 ---
 
 ## Siehe auch
 
 - [Wie die Synchronisierung funktioniert](/docs/concepts/how-sync-works) — wo sich das Quality Gate in die Pipeline einfügt
-- [Übersetzungsmethoden](/docs/guides/translation-methods) — Methoden, die in das Gate einspeisen
+- [Übersetzungsmethoden](/docs/guides/translation-methods) — Methoden, die in das Gate einfließen
 - [Schrift-Konverter](/docs/concepts/script-converters) — Schriftkonvertierung nach dem Gate
-- [Coaching-Daten](/docs/concepts/coaching-data) — Verbesserung der Übersetzungsqualität im Vorfeld
+- [Trainingsdaten](/docs/concepts/coaching-data) — Verbesserung der Übersetzungsqualität im Vorfeld
 - [Translation Memory](/docs/concepts/translation-memory) — Zwischenspeicherung validierter Übersetzungen
-- [CLI-Referenz — sync](/docs/reference/cli#sync) — Sync-Flags einschließlich Wiederholungsverhalten
-- [CLI-Referenz — integrity](/docs/reference/cli#integrity) — ICU-Plural-Prüfung
+- [CLI-Referenz — sync](/docs/reference/cli#sync) — Synchronisierungs-Flags einschließlich des Wiederholungsverhaltens
+- [CLI-Referenz — integrity](/docs/reference/cli#integrity) — Überprüfung von ICU-Pluralformen

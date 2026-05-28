@@ -4,17 +4,17 @@ title: "Segurança"
 ---
 # Segurança e Proteção
 
-O Rosetta foi projetado para ser seguro em ambientes adversários — onde os dados de localidade podem vir de fontes não confiáveis, onde nomes de arquivos manipulados podem escapar dos limites do diretório e onde a saída do LLM pode conter qualquer coisa.
+O Rosetta foi projetado para ser seguro em ambientes adversários — onde os dados de localidade (locale) podem vir de fontes não confiáveis, onde nomes de arquivos manipulados podem escapar dos limites do diretório e onde a saída do LLM pode conter qualquer coisa.
 
 ## Modelo de Ameaças
 
 | Ameaça | Vetor de Ataque | Mitigação |
 |--------|--------------|-----------|
-| **Prototype pollution** | Chaves JSON manipuladas (`__proto__`, `constructor`) | Rejeitado em tempo de análise (parse) |
-| **Path traversal** | Códigos de localidade como `../../etc/passwd` | Gravações de arquivos validadas para diretórios configurados |
-| **Corrupção de bloco de código** | LLM traduz dentro de blocos de código | Proteção por sentinela Unicode |
+| **Prototype pollution** | Chaves JSON manipuladas (`__proto__`, `constructor`) | Rejeitadas no momento do parse |
+| **Path traversal** | Códigos de localidade como `../../etc/passwd` | Gravações de arquivos validadas para os diretórios configurados |
+| **Corrupção de blocos de código** | LLM traduz dentro dos blocos de código | Proteção por sentinelas Unicode |
 | **Chaves alucinadas** | LLM retorna chaves que não foram enviadas | Validação de resposta — apenas chaves aceitas são gravadas |
-| **Gasto descontrolado de tokens** | Loops de repetição infinitos | Orçamento limitado via `maxRetries` |
+| **Gasto descontrolado de tokens** | Loops infinitos de repetição | Orçamento limitado via `maxRetries` |
 
 ## Proteção contra Prototype Pollution
 
@@ -26,29 +26,29 @@ Todas as chaves de localidade são validadas contra uma lista de bloqueio (block
 
 Qualquer chave que corresponda a esses padrões é rejeitada com um erro. Isso impede que invasores usem arquivos de localidade manipulados para modificar os protótipos de objetos JavaScript.
 
-## Contenção de Caminho
+## Contenção de Caminhos
 
 Ao gravar arquivos de localidade, o rosetta valida se o caminho de saída permanece dentro dos diretórios configurados (`localesDir`, `contentDir`). Os códigos de localidade são sanitizados — um código como `../../secrets` não pode gravar fora do diretório esperado.
 
 ## Proteção de Blocos
 
-Durante a tradução de conteúdo Markdown, elementos estruturados são substituídos por marcadores de posição sentinela Unicode antes que o texto seja enviado ao LLM:
+Durante a tradução de conteúdo Markdown, elementos estruturados são substituídos por marcadores sentinelas Unicode antes que o texto seja enviado ao LLM:
 
-1. **Blocos de código** (delimitados e em linha) → sentinela
+1. **Blocos de código** (delimitados e inline) → sentinela
 2. **Shortcodes do Hugo** (`{{< >}}`, `{{% %}}`) → sentinela  
 3. **HTML bruto** → sentinela
 4. **Variáveis de interpolação** (`{{ .Count }}`) → sentinela
 
-Após a tradução, as sentinelas são substituídas pelo conteúdo original. O LLM nunca vê os blocos de código, shortcodes ou HTML — ele não pode corrompê-los.
+Após a tradução, as sentinelas são substituídas pelo conteúdo original. O LLM nunca vê blocos de código, shortcodes ou HTML — portanto, não pode corrompê-los.
 
 ## Validação de Resposta
 
 Quando o LLM retorna uma resposta JSON, o rosetta valida se:
 - Apenas as chaves que foram enviadas no lote aparecem na resposta
-- Nenhuma chave extra é injetada
-- A resposta é analisada como um JSON válido
+- Nenhuma chave extra foi injetada
+- A resposta é analisada (parsed) como um JSON válido
 
-Chaves alucinadas são descartadas silenciosamente. Isso impede que a saída do LLM injete traduções inesperadas em seus arquivos de localidade.
+Chaves alucinadas são descartadas silenciosamente. Isso impede que a saída do LLM injete traduções inesperadas nos seus arquivos de localidade.
 
 ## Quality Gate
 
@@ -56,27 +56,34 @@ Cada tradução é validada por meio de cinco verificações determinísticas an
 
 ## Exponential Backoff
 
-As chamadas de API usam exponential backoff com jitter em respostas 429 (limite de taxa) e 5xx (erro do servidor). Três tentativas (retries) com atraso crescente evitam sobrecarregar a API durante interrupções.
+As chamadas de API usam exponential backoff com jitter em respostas 429 (limite de taxa) e 5xx (erro de servidor). Três tentativas com atraso crescente evitam sobrecarregar a API durante interrupções.
 
 ## Timeout de Requisição
 
 Toda requisição de API tem um timeout de 30 segundos via `AbortController`. Isso impede que o processo de sincronização trave indefinidamente em uma conexão inativa.
 
-## Modo de Fallback
+## Falhas de Tradução Explícitas (Fail-Loud)
 
-Quando a API está indisponível, o `--fallback` grava marcadores de posição com o prefixo `[EN]` em vez de traduções reais:
+Quando a API está indisponível ou uma tradução falha, o rosetta lança um erro explícito com orientações acionáveis em vez de gravar lixo silenciosamente. Nenhum marcador com o prefixo `[EN]` é gravado durante a sincronização.
 
-```bash
-npx i18n-rosetta sync --fallback
+```
+[ERR] Content sync for fr: no API key available.
+  Set OPENROUTER_API_KEY in .env.local to translate content.
 ```
 
-```json
-{
-  "hero.title": "[EN] Welcome to our platform"
-}
-```
+A falha de um arquivo não interrompe toda a sincronização — o erro é registrado e o pipeline continua para o próximo arquivo, para que você obtenha o máximo de progresso por execução.
 
-Esses marcadores de posição são detectados automaticamente e retraduzidos na próxima sincronização com uma chave de API válida. Eles nunca são tratados como "traduzidos" — o `audit` os sinalizará.
+## Verificação Pós-Sincronização
+
+Após a conclusão de todas as traduções, o rosetta relê os arquivos de localidade gravados no disco e executa uma etapa de verificação. Isso captura a lacuna entre a sincronização relatar sucesso e as traduções estarem de fato incorretas:
+
+- **Paridade de chaves** — todas as chaves de origem estão presentes em cada destino
+- **Marcadores `[EN]`** — marcadores de fallback legados de execuções anteriores
+- **Traduções vazias** — valores em branco que passaram despercebidos
+- **Conformidade de script** — localidades não latinas com traduções apenas em ASCII
+- **Preservação de marcadores** — marcadores ICU correspondem à origem
+
+Ignore com `--no-verify` ou execute de forma independente com `npx i18n-rosetta verify`.
 
 ## Testes
 

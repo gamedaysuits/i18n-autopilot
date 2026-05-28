@@ -1,18 +1,18 @@
 ---
 sidebar_position: 2
-title: "Plugin-specificatie"
+title: "Pluginspecificatie"
 ---
-# Methode-plug-in specificatie
+# Specificatie van de methode-plug-in
 
 > **Versie**: 1.1  
 > **Doelgroep**: Plug-in ontwikkelaars  
-> **Canonieke schema**: [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json)
+> **Kanoniek schema**: [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json)
 
 ## Overzicht
 
 i18n-rosetta maakt gebruik van een **inplugbaar methodesysteem**. Elk talenpaar kan een andere vertaalmethode gebruiken (LLM, gecoacht, script-converter, enz.). Methoden worden geregistreerd in `lib/translate.js` en per paar opgelost via `lib/pairs.js`.
 
-De taak van de eval harness is het **ontwikkelen, testen en exporteren** van vertaalmethoden. De taak van i18n-rosetta is om deze te **consumeren en uit te voeren**. De harness draait nooit binnen rosetta.
+De taak van de eval harness is om vertaalmethoden te **ontwikkelen, testen en exporteren**. De taak van i18n-rosetta is om deze te **consumeren en uit te voeren**. De harness draait nooit binnen rosetta.
 
 ### Gegevensstroom
 
@@ -25,7 +25,7 @@ flowchart LR
 
 ## Formaat van de methode-plug-in
 
-Een methode-plug-in is een enkel JSON-bestand (`method.json`) met optionele coaching-gegevensbestanden.
+Een methode-plug-in is een enkel JSON-bestand (`method.json`) met optionele bestanden voor coachinggegevens.
 
 ### `method.json` — Vereist
 
@@ -40,7 +40,7 @@ Een methode-plug-in is een enkel JSON-bestand (`method.json`) met optionele coac
   "config": {
     "model": "google/gemini-3.5-flash",
     "register": "formal",
-    "batchSize": 30,
+    "batchSize": 80,
     "temperature": 0.2
   },
 
@@ -75,18 +75,18 @@ Een methode-plug-in is een enkel JSON-bestand (`method.json`) met optionele coac
 | Veld | Type | Vereist | Beschrijving |
 |-------|------|----------|-------------|
 | `name` | string | ✅ | Unieke methode-identificatie (kebab-case) |
-| `type` | string | ✅ | Rosetta methodetype: `llm`, `llm-coached`, `api`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini` |
+| `type` | string | ✅ | Rosetta-methodetype: `llm`, `llm-coached`, `api`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini` |
 | `version` | string | ✅ | Semver-versie (bijv. `1.0.0`) |
-| `locales` | string[] | ✅ | Op welke locale-codes deze methode zich richt (minimaal 1) |
-| `description` | string | — | Menselijk leesbare beschrijving |
+| `locales` | string[] | ✅ | Op welke locale-codes deze methode is gericht (minimaal 1) |
+| `description` | string | — | Voor mensen leesbare beschrijving |
 | `author` | string | — | Wie deze methode heeft ontwikkeld/getest |
-| `config.model` | string | — | OpenRouter modelidentificatie |
+| `config.model` | string | — | OpenRouter model-identificatie |
 | `config.register` | string | — | Register/toon van de doeltaal |
-| `config.batchSize` | number | — | Sleutels per API-batch (1–200, standaard: 30) |
+| `config.batchSize` | number | — | Sleutels per API-batch (1–200, standaard: 80) |
 | `config.temperature` | number | — | LLM-temperatuur (0.0–2.0, standaard: 0.3) |
 | `benchmarks` | object | — | Benchmarkresultaten per locale |
-| `provenance` | object | — | Licenties en resource-afhankelijkheden |
-| `coaching.dir` | string | — | Relatief pad naar de map met coaching-gegevens |
+| `provenance` | object | — | Licenties en bronafhankelijkheden |
+| `coaching.dir` | string | — | Relatief pad naar de map met coachinggegevens |
 
 ### Benchmark-object (per locale)
 
@@ -94,37 +94,37 @@ Een methode-plug-in is een enkel JSON-bestand (`method.json`) met optionele coac
 |-------|------|----------|-------------|
 | `date` | string | ✅ | ISO 8601-tijdstempel van de benchmarkuitvoering |
 | `corpus_size` | number | ✅ | Aantal geëvalueerde invoeren |
-| `exact_match_rate` | number | ✅ | 0.0–1.0, aandeel exacte overeenkomsten |
+| `exact_match_rate` | number | ✅ | 0.0–1.0, verhouding van exacte overeenkomsten |
 | `corpus_chrf` | number | — | chrF++ score (0–100) |
-| `corpus_bleu` | number | — | BLEU-score (0–100) |
-| `model` | string | ✅ | Model gebruikt tijdens eval |
-| `harness_version` | string | ✅ | Versie van de gebruikte evaluation harness |
+| `corpus_bleu` | number | — | BLEU score (0–100) |
+| `model` | string | ✅ | Model gebruikt tijdens de evaluatie |
+| `harness_version` | string | ✅ | Versie van de gebruikte evaluatie-harness |
 
 :::info Welke metrieken worden weergegeven?
-De opdracht `rosetta status` toont **chrF++** en het **percentage exacte overeenkomsten** (exact match rate) uit het benchmarkblok. `corpus_bleu` wordt geaccepteerd in het manifest, maar wordt momenteel niet weergegeven of gebruikt door enige rosetta-opdracht. Het [Methode-klassement](/leaderboard) houdt chrF++, exacte overeenkomsten en de FST-acceptatiegraad bij.
+De opdracht `rosetta status` geeft **chrF++** en de **exacte overeenkomstverhouding** (exact match rate) uit het benchmarkblok weer. `corpus_bleu` wordt geaccepteerd in het manifest, maar wordt momenteel niet weergegeven of gebruikt door enige rosetta-opdracht. Het [Methode-klassement](/leaderboard) houdt chrF++, exacte overeenkomsten en de FST-acceptatiegraad bij.
 :::
 
 ---
 
-### Provenance-object
+### Herkomst-object
 
-Het provenance-blok communiceert de licentiestatus van de gebundelde resources van de plug-in.
+Het herkomstblok communiceert de licentiestatus van de gebundelde bronnen van de plug-in.
 
 | Veld | Type | Standaard | Beschrijving |
 |-------|------|---------|-------------|
-| `resources` | object[] | `[]` | Lijst van gebundelde resources met `name`, `license` en `type` |
+| `resources` | object[] | `[]` | Lijst van gebundelde bronnen met `name`, `license` en `type` |
 | `commercialReady` | boolean | `false` | Of de plug-in is vrijgegeven voor commerciële distributie |
-| `flags` | string[] | `["license-unclear"]` | Machinaal leesbare statusvlaggen |
+| `flags` | string[] | `["license-unclear"]` | Machineleesbare statusvlaggen |
 
 **Standaardstatus** — geëxporteerde plug-ins worden geleverd met `commercialReady: false` en `flags: ["license-unclear"]`.
 
-**Vrijgegeven status** — wanneer de licenties zijn geverifieerd: stel `commercialReady: true` in en wis de vlaggen.
+**Vrijgegeven status** — wanneer de licentieverlening is geverifieerd: stel `commercialReady: true` in en wis de vlaggen.
 
 ---
 
-## Formaat van coaching-gegevens
+## Formaat van coachinggegevens
 
-Als `type` `llm-coached` is, dient de plug-in coaching-gegevensbestanden te bevatten in de submap `coaching/`.
+Als `type` `llm-coached` is, dient de plug-in bestanden met coachinggegevens in de submap `coaching/` op te nemen.
 
 ### `coaching/<locale>.json`
 
@@ -146,12 +146,12 @@ Als `type` `llm-coached` is, dient de plug-in coaching-gegevensbestanden te beva
 | Veld | Type | Vereist | Beschrijving |
 |-------|------|----------|-------------|
 | `grammar_rules` | string[] | — | Regels die in elke LLM-prompt voor deze locale worden geïnjecteerd |
-| `dictionary` | object | — | Term → vertaling map. Overeenkomende termen worden geïnjecteerd als vereiste terminologie. |
+| `dictionary` | object | — | Term → vertaling-mapping. Overeenkomende termen worden geïnjecteerd als vereiste terminologie. |
 | `style_notes` | string | — | Vrije stijlinstructies die aan de prompt worden toegevoegd |
 
 ---
 
-## Mappenstructuur
+## Mapstructuur
 
 ```
 french-formal-v1/
@@ -196,7 +196,7 @@ Slaat op in `.rosetta/methods/french-formal-v1/`.
 }
 ```
 
-:::info Merge-semantiek
+:::info Samenvoegsemantiek
 De plug-in definieert *welke* methode moet worden gebruikt (`type`). De paarconfiguratie stemt af *hoe* deze moet worden uitgevoerd (`model`, `register`, `batchSize`). Als het paar `model` instelt, overschrijft dit de standaardwaarde van de plug-in.
 :::
 
@@ -204,7 +204,7 @@ De plug-in definieert *welke* methode moet worden gebruikt (`type`). De paarconf
 
 1. Rosetta leest `method.json` uit `.rosetta/methods/french-formal-v1/`
 2. Het veld `type` van de plug-in stelt de vertaalmethode in (bijv. `llm-coached`)
-3. Laadt coaching-gegevens uit de map `coaching/` van de plug-in
+3. Laadt coachinggegevens uit de map `coaching/` van de plug-in
 4. Gebruikt het blok `config` om hiaten in model/register/temperatuur op te vullen
 5. Het blok `benchmarks` wordt weergegeven in de uitvoer van `rosetta status`
 6. Het blok `provenance` wordt door `rosetta provenance` gecontroleerd op licentievlaggen
@@ -234,7 +234,7 @@ Verwijs naar het schema in uw `method.json` voor IDE-autocompletie:
 - ❌ Geen harness-configuratie
 - ❌ Geen interne prompt-sjablonen (deze bevinden zich in de methode-implementaties van rosetta)
 
-De plug-in is **alleen data**: configuratie, coaching-inhoud en benchmarkresultaten.
+De plug-in bevat **alleen gegevens**: configuratie, coachinginhoud en benchmarkresultaten.
 
 ---
 
@@ -242,7 +242,7 @@ De plug-in is **alleen data**: configuratie, coaching-inhoud en benchmarkresulta
 
 - [Vertaalmethoden](/docs/guides/translation-methods) — hoe elke ingebouwde methode werkt
 - [Configuratie](/docs/getting-started/configuration) — configuratie per paar en per taal
-- [Een methode aanbieden via API](/docs/guides/serving-a-method) — methoden hosten als HTTP-services
+- [Een methode serveren via API](/docs/guides/serving-a-method) — methoden hosten als HTTP-services
 - [Kookboek: FST-Gated Pipeline](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — een pijplijn bouwen en verpakken
-- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — methoden benchmarken voor indiening op het klassement
-- [Ondersteun een Low-Resource taal](https://mtevalarena.org/docs/community/low-resource-languages) — de use case voor community-plug-ins
+- [MT-evaluatie](https://mtevalarena.org/docs/leaderboard/rules) — methoden benchmarken voor indiening bij het klassement
+- [Een taal met weinig middelen ondersteunen](https://mtevalarena.org/docs/community/low-resource-languages) — de use case voor community-plug-ins

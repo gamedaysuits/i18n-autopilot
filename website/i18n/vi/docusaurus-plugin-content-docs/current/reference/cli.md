@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: "Tài liệu tham khảo CLI"
 ---
-# Tham chiếu CLI
+# Tài liệu tham khảo CLI
 
 ## Các lệnh
 
@@ -15,6 +15,7 @@ i18n-rosetta lint              Scan source code for hardcoded strings
 i18n-rosetta wrap              Auto-wrap hardcoded strings in t() calls (with undo)
 i18n-rosetta seo <sub>         Generate hreflang, sitemap.xml, or JSON-LD schema
 i18n-rosetta integrity         Audit locale files for format/encoding issues
+i18n-rosetta verify            Verify translations are present and correct (CI gate)
 i18n-rosetta status            Show pair configuration, plugins, and quality tiers
 i18n-rosetta provenance        Audit translation resource licensing
 i18n-rosetta plugin <sub>      Manage method plugins (install, remove, list)
@@ -25,7 +26,7 @@ i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 
 Chạy `i18n-rosetta <command> --help` để xem trợ giúp chi tiết cho bất kỳ lệnh nào.
 
-## Tùy chọn toàn cục
+## Các tùy chọn toàn cục
 
 ```
 --help, -h              Show help (global or per-command)
@@ -39,10 +40,13 @@ Chạy `i18n-rosetta <command> --help` để xem trợ giúp chi tiết cho bấ
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
+--content-concurrency <n> Max parallel API calls for content translation (default: 12)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
+--no-verify             Skip post-sync verification pass
 --locale <code>         Target locale (xliff export, tm clear)
 --quiet                 Errors and warnings only — suppress banner, progress bar, and info lines
 --json                  Machine-readable NDJSON output — one JSON object per event
@@ -52,7 +56,7 @@ Chạy `i18n-rosetta <command> --help` để xem trợ giúp chi tiết cho bấ
 
 ## init
 
-Trình hướng dẫn thiết lập tương tác giúp tạo `i18n-rosetta.config.json`. Hướng dẫn bạn chọn ngôn ngữ nguồn, ngôn ngữ đích, định dạng tệp và mô hình dịch thuật.
+Trình hướng dẫn thiết lập tương tác giúp tạo `i18n-rosetta.config.json`. Hướng dẫn bạn chọn ngôn ngữ nguồn, các ngôn ngữ đích, định dạng tệp và mô hình dịch thuật.
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -61,21 +65,21 @@ i18n-rosetta init --yes --langs fr,de,ja   # quick setup with specific languages
 i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 ```
 
-**Tùy chọn `--langs`**: Danh sách các mã ngôn ngữ đích phân tách bằng dấu phẩy. Bỏ qua lời nhắc chọn ngôn ngữ và áp dụng các cài đặt trước (preset) về ngữ khí mặc định cho từng ngôn ngữ. Kết hợp với `--yes` để thiết lập hoàn toàn không tương tác.
+**Tùy chọn `--langs`**: Danh sách các mã ngôn ngữ đích phân tách bằng dấu phẩy. Bỏ qua lời nhắc chọn ngôn ngữ và áp dụng các cài đặt sẵn về văn phong (register) mặc định cho từng ngôn ngữ. Kết hợp với `--yes` để thiết lập hoàn toàn không tương tác.
 
-**Cài đặt trước ngôn ngữ (Language presets)**: Khi được nhắc chọn ngôn ngữ đích, bạn có thể nhập tên của các cài đặt trước:
+**Các cài đặt ngôn ngữ sẵn (Language presets)**: Khi được nhắc chọn ngôn ngữ đích, bạn có thể nhập tên của các cài đặt sẵn:
 - `european` → fr, de, es, it, pt, nl
 - `asian` → ja, zh, ko
 - `global` → fr, es, de, ja, zh, ko, pt, ar
 - `nordic` → da, fi, nb, sv
 
-Kết hợp các cài đặt trước và mã riêng lẻ: `european, ja` → fr, de, es, it, pt, nl, ja
+Kết hợp các cài đặt sẵn và mã ngôn ngữ riêng lẻ: `european, ja` → fr, de, es, it, pt, nl, ja
 
 ---
 
 ## sync
 
-Dịch các khóa (key) bị thiếu, cũ và dự phòng (fallback) trên tất cả các tệp ngôn ngữ (locale).
+Dịch các khóa (keys) bị thiếu và đã cũ trên tất cả các tệp ngôn ngữ (locale files). Chạy xác minh sau đồng bộ (post-sync verification) theo mặc định.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
@@ -85,18 +89,20 @@ i18n-rosetta sync --force-keys "a.title,a.subtitle" # multiple keys
 i18n-rosetta sync --force-content                   # re-translate all Markdown/MDX
 i18n-rosetta sync --content-dir ./content           # include Hugo Markdown
 i18n-rosetta sync --method google-translate          # force Google Translate
-i18n-rosetta sync --concurrency 20                  # 20 parallel API calls
-i18n-rosetta sync --fallback                         # write [EN] prefixes on failure
+i18n-rosetta sync --concurrency 20                  # 20 parallel API calls (both phases)
+i18n-rosetta sync --json-concurrency 30              # 30 parallel locale translations (JSON)
+i18n-rosetta sync --content-concurrency 8            # 8 parallel content translations
+i18n-rosetta sync --no-verify                        # skip post-sync verification
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**Translation Memory (Bộ nhớ dịch)**: Theo mặc định, `sync` tải `.rosetta/tm.json` và cung cấp các bản dịch đã lưu trong bộ nhớ cache cho các giá trị nguồn không thay đổi. Sử dụng `--no-tm` để bỏ qua bộ nhớ cache (hữu ích khi chuyển đổi nhà cung cấp dịch vụ dịch thuật hoặc gỡ lỗi chất lượng). Xem [Translation Memory](/docs/concepts/translation-memory).
+**Bộ nhớ dịch thuật (Translation Memory)**: Theo mặc định, `sync` sẽ tải `.rosetta/tm.json` và cung cấp các bản dịch đã lưu trong bộ nhớ cache cho các giá trị nguồn không thay đổi. Sử dụng `--no-tm` để bỏ qua bộ nhớ cache (hữu ích khi chuyển đổi nhà cung cấp dịch thuật hoặc gỡ lỗi chất lượng). Xem [Bộ nhớ dịch thuật](/docs/concepts/translation-memory).
 
-**Phát hiện thay đổi**: rosetta lưu trữ các mã băm SHA-256 trong `.i18n-rosetta.lock`. Khi các giá trị nguồn thay đổi, lần đồng bộ tiếp theo sẽ tự động dịch lại các khóa đó. Hãy commit tệp khóa (lock file) để tất cả các nhà phát triển cùng chia sẻ một cơ sở chung.
+**Phát hiện thay đổi**: rosetta lưu trữ các mã băm SHA-256 trong `.i18n-rosetta.lock`. Khi các giá trị nguồn thay đổi, lần đồng bộ tiếp theo sẽ tự động dịch lại các khóa đó. Hãy commit tệp lock này để tất cả các lập trình viên cùng chia sẻ một baseline chung.
 
-**Xử lý song song (Parallelism)**: Dịch nội dung (Markdown, MDX, bài đăng blog) chạy trong một nhóm mục công việc phẳng với mức độ đồng thời có thể cấu hình. Mặc định là 12 lệnh gọi API song song. Ghi đè bằng `--concurrency` hoặc trường cấu hình `concurrency`. Dịch khóa JSON chạy tuần tự theo từng ngôn ngữ (đủ nhanh nên việc xử lý song song không mang lại thêm lợi ích nào).
+**Xử lý song song (Parallelism)**: Cả việc dịch khóa JSON và dịch nội dung đều chạy song song. Các ngôn ngữ JSON được dịch đồng thời (mặc định: 50 ngôn ngữ đồng thời), với các lô (batches) trong mỗi ngôn ngữ cũng được chạy song song (4 lô đồng thời). Việc dịch nội dung (Markdown, MDX, bài viết blog) chạy trong một pool công việc phẳng (mặc định: 12 lệnh gọi API đồng thời). Ghi đè bằng `--json-concurrency`, `--content-concurrency`, hoặc `--concurrency` (thiết lập cho cả hai).
 
-**Đầu ra (Output)**: Lệnh sync hiển thị một banner phiên bản, thông tin phát hiện định dạng/framework, ước tính chi phí và thanh tiến trình cho từng ngôn ngữ:
+**Đầu ra (Output)**: Sync hiển thị banner phiên bản, phát hiện định dạng/framework, ước tính chi phí và thanh tiến trình cho từng ngôn ngữ:
 
 ```
 i18n-rosetta v3.3.1
@@ -112,13 +118,13 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-Các thanh tiến trình cập nhật tại chỗ sau mỗi đợt (khoảng 30 khóa). Sử dụng `--quiet` để chỉ hiển thị lỗi/cảnh báo, hoặc `--json` cho đầu ra NDJSON mà máy có thể đọc được. Cả hai tùy chọn này đều ẩn thanh tiến trình và banner.
+Các thanh tiến trình cập nhật tại chỗ sau mỗi lô (~80 khóa). Sử dụng `--quiet` để chỉ hiển thị lỗi/cảnh báo, hoặc `--json` để xuất định dạng NDJSON cho máy đọc. Cả hai tùy chọn này đều ẩn thanh tiến trình và banner.
 
 ---
 
 ## watch
 
-Tự động đồng bộ khi tệp ngôn ngữ nguồn thay đổi. Chạy cho đến khi bị ngắt bằng `Ctrl+C`.
+Tự động đồng bộ khi tệp ngôn ngữ nguồn thay đổi. Chạy liên tục cho đến khi bị ngắt bằng `Ctrl+C`.
 
 ```bash
 i18n-rosetta watch
@@ -128,7 +134,7 @@ i18n-rosetta watch
 
 ## audit
 
-Liệt kê tất cả các giá trị dự phòng có tiền tố `[EN]` chưa được dịch. Thoát với mã 1 nếu tìm thấy bất kỳ giá trị nào — sử dụng như một cổng CI để đánh lỗi các bản build có bản dịch chưa hoàn chỉnh.
+Liệt kê tất cả các giá trị dự phòng (fallback values) chưa được dịch có tiền tố `[EN]` từ các lần chạy trước. Thoát với mã 1 nếu tìm thấy bất kỳ giá trị nào — sử dụng như một cổng CI (CI gate) để đánh lỗi các bản build có bản dịch chưa hoàn chỉnh.
 
 ```bash
 i18n-rosetta audit
@@ -136,9 +142,30 @@ i18n-rosetta audit
 
 ---
 
+## verify
+
+Đọc lại tất cả các tệp ngôn ngữ từ ổ đĩa và xác minh xem các bản dịch có thực sự tồn tại và chính xác hay không. Đây là cùng một quy trình xác minh chạy tự động ở cuối mỗi lệnh `sync` (trừ khi truyền vào `--no-verify`).
+
+```bash
+i18n-rosetta verify                    # verify all locale files
+i18n-rosetta verify --warn-only        # non-blocking
+i18n-rosetta verify && echo "All good" # CI gate
+```
+
+**Những gì được kiểm tra:**
+- Sự đồng đều của khóa (Key parity) — tất cả các khóa nguồn đều có mặt trong mỗi ngôn ngữ đích
+- Các điểm đánh dấu dự phòng `[EN]` từ các lần chạy trước
+- Các bản dịch trống
+- Tuân thủ hệ chữ viết (Script compliance) — các ngôn ngữ phi Latinh phải có bản dịch phi ASCII
+- Bảo toàn placeholder — các placeholder ICU khớp với nguồn
+- Các vấn đề về mã hóa — dấu BOM, các ký tự ẩn
+- Lặp lại nguồn (Source echoes) — các giá trị giống hệt với nguồn (cảnh báo)
+
+---
+
 ## lint
 
-Quét mã nguồn để tìm các chuỗi văn bản hiển thị cho người dùng được hardcode (viết cứng) mà lẽ ra nên sử dụng các lệnh gọi dịch i18n. Tự động phát hiện framework của bạn (next-intl, react-i18next, vue-i18n, Hugo).
+Quét mã nguồn để tìm các chuỗi văn bản hiển thị cho người dùng được hardcode mà lẽ ra nên sử dụng các lệnh gọi dịch thuật i18n. Tự động phát hiện framework của bạn (next-intl, react-i18next, vue-i18n, Hugo).
 
 ```bash
 i18n-rosetta lint                    # exits 1 if issues found
@@ -147,19 +174,19 @@ i18n-rosetta lint --src ./app        # custom source directory
 i18n-rosetta lint --min-length 4     # minimum string length to flag
 ```
 
-**Những gì lệnh này phát hiện:**
+**Những gì được phát hiện:**
 - Các chuỗi hardcode trong văn bản JSX, `placeholder`, `alt`, `aria-label`, `title`
 - Các tệp có nội dung hiển thị cho người dùng nhưng không import framework i18n
-- Dead keys (Khóa chết) — các khóa ngôn ngữ không được tệp mã nguồn nào tham chiếu đến
+- Khóa chết (Dead keys) — các khóa ngôn ngữ không được tệp mã nguồn nào tham chiếu đến
 - Điểm bao phủ (Coverage score) — tỷ lệ phần trăm các chuỗi đi qua i18n
 
-**Loại trừ (Exclusions)**: Tạo `.rosettaignore` trong thư mục gốc dự án của bạn (sử dụng glob pattern, ví dụ như `.gitignore`).
+**Loại trừ (Exclusions)**: Tạo `.rosettaignore` trong thư mục gốc dự án của bạn (sử dụng glob patterns, ví dụ như `.gitignore`).
 
 ---
 
 ## wrap
 
-Tự động bọc các chuỗi hardcode được phát hiện bởi `lint` vào trong các lệnh gọi `t()`. Tự động tạo bản sao lưu trước khi sửa đổi tệp.
+Tự động bọc (auto-wrap) các chuỗi hardcode được phát hiện bởi `lint` vào trong các lệnh gọi `t()`. Tự động tạo bản sao lưu trước khi sửa đổi tệp.
 
 ```bash
 i18n-rosetta wrap                    # auto-wrap with backup
@@ -167,17 +194,17 @@ i18n-rosetta wrap --dry              # preview wrapping changes
 i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 ```
 
-**Các chốt an toàn:**
+**Các chốt an toàn (Safety gates):**
 1. Kiểm tra Git-clean (bỏ qua trong chế độ dry-run)
 2. Tự động sao lưu vào `.rosetta-backup/`
-3. Xem trước khác biệt (diff) trước khi ghi từng tệp
+3. Xem trước khác biệt (Diff preview) trước khi ghi từng tệp
 4. Hỗ trợ `--undo` để khôi phục từ bản sao lưu
 
 ---
 
 ## seo
 
-Tạo các thành phần SEO cho các trang web đa ngôn ngữ.
+Tạo các tài nguyên SEO cho các trang web đa ngôn ngữ.
 
 ```bash
 i18n-rosetta seo hreflang                                        # print hreflang tags
@@ -185,11 +212,11 @@ i18n-rosetta seo sitemap --base-url https://example.com --out sitemap.xml
 i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schema
 ```
 
-| Lệnh phụ | Đầu ra |
+| Lệnh phụ (Subcommand) | Đầu ra (Output) |
 |------------|--------|
 | `hreflang` | Các thẻ `<link rel="alternate" hreflang>` |
 | `sitemap` | `sitemap.xml` đa ngôn ngữ |
-| `jsonld` | Lược đồ ngôn ngữ WebSite JSON-LD |
+| `jsonld` | Lược đồ ngôn ngữ JSON-LD WebSite |
 
 ---
 
@@ -202,18 +229,18 @@ i18n-rosetta integrity               # exits 1 if issues found
 i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
-**Những gì lệnh này kiểm tra:**
-- Hỏng placeholder (ví dụ: `{name}` có trong nguồn nhưng thiếu ở đích)
-- Lỗi mã hóa (mojibake, Unicode không hợp lệ)
-- Bản sao chưa dịch (giá trị đích giống hệt giá trị nguồn)
-- Khóa mồ côi (các khóa ở đích không tồn tại trong nguồn)
-- Tính hoàn chỉnh của danh mục số nhiều ICU MessageFormat (ví dụ: tiếng Ả Rập cần 6 danh mục)
+**Những gì được kiểm tra:**
+- Hỏng placeholder (ví dụ: `{name}` có trong nguồn nhưng thiếu trong đích)
+- Các vấn đề về mã hóa (lỗi hiển thị mojibake, Unicode không hợp lệ)
+- Các bản sao chưa dịch (giá trị đích giống hệt nguồn)
+- Khóa mồ côi (Orphaned keys) (các khóa ở đích không tồn tại trong nguồn)
+- Tính đầy đủ của danh mục số nhiều trong ICU MessageFormat (ví dụ: tiếng Ả Rập cần 6 danh mục)
 
 ---
 
 ## tm
 
-Quản lý bộ nhớ cache Translation Memory (`.rosetta/tm.json`). TM lưu trữ các bản dịch trước đó và cung cấp chúng trong các lần đồng bộ tiếp theo thay vì gọi API.
+Quản lý bộ nhớ cache của Bộ nhớ dịch thuật (Translation Memory - `.rosetta/tm.json`). TM lưu trữ các bản dịch trước đó và cung cấp chúng trong các lần đồng bộ tiếp theo thay vì gọi API.
 
 ```bash
 i18n-rosetta tm stats                  # show cache statistics
@@ -222,17 +249,17 @@ i18n-rosetta tm clear --yes            # clear without confirmation
 i18n-rosetta tm clear --locale fr      # clear only French entries
 ```
 
-| Lệnh phụ | Đầu ra |
+| Lệnh phụ (Subcommand) | Đầu ra (Output) |
 |------------|--------|
-| `stats` | Số lượng mục, kích thước tệp, phân tích chi tiết theo ngôn ngữ |
+| `stats` | Số lượng mục, kích thước tệp, phân tích chi tiết theo từng ngôn ngữ |
 | `clear` | Xóa tệp cache (toàn bộ hoặc theo từng ngôn ngữ) |
 
-| Tùy chọn | Tác dụng |
+| Tùy chọn (Option) | Hiệu ứng (Effect) |
 |--------|--------|
-| `--locale <code>` | Chỉ xóa các mục cho một ngôn ngữ |
+| `--locale <code>` | Chỉ xóa các mục của một ngôn ngữ |
 | `--yes` | Bỏ qua lời nhắc xác nhận |
 
-Xem [Translation Memory](/docs/concepts/translation-memory) để biết cách TM hoạt động và khi nào cần xóa nó.
+Xem [Bộ nhớ dịch thuật](/docs/concepts/translation-memory) để biết cách TM hoạt động và khi nào cần xóa nó.
 
 ---
 
@@ -247,16 +274,16 @@ i18n-rosetta xliff import .rosetta/xliff/fr.xliff       # import reviewed file
 i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 ```
 
-| Lệnh phụ | Đầu ra |
+| Lệnh phụ (Subcommand) | Đầu ra (Output) |
 |------------|--------|
 | `export` | Tạo `.xliff` từ các tệp ngôn ngữ nguồn + đích |
-| `import` | Hợp nhất các bản dịch `.xliff` đã đánh giá vào các tệp ngôn ngữ |
+| `import` | Hợp nhất các bản dịch `.xliff` đã được đánh giá vào các tệp ngôn ngữ |
 
-| Tùy chọn | Tác dụng |
+| Tùy chọn (Option) | Hiệu ứng (Effect) |
 |--------|--------|
 | `--locale <code>` | Ngôn ngữ đích để xuất (bắt buộc) |
 | `--out <path>` | Đường dẫn hoặc thư mục đầu ra tùy chỉnh |
-| `--dry` | Xem trước việc nhập mà không ghi tệp |
+| `--dry` | Xem trước quá trình nhập mà không ghi tệp |
 
 Xem [Làm việc với Dịch giả Chuyên nghiệp](/docs/guides/professional-translators) để biết toàn bộ quy trình làm việc.
 
@@ -264,7 +291,7 @@ Xem [Làm việc với Dịch giả Chuyên nghiệp](/docs/guides/professional-
 
 ## status
 
-Hiển thị cấu hình cặp ngôn ngữ, các plugin đã cài đặt, các cấp độ chất lượng và điểm chuẩn (benchmark).
+Hiển thị cấu hình cặp ngôn ngữ, các plugin đã cài đặt, các cấp độ chất lượng và điểm chuẩn (benchmark scores).
 
 ```bash
 i18n-rosetta status
@@ -298,7 +325,7 @@ Xem [Đặc tả Plugin](/docs/reference/plugin-spec) để biết định dạn
 
 ## fonts
 
-Tải xuống và quản lý các web font PUA cho các bộ chuyển đổi chữ viết của ngôn ngữ nhân tạo (constructed language). Các ngôn ngữ sử dụng ký tự Private Use Area (Klingon, Sindarin, Kryptonian) cần các web font tùy chỉnh để hiển thị chữ viết của chúng. Lệnh này tải chúng xuống từ các kho lưu trữ mã nguồn mở đã được xác minh.
+Tải xuống và quản lý các phông chữ web PUA cho các bộ chuyển đổi hệ chữ viết của ngôn ngữ nhân tạo (constructed language). Các ngôn ngữ sử dụng các ký tự trong Vùng sử dụng riêng (Private Use Area) (như Klingon, Sindarin, Kryptonian) cần các phông chữ web tùy chỉnh để hiển thị hệ chữ viết của chúng. Lệnh này tải chúng xuống từ các kho lưu trữ mã nguồn mở đã được xác minh.
 
 ```bash
 i18n-rosetta fonts list                           # show needed fonts
@@ -307,29 +334,29 @@ i18n-rosetta fonts install --css                  # also generate CSS snippet
 i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 ```
 
-| Lệnh phụ | Đầu ra |
+| Lệnh phụ (Subcommand) | Đầu ra (Output) |
 |------------|--------|
-| `list` | Hiển thị các font PUA nào cần thiết và trạng thái cài đặt của chúng |
-| `install` | Tải xuống font cho các ngôn ngữ đã cấu hình |
+| `list` | Hiển thị các phông chữ PUA nào cần thiết và trạng thái cài đặt của chúng |
+| `install` | Tải xuống phông chữ cho các ngôn ngữ đã cấu hình |
 
-| Tùy chọn | Tác dụng |
+| Tùy chọn (Option) | Hiệu ứng (Effect) |
 |--------|--------|
-| `--dir <path>` | Ghi đè thư mục đầu ra của font (tự động phát hiện từ loại dự án) |
-| `--css` | Tạo một đoạn mã `conlang-fonts.css` cùng với các font |
-| `--config <path>` | Đường dẫn đến tệp cấu hình (dùng để phát hiện ngôn ngữ nào cần font) |
+| `--dir <path>` | Ghi đè thư mục đầu ra của phông chữ (tự động phát hiện từ loại dự án) |
+| `--css` | Tạo một đoạn mã `conlang-fonts.css` cùng với các phông chữ |
+| `--config <path>` | Đường dẫn đến tệp cấu hình (dùng để phát hiện ngôn ngữ nào cần phông chữ) |
 
 **Tự động phát hiện:** Thư mục đầu ra được suy luận từ cấu trúc dự án của bạn:
 - **Docusaurus** → `static/fonts/` hoặc `website/static/fonts/`
 - **Hugo** → `static/fonts/`
 - **Mặc định** → `public/fonts/`
 
-**Các bộ chuyển đổi Unicode gốc** (`crk` → Cree Syllabics, `sr` → Serbian Cyrillic) KHÔNG yêu cầu cài đặt font.
+**Các bộ chuyển đổi Unicode gốc** (`crk` → Cree Syllabics, `sr` → Serbian Cyrillic) KHÔNG yêu cầu cài đặt phông chữ.
 
-Xem [Ngôn ngữ nhân tạo, Chữ viết & Chính tả](/docs/guides/conlangs-scripts-orthography) để biết chi tiết đầy đủ về font PUA.
+Xem [Ngôn ngữ nhân tạo, Hệ chữ viết & Chính tả](/docs/guides/conlangs-scripts-orthography) để biết đầy đủ chi tiết về phông chữ PUA.
 
 ## Pipeline ba lớp
 
-Sử dụng kết hợp `lint`, `sync` và `audit` để có hệ thống i18n hoàn hảo:
+Sử dụng kết hợp `lint`, `sync` và `audit` để có hệ thống i18n chống lỗi hoàn hảo:
 
 ```json title="package.json"
 {
@@ -341,19 +368,20 @@ Sử dụng kết hợp `lint`, `sync` và `audit` để có hệ thống i18n h
 }
 ```
 
-| Lớp | Lệnh | Khi nào | Mục đích |
+| Lớp (Layer) | Lệnh (Command) | Khi nào (When) | Mục đích (Purpose) |
 |-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | Chặn các commit chứa chuỗi hardcode |
 | **Sync** | `sync` | Post-commit / CI | Dịch các khóa bị thiếu và đã thay đổi |
-| **Audit** | `audit` | Bước Build | Đánh lỗi triển khai nếu có bất kỳ ngôn ngữ nào chưa hoàn chỉnh |
+| **Verify** | `verify` | Post-sync / CI | Xác nhận các bản dịch đã tồn tại và chính xác |
+| **Audit** | `audit` | Bước Build | Đánh lỗi triển khai nếu bất kỳ ngôn ngữ nào có điểm đánh dấu `[EN]` |
 
 ---
 
 ## Xem thêm
 
-- [Cấu hình](/docs/getting-started/configuration) — tham chiếu tệp cấu hình
-- [Phương thức dịch thuật](/docs/guides/translation-methods) — lựa chọn phương thức cho từng cặp ngôn ngữ
-- [Translation Memory](/docs/concepts/translation-memory) — lưu cache và tiết kiệm chi phí
+- [Cấu hình](/docs/getting-started/configuration) — tài liệu tham khảo tệp cấu hình
+- [Các phương thức dịch thuật](/docs/guides/translation-methods) — lựa chọn phương thức cho từng cặp ngôn ngữ
+- [Bộ nhớ dịch thuật](/docs/concepts/translation-memory) — bộ nhớ đệm và tiết kiệm chi phí
 - [Làm việc với Dịch giả Chuyên nghiệp](/docs/guides/professional-translators) — quy trình làm việc XLIFF
 - [Đặc tả Plugin](/docs/reference/plugin-spec) — định dạng manifest của plugin
 - [Hướng dẫn CI/CD](/docs/guides/ci-cd) — tự động hóa các lệnh CLI trong pipeline của bạn

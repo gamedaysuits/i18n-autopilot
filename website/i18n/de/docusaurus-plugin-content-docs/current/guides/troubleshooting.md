@@ -23,23 +23,23 @@ OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
 :::tip
-Wenn Sie nur über einen API-Schlüssel für Google Translate verfügen, erkennt rosetta dies automatisch und verwendet Google Translate als Standardmethode. Es ist keine Änderung der Konfiguration erforderlich.
+Wenn Sie nur über einen Google Translate API-Schlüssel verfügen, erkennt rosetta dies automatisch und verwendet Google Translate als Standardmethode. Es ist keine Änderung der Konfiguration erforderlich.
 :::
 
 ### "401 Unauthorized" von OpenRouter
 
 Ihr API-Schlüssel ist ungültig oder abgelaufen. Überprüfen Sie ihn unter [openrouter.ai/keys](https://openrouter.ai/keys).
 
-### "429 Too Many Requests" / Ratenlimitierung
+### "429 Too Many Requests" / Ratenbegrenzung
 
-Rosetta handhabt Ratenlimits intern mit exponentiellem Backoff (Verzögerung). Wenn Sie regelmäßig an Ratenlimits stoßen:
+Rosetta behandelt Ratenbegrenzungen intern mit einem exponentiellen Backoff. Wenn Sie wiederholt an Ratenbegrenzungen stoßen:
 
 1. **Reduzieren Sie die Stapelgröße** in Ihrer Konfiguration:
    ```json
    { "batchSize": 15 }
    ```
-2. **Verwenden Sie ein Modell mit höheren Ratenlimits** (z. B. hat `google/gemini-3.5-flash` großzügige Limits)
-3. **Verwenden Sie eine günstigere/schnellere Methode** für Sprachpaare mit hohem Volumen — Google Translate hat keine Ratenlimits:
+2. **Verwenden Sie ein Modell mit höheren Ratenbegrenzungen** (z. B. hat `google/gemini-3.5-flash` großzügige Limits)
+3. **Verwenden Sie eine günstigere/schnellere Methode** für Sprachpaare mit hohem Volumen — Google Translate hat keine Ratenbegrenzungen:
    ```json
    { "pairs": { "en:it": { "method": "google-translate" } } }
    ```
@@ -70,14 +70,14 @@ Oder wechseln Sie zur Methode `llm`, um OpenRouter zu verwenden:
 **"not found in available models"** — Das Modell ist möglicherweise veraltet oder falsch geschrieben. Rosetta ruft die aktuelle Modellliste des Anbieters ab und schlägt Alternativen vor. Überprüfen Sie die Dokumentation des Anbieters auf aktuelle Modellnamen.
 
 :::tip Modelle veralten gelegentlich
-Anbieter stellen Modellnamen regelmäßig ein. Wenn Übersetzungen nach einem Anbieter-Update plötzlich fehlschlagen, überprüfen Sie die Ausgabe von `[WARN]` — dort werden Ihnen aktuelle Alternativen angezeigt.
+Anbieter mustern Modellnamen regelmäßig aus. Wenn Übersetzungen nach einem Anbieter-Update plötzlich fehlschlagen, überprüfen Sie die Ausgabe von `[WARN]` — dort werden Ihnen aktuelle Alternativen angezeigt.
 :::
 
 ## Übersetzungsqualität
 
 ### Übersetzungen spiegeln die Ausgangssprache wider
 
-Das Quality Gate (Qualitätskontrolle) fängt dies ab. Wenn eine Übersetzung mit der englischen Quelle identisch ist, wird sie abgelehnt und erneut versucht. Wenn das Problem weiterhin besteht:
+Das Quality Gate fängt dies ab. Wenn eine Übersetzung mit der englischen Quelle identisch ist, wird sie abgelehnt und erneut versucht. Wenn das Problem weiterhin besteht:
 
 1. **Überprüfen Sie das Modell** — Einige Modelle schneiden bei bestimmten Sprachpaaren schlecht ab
 2. **Fügen Sie Register-Anweisungen hinzu** — Teilen Sie dem Modell mit, welche Sprache es erzeugen soll:
@@ -95,33 +95,33 @@ Das Quality Gate (Qualitätskontrolle) fängt dies ab. Wenn eine Übersetzung mi
 Die Überprüfung der Schriftkonformität des Quality Gates fängt die meisten Fälle ab. Wenn das Problem weiterhin besteht:
 
 - Stellen Sie sicher, dass der Gebietsschema-Code (Locale-Code) korrekt ist (`ja`, nicht `jp`)
-- Fügen Sie explizite Schrift-Anweisungen im Feld `register` hinzu:
+- Fügen Sie explizite Schriftanweisungen im Feld `register` hinzu:
   ```json
   { "register": "Japanese using hiragana, katakana, and kanji" }
   ```
 
 ### Halluzinationsmuster in der Ausgabe
 
-Wiederholte Trigramm-Muster (z. B. "hallo hallo hallo") werden vom Halluzinationsschleifen-Detektor erfasst. Wenn die Ausgabe fehlerhaft ist, aber den Detektor passiert:
+Wiederholte Trigramm-Muster (z. B. "hallo hallo hallo") werden vom Detektor für Halluzinationsschleifen erfasst. Wenn die Ausgabe fehlerhaft ist, aber den Detektor passiert:
 
 1. **Reduzieren Sie die Stapelgröße** — Kleinere Stapel erzeugen fokussiertere Ausgaben
-2. **Verwenden Sie ein stärkeres Modell** — Größere Modelle halluzinieren bei nicht-lateinischen Schriften weniger
-3. **Fügen Sie Coaching-Daten hinzu** — Wörterbuchbegriffe verankern die Übersetzung
+2. **Verwenden Sie ein leistungsstärkeres Modell** — Größere Modelle halluzinieren bei nicht-lateinischen Schriften weniger
+3. **Fügen Sie Trainingsdaten (Coaching Data) hinzu** — Wörterbuchbegriffe verankern die Übersetzung
 
 ## Datei- & Formatprobleme
 
 ### "No locale files found"
 
-Rosetta erkennt Gebietsschema-Dateien automatisch. Wenn diese nicht gefunden werden können:
+Rosetta erkennt Gebietsschema-Dateien (Locale-Dateien) automatisch. Wenn diese nicht gefunden werden können:
 
-1. **Überprüfen Sie `localesDir`** — Muss auf das Verzeichnis verweisen, das die Gebietsschema-Dateien enthält:
+1. **Überprüfen Sie `localesDir`** — Muss auf das Verzeichnis verweisen, das die Locale-Dateien enthält:
    ```json
    { "localesDir": "./locales" }
    ```
-2. **Überprüfen Sie die Dateibenennung** — Dateien müssen nach dem Gebietsschema-Code benannt sein: `en.json`, `fr.json`, usw.
+2. **Überprüfen Sie die Dateibenennung** — Dateien müssen nach dem Locale-Code benannt sein: `en.json`, `fr.json` usw.
 3. **Überprüfen Sie das Format** — Unterstützte Formate: JSON, verschachteltes JSON, YAML, TOML
 
-### Sperrdatei-Konflikte (Lock File)
+### Konflikte mit der Sperrdatei (Lock File)
 
 Wenn `.i18n-rosetta.lock` in einen fehlerhaften Zustand gerät:
 
@@ -153,9 +153,9 @@ Das Flag `--force-keys` überschreibt die Hash-Prüfung der Sperrdatei für dies
 
 Dies sollte nicht passieren — Codeblöcke werden vor der Übersetzung abgeschirmt. Falls es dennoch auftritt:
 
-1. Stellen Sie sicher, dass der Codeblock die Standard-Begrenzung verwendet (dreifache Backticks)
+1. Stellen Sie sicher, dass der Codeblock die Standard-Begrenzung (drei Backticks) verwendet
 2. Suchen Sie nach nicht geschlossenen Codeblöcken im Quell-Markdown
-3. Erstellen Sie ein Issue (Fehlermeldung) — dies ist ein Fehler im Sentinel-Abschirmsystem
+3. Erstellen Sie ein Issue — dies ist ein Fehler im Sentinel-Abschirmsystem
 
 ## CLI-Probleme
 
@@ -185,19 +185,23 @@ i18n-rosetta sync
 
 ### Synchronisierung ist bei vielen Sprachen langsam
 
-Rosetta übersetzt Sprachpaare standardmäßig nacheinander. Um mehrsprachige Synchronisierungen zu beschleunigen:
+Rosetta übersetzt standardmäßig alle Gebietsschemata parallel. Wenn die Synchronisierung dennoch langsam ist:
 
 1. **Verwenden Sie Google Translate für Sprachpaare mit hohem Volumen** — Es ist 10–50× schneller als die LLM-Übersetzung
-2. **Erhöhen Sie die Stapelgröße** (bis zu 50, Standard ist 30):
+2. **Erhöhen Sie die Stapelgröße** (Standard ist 80):
    ```json
-   { "batchSize": 50 }
+   { "batchSize": 120 }
    ```
-3. **Verwenden Sie ein schnelles Modell** — `gpt-4o-mini` ist deutlich schneller als `gpt-4o`
+3. **Passen Sie die Nebenläufigkeit (Concurrency) an** — Die Parallelität für JSON-Locales ist standardmäßig auf 50 und für Inhalte auf 12 eingestellt. Wenn Ihr API-Anbieter höhere Ratenbegrenzungen unterstützt:
+   ```bash
+   npx i18n-rosetta sync --json-concurrency 80 --content-concurrency 20
+   ```
+4. **Verwenden Sie ein schnelles Modell** — `gpt-4o-mini` ist deutlich schneller als `gpt-4o`
 
 ### Hohe API-Kosten
 
 - **Überprüfen Sie die Stapelgrößen** — Größere Stapel = weniger API-Aufrufe = geringere Kosten
-- **Verwenden Sie das Translation Memory** — TM ist standardmäßig aktiviert. Führen Sie `i18n-rosetta tm stats` aus, um zu überprüfen, ob es funktioniert. Wenn Sie nach mehreren Synchronisierungen 0 Einträge sehen, stimmt möglicherweise etwas mit den Berechtigungen Ihres `.rosetta/`-Verzeichnisses nicht
+- **Verwenden Sie Translation Memory (Übersetzungsspeicher)** — TM ist standardmäßig aktiviert. Führen Sie `i18n-rosetta tm stats` aus, um zu überprüfen, ob es funktioniert. Wenn Sie nach mehreren Synchronisierungen 0 Einträge sehen, stimmt möglicherweise etwas mit den Berechtigungen Ihres `.rosetta/`-Verzeichnisses nicht
 - **Verwenden Sie Prompt-Caching** — Rosetta teilt System-/Benutzernachrichten auf, um Cache-Treffer bei Anthropic- und Google-Modellen zu erzielen
 - **Verwenden Sie Google Translate für Tier-2-Sprachen** — Siehe das Kochbuch [30 Sprachen übersetzen](/docs/tutorials/translate-30-languages)
 
@@ -214,9 +218,9 @@ i18n-rosetta tm clear --yes
 i18n-rosetta sync
 ```
 
-Weitere Details zum Design der Cache-Schlüssel finden Sie unter [Translation Memory](/docs/concepts/translation-memory).
+Siehe [Translation Memory](/docs/concepts/translation-memory) für Details zum Design der Cache-Schlüssel.
 
-## Kommen Sie immer noch nicht weiter?
+## Immer noch Probleme?
 
 - **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Durchsuchen Sie bestehende Issues oder erstellen Sie ein neues
 - **[Architektur-Dokumentation](/docs/concepts/architecture)** — Verstehen Sie das Systemdesign

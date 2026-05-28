@@ -184,7 +184,7 @@ For Docusaurus and Hugo projects, `sync` runs a second phase after JSON key tran
 4. The pool is processed with **parallel concurrency** (default: 12 simultaneous API calls)
 
 ```
-Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
+Phase 2: content (79 translations to process, 341 skipped, concurrency: 48)
 
     [1/79] (1%)  docs/concepts/security.md → ja [RE-TRANSLATE] (~3328s left)
     [2/79] (3%)  docs/concepts/security.md → th [RE-TRANSLATE] (~1821s left)

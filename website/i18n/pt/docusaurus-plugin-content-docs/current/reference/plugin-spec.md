@@ -40,7 +40,7 @@ Um plugin de método é um único arquivo JSON (`method.json`) com arquivos opci
   "config": {
     "model": "google/gemini-3.5-flash",
     "register": "formal",
-    "batchSize": 30,
+    "batchSize": 80,
     "temperature": 0.2
   },
 
@@ -76,19 +76,19 @@ Um plugin de método é um único arquivo JSON (`method.json`) com arquivos opci
 |-------|------|----------|-------------|
 | `name` | string | ✅ | Identificador único do método (kebab-case) |
 | `type` | string | ✅ | Tipo de método do Rosetta: `llm`, `llm-coached`, `api`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini` |
-| `version` | string | ✅ | Versão Semver (ex: `1.0.0`) |
+| `version` | string | ✅ | Versão Semver (ex. `1.0.0`) |
 | `locales` | string[] | ✅ | Quais códigos de localidade (locale) este método atende (mínimo 1) |
-| `description` | string | — | Descrição legível para humanos |
+| `description` | string | — | Descrição legível por humanos |
 | `author` | string | — | Quem desenvolveu/testou este método |
 | `config.model` | string | — | Identificador do modelo no OpenRouter |
 | `config.register` | string | — | Registro/tom do idioma de destino |
-| `config.batchSize` | number | — | Chaves por lote da API (1–200, padrão: 30) |
+| `config.batchSize` | number | — | Chaves por lote de API (1–200, padrão: 80) |
 | `config.temperature` | number | — | Temperatura do LLM (0.0–2.0, padrão: 0.3) |
 | `benchmarks` | object | — | Resultados de benchmark por localidade |
 | `provenance` | object | — | Licenciamento e dependências de recursos |
 | `coaching.dir` | string | — | Caminho relativo para o diretório de dados de coaching |
 
-### Objeto de Benchmark (por localidade)
+### Objeto Benchmark (por localidade)
 
 | Campo | Tipo | Obrigatório | Descrição |
 |-------|------|----------|-------------|
@@ -101,14 +101,14 @@ Um plugin de método é um único arquivo JSON (`method.json`) com arquivos opci
 | `harness_version` | string | ✅ | Versão do evaluation harness utilizada |
 
 :::info Quais métricas são exibidas?
-O comando `rosetta status` exibe o **chrF++** e a **taxa de correspondência exata** do bloco de benchmark. O `corpus_bleu` é aceito no manifesto, mas atualmente não é exibido ou usado por nenhum comando do rosetta. O [Method Leaderboard](/leaderboard) rastreia o chrF++, a correspondência exata e a taxa de aceitação FST.
+O comando `rosetta status` exibe o **chrF++** e a **taxa de correspondência exata** do bloco de benchmark. `corpus_bleu` é aceito no manifesto, mas atualmente não é exibido ou usado por nenhum comando do rosetta. O [Method Leaderboard](/leaderboard) rastreia o chrF++, a correspondência exata e a taxa de aceitação do FST.
 :::
 
 ---
 
-### Objeto de Proveniência (Provenance)
+### Objeto Provenance
 
-O bloco de proveniência comunica o status de licenciamento dos recursos empacotados no plugin.
+O bloco provenance comunica o status de licenciamento dos recursos empacotados no plugin.
 
 | Campo | Tipo | Padrão | Descrição |
 |-------|------|---------|-------------|
@@ -196,16 +196,16 @@ Salva em `.rosetta/methods/french-formal-v1/`.
 }
 ```
 
-:::info Semântica de mesclagem (Merge)
+:::info Semântica de mesclagem
 O plugin define *qual* método usar (`type`). A configuração do par ajusta *como* executá-lo (`model`, `register`, `batchSize`). Se o par definir `model`, ele substituirá o padrão do plugin.
 :::
 
-### Tempo de Execução (Runtime)
+### Tempo de Execução
 
 1. O Rosetta lê `method.json` de `.rosetta/methods/french-formal-v1/`
-2. O campo `type` do plugin define o método de tradução (ex: `llm-coached`)
+2. O campo `type` do plugin define o método de tradução (ex., `llm-coached`)
 3. Carrega os dados de coaching do diretório `coaching/` do plugin
-4. Usa o bloco `config` para preencher lacunas no modelo/registro/temperatura
+4. Usa o bloco `config` para preencher lacunas em modelo/registro/temperatura
 5. O bloco `benchmarks` é exibido na saída de `rosetta status`
 6. O bloco `provenance` é verificado por `rosetta provenance` em busca de flags de licenciamento
 
@@ -213,7 +213,7 @@ O plugin define *qual* método usar (`type`). A configuração do par ajusta *co
 
 ## Validação de Schema
 
-Os manifestos de plugins são validados no momento da instalação contra o [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json).
+Os manifestos de plugin são validados no momento da instalação em relação ao [`schemas/rosetta-plugin.schema.json`](https://github.com/gamedaysuits/i18n-rosetta/blob/main/schemas/rosetta-plugin.schema.json).
 
 Referencie o schema no seu `method.json` para preenchimento automático (autocompletion) na IDE:
 
@@ -229,10 +229,10 @@ Referencie o schema no seu `method.json` para preenchimento automático (autocom
 ## O que NÃO Incluir
 
 - ❌ Nenhum código Python ou dependências do harness
-- ❌ Nenhum dado bruto de corpus ou logs de execução
+- ❌ Nenhum dado de corpus bruto ou logs de execução
 - ❌ Nenhuma chave de API ou credenciais
 - ❌ Nenhuma configuração do harness
-- ❌ Nenhum template interno de prompt (eles residem nas implementações de método do rosetta)
+- ❌ Nenhum template de prompt interno (eles ficam nas implementações de método do rosetta)
 
 O plugin é **apenas dados**: configuração, conteúdo de coaching e resultados de benchmark.
 
@@ -240,9 +240,9 @@ O plugin é **apenas dados**: configuração, conteúdo de coaching e resultados
 
 ## Veja Também
 
-- [Métodos de Tradução](/docs/guides/translation-methods) — como cada método integrado funciona
+- [Métodos de Tradução](/docs/guides/translation-methods) — como funciona cada método integrado
 - [Configuração](/docs/getting-started/configuration) — configuração por par e por idioma
 - [Servindo um Método via API](/docs/guides/serving-a-method) — hospedando métodos como serviços HTTP
-- [Cookbook: Pipeline com FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — construindo e empacotando um pipeline
-- [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) — benchmarking de métodos para submissão no leaderboard
+- [Cookbook: Pipeline FST-Gated](https://mtevalarena.org/docs/tutorials/fst-gated-pipeline) — construindo e empacotando um pipeline
+- [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) — fazendo benchmark de métodos para envio ao leaderboard
 - [Suporte a um Idioma de Baixo Recurso](https://mtevalarena.org/docs/community/low-resource-languages) — o caso de uso para plugins da comunidade

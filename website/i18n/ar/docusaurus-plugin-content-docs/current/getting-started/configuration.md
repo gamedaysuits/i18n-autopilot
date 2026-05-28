@@ -4,7 +4,7 @@ title: "الإعدادات"
 ---
 # الإعدادات
 
-تعمل Rosetta بدون إعدادات مسبقة (zero-config) — حيث تكتشف تلقائيًا ملفات اللغة، والتنسيق، واللغات المستهدفة من مشروعك. لمزيد من التحكم، قم بإنشاء `i18n-rosetta.config.json` في المسار الجذري لمشروعك، أو قم بتشغيل:
+تعمل Rosetta بدون إعدادات مسبقة (zero-config) — حيث تكتشف تلقائيًا ملفات اللغة، والتنسيق، واللغات المستهدفة من مشروعك. لمزيد من التحكم، قم بإنشاء `i18n-rosetta.config.json` في الجذر الأساسي لمشروعك، أو قم بتشغيل:
 
 ```bash
 npx i18n-rosetta init
@@ -22,8 +22,9 @@ npx i18n-rosetta init
   "format": "auto",
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
-  "batchSize": 30,
-  "concurrency": 12,
+  "batchSize": 80,
+  "jsonConcurrency": 50,
+  "contentConcurrency": 12,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -56,29 +57,30 @@ npx i18n-rosetta init
 | `version` | `number` | `3` | إصدار مخطط الإعدادات. دائمًا `3`. |
 | `inputLocale` | `string` | `"en"` | رمز اللغة المصدر (BCP 47). |
 | `localesDir` | `string` | `"./locales"` | مسار ملفات اللغة. تقوم Rosetta بفحص هذا الدليل. |
-| `contentDir` | `string` | `null` | دليل محتوى Hugo. يُفعل ترجمة نصوص Markdown. |
+| `contentDir` | `string` | `null` | دليل محتوى Hugo. يُفعل ترجمة نص Markdown. |
 | `translatableFields` | `string[]` | `null` | تجاوز حقول frontmatter الافتراضية القابلة للترجمة لترجمة المحتوى. تستخدم `null` الإعدادات الافتراضية المدمجة (`title`، `description`، `summary`). |
-| `format` | `string` | `"auto"` | تنسيق الملف: `json`، `toml`، `yaml`، أو `auto` (اكتشاف من الامتداد). |
+| `format` | `string` | `"auto"` | تنسيق الملف: `json`، أو `toml`، أو `yaml`، أو `auto` (يُكتشف من الامتداد). |
 | `model` | `string` | `"google/gemini-3.5-flash"` | النموذج الافتراضي لطرق LLM. يعتمد التنسيق على الطريقة: تستخدم OpenRouter `provider/model` (مثل `google/gemini-3.5-flash`)؛ بينما يستخدم المزودون المباشرون الأسماء المجردة (مثل `gpt-4o`، `gemini-2.5-flash`). |
 | `defaultMethod` | `string` | `"llm"` | طريقة الترجمة الافتراضية: `llm`، `llm-coached`، `google-translate`، `deepl`، `microsoft-translator`، `libretranslate`، `openai`، `anthropic`، `gemini`، `api`. يتم تجاوزها بواسطة علامة CLI `--method`. |
-| `batchSize` | `number` | `30` | عدد المفاتيح لكل دفعة ترجمة. قيمة أعلى = استدعاءات API أقل، ولكن مطالبات (prompts) أكبر. |
-| `concurrency` | `number` | `12` | الحد الأقصى لاستدعاءات API المتوازية لترجمة المحتوى (Markdown/MDX). يتم تجاوزها بواسطة علامة CLI `--concurrency`. |
-| `fallbackPrefix` | `string` | `"[EN] "` | البادئة المضافة إلى القيم الاحتياطية غير المترجمة. تُستخدم بواسطة `audit` لاكتشاف الترجمات غير المكتملة. |
-| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | اسم متغير البيئة لمفتاح API. يتم تجاوزه لأسماء متغيرات البيئة المخصصة. |
-| `baseUrl` | `string` | `""` | عنوان URL الأساسي لإنشاء عناصر SEO (مثل hreflang، sitemaps، JSON-LD). |
-| `pairs` | `object` | `{}` | تجاوزات الطريقة، والنموذج، والجودة لكل زوج لغوي. راجع [إعدادات الأزواج اللغوية](#pair-configuration). |
+| `batchSize` | `number` | `80` | عدد المفاتيح لكل دفعة ترجمة. قيمة أعلى = استدعاءات أقل لواجهة برمجة التطبيقات (API)، ولكن مطالبات (prompts) أكبر. |
+| `jsonConcurrency` | `number` | `50` | الحد الأقصى للترجمات المحلية المتوازية لمزامنة مفاتيح JSON. يتم تجاوزها بواسطة علامة CLI `--json-concurrency`. |
+| `contentConcurrency` | `number` | `12` | الحد الأقصى لاستدعاءات API المتوازية لترجمة المحتوى (Markdown/MDX). يتم تجاوزها بواسطة علامة CLI `--content-concurrency`. |
+| `fallbackPrefix` | `string` | `"[EN] "` | بادئة العلامة المستخدمة بواسطة `audit` و `verify` لاكتشاف القيم القديمة غير المترجمة من عمليات التشغيل السابقة. لا تقوم Rosetta بكتابة هذه البادئة — بل تقرأها فقط بغرض الاكتشاف. |
+| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | اسم متغير البيئة لمفتاح API. قم بتجاوزه لاستخدام أسماء متغيرات بيئة مخصصة. |
+| `baseUrl` | `string` | `""` | عنوان URL الأساسي لإنشاء عناصر تحسين محركات البحث (SEO) (مثل hreflang، وsitemaps، وJSON-LD). |
+| `pairs` | `object` | `{}` | تجاوزات الطريقة، والنموذج، والجودة لكل زوج لغوي. راجع [إعدادات الزوج اللغوي](#pair-configuration). |
 | `languages` | `object` | `{}` | تجاوزات لكل لغة. راجع [إعدادات اللغة](#language-configuration). |
 | `lint.srcDir` | `string` | `null` | الدليل المصدر لفحص الأخطاء (lint scanning). `null` = اكتشاف تلقائي من إطار العمل. |
-| `lint.ignore` | `string[]` | `["node_modules", ...]` | أنماط Glob لاستبعادها من فحص الأخطاء. |
-| `lint.minLength` | `number` | `2` | الحد الأدنى لطول السلسلة النصية ليتم تمييزها كنص ثابت (hardcoded). |
-| `seo.urlPattern` | `string` | `"/:locale/:path"` | قالب نمط عنوان URL لإنشاء علامات hreflang. |
+| `lint.ignore` | `string[]` | `["node_modules", ...]` | أنماط Glob المراد استبعادها من فحص الأخطاء. |
+| `lint.minLength` | `number` | `2` | الحد الأدنى لطول السلسلة النصية ليتم تمييزها كقيمة ثابتة (hardcoded). |
+| `seo.urlPattern` | `string` | `"/:locale/:path"` | قالب نمط URL لإنشاء علامات hreflang. |
 | `seo.pages` | `string[]` | `null` | قائمة صفحات صريحة لتحسين محركات البحث (SEO). `null` = اكتشاف تلقائي من مفاتيح اللغة. |
 | `typegen.output` | `string` | `null` | مسار الإخراج لأنواع TypeScript المُنشأة. `null` = معطل. |
 | `typegen.autoGenerate` | `boolean` | `false` | إعادة إنشاء الأنواع تلقائيًا بعد كل عملية مزامنة. |
 
-## إعدادات الأزواج اللغوية
+## إعدادات الزوج اللغوي
 
-يمكن إعداد كل زوج (مصدر ← هدف) بشكل مستقل:
+يمكن تكوين كل زوج (مصدر ← هدف) بشكل مستقل:
 
 ```json
 {
@@ -104,8 +106,8 @@ npx i18n-rosetta init
 |-------|------|-------------|
 | `method` | `string` | طريقة الترجمة: `llm`، `llm-coached`، `google-translate`، `deepl`، `microsoft-translator`، `libretranslate`، `openai`، `anthropic`، `gemini`، `api` |
 | `methodPlugin` | `string` | اسم إضافة مثبتة (من `.rosetta/methods/`) |
-| `model` | `string` | تجاوز النموذج الافتراضي لهذا الزوج |
-| `endpoint` | `string` | عنوان URL لنقطة نهاية API عن بُعد. مطلوب عندما تكون `method` هي `api`. |
+| `model` | `string` | تجاوز النموذج الافتراضي لهذا الزوج اللغوي |
+| `endpoint` | `string` | عنوان URL لنقطة نهاية API البعيدة. مطلوب عندما تكون `method` هي `api`. |
 | `qualityTier` | `string` | فئة العرض: `standard`، `high`، `research`، `verified` |
 
 ## إعدادات اللغة
@@ -120,11 +122,11 @@ npx i18n-rosetta init
 }
 ```
 
-تحصل كل لغة على مستوى التسجيل (register) الافتراضي الخاص بها من جدول التسجيل المدمج. اللغات التي ليس لها إعداد افتراضي تحصل على `"Professional register."`.
+تحصل كل لغة على مستوى اللغة (register) الافتراضي الخاص بها من جدول مستويات اللغة المدمج. اللغات التي ليس لها إعداد افتراضي تحصل على `"Professional register."`.
 
-### كائن مع سلاسل نصية للتسجيل (register strings)
+### كائن مع نصوص مستوى اللغة (register strings)
 
-يمكن أن تكون القيمة **مفتاحًا معدًا مسبقًا (preset key)** من بطاقة اللغة، أو نص تسجيل مخصص:
+يمكن أن تكون القيمة **مفتاحًا محددًا مسبقًا** من بطاقة اللغة، أو نصًا مخصصًا لمستوى اللغة:
 
 ```json
 {
@@ -136,7 +138,7 @@ npx i18n-rosetta init
 }
 ```
 
-تتحقق Rosetta مما إذا كانت السلسلة النصية تتطابق مع مفتاح معد مسبقًا في بطاقة اللغة. إذا كان الأمر كذلك، يتم استخدام مطالبة التسجيل الكاملة من البطاقة. وإذا لم يكن كذلك، يتم استخدام السلسلة النصية كما هي. راجع [اللغات المدعومة](/docs/reference/supported-languages#language-cards) لمعرفة الإعدادات المسبقة المتاحة.
+تتحقق Rosetta مما إذا كانت السلسلة النصية تتطابق مع مفتاح محدد مسبقًا في بطاقة اللغة. إذا كان الأمر كذلك، يتم استخدام مطالبة مستوى اللغة (register prompt) الكاملة من البطاقة. وإذا لم تتطابق، يتم استخدام السلسلة النصية كما هي. راجع [اللغات المدعومة](/docs/reference/supported-languages#language-cards) لمعرفة الإعدادات المسبقة المتاحة.
 
 ### كائن مع إعدادات كاملة
 
@@ -161,15 +163,15 @@ npx i18n-rosetta init
 
 | الحقل | النوع | الوصف |
 |-------|------|-------------|
-| `register` | `string` | تعليمات الأسلوب/الأسلوب اللغوي. يمكن أن تكون **مفتاحًا معدًا مسبقًا** (مثل `casual-tu`، `formal-hapsyo`) أو نصًا مخصصًا. راجع [بطاقات اللغة](/docs/reference/supported-languages#language-cards). |
-| `name` | `string` | اسم لغة مقروء بشريًا (لعرض الحالة) |
+| `register` | `string` | تعليمات الأسلوب/النبرة. يمكن أن تكون **مفتاحًا محددًا مسبقًا** (مثل `casual-tu`، `formal-hapsyo`) أو نصًا مخصصًا. راجع [بطاقات اللغة](/docs/reference/supported-languages#language-cards). |
+| `name` | `string` | اسم اللغة المقروء بشريًا (لعرض الحالة) |
 | `model` | `string` | تجاوز النموذج الافتراضي |
 | `batchSize` | `number` | تجاوز حجم الدفعة الافتراضي |
-| `maxRetries` | `number` | الحد الأقصى لمحاولات إعادة المحاولة للدفعات الفاشلة (الافتراضي: 3) |
-| `script` | `string` | رمز نظام الكتابة ISO 15924. يُشغل التحقق من صحة نظام الكتابة في بوابة الجودة. |
+| `maxRetries` | `number` | الحد الأقصى لمحاولات إعادة الدفعات الفاشلة (الافتراضي: 3) |
+| `script` | `string` | رمز نظام الكتابة ISO 15924. يُشغل التحقق من نظام الكتابة في بوابة الجودة. |
 
 :::info سلسلة الوراثة
-يتم حل الإعدادات بهذا الترتيب (الأولوية للأول):
+يتم تطبيق الإعدادات بهذا الترتيب (الأولوية للأول):
 
 **مستوى الزوج اللغوي** ← **مستوى اللغة** ← **الإعدادات العامة** ← **الافتراضيات**
 
@@ -193,13 +195,13 @@ npx i18n-rosetta sync --source fr
 
 ## ملف القفل (Lock File)
 
-تُنشئ Rosetta ملف `.i18n-rosetta.lock` لتتبع تجزئات SHA-256 للقيم المصدرية المترجمة. **قم بإيداع (commit) هذا الملف** حتى يتشارك جميع المطورين نفس الأساس المرجعي للترجمة.
+تُنشئ Rosetta ملف `.i18n-rosetta.lock` لتتبع تجزئات SHA-256 للقيم المصدرية المترجمة. **قم بإيداع (Commit) هذا الملف** حتى يتشارك جميع المطورين نفس الأساس المرجعي للترجمة.
 
-عندما تتغير قيمة مصدرية، لا تتطابق التجزئة، وتقوم rosetta بإعادة ترجمة هذا المفتاح في المزامنة التالية.
+عندما تتغير قيمة المصدر، لن تتطابق التجزئة بعد ذلك، وستقوم Rosetta بإعادة ترجمة هذا المفتاح في المزامنة التالية.
 
 ## `.rosettaignore`
 
-قم بإنشاء `.rosettaignore` في المسار الجذري لمشروعك لاستبعاد الملفات من فحص `lint`. يستخدم أنماط glob، مثل `.gitignore`:
+قم بإنشاء `.rosettaignore` في الجذر الأساسي لمشروعك لاستبعاد الملفات من فحص `lint`. يستخدم أنماط glob، مثل `.gitignore`:
 
 ```text title=".rosettaignore"
 src/components/legacy/**
@@ -209,7 +211,7 @@ src/utils/constants.js
 
 ## دليل `.rosetta/`
 
-تُنشئ Rosetta دليل `.rosetta/` في المسار الجذري لمشروعك للحالة الداخلية. يجب عليك عمومًا **إضافة هذا إلى `.gitignore`** — فهو تحسين محلي، وليس من مصدر المشروع:
+تُنشئ Rosetta دليل `.rosetta/` في الجذر الأساسي لمشروعك للحالة الداخلية. يجب عليك عمومًا **إضافة هذا إلى `.gitignore`** — فهو تحسين محلي، وليس من ملفات المصدر للمشروع:
 
 ```gitignore
 .rosetta/
@@ -217,18 +219,18 @@ src/utils/constants.js
 
 | الملف | الغرض | إيداع (Commit)؟ |
 |------|---------|--------|
-| `tm.json` | ذاكرة التخزين المؤقت لذاكرة الترجمة (Translation Memory) — تُخزن الترجمات السابقة مفهرسة بالنص المصدر + اللغة + الطريقة | لا (ذاكرة تخزين مؤقت محلية) |
-| `xliff/*.xliff` | ملفات تصدير XLIFF لمراجعة المترجمين المحترفين | لا (مؤقت) |
-| `methods/` | بيانات (manifests) إضافات الطرق المثبتة | نعم (إعدادات مشتركة) |
-| `backups/` | نسخ احتياطية قبل التغليف (تم إنشاؤها بواسطة `wrap --undo`) | لا (شبكة أمان) |
+| `tm.json` | ذاكرة التخزين المؤقت لذاكرة الترجمة — تُخزن الترجمات السابقة مفهرسة بالنص المصدر + اللغة + الطريقة | لا (ذاكرة تخزين مؤقت محلية) |
+| `xliff/*.xliff` | ملفات تصدير XLIFF لمراجعة المترجمين المحترفين | لا (مؤقتة) |
+| `methods/` | بيانات إضافات الطرق المثبتة (manifests) | نعم (إعدادات مشتركة) |
+| `backups/` | النسخ الاحتياطية قبل التغليف (تم إنشاؤها بواسطة `wrap --undo`) | لا (شبكة أمان) |
 
-راجع [ذاكرة الترجمة](/docs/concepts/translation-memory) للحصول على تفاصيل حول `tm.json` وكيف توفر تكاليف API.
+راجع [ذاكرة الترجمة](/docs/concepts/translation-memory) للحصول على تفاصيل حول `tm.json` وكيفية توفيرها لتكاليف API.
 
 ---
 
-## واجهة برمجة التطبيقات (API) البرمجية
+## واجهة برمجة التطبيقات البرمجية (Programmatic API)
 
-بالنسبة لبرامج البناء النصية (build scripts) والتكاملات المخصصة، قم بالاستيراد مباشرة من الحزمة:
+بالنسبة للبرامج النصية للبناء (build scripts) وعمليات الدمج المخصصة، قم بالاستيراد مباشرة من الحزمة:
 
 ```javascript
 import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
@@ -246,22 +248,22 @@ const result = await gemini.translate(
 
 ### الصادرات المتاحة (Exports)
 
-| الصادر | وظيفته |
+| التصدير | وظيفته |
 |--------|-------------|
 | `TranslationMethod` | الفئة الأساسية (Base class) لجميع الطرق |
 | `LLMMethod` | الفئة الأساسية لطرق LLM (OpenRouter) |
 | `DirectLLMMethod` | الفئة الأساسية لمزودي LLM المباشرين (OpenAI، Anthropic، Gemini) |
 | `OpenAIMethod`، `AnthropicMethod`، `GeminiMethod` | فئات مزودي LLM المباشرين |
 | `DeepLMethod`، `MicrosoftTranslatorMethod`، `LibreTranslateMethod` | فئات الترجمة الآلية (MT) التقليدية |
-| `GoogleTranslateMethod` | Google Cloud Translation |
+| `GoogleTranslateMethod` | ترجمة Google Cloud |
 | `LLMCoachedMethod` | LLM الموجه (OpenRouter + بيانات التوجيه) |
-| `APIMethod` | عميل API عن بُعد |
+| `APIMethod` | عميل API البعيد |
 | `runSync`، `runContentSync` | مسار المزامنة الكامل |
 | `resolveConfig`، `resolvePairs` | تحليل الإعدادات |
 | `validateTranslations` | بوابة الجودة |
 | `loadCoachingData`، `findDictionaryMatches` | أدوات التوجيه المساعدة |
 
-### امتداد مزود مخصص
+### إضافة مزود مخصص
 
 قم بتوسيع `DirectLLMMethod` لإضافة مزود LLM جديد في حوالي 40 سطرًا:
 
@@ -313,17 +315,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-ستحصل مجانًا على الترجمة، والتوجيه، وحلقات إعادة المحاولة، والتحقق من صحة النموذج، وفئات الجودة، والمساعدة في الإعداد. فقط شكل طلب HTTP هو الذي يختلف من مزود لآخر. بالنسبة للمحولات غير المعتمدة على LLM والتي تستخدم `fetch()` الخام، استخدم المساعد المشترك `fetchWithRetry()` من `lib/methods/fetch-with-retry.js` بدلاً من كتابة حلقة إعادة المحاولة الخاصة بك.
+ستحصل على ميزات الترجمة، والتوجيه، وحلقات إعادة المحاولة، والتحقق من صحة النموذج، وفئات الجودة، والمساعدة في الإعداد مجانًا. شكل طلب HTTP فقط هو الذي يختلف من مزود لآخر. بالنسبة للمحولات غير المعتمدة على LLM والتي تستخدم `fetch()` الخام، استخدم المساعد المشترك `fetchWithRetry()` من `lib/methods/fetch-with-retry.js` بدلاً من كتابة حلقة إعادة المحاولة الخاصة بك.
 
 ---
 
 ## انظر أيضًا
 
 - [مرجع واجهة سطر الأوامر (CLI)](/docs/reference/cli) — جميع الأوامر والعلامات
-- [طرق الترجمة](/docs/guides/translation-methods) — اختيار ودمج الطرق
+- [طرق الترجمة](/docs/guides/translation-methods) — اختيار الطرق والمزج بينها
 - [ذاكرة الترجمة](/docs/concepts/translation-memory) — التخزين المؤقت وتوفير التكاليف
 - [العمل مع المترجمين المحترفين](/docs/guides/professional-translators) — سير عمل XLIFF
-- [مواصفات الإضافات](/docs/reference/plugin-spec) — تنسيق بيانات إضافات الطرق
+- [مواصفات الإضافات](/docs/reference/plugin-spec) — تنسيق بيانات إضافات الطرق (manifest)
 - [البنية](/docs/concepts/architecture) — كيف تتصل الأجزاء ببعضها
 - [اللغات المدعومة](/docs/reference/supported-languages) — دعم اللغات المدمج
 - [كيف تعمل المزامنة](/docs/concepts/how-sync-works) — مسار الترجمة

@@ -25,7 +25,7 @@ npx i18n-rosetta init
   "defaultMethod": "llm",
   "batchSize": 80,
   "jsonConcurrency": 50,
-  "contentConcurrency": 12,
+  "contentConcurrency": 48,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -66,7 +66,7 @@ The `typegen` config block is recognized and preserved by the config loader, but
 | `defaultMethod` | `string` | `"llm"` | Default translation method: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Overridden by `--method` CLI flag. |
 | `batchSize` | `number` | `80` | Keys per translation batch. Higher = fewer API calls, but larger prompts. |
 | `jsonConcurrency` | `number` | `50` | Max parallel locale translations for JSON key sync. Overridden by `--json-concurrency` CLI flag. |
-| `contentConcurrency` | `number` | `12` | Max parallel API calls for content (Markdown/MDX) translation. Overridden by `--content-concurrency` CLI flag. |
+| `contentConcurrency` | `number` | `48` | Max parallel API calls for content (Markdown/MDX) translation. Overridden by `--content-concurrency` CLI flag. |
 | `fallbackPrefix` | `string` | `"[EN] "` | Marker prefix used by `audit` and `verify` to detect legacy untranslated values from prior runs. Rosetta does not write this prefix — it only reads it for detection. |
 | `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Environment variable name for the API key. Override for custom env var names. |
 | `baseUrl` | `string` | `""` | Base URL for SEO artifact generation (hreflang, sitemaps, JSON-LD). |

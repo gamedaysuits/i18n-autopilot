@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
-title: "Servindo um Método Personalizado como uma API"
-description: "Encapsule pipelines de tradução complexos (FST gates, LLM chains de múltiplas etapas) como um serviço HTTP e integre-os ao i18n-rosetta via método api."
+title: "Servindo um Método Personalizado como API"
+description: "Encapsule pipelines de tradução complexos (FST gates, cadeias de LLM de múltiplas etapas) como um serviço HTTP e integre-os ao i18n-rosetta através do método api."
 ---
 # Servindo um Método Personalizado como uma API
 
@@ -9,14 +9,14 @@ O **método `api`** do i18n-rosetta permite que você aponte qualquer par de tra
 
 ## Por que um Serviço de API?
 
-Alguns pipelines de tradução não podem ser executados dentro de um simples ciclo de prompt-resposta:
+Alguns pipelines de tradução não conseguem rodar dentro de um simples ciclo de prompt-resposta:
 
 | Etapa do pipeline | Exemplo |
 |---|---|
 | **Decomposição morfológica** | Dividir palavras polissintéticas em morfemas antes da tradução |
 | **Validação FST** | Rejeitar saídas que violam regras fonológicas ou morfológicas |
-| **Cadeias de LLM de múltiplas etapas** | Ciclos de gerar → verificar → corrigir com diferentes modelos |
-| **Consulta de dicionário** | Fazer referência cruzada com um dicionário bilíngue curado no meio do pipeline |
+| **Cadeias de LLM de múltiplas etapas** | Ciclos de gerar → verificar → corrigir com modelos diferentes |
+| **Consulta a dicionário** | Referência cruzada com um dicionário bilíngue curado no meio do pipeline |
 | **Human-in-the-loop** | Colocar traduções incertas em fila para revisão de especialistas |
 
 O método `api` trata o seu pipeline como uma caixa preta — o i18n-rosetta envia as strings de origem, o seu serviço retorna as traduções. O que acontece lá dentro depende inteiramente de você.
@@ -99,10 +99,10 @@ const app = express();
 app.use(express.json());
 
 /**
- * Contrato da API do rosetta:
+ * rosetta API contract:
  *
- * Requisição: { source_locale, target_locale, method, keys: { "key": "source" } }
- * Resposta:   { translations: { "key": "translated" }, meta: { ... } }
+ * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
+ * Response: { translations: { "key": "translated" }, meta: { ... } }
  */
 app.post('/translate', async (req, res) => {
   const { source_locale, target_locale, method, keys } = req.body;
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- O seu pipeline entra aqui ---
-    // Etapa 1: Decomposição morfológica
+    // --- Your pipeline goes here ---
+    // Step 1: Morphological decomposition
     const morphemes = await decompose(source, source_locale);
 
-    // Etapa 2: Tradução por LLM com contexto
+    // Step 2: LLM translation with context
     const draft = await llmTranslate(morphemes, target_locale);
 
-    // Etapa 3: Validação FST
+    // Step 3: FST validation
     const validated = await fstValidate(draft, target_locale);
 
-    // Etapa 4: Pós-processamento (normalização ortográfica, etc.)
+    // Step 4: Post-processing (orthography normalization, etc.)
     translations[key] = await postProcess(validated);
   }
 
@@ -134,7 +134,7 @@ app.post('/translate', async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('API de tradução rodando em http://localhost:3001');
+  console.log('Translation API running on http://localhost:3001');
 });
 ```
 
@@ -149,7 +149,7 @@ Point a translation pair at your running service in `i18n-rosetta.config.json`:
     "en:crk": {
       "method": "api",
       "endpoint": "http://localhost:3001/translate",
-      "register": "Cree das Planícies Formal. Use a ortografia SRO."
+      "register": "Formal Plains Cree. Use SRO orthography."
     }
   }
 }
@@ -183,12 +183,12 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# Clonar o harness
+# Clone the harness
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
 
-# Executar a avaliação com a saída do seu método
+# Run the evaluation against your method's output
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
@@ -241,13 +241,13 @@ The `api` method returns `null` for cost estimation by default — your service 
 }
 ```
 
-## Boas Práticas
+## Melhores Práticas
 
-1. **Retorne strings vazias em caso de falhas** — Não retorne a string de origem como uma "tradução". Retorne `""` e deixe o mecanismo de prefixo de fallback do i18n-rosetta lidar com isso.
+1. **Retorne strings vazias para falhas** — Não retorne a string de origem como uma "tradução". Retorne `""` e o quality gate do i18n-rosetta irá capturá-la. A chave será ignorada e tentada novamente na próxima sincronização.
 2. **Inclua pontuações de confiança** — Se o seu pipeline puder estimar a qualidade, retorne-a nos metadados. Isso ajuda na auditoria de qualidade.
-3. **Implemente health checks** — Adicione um endpoint `GET /health` para que o i18n-rosetta possa verificar a conectividade antes de iniciar uma grande sincronização.
-4. **Limite a taxa de forma elegante** — Se o seu pipeline tiver limites de taxa de transferência, retorne códigos de status `429`. O sistema de batch do i18n-rosetta fará o backoff.
-5. **Registre tudo (log)** — Pipelines de múltiplas etapas podem falhar silenciosamente. Registre a entrada/saída de cada etapa para depuração.
+3. **Implemente verificações de integridade (health checks)** — Adicione um endpoint `GET /health` para que o i18n-rosetta possa verificar a conectividade antes de iniciar uma grande sincronização.
+4. **Aplique limites de taxa de forma elegante** — Se o seu pipeline tiver limites de taxa de transferência, retorne códigos de status `429`. O sistema de lotes do i18n-rosetta fará um recuo (backoff).
+5. **Registre tudo** — Pipelines de múltiplas etapas podem falhar silenciosamente. Registre a entrada/saída de cada etapa para depuração.
 
 ## Licenciamento
 
@@ -258,6 +258,6 @@ O padrão do método `api` é totalmente aberto — não há restrições de lic
 - [Métodos de Tradução](/docs/guides/translation-methods) — visão geral de todos os métodos integrados (`openai`, `google`, `api`, etc.)
 - [Especificação de Plugin](/docs/reference/plugin-spec) — esquema completo para `i18n-rosetta.config.json`, incluindo os campos do método `api`
 - [Apoie um Idioma com Poucos Recursos](https://mtevalarena.org/docs/community/low-resource-languages) — guia de ponta a ponta para idiomas com poucos recursos, incluindo os princípios OCAP
-- [Arquitetura](/docs/concepts/architecture) — como funcionam o loop de sincronização, o processamento em lote (batching) e o despacho de métodos do i18n-rosetta
+- [Arquitetura](/docs/concepts/architecture) — como funcionam o loop de sincronização, o processamento em lotes e o despacho de métodos do i18n-rosetta
 - [Avaliação de MT](https://mtevalarena.org/docs/leaderboard/rules) — metodologia de avaliação, métricas e o processo de envio para o placar de líderes (leaderboard)
 - [Placar de Líderes de Métodos](/leaderboard) — classificações de qualidade ao vivo entre métodos e pares de idiomas

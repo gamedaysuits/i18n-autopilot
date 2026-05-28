@@ -1,11 +1,11 @@
 ---
 sidebar_position: 8
 title: "Servir un método personalizado como API"
-description: "Encapsule pipelines de traducción complejos (FST gates, cadenas de LLM de múltiples pasos) como un servicio HTTP e intégrelos en i18n-rosetta mediante el método api."
+description: "Encapsule pipelines de traducción complejos (FST gates, LLM chains de múltiples pasos) como un servicio HTTP y conéctelos a i18n-rosetta mediante el método api."
 ---
 # Servir un método personalizado como una API
 
-El **método `api`** de i18n-rosetta le permite apuntar cualquier par de traducción a un endpoint HTTP externo. Así es como usted integra pipelines que son demasiado complejos para un solo prompt de LLM: analizadores morfológicos, transductores de estados finitos (FSTs), cadenas de LLM de múltiples pasos o cualquier método de investigación personalizado que haya construido.
+El **método `api`** de i18n-rosetta le permite apuntar cualquier par de traducción a un endpoint HTTP externo. Así es como usted integra pipelines que son demasiado complejos para un solo prompt de LLM: analizadores morfológicos, transductores de estado finito (FSTs), cadenas de LLM de múltiples pasos o cualquier método de investigación personalizado que haya construido.
 
 ## ¿Por qué un servicio de API?
 
@@ -15,11 +15,11 @@ Algunos pipelines de traducción no pueden ejecutarse dentro de un simple ciclo 
 |---|---|
 | **Descomposición morfológica** | Dividir palabras polisintéticas en morfemas antes de la traducción |
 | **Validación FST** | Rechazar salidas que violen reglas fonológicas o morfológicas |
-| **Cadenas de LLM de múltiples pasos** | Ciclos de generar → verificar → corregir con diferentes modelos |
-| **Búsqueda en diccionario** | Consultar un diccionario bilingüe curado a mitad del pipeline |
+| **Cadenas LLM de múltiples pasos** | Ciclos de generar → verificar → corregir con diferentes modelos |
+| **Búsqueda en diccionario** | Consultar referencias cruzadas en un diccionario bilingüe curado a mitad del pipeline |
 | **Human-in-the-loop** | Poner en cola traducciones inciertas para la revisión de expertos |
 
-El método `api` trata su pipeline como una caja negra: i18n-rosetta envía las cadenas de origen, su servicio devuelve las traducciones. Lo que sucede adentro depende completamente de usted.
+El método `api` trata su pipeline como una caja negra: i18n-rosetta envía las cadenas de origen, su servicio devuelve las traducciones. Lo que sucede en el interior depende completamente de usted.
 
 ## Arquitectura
 
@@ -99,10 +99,10 @@ const app = express();
 app.use(express.json());
 
 /**
- * rosetta API contract:
+ * Contrato de la API de rosetta:
  *
- * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
- * Response: { translations: { "key": "translated" }, meta: { ... } }
+ * Solicitud:  { source_locale, target_locale, method, keys: { "key": "source" } }
+ * Respuesta: { translations: { "key": "translated" }, meta: { ... } }
  */
 app.post('/translate', async (req, res) => {
   const { source_locale, target_locale, method, keys } = req.body;
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- Your pipeline goes here ---
-    // Step 1: Morphological decomposition
+    // --- Su pipeline va aquí ---
+    // Paso 1: Descomposición morfológica
     const morphemes = await decompose(source, source_locale);
 
-    // Step 2: LLM translation with context
+    // Paso 2: Traducción LLM con contexto
     const draft = await llmTranslate(morphemes, target_locale);
 
-    // Step 3: FST validation
+    // Paso 3: Validación FST
     const validated = await fstValidate(draft, target_locale);
 
-    // Step 4: Post-processing (orthography normalization, etc.)
+    // Paso 4: Posprocesamiento (normalización ortográfica, etc.)
     translations[key] = await postProcess(validated);
   }
 
@@ -134,7 +134,7 @@ app.post('/translate', async (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('Translation API running on http://localhost:3001');
+  console.log('La API de traducción se está ejecutando en http://localhost:3001');
 });
 ```
 
@@ -183,12 +183,12 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# Clone the harness
+# Clonar el harness
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
 
-# Run the evaluation against your method's output
+# Ejecutar la evaluación contra la salida de su método
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
@@ -243,11 +243,11 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## Mejores prácticas
 
-1. **Devuelva cadenas vacías en caso de fallas**: no devuelva la cadena de origen como una "traducción". Devuelva `""` y deje que el mecanismo de prefijo de respaldo (fallback) de i18n-rosetta lo maneje.
+1. **Devuelva cadenas vacías para los fallos**: no devuelva la cadena de origen como una "traducción". Devuelva `""` y el control de calidad (quality gate) de i18n-rosetta lo detectará. La clave se omitirá y se volverá a intentar en la siguiente sincronización.
 2. **Incluya puntuaciones de confianza**: si su pipeline puede estimar la calidad, devuélvala en los metadatos. Esto ayuda con la auditoría de calidad.
 3. **Implemente comprobaciones de estado (health checks)**: agregue un endpoint `GET /health` para que i18n-rosetta pueda verificar la conectividad antes de iniciar una sincronización grande.
-4. **Maneje los límites de tasa (rate limit) con elegancia**: si su pipeline tiene límites de rendimiento, devuelva códigos de estado `429`. El sistema por lotes (batch) de i18n-rosetta reducirá la velocidad (back off).
-5. **Registre todo (log)**: los pipelines de múltiples pasos pueden fallar silenciosamente. Registre la entrada/salida de cada paso para la depuración.
+4. **Limite la tasa de solicitudes con elegancia**: si su pipeline tiene límites de rendimiento, devuelva códigos de estado `429`. El sistema por lotes de i18n-rosetta reducirá la velocidad (back off).
+5. **Registre todo**: los pipelines de múltiples pasos pueden fallar silenciosamente. Registre la entrada/salida de cada paso para la depuración.
 
 ## Licencias
 
@@ -255,9 +255,9 @@ El patrón del método `api` es completamente abierto: no hay restricciones de l
 
 ## Consulte también
 
-- [Métodos de traducción](/docs/guides/translation-methods): descripción general de cada método integrado (`openai`, `google`, `api`, etc.)
-- [Especificación de plugins](/docs/reference/plugin-spec): esquema completo para `i18n-rosetta.config.json`, incluyendo los campos del método `api`
-- [Apoyar a un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages): guía integral para idiomas con pocos recursos, incluyendo los principios OCAP
-- [Arquitectura](/docs/concepts/architecture): cómo funcionan el bucle de sincronización, el procesamiento por lotes y el despacho de métodos de i18n-rosetta
+- [Métodos de traducción](/docs/guides/translation-methods): descripción general de cada método incorporado (`openai`, `google`, `api`, etc.)
+- [Especificación de plugins](/docs/reference/plugin-spec): esquema completo para `i18n-rosetta.config.json` incluyendo los campos del método `api`
+- [Apoyar un idioma de bajos recursos](https://mtevalarena.org/docs/community/low-resource-languages): guía integral para idiomas con pocos recursos, incluyendo los principios OCAP
+- [Arquitectura](/docs/concepts/architecture): cómo funcionan el bucle de sincronización, el procesamiento por lotes y el envío de métodos de i18n-rosetta
 - [Evaluación de MT](https://mtevalarena.org/docs/leaderboard/rules): metodología de evaluación, métricas y el proceso de envío a la tabla de clasificación
-- [Tabla de clasificación de métodos](/leaderboard): clasificaciones de calidad en vivo en todos los métodos y pares de idiomas
+- [Tabla de clasificación de métodos](/leaderboard): clasificaciones de calidad en vivo a través de métodos y pares de idiomas

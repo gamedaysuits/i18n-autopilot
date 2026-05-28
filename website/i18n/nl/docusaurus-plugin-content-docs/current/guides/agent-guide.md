@@ -1,14 +1,14 @@
 ---
 sidebar_position: 9
-title: "Agent-handleiding: i18n-rosetta gebruiken"
+title: "Handleiding voor agents: Gebruik van i18n-rosetta"
 description: "Hoe AI-agents i18n-rosetta kunnen installeren, configureren en uitvoeren om locale-bestanden te vertalen."
 ---
 # Gids voor agenten: i18n-rosetta gebruiken
 
-i18n-rosetta is een CLI-tool die de taalbestanden (locale files) van uw applicatie met één commando vertaalt. Deze gids is bedoeld voor AI-agenten (of ontwikkelaars die met AI-agenten werken) die snel van nul naar vertaalde taalbestanden willen gaan.
+i18n-rosetta is een CLI-tool die de taalbestanden van uw app met één opdracht vertaalt. Deze gids is bedoeld voor AI-agenten (of ontwikkelaars die met AI-agenten werken) die snel van nul naar vertaalde taalbestanden willen gaan.
 
 :::tip Al bekend hiermee?
-Als u alleen commando's nodig hebt, ga dan direct naar de [CLI-referentie](/docs/reference/cli). Als u een vertaalmethode wilt bouwen en benchmarken, raadpleeg dan de [Gids voor Arena-agenten](https://mtevalarena.org/docs/getting-started/agent-guide).
+Als u alleen de opdrachten nodig hebt, ga dan direct naar de [CLI-referentie](/docs/reference/cli). Als u een vertaalmethode wilt bouwen en benchmarken, raadpleeg dan de [Gids voor Arena-agenten](https://mtevalarena.org/docs/getting-started/agent-guide).
 :::
 
 ---
@@ -24,7 +24,7 @@ npx i18n-rosetta sync
 - Node.js 18+
 - Een API-sleutel voor uw vertaalprovider
 
-**API-sleutel instellen** — rosetta heeft minimaal één sleutel nodig, afhankelijk van de methoden die u gebruikt:
+**API-sleutel instellen** — rosetta heeft ten minste één sleutel nodig, afhankelijk van de methoden die u gebruikt:
 
 ```bash
 # Option 1: export (session only)
@@ -35,7 +35,7 @@ export GOOGLE_TRANSLATE_API_KEY="AIza..."    # for google-translate method
 echo 'OPENROUTER_API_KEY=sk-or-...' > .env
 ```
 
-Rosetta leest `.env` automatisch uit. Vraag een OpenRouter-sleutel aan op [openrouter.ai/keys](https://openrouter.ai/keys).
+Rosetta leest `.env` automatisch. Vraag een OpenRouter-sleutel aan op [openrouter.ai/keys](https://openrouter.ai/keys).
 
 ---
 
@@ -49,11 +49,11 @@ npx i18n-rosetta sync
 
 **Wat er gebeurt:**
 1. Laadt `i18n-rosetta.config.json` (of detecteert instellingen automatisch)
-2. Scant uw brontaalbestand en maakt geneste sleutels plat (flattening)
-3. Vergelijkt met `.i18n-rosetta.lock` (SHA-256-hashes van eerder vertaalde waarden)
+2. Scant uw brontaalbestand, maakt geneste sleutels plat
+3. Vergelijkt met `.i18n-rosetta.lock` (SHA-256 hashes van eerder vertaalde waarden)
 4. Controleert `.rosetta/tm.json` op in de cache opgeslagen vertalingen (Translation Memory)
 5. Vertaalt alleen **gewijzigde, ontbrekende of verouderde sleutels** via de geconfigureerde methode
-6. Voert de Quality Gate (5 checks) uit op elke vertaling
+6. Voert de Quality Gate (5 controles) uit op elke vertaling
 7. Schrijft goedgekeurde vertalingen naar het doeltaalbestand
 8. Werkt het lock-bestand en de TM-cache bij
 
@@ -78,14 +78,15 @@ Maak `i18n-rosetta.config.json` aan in de hoofdmap van uw project:
 
 Belangrijkste velden:
 
-| Veld | Doel | Standaardwaarde |
+| Veld | Doel | Standaard |
 |-------|---------|---------|
 | `inputLocale` | Brontaal | `en` |
-| `pairs` | Mapping van bron→doel met methodeconfiguratie | (vereist) |
+| `pairs` | Toewijzing van bron→doel met methodeconfiguratie | (vereist) |
 | `localesDir` | Waar taalbestanden zich bevinden | (automatisch gedetecteerd) |
 | `model` | LLM-model voor `llm`/`llm-coached`-methoden | `google/gemini-2.5-flash` |
-| `batchSize` | Sleutels per API-aanroep | 30 (LLM), 128 (Google) |
-| `concurrency` | Parallelle API-aanroepen voor contentvertaling | 12 |
+| `batchSize` | Sleutels per API-aanroep | 80 (LLM), 128 (Google) |
+| `jsonConcurrency` | Parallelle taalvertalingen voor JSON-sleutels | 50 |
+| `contentConcurrency` | Parallelle API-aanroepen voor contentvertaling | 12 |
 
 Volledige referentie: [Configuratie](/docs/getting-started/configuration)
 
@@ -96,9 +97,9 @@ Volledige referentie: [Configuratie](/docs/getting-started/configuration)
 | Methode | Wanneer te gebruiken | Kosten | API-sleutel nodig |
 |--------|------------|------|---------------|
 | **`llm`** | Algemeen gebruik, goed voor talen met veel bronnen | Per token (modelafhankelijk) | `OPENROUTER_API_KEY` |
-| **`llm-coached`** | Wanneer u grammaticaregels/een woordenboek hebt voor de doeltaal | Per token + coachingcontext | `OPENROUTER_API_KEY` |
+| **`llm-coached`** | Wanneer u grammaticaregels/een woordenboek voor de doeltaal hebt | Per token + coachingcontext | `OPENROUTER_API_KEY` |
 | **`google-translate`** | Talen met veel bronnen waar GT goed werkt | $20/miljoen tekens | `GOOGLE_TRANSLATE_API_KEY` |
-| **`api`** | Aangepaste pijplijn gehost achter een HTTP-eindpunt | Bepaald door de server | Geen (eindpunt handelt authenticatie af) |
+| **`api`** | Aangepaste pijplijn gehost achter een HTTP-eindpunt | Bepaald door server | Geen (eindpunt handelt authenticatie af) |
 | **`plugin`** | Vooraf verpakte methode die lokaal is geïnstalleerd | Varieert | Varieert |
 
 Details: [Vertaalmethoden](/docs/guides/translation-methods)
@@ -144,10 +145,10 @@ Elke vertaling doorloopt vijf geautomatiseerde controles voordat deze naar de sc
 | **Leeg/blanco** | Model heeft niets geretourneerd | `""` |
 | **Bron-echo** | Model heeft de Engelse invoer ongewijzigd geretourneerd | `"Welcome"` voor Japans |
 | **Hallucinatie-lus** | Herhaalde trigrammen | `"Qo' Qo' Qo' Qo'"` |
-| **Lengte-inflatie** | Uitvoer is 4×+ langer dan de bron | 10-teken bron → 50-teken uitvoer |
+| **Lengte-inflatie** | Uitvoer is 4×+ langer dan de bron | Bron van 10 tekens → uitvoer van 50 tekens |
 | **Schriftnaleving** | Verkeerd schrift voor de landinstelling | Latijnse tekst voor Arabische landinstelling |
 
-Fouten worden geregistreerd met het voorvoegsel `[GATE]`. Geen stille terugvalopties (silent fallbacks) — als een vertaling mislukt, wordt dit gemeld en niet stilletjes geaccepteerd.
+Fouten worden geregistreerd met het voorvoegsel `[GATE]`. Geen stille fallbacks — als een vertaling mislukt, wordt dit gemeld en niet stilletjes geaccepteerd.
 
 Details: [Quality Gate](/docs/concepts/quality-gate)
 
@@ -155,7 +156,7 @@ Details: [Quality Gate](/docs/concepts/quality-gate)
 
 ## Translation Memory
 
-Rosetta slaat vertalingen op in de cache in `.rosetta/tm.json`, gekoppeld aan brontekst + landinstelling + methode. Bij latere synchronisaties worden ongewijzigde sleutels vanuit de cache geleverd — geen API-aanroep, geen kosten.
+Rosetta slaat vertalingen op in de cache in `.rosetta/tm.json`, gekoppeld aan brontekst + landinstelling + methode. Bij latere synchronisaties worden ongewijzigde sleutels uit de cache geleverd — geen API-aanroep, geen kosten.
 
 ```
 [TM] 142 key(s) served from cache
@@ -170,14 +171,14 @@ Details: [Translation Memory](/docs/concepts/translation-memory)
 
 ## Gegenereerde bestanden
 
-Rosetta maakt verschillende bestanden aan in uw project. Zorg dat u weet wat ze zijn, zodat u niet per ongeluk de verkeerde bestanden verwijdert of commit:
+Rosetta maakt verschillende bestanden aan in uw project. Zorg dat u weet wat deze zijn, zodat u niet per ongeluk de verkeerde bestanden verwijdert of commit:
 
 | Bestand | Doel | Git? |
 |------|---------|------|
-| `.i18n-rosetta.lock` | SHA-256-hashes van vertaalde bronwaarden (wijzigingsdetectie) | **Ja** — commit dit |
-| `.i18n-rosetta-content.lock` | Hetzelfde, maar dan voor Markdown/MDX-contentbestanden | **Ja** — commit dit |
+| `.i18n-rosetta.lock` | SHA-256 hashes van vertaalde bronwaarden (wijzigingsdetectie) | **Ja** — commit dit |
+| `.i18n-rosetta-content.lock` | Hetzelfde, maar voor Markdown/MDX-contentbestanden | **Ja** — commit dit |
 | `.rosetta/tm.json` | Translation Memory-cache | **Ja** — commit dit (bespaart API-kosten voor het team) |
-| `.rosetta/coaching/` | Map met coachinggegevens | **Ja** — dit is uw taalkundige kennis |
+| `.rosetta/coaching/` | Map voor coachinggegevens | **Ja** — dit is uw taalkundige kennis |
 | `i18n-rosetta.config.json` | Projectconfiguratie | **Ja** — commit dit |
 
 ---
@@ -193,13 +194,13 @@ npx i18n-rosetta sync --pair en-fr
 ```bash
 npx i18n-rosetta sync
 ```
-Rosetta verwerkt paren opeenvolgend. Met TM-caching bereiken alleen gewijzigde sleutels de API.
+Rosetta vertaalt alle landinstellingen parallel. Met TM-caching bereiken alleen gewijzigde sleutels de API.
 
 **Contentmodus (Markdown/MDX voor Docusaurus, Hugo, enz.):**
 ```bash
 npx i18n-rosetta sync --content
 ```
-Vertaalt documentatie, blogberichten en contentbestanden naast de locale JSON. Maakt gebruik van parallelle gelijktijdigheid (standaard: 12 gelijktijdige API-aanroepen).
+Vertaalt documentatie, blogposts en contentbestanden naast de JSON voor landinstellingen. Gebruikt parallelle gelijktijdigheid (standaard: 12 gelijktijdige API-aanroepen). Pas dit aan met `--content-concurrency`.
 
 **Dry run (voorbeeld zonder te schrijven):**
 ```bash
@@ -222,31 +223,31 @@ npx i18n-rosetta status
 ```
 Toont dekking, kwaliteitsniveaus en plug-in-informatie voor elk paar.
 
-**Controleren op onvertaalde terugvalopties (fallbacks):**
+**Controleren op onvertaalde fallbacks:**
 ```bash
 npx i18n-rosetta audit
 ```
-Geeft een lijst van alle `[EN]`-terugvalwaarden die vertaald moeten worden.
+Geeft een lijst van alle `[EN]` fallback-waarden die vertaald moeten worden.
 
 ---
 
-## Problemen oplossen
+## Probleemoplossing
 
 | Probleem | Oplossing |
 |---------|-----|
 | `OPENROUTER_API_KEY not set` | Exporteer de sleutel of voeg deze toe aan `.env` in de hoofdmap van uw project |
 | `No locale files found` | Stel `localesDir` in de configuratie in, of zorg ervoor dat uw taalbestanden overeenkomen met de standaard naamgeving (`en.json`, `fr.json`) |
-| `[GATE] Script compliance failed` | Uw doeltaal kreeg Latijnse tekst in plaats van het verwachte schrift — probeer een ander model of voeg coachinggegevens toe |
-| `[GATE] Source echo` | Het model retourneerde ongewijzigd Engels — coachinggegevens of een ander model lost dit meestal op |
+| `[GATE] Script compliance failed` | Uw doeltaal heeft Latijnse tekst gekregen in plaats van het verwachte schrift — probeer een ander model of voeg coachinggegevens toe |
+| `[GATE] Source echo` | Het model heeft het Engels ongewijzigd geretourneerd — coachinggegevens of een ander model lost dit meestal op |
 | Alle vertalingen in de cache | Voer uit met `--no-tm` om de cache te omzeilen, of `--force-keys` voor specifieke sleutels |
-| Conflicten in lock-bestand | `.i18n-rosetta.lock` gebruikt SHA-256-hashes — samenvoegingsconflicten (merge conflicts) kunnen veilig worden opgelost door een van beide versies te behouden en vervolgens de synchronisatie opnieuw uit te voeren |
+| Conflicten in lock-bestand | `.i18n-rosetta.lock` gebruikt SHA-256 hashes — merge-conflicten kunnen veilig worden opgelost door een van beide versies te behouden en vervolgens de synchronisatie opnieuw uit te voeren |
 
 ---
 
-## Hoe nu verder?
+## Volgende stappen
 
 - [Snelstart](/docs/getting-started/quick-start) — volledige walkthrough om aan de slag te gaan
-- [CLI-referentie](/docs/reference/cli) — elk commando en elke vlag
-- [Hoe het werkt](/docs/how-it-works) — uitleg over de synchronisatiepijplijn
+- [CLI-referentie](/docs/reference/cli) — elke opdracht en vlag
+- [Hoe het werkt](/docs/how-it-works) — uitleg van de synchronisatiepijplijn
 - [De Eval Harness Bridge](/docs/guides/bridge) — hoe rosetta verbinding maakt met de Arena
 - **Wilt u uw eigen vertaalmethode bouwen?** Raadpleeg de [Gids voor Arena-agenten](https://mtevalarena.org/docs/getting-started/agent-guide) — bouw een methode, bewijs dat deze werkt en win prijzen.

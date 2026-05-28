@@ -87,7 +87,7 @@ Key fields:
 | `model` | LLM model for `llm`/`llm-coached` methods | `google/gemini-2.5-flash` |
 | `batchSize` | Keys per API call | 80 (LLM), 128 (Google) |
 | `jsonConcurrency` | Parallel locale translations for JSON keys | 50 |
-| `contentConcurrency` | Parallel API calls for content translation | 12 |
+| `contentConcurrency` | Parallel API calls for content translation | 48 |
 
 Full reference: [Configuration](/docs/getting-started/configuration)
 
@@ -201,7 +201,7 @@ Rosetta translates all locales in parallel. With TM caching, only changed keys h
 ```bash
 npx i18n-rosetta sync --content
 ```
-Translates docs, blog posts, and content files alongside locale JSON. Uses parallel concurrency (default: 12 simultaneous API calls). Tune with `--content-concurrency`.
+Translates docs, blog posts, and content files alongside locale JSON. Uses parallel concurrency (default: 48 simultaneous API calls). Tune with `--content-concurrency`.
 
 **Dry run (preview without writing):**
 ```bash

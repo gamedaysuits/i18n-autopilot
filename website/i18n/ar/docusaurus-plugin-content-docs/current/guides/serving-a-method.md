@@ -1,27 +1,27 @@
 ---
 sidebar_position: 8
-title: "تقديم طريقة مخصصة كواجهة برمجة تطبيقات (API)"
-description: "قم بتغليف مسارات الترجمة المعقدة (بوابات FST، سلاسل LLM متعددة الخطوات) كخدمة HTTP وربطها بـ i18n-rosetta عبر طريقة api."
+title: "تقديم طريقة مخصصة كـ API"
+description: "قم بتغليف مسارات الترجمة المعقدة (FST gates، multi-step LLM chains) كخدمة HTTP وربطها بـ i18n-rosetta عبر الـ api method."
 ---
-# تشغيل طريقة مخصصة كواجهة برمجة تطبيقات (API)
+# تقديم طريقة مخصصة كواجهة برمجة تطبيقات (API)
 
-تتيح لك **طريقة `api`** في i18n-rosetta توجيه أي زوج ترجمة إلى نقطة نهاية HTTP خارجية. هذه هي الطريقة التي تدمج بها مسارات العمل (pipelines) المعقدة جداً بالنسبة لموجه LLM واحد — مثل المحللات الصرفية (morphological analyzers)، أو محولات الحالة المحدودة (FSTs)، أو سلاسل LLM متعددة الخطوات، أو أي طريقة بحث مخصصة قمت ببنائها.
+تتيح لك **طريقة `api`** في i18n-rosetta توجيه أي زوج ترجمة إلى نقطة نهاية HTTP خارجية (HTTP endpoint). هكذا يمكنك دمج مسارات العمل (pipelines) المعقدة جداً على أن تُنفذ عبر مطالبة نموذج لغوي كبير (LLM prompt) واحدة — مثل المحللات الصرفية (morphological analyzers)، أو محولات الحالة المحدودة (FSTs)، أو سلاسل النماذج اللغوية الكبيرة متعددة الخطوات (multi-step LLM chains)، أو أي طريقة بحث مخصصة قمت ببنائها.
 
 ## لماذا خدمة API؟
 
-لا يمكن تشغيل بعض مسارات الترجمة داخل دورة بسيطة من الموجه والاستجابة (prompt-response):
+بعض مسارات الترجمة لا يمكن تشغيلها داخل دورة بسيطة من المطالبة والاستجابة (prompt-response cycle):
 
 | خطوة مسار العمل | مثال |
 |---|---|
-| **التحليل الصرفي (Morphological decomposition)** | تقسيم الكلمات متعددة التركيب إلى مقاطع صرفية (morphemes) قبل ترجمتها |
+| **التحليل الصرفي (Morphological decomposition)** | تقسيم الكلمات متعددة التركيب إلى مقاطع صرفية (morphemes) قبل الترجمة |
 | **التحقق باستخدام FST** | رفض المخرجات التي تنتهك القواعد الصوتية أو الصرفية |
-| **سلاسل LLM متعددة الخطوات** | دورات التوليد → التحقق → التصحيح باستخدام نماذج مختلفة |
-| **البحث في القاموس** | الإسناد الترافقي لقاموس ثنائي اللغة منقح في منتصف مسار العمل |
+| **سلاسل LLM متعددة الخطوات** | دورات التوليد ← التحقق ← التصحيح باستخدام نماذج مختلفة |
+| **البحث في القاموس** | الإسناد الترافقي لقاموس ثنائي اللغة منسق في منتصف مسار العمل |
 | **التدخل البشري (Human-in-the-loop)** | وضع الترجمات غير المؤكدة في قائمة انتظار لمراجعتها من قبل الخبراء |
 
-تتعامل طريقة `api` مع مسار عملك كصندوق أسود — حيث يرسل i18n-rosetta السلاسل النصية المصدر، وتُرجع خدمتك الترجمات. ما يحدث بالداخل متروك لك تماماً.
+تتعامل طريقة `api` مع مسار العمل الخاص بك كصندوق أسود (black box) — حيث يرسل i18n-rosetta السلاسل النصية المصدر، وتُرجع خدمتك الترجمات. ما يحدث بالداخل متروك لك تماماً.
 
-## البنية
+## البنية (Architecture)
 
 ```mermaid
 graph LR
@@ -62,7 +62,7 @@ Authorization: Bearer <ROSETTA_API_KEY>
 | `source_locale` | string | رمز لغة المصدر بتنسيق BCP 47 |
 | `target_locale` | string | رمز اللغة الهدف بتنسيق BCP 47 |
 | `method` | string | اسم المكون الإضافي (Plugin) أو `"default"` |
-| `keys` | object | خريطة (Map) للمفتاح → السلسلة النصية المصدر المراد ترجمتها |
+| `keys` | object | خريطة للمفتاح ← السلسلة النصية المصدر المراد ترجمتها |
 ```
 
 ### Response Format
@@ -99,10 +99,10 @@ const app = express();
 app.use(express.json());
 
 /**
- * rosetta API contract:
+ * عقد واجهة برمجة تطبيقات rosetta:
  *
- * Request:  { source_locale, target_locale, method, keys: { "key": "source" } }
- * Response: { translations: { "key": "translated" }, meta: { ... } }
+ * الطلب:  { source_locale, target_locale, method, keys: { "key": "source" } }
+ * الاستجابة: { translations: { "key": "translated" }, meta: { ... } }
  */
 app.post('/translate', async (req, res) => {
   const { source_locale, target_locale, method, keys } = req.body;
@@ -110,17 +110,17 @@ app.post('/translate', async (req, res) => {
   const translations = {};
 
   for (const [key, source] of Object.entries(keys)) {
-    // --- Your pipeline goes here ---
-    // Step 1: Morphological decomposition
+    // --- مسار العمل الخاص بك يوضع هنا ---
+    // الخطوة 1: التحليل الصرفي
     const morphemes = await decompose(source, source_locale);
 
-    // Step 2: LLM translation with context
+    // الخطوة 2: الترجمة باستخدام LLM مع السياق
     const draft = await llmTranslate(morphemes, target_locale);
 
-    // Step 3: FST validation
+    // الخطوة 3: التحقق باستخدام FST
     const validated = await fstValidate(draft, target_locale);
 
-    // Step 4: Post-processing (orthography normalization, etc.)
+    // الخطوة 4: المعالجة اللاحقة (توحيد الإملاء، إلخ)
     translations[key] = await postProcess(validated);
   }
 
@@ -183,12 +183,12 @@ The entire pipeline runs as a single HTTP endpoint that i18n-rosetta calls via t
 After translating, you can evaluate output quality using the harness directly:
 
 ```bash
-# Clone the harness
+# استنساخ بيئة الاختبار (harness)
 git clone https://github.com/gamedaysuits/gds-mt-eval-harness.git
 cd gds-mt-eval-harness
 pip install -e .
 
-# Run the evaluation against your method's output
+# تشغيل التقييم على مخرجات طريقتك
 python eval/baseline_experiment.py --dataset data/edtekla-dev-v1.json --submit
 ```
 
@@ -243,21 +243,21 @@ The `api` method returns `null` for cost estimation by default — your service 
 
 ## أفضل الممارسات
 
-1. **إرجاع سلاسل نصية فارغة عند الفشل** — لا تُرجع السلسلة النصية المصدر كـ "ترجمة". أرجع `""` ودع آلية البادئة الاحتياطية (fallback prefix) في i18n-rosetta تتعامل معها.
-2. **تضمين درجات الثقة (Confidence scores)** — إذا كان مسار عملك قادراً على تقدير الجودة، فأرجعها في البيانات الوصفية (metadata). يساعد هذا في تدقيق الجودة.
-3. **تنفيذ فحوصات السلامة (Health checks)** — أضف نقطة نهاية `GET /health` حتى يتمكن i18n-rosetta من التحقق من الاتصال قبل بدء عملية مزامنة كبيرة.
-4. **التعامل مع حدود معدل الطلبات (Rate limit) بسلاسة** — إذا كان لمسار عملك حدود للإنتاجية، فأرجع رموز الحالة `429`. سيتراجع نظام الدفعات (batch system) في i18n-rosetta تلقائياً.
-5. **تسجيل كل شيء (Log everything)** — يمكن أن تفشل مسارات العمل متعددة الخطوات بصمت. قم بتسجيل المدخلات/المخرجات لكل خطوة لتسهيل تصحيح الأخطاء (debugging).
+1. **إرجاع سلاسل نصية فارغة عند الفشل** — لا تُرجع السلسلة النصية المصدر كـ "ترجمة". قم بإرجاع `""` وسوف تلتقطها بوابة الجودة الخاصة بـ i18n-rosetta. سيتم تخطي المفتاح وإعادة المحاولة في المزامنة التالية.
+2. **تضمين درجات الثقة (Confidence scores)** — إذا كان مسار العمل الخاص بك قادراً على تقدير الجودة، فقم بإرجاعها في البيانات الوصفية (metadata). يساعد هذا في تدقيق الجودة.
+3. **تنفيذ فحوصات السلامة (Health checks)** — أضف نقطة نهاية `GET /health` حتى يتمكن i18n-rosetta من التحقق من الاتصال قبل بدء مزامنة كبيرة.
+4. **التعامل مع حدود المعدل (Rate limit) بسلاسة** — إذا كان مسار العمل الخاص بك يحتوي على حدود للإنتاجية، فقم بإرجاع رموز الحالة `429`. سيتراجع نظام الدفعات (batch system) في i18n-rosetta تلقائياً.
+5. **تسجيل كل شيء (Log everything)** — يمكن أن تفشل مسارات العمل متعددة الخطوات بصمت. قم بتسجيل المدخلات/المخرجات لكل خطوة لأغراض تصحيح الأخطاء (debugging).
 
 ## الترخيص
 
-نمط طريقة `api` مفتوح بالكامل — لا توجد قيود ترخيص على تغليف مسار الترجمة الخاص بك كخدمة HTTP. يتوفر `gds-mt-eval-harness` بموجب ترخيص MIT للتطبيقات المرجعية.
+نمط طريقة `api` مفتوح بالكامل — لا توجد قيود ترخيص على تغليف مسار الترجمة الخاص بك كخدمة HTTP. يتوفر `gds-mt-eval-harness` بموجب ترخيص MIT للتطبيقات المرجعية (reference implementations).
 
 ## انظر أيضاً
 
-- [طرق الترجمة](/docs/guides/translation-methods) — نظرة عامة على كل طريقة مدمجة (`openai`، `google`، `api`، إلخ)
-- [مواصفات المكون الإضافي](/docs/reference/plugin-spec) — المخطط الكامل لـ `i18n-rosetta.config.json` بما في ذلك حقول طريقة `api`
-- [دعم لغة قليلة الموارد](https://mtevalarena.org/docs/community/low-resource-languages) — دليل شامل للغات التي تفتقر إلى الموارد، بما في ذلك مبادئ OCAP
-- [البنية](/docs/concepts/architecture) — كيف تعمل حلقة المزامنة، ونظام الدفعات (batching)، وتوجيه الطرق في i18n-rosetta
-- [تقييم الترجمة الآلية (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) — منهجية التقييم، والمقاييس، وعملية التقديم للوحة الصدارة (leaderboard)
-- [لوحة صدارة الطرق](/leaderboard) — تصنيفات الجودة المباشرة عبر الطرق وأزواج اللغات
+- [طرق الترجمة (Translation Methods)](/docs/guides/translation-methods) — نظرة عامة على كل طريقة مدمجة (`openai`، `google`، `api`، إلخ.)
+- [مواصفات المكون الإضافي (Plugin Specification)](/docs/reference/plugin-spec) — المخطط الكامل لـ `i18n-rosetta.config.json` بما في ذلك حقول طريقة `api`
+- [دعم لغة منخفضة الموارد (Support a Low-Resource Language)](https://mtevalarena.org/docs/community/low-resource-languages) — دليل شامل للغات ذات الموارد المحدودة، بما في ذلك مبادئ OCAP
+- [البنية (Architecture)](/docs/concepts/architecture) — كيف تعمل حلقة المزامنة، وتجميع الدفعات (batching)، وإرسال الطرق في i18n-rosetta
+- [تقييم الترجمة الآلية (MT Evaluation)](https://mtevalarena.org/docs/leaderboard/rules) — منهجية التقييم، والمقاييس، وعملية التقديم إلى لوحة الصدارة (leaderboard)
+- [لوحة صدارة الطرق (Method Leaderboard)](/leaderboard) — تصنيفات الجودة المباشرة عبر الطرق وأزواج اللغات

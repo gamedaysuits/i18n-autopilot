@@ -4,7 +4,7 @@ title: "การตั้งค่า"
 ---
 # การตั้งค่า
 
-Rosetta ทำงานแบบ zero-config — โดยจะตรวจหาไฟล์ locale, รูปแบบ และภาษาเป้าหมายจากโปรเจกต์ของคุณโดยอัตโนมัติ หากต้องการควบคุมเพิ่มเติม ให้สร้าง `i18n-rosetta.config.json` ใน root ของโปรเจกต์คุณ หรือรัน:
+Rosetta สามารถทำงานได้โดยไม่ต้องตั้งค่า (zero-config) — โดยจะตรวจหาไฟล์ภาษา รูปแบบ และภาษาเป้าหมายจากโปรเจกต์ของคุณโดยอัตโนมัติ หากต้องการควบคุมเพิ่มเติม ให้สร้าง `i18n-rosetta.config.json` ใน root ของโปรเจกต์คุณ หรือรันคำสั่ง:
 
 ```bash
 npx i18n-rosetta init
@@ -22,8 +22,9 @@ npx i18n-rosetta init
   "format": "auto",
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
-  "batchSize": 30,
-  "concurrency": 12,
+  "batchSize": 80,
+  "jsonConcurrency": 50,
+  "contentConcurrency": 12,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -45,9 +46,10 @@ npx i18n-rosetta init
 }
 ```
 
-:::note typegen ยังไม่เปิดใช้งาน
-บล็อกการตั้งค่า `typegen` จะถูกจดจำและเก็บรักษาไว้โดย config loader แต่การสร้าง type ของ TypeScript ยังไม่เปิดใช้งาน นี่เป็นเพียง placeholder สำหรับฟีเจอร์ที่มีแผนจะทำในอนาคต การตั้งค่าค่าเหล่านี้จะไม่มีผลใดๆ
+:::note typegen ยังไม่เปิดให้ใช้งาน
+บล็อกการตั้งค่า `typegen` จะถูกจดจำและเก็บรักษาไว้โดยตัวโหลดการตั้งค่า แต่การสร้าง type ของ TypeScript ยังไม่เปิดให้ใช้งาน นี่เป็นเพียง placeholder สำหรับฟีเจอร์ที่มีแผนจะทำในอนาคต การตั้งค่าค่าเหล่านี้จะไม่มีผลใดๆ
 :::
+
 
 ### ฟิลด์
 
@@ -55,30 +57,31 @@ npx i18n-rosetta init
 |-------|------|---------|-------------|
 | `version` | `number` | `3` | เวอร์ชันของ Config schema จะเป็น `3` เสมอ |
 | `inputLocale` | `string` | `"en"` | รหัสภาษาต้นทาง (BCP 47) |
-| `localesDir` | `string` | `"./locales"` | Path ไปยังไฟล์ locale Rosetta จะสแกนไดเรกทอรีนี้ |
-| `contentDir` | `string` | `null` | ไดเรกทอรี content ของ Hugo เปิดใช้งานการแปลเนื้อหา Markdown |
-| `translatableFields` | `string[]` | `null` | เขียนทับฟิลด์ frontmatter เริ่มต้นที่แปลได้สำหรับการแปล content `null` จะใช้ค่าเริ่มต้นที่มีให้ (`title`, `description`, `summary`) |
+| `localesDir` | `string` | `"./locales"` | Path ไปยังไฟล์ภาษา Rosetta จะสแกนไดเรกทอรีนี้ |
+| `contentDir` | `string` | `null` | ไดเรกทอรีเนื้อหาของ Hugo เปิดใช้งานการแปลเนื้อหา Markdown |
+| `translatableFields` | `string[]` | `null` | เขียนทับฟิลด์ frontmatter เริ่มต้นที่สามารถแปลได้สำหรับการแปลเนื้อหา `null` จะใช้ค่าเริ่มต้นที่มีให้ (`title`, `description`, `summary`) |
 | `format` | `string` | `"auto"` | รูปแบบไฟล์: `json`, `toml`, `yaml`, หรือ `auto` (ตรวจหาจากนามสกุลไฟล์) |
-| `model` | `string` | `"google/gemini-3.5-flash"` | โมเดลเริ่มต้นสำหรับวิธี LLM รูปแบบจะขึ้นอยู่กับวิธี: OpenRouter ใช้ `provider/model` (เช่น `google/gemini-3.5-flash`); ผู้ให้บริการโดยตรงใช้ชื่อเปล่าๆ (เช่น `gpt-4o`, `gemini-2.5-flash`) |
-| `defaultMethod` | `string` | `"llm"` | วิธีการแปลเริ่มต้น: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` จะถูกเขียนทับด้วย CLI flag `--method` |
-| `batchSize` | `number` | `30` | จำนวน Key ต่อการแปลหนึ่ง batch ค่าที่สูงกว่า = เรียก API น้อยลง แต่ prompt จะมีขนาดใหญ่ขึ้น |
-| `concurrency` | `number` | `12` | จำนวนการเรียก API แบบขนานสูงสุดสำหรับการแปล content (Markdown/MDX) จะถูกเขียนทับด้วย CLI flag `--concurrency` |
-| `fallbackPrefix` | `string` | `"[EN] "` | Prefix ที่เพิ่มเข้าไปในค่า fallback ที่ยังไม่ได้แปล ถูกใช้โดย `audit` เพื่อตรวจหาการแปลที่ไม่สมบูรณ์ |
-| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | ชื่อ Environment variable สำหรับ API key เขียนทับสำหรับชื่อ env var แบบกำหนดเอง |
+| `model` | `string` | `"google/gemini-3.5-flash"` | โมเดลเริ่มต้นสำหรับวิธี LLM รูปแบบจะขึ้นอยู่กับวิธีที่ใช้: OpenRouter ใช้ `provider/model` (เช่น `google/gemini-3.5-flash`); ผู้ให้บริการโดยตรงจะใช้ชื่อเปล่าๆ (เช่น `gpt-4o`, `gemini-2.5-flash`) |
+| `defaultMethod` | `string` | `"llm"` | วิธีการแปลเริ่มต้น: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api` จะถูกเขียนทับด้วยแฟล็ก CLI `--method` |
+| `batchSize` | `number` | `80` | จำนวน Key ต่อการแปลหนึ่งชุด (batch) ค่าที่สูงขึ้น = เรียกใช้ API น้อยลง แต่ prompt จะมีขนาดใหญ่ขึ้น |
+| `jsonConcurrency` | `number` | `50` | จำนวนการแปลภาษาแบบขนานสูงสุดสำหรับการซิงค์ Key ของ JSON จะถูกเขียนทับด้วยแฟล็ก CLI `--json-concurrency` |
+| `contentConcurrency` | `number` | `12` | จำนวนการเรียก API แบบขนานสูงสุดสำหรับการแปลเนื้อหา (Markdown/MDX) จะถูกเขียนทับด้วยแฟล็ก CLI `--content-concurrency` |
+| `fallbackPrefix` | `string` | `"[EN] "` | คำนำหน้า Marker ที่ใช้โดย `audit` และ `verify` เพื่อตรวจหาค่าเดิมที่ยังไม่ได้แปลจากการรันครั้งก่อนหน้า Rosetta จะไม่เขียนคำนำหน้านี้ — มันจะอ่านเพื่อการตรวจหาเท่านั้น |
+| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | ชื่อตัวแปรสภาพแวดล้อม (Environment variable) สำหรับ API key เขียนทับสำหรับชื่อ env var แบบกำหนดเอง |
 | `baseUrl` | `string` | `""` | Base URL สำหรับการสร้าง SEO artifact (hreflang, sitemaps, JSON-LD) |
-| `pairs` | `object` | `{}` | การเขียนทับวิธี, โมเดล และคุณภาพต่อคู่ภาษา ดู [การตั้งค่าคู่ภาษา](#pair-configuration) |
-| `languages` | `object` | `{}` | การเขียนทับต่อภาษา ดู [การตั้งค่าภาษา](#language-configuration) |
-| `lint.srcDir` | `string` | `null` | ไดเรกทอรีต้นทางสำหรับการสแกน lint `null` = ตรวจหาจากเฟรมเวิร์กอัตโนมัติ |
-| `lint.ignore` | `string[]` | `["node_modules", ...]` | Glob patterns ที่ต้องการยกเว้นจาก lint |
-| `lint.minLength` | `number` | `2` | ความยาวสตริงขั้นต่ำที่จะถูกตั้งค่าสถานะเป็น hardcoded |
-| `seo.urlPattern` | `string` | `"/:locale/:path"` | เทมเพลต URL pattern สำหรับการสร้างแท็ก hreflang |
-| `seo.pages` | `string[]` | `null` | รายการหน้าแบบเจาะจงสำหรับ SEO `null` = ตรวจหาจาก locale keys อัตโนมัติ |
+| `pairs` | `object` | `{}` | การเขียนทับวิธี โมเดล และคุณภาพต่อคู่ภาษา ดูที่ [การตั้งค่าคู่ภาษา](#pair-configuration) |
+| `languages` | `object` | `{}` | การเขียนทับต่อภาษา ดูที่ [การตั้งค่าภาษา](#language-configuration) |
+| `lint.srcDir` | `string` | `null` | ไดเรกทอรีต้นทางสำหรับการสแกน lint `null` = ตรวจหาอัตโนมัติจากเฟรมเวิร์ก |
+| `lint.ignore` | `string[]` | `["node_modules", ...]` | รูปแบบ Glob ที่จะยกเว้นจาก lint |
+| `lint.minLength` | `number` | `2` | ความยาวสตริงขั้นต่ำที่จะถูกตั้งค่าสถานะว่าเป็น hardcoded |
+| `seo.urlPattern` | `string` | `"/:locale/:path"` | เทมเพลตรูปแบบ URL สำหรับการสร้างแท็ก hreflang |
+| `seo.pages` | `string[]` | `null` | รายการหน้าแบบระบุชัดเจนสำหรับ SEO `null` = ตรวจหาอัตโนมัติจาก locale keys |
 | `typegen.output` | `string` | `null` | Path ผลลัพธ์สำหรับ TypeScript types ที่สร้างขึ้น `null` = ปิดใช้งาน |
 | `typegen.autoGenerate` | `boolean` | `false` | สร้าง types ใหม่โดยอัตโนมัติหลังจากการซิงค์แต่ละครั้ง |
 
 ## การตั้งค่าคู่ภาษา
 
-แต่ละคู่ภาษา ต้นทาง→เป้าหมาย สามารถตั้งค่าได้อย่างอิสระ:
+แต่ละคู่ภาษา ต้นทาง→เป้าหมาย สามารถตั้งค่าแยกกันได้อย่างอิสระ:
 
 ```json
 {
@@ -122,9 +125,9 @@ npx i18n-rosetta init
 
 แต่ละภาษาจะได้รับ register เริ่มต้นจากตาราง register ที่มีมาให้ ภาษาที่ไม่มีค่าเริ่มต้นจะได้รับ `"Professional register."`
 
-### Object ที่มีสตริง register
+### Object พร้อมสตริงของ register
 
-ค่าสามารถเป็น **preset key** จากการ์ดภาษา หรือข้อความ register แบบกำหนดเอง:
+ค่าสามารถเป็น **preset key** จากการ์ดของภาษา หรือข้อความ register แบบกำหนดเอง:
 
 ```json
 {
@@ -138,7 +141,7 @@ npx i18n-rosetta init
 
 Rosetta จะตรวจสอบว่าสตริงตรงกับ preset key ในการ์ดภาษาหรือไม่ หากตรงกัน จะใช้ prompt ของ register แบบเต็มจากการ์ดนั้น หากไม่ตรงกัน จะใช้สตริงนั้นตามที่ระบุไว้ ดู [ภาษาที่รองรับ](/docs/reference/supported-languages#language-cards) สำหรับ preset ที่มีให้ใช้งาน
 
-### Object ที่มีการตั้งค่าแบบเต็ม
+### Object พร้อมการตั้งค่าแบบเต็ม
 
 ```json
 {
@@ -155,25 +158,26 @@ Rosetta จะตรวจสอบว่าสตริงตรงกับ pr
 }
 ```
 
-คุณสามารถผสม shorthand และ object แบบเต็มในบล็อกเดียวกันได้
+คุณสามารถผสมรูปแบบย่อและ object แบบเต็มในบล็อกเดียวกันได้
+
 
 ### ฟิลด์ของภาษา
 
 | ฟิลด์ | ประเภท | คำอธิบาย |
 |-------|------|-------------|
-| `register` | `string` | คำแนะนำเกี่ยวกับสไตล์/น้ำเสียง สามารถเป็น **preset key** (เช่น `casual-tu`, `formal-hapsyo`) หรือข้อความแบบกำหนดเอง ดู [การ์ดภาษา](/docs/reference/supported-languages#language-cards) |
+| `register` | `string` | คำแนะนำสไตล์/โทนเสียง สามารถเป็น **preset key** (เช่น `casual-tu`, `formal-hapsyo`) หรือข้อความกำหนดเอง ดู [การ์ดภาษา](/docs/reference/supported-languages#language-cards) |
 | `name` | `string` | ชื่อภาษาที่มนุษย์อ่านได้ (สำหรับการแสดงสถานะ) |
 | `model` | `string` | เขียนทับโมเดลเริ่มต้น |
 | `batchSize` | `number` | เขียนทับขนาด batch เริ่มต้น |
 | `maxRetries` | `number` | จำนวนครั้งสูงสุดในการลองใหม่สำหรับ batch ที่ล้มเหลว (ค่าเริ่มต้น: 3) |
-| `script` | `string` | รหัสสคริปต์ ISO 15924 จะทริกเกอร์การตรวจสอบสคริปต์ใน quality gate |
+| `script` | `string` | รหัสสคริปต์ ISO 15924 กระตุ้นการตรวจสอบสคริปต์ใน quality gate |
 
-:::info ลำดับการสืบทอด
-การตั้งค่าจะถูกประมวลผลตามลำดับนี้ (อันดับแรกจะถูกเลือก):
+:::info ลำดับการสืบทอด (Inheritance chain)
+การตั้งค่าจะถูกประมวลผลตามลำดับนี้ (อันแรกชนะ):
 
-**ระดับคู่ภาษา** → **ระดับภาษา** → **การตั้งค่าส่วนกลาง** → **ค่าเริ่มต้น**
+**ระดับคู่ภาษา (pair-level)** → **ระดับภาษา (language-level)** → **การตั้งค่าส่วนกลาง (global config)** → **ค่าเริ่มต้น (defaults)**
 
-ตัวอย่างเช่น หาก `pairs["en:fr"]` ตั้งค่า `model` มันจะเขียนทับทั้งค่า `model` ในระดับภาษาและการตั้งค่าส่วนกลาง
+ตัวอย่างเช่น หาก `pairs["en:fr"]` ตั้งค่า `model` มันจะเขียนทับค่า `model` ทั้งในระดับภาษาและส่วนกลาง
 :::
 
 ## ภาษาต้นทางที่ไม่ใช่ภาษาอังกฤษ
@@ -193,13 +197,13 @@ npx i18n-rosetta sync --source fr
 
 ## Lock File
 
-Rosetta จะสร้าง `.i18n-rosetta.lock` เพื่อติดตาม SHA-256 hashes ของค่าต้นทางที่แปลแล้ว **โปรด Commit ไฟล์นี้** เพื่อให้นักพัฒนาทุกคนใช้ baseline การแปลเดียวกัน
+Rosetta จะสร้าง `.i18n-rosetta.lock` เพื่อติดตาม SHA-256 hashes ของค่าต้นทางที่ถูกแปลแล้ว **ให้ Commit ไฟล์นี้** เพื่อให้นักพัฒนาทุกคนแชร์ baseline การแปลเดียวกัน
 
 เมื่อค่าต้นทางเปลี่ยนไป hash จะไม่ตรงกันอีกต่อไป และ rosetta จะแปล key นั้นใหม่ในการซิงค์ครั้งถัดไป
 
 ## `.rosettaignore`
 
-สร้าง `.rosettaignore` ใน root ของโปรเจกต์คุณเพื่อยกเว้นไฟล์จากการสแกน `lint` โดยใช้ glob patterns เช่น `.gitignore`:
+สร้าง `.rosettaignore` ใน root ของโปรเจกต์คุณเพื่อยกเว้นไฟล์จากการสแกน `lint` โดยใช้รูปแบบ glob เช่น `.gitignore`:
 
 ```text title=".rosettaignore"
 src/components/legacy/**
@@ -209,7 +213,7 @@ src/utils/constants.js
 
 ## ไดเรกทอรี `.rosetta/`
 
-Rosetta จะสร้างไดเรกทอรี `.rosetta/` ใน root ของโปรเจกต์คุณสำหรับสถานะภายใน โดยทั่วไปคุณควร **เพิ่มสิ่งนี้ลงใน `.gitignore`** — เนื่องจากเป็นการปรับแต่งภายในเครื่อง ไม่ใช่ source ของโปรเจกต์:
+Rosetta จะสร้างไดเรกทอรี `.rosetta/` ใน root ของโปรเจกต์คุณสำหรับสถานะภายใน โดยทั่วไปคุณควร **เพิ่มสิ่งนี้ลงใน `.gitignore`** — เนื่องจากเป็นการปรับแต่งภายในเครื่อง (local optimization) ไม่ใช่ซอร์สโค้ดของโปรเจกต์:
 
 ```gitignore
 .rosetta/
@@ -217,18 +221,18 @@ Rosetta จะสร้างไดเรกทอรี `.rosetta/` ใน root
 
 | ไฟล์ | วัตถุประสงค์ | Commit หรือไม่? |
 |------|---------|--------|
-| `tm.json` | แคช Translation Memory — จัดเก็บการแปลก่อนหน้าโดยใช้ source text + locale + method เป็น key | ไม่ (แคชในเครื่อง) |
+| `tm.json` | แคช Translation Memory — เก็บการแปลก่อนหน้าโดยใช้ข้อความต้นทาง + ภาษา + วิธีการ เป็น key | ไม่ (แคชในเครื่อง) |
 | `xliff/*.xliff` | ไฟล์ส่งออก XLIFF สำหรับให้นักแปลมืออาชีพตรวจสอบ | ไม่ (ชั่วคราว) |
-| `methods/` | Manifests ของปลั๊กอิน method ที่ติดตั้งไว้ | ใช่ (การตั้งค่าที่ใช้ร่วมกัน) |
-| `backups/` | แบ็กอัปก่อนการ wrap (สร้างโดย `wrap --undo`) | ไม่ (เพื่อความปลอดภัย) |
+| `methods/` | Manifest ของปลั๊กอินวิธีการที่ติดตั้งไว้ | ใช่ (การตั้งค่าที่แชร์ร่วมกัน) |
+| `backups/` | ไฟล์สำรองก่อนการห่อ (สร้างโดย `wrap --undo`) | ไม่ (เพื่อความปลอดภัย) |
 
-ดู [Translation Memory](/docs/concepts/translation-memory) สำหรับรายละเอียดเกี่ยวกับ `tm.json` และวิธีที่ช่วยประหยัดค่าใช้จ่าย API
+ดู [Translation Memory](/docs/concepts/translation-memory) สำหรับรายละเอียดเกี่ยวกับ `tm.json` และวิธีที่มันช่วยประหยัดค่าใช้จ่าย API
 
 ---
 
 ## Programmatic API
 
-สำหรับ build scripts และการรวมระบบแบบกำหนดเอง ให้ import โดยตรงจากแพ็กเกจ:
+สำหรับสคริปต์การบิลด์และการผสานการทำงานแบบกำหนดเอง ให้ import โดยตรงจากแพ็กเกจ:
 
 ```javascript
 import { GeminiMethod, runSync, resolveConfig } from 'i18n-rosetta';
@@ -244,15 +248,15 @@ const result = await gemini.translate(
 // result = { greeting: 'Bonjour', farewell: 'Au revoir' }
 ```
 
-### Exports ที่มีให้ใช้งาน
+### Export ที่มีให้ใช้งาน
 
-| Export | หน้าที่ |
+| Export | หน้าที่การทำงาน |
 |--------|-------------|
-| `TranslationMethod` | Base class สำหรับทุก methods |
-| `LLMMethod` | Base class สำหรับ LLM methods (OpenRouter) |
+| `TranslationMethod` | Base class สำหรับทุกวิธีการ |
+| `LLMMethod` | Base class สำหรับวิธีการ LLM (OpenRouter) |
 | `DirectLLMMethod` | Base class สำหรับผู้ให้บริการ LLM โดยตรง (OpenAI, Anthropic, Gemini) |
-| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | คลาสของผู้ให้บริการ LLM โดยตรง |
-| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | คลาส MT แบบดั้งเดิม |
+| `OpenAIMethod`, `AnthropicMethod`, `GeminiMethod` | Class ของผู้ให้บริการ LLM โดยตรง |
+| `DeepLMethod`, `MicrosoftTranslatorMethod`, `LibreTranslateMethod` | Class ของ MT แบบดั้งเดิม |
 | `GoogleTranslateMethod` | Google Cloud Translation |
 | `LLMCoachedMethod` | Coached LLM (OpenRouter + ข้อมูล coaching) |
 | `APIMethod` | ไคลเอนต์ Remote API |
@@ -261,9 +265,9 @@ const result = await gemini.translate(
 | `validateTranslations` | Quality gate |
 | `loadCoachingData`, `findDictionaryMatches` | ยูทิลิตี้สำหรับ Coaching |
 
-### ส่วนขยายผู้ให้บริการแบบกำหนดเอง
+### การขยายผู้ให้บริการแบบกำหนดเอง (Custom Provider Extension)
 
-สืบทอดคลาส `DirectLLMMethod` เพื่อเพิ่มผู้ให้บริการ LLM รายใหม่ในโค้ดประมาณ 40 บรรทัด:
+ขยาย `DirectLLMMethod` เพื่อเพิ่มผู้ให้บริการ LLM รายใหม่ในความยาวประมาณ 40 บรรทัด:
 
 ```javascript
 import { DirectLLMMethod } from 'i18n-rosetta';
@@ -313,17 +317,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-คุณจะได้รับการแปล, coaching, การวนซ้ำเมื่อล้มเหลว (retry loops), การตรวจสอบโมเดล, ระดับคุณภาพ และความช่วยเหลือในการตั้งค่าฟรี มีเพียงรูปแบบของ HTTP request เท่านั้นที่เจาะจงตามผู้ให้บริการ สำหรับอะแดปเตอร์ที่ไม่ใช่ LLM ซึ่งใช้ `fetch()` ดิบๆ ให้ใช้ helper `fetchWithRetry()` ที่ใช้ร่วมกันจาก `lib/methods/fetch-with-retry.js` แทนการเขียน retry loop ของคุณเอง
+คุณจะได้รับการแปล, coaching, retry loops, การตรวจสอบโมเดล, ระดับคุณภาพ และความช่วยเหลือในการตั้งค่าให้ใช้งานได้ฟรี มีเพียงรูปแบบของ HTTP request เท่านั้นที่เจาะจงตามผู้ให้บริการ สำหรับอแดปเตอร์ที่ไม่ใช่ LLM ซึ่งใช้ `fetch()` แบบดิบ ให้ใช้ตัวช่วย `fetchWithRetry()` ที่แชร์ร่วมกันจาก `lib/methods/fetch-with-retry.js` แทนการเขียน retry loop ของคุณเอง
 
 ---
 
 ## ดูเพิ่มเติม
 
-- [ข้อมูลอ้างอิง CLI](/docs/reference/cli) — คำสั่งและ flag ทั้งหมด
-- [วิธีการแปล](/docs/guides/translation-methods) — การเลือกและผสมผสานวิธีการ
+- [ข้อมูลอ้างอิง CLI](/docs/reference/cli) — คำสั่งและแฟล็กทั้งหมด
+- [วิธีการแปล](/docs/guides/translation-methods) — การเลือกและการผสมผสานวิธีการ
 - [Translation Memory](/docs/concepts/translation-memory) — การแคชและการประหยัดค่าใช้จ่าย
 - [การทำงานร่วมกับนักแปลมืออาชีพ](/docs/guides/professional-translators) — เวิร์กโฟลว์ XLIFF
-- [ข้อกำหนดของปลั๊กอิน](/docs/reference/plugin-spec) — รูปแบบ manifest ของปลั๊กอิน method
-- [สถาปัตยกรรม](/docs/concepts/architecture) — วิธีการเชื่อมต่อส่วนต่างๆ
+- [ข้อกำหนดของปลั๊กอิน](/docs/reference/plugin-spec) — รูปแบบ manifest ของปลั๊กอินวิธีการ
+- [สถาปัตยกรรม](/docs/concepts/architecture) — วิธีที่ส่วนต่างๆ เชื่อมต่อกัน
 - [ภาษาที่รองรับ](/docs/reference/supported-languages) — การรองรับภาษาที่มีมาให้
-- [การทำงานของ Sync](/docs/concepts/how-sync-works) — ไปป์ไลน์การแปล
+- [การซิงค์ทำงานอย่างไร](/docs/concepts/how-sync-works) — ไปป์ไลน์การแปล
