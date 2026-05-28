@@ -40,9 +40,9 @@ Voer `i18n-rosetta <command> --help` uit voor gedetailleerde hulp bij elk comman
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
---json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 200)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -67,7 +67,7 @@ i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 
 **`--langs`-optie**: Kommagescheiden lijst van doeltaalcodes. Slaat de taalprompt over en past standaard register-presets toe voor elke taal. Combineer met `--yes` voor een volledig niet-interactieve installatie.
 
-**Taal-presets**: Wanneer u om doeltalen wordt gevraagd, kunt u de namen van presets typen:
+**Taal-presets**: Wanneer u wordt gevraagd naar de doeltalen, kunt u de namen van presets typen:
 - `european` → fr, de, es, it, pt, nl
 - `asian` → ja, zh, ko
 - `global` → fr, es, de, ja, zh, ko, pt, ar
@@ -79,7 +79,7 @@ Combineer presets met individuele codes: `european, ja` → fr, de, es, it, pt, 
 
 ## sync
 
-Vertaalt ontbrekende en verouderde sleutels in alle locale-bestanden. Voert standaard een post-sync verificatie uit.
+Vertaalt ontbrekende en verouderde sleutels (keys) in alle locale-bestanden. Voert standaard een post-sync verificatie uit.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
@@ -98,11 +98,11 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 
 **Translation Memory**: Standaard laadt `sync` `.rosetta/tm.json` en levert het gecachte vertalingen voor ongewijzigde bronwaarden. Gebruik `--no-tm` om de cache te omzeilen (handig bij het wisselen van vertaalproviders of het debuggen van kwaliteit). Zie [Translation Memory](/docs/concepts/translation-memory).
 
-**Wijzigingsdetectie**: rosetta slaat SHA-256 hashes op in `.i18n-rosetta.lock`. Wanneer bronwaarden veranderen, vertaalt de volgende synchronisatie deze sleutels automatisch opnieuw. Commit het lock-bestand zodat alle ontwikkelaars dezelfde basislijn delen.
+**Wijzigingsdetectie**: rosetta slaat SHA-256-hashes op in `.i18n-rosetta.lock`. Wanneer bronwaarden veranderen, vertaalt de volgende sync deze sleutels automatisch opnieuw. Commit het lock-bestand zodat alle ontwikkelaars dezelfde basislijn delen.
 
-**Parallellisme**: Zowel de vertaling van JSON-sleutels als de vertaling van content worden parallel uitgevoerd. JSON-locales worden gelijktijdig vertaald (standaard: 50 gelijktijdige locales), waarbij batches binnen elke locale ook parallel worden verwerkt (4 gelijktijdige batches). Contentvertaling (Markdown, MDX, blogposts) draait in een platte work-item pool (standaard: 12 gelijktijdige API-aanroepen). Overschrijf dit met `--json-concurrency`, `--content-concurrency` of `--concurrency` (stelt beide in).
+**Parallellisme**: Zowel de vertaling van JSON-sleutels als de contentvertaling worden parallel uitgevoerd. JSON-locales worden gelijktijdig vertaald (standaard: 200 gelijktijdige locales), waarbij batches binnen elke locale ook geparallelliseerd worden (4 gelijktijdige batches). Contentvertaling (Markdown, MDX, blogposts) draait in een platte work-item pool (standaard: 48 gelijktijdige API-aanroepen). Overschrijf dit met `--json-concurrency`, `--content-concurrency` of `--concurrency` (stelt beide in).
 
-**Uitvoer**: Sync toont een versiebanner, formaat-/frameworkdetectie, een kostenraming en voortgangsbalken per locale:
+**Uitvoer**: Sync toont een versiebanner, detectie van formaat/framework, een kostenraming en voortgangsbalken per locale:
 
 ```
 i18n-rosetta v3.3.1
@@ -118,13 +118,13 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-Voortgangsbalken worden ter plaatse bijgewerkt na elke batch (~80 sleutels). Gebruik `--quiet` voor uitsluitend fouten/waarschuwingen, of `--json` voor machineleesbare NDJSON-uitvoer. Beide onderdrukken de voortgangsbalk en de banner.
+Voortgangsbalken worden ter plekke bijgewerkt na elke batch (~80 sleutels). Gebruik `--quiet` voor uitsluitend fouten/waarschuwingen, of `--json` voor machinaal leesbare NDJSON-uitvoer. Beide onderdrukken de voortgangsbalk en de banner.
 
 ---
 
 ## watch
 
-Automatische synchronisatie wanneer het bron-locale-bestand verandert. Blijft draaien totdat het wordt onderbroken met `Ctrl+C`.
+Automatische synchronisatie wanneer het bron-locale-bestand wijzigt. Blijft draaien totdat het wordt onderbroken met `Ctrl+C`.
 
 ```bash
 i18n-rosetta watch
@@ -134,7 +134,7 @@ i18n-rosetta watch
 
 ## audit
 
-Toont een lijst van alle onvertaalde fallback-waarden met het voorvoegsel `[EN]` van eerdere uitvoeringen. Sluit af met code 1 als er waarden worden gevonden — gebruik dit als een CI-gate om builds met onvolledige vertalingen te laten falen.
+Toont een lijst van alle onvertaalde fallback-waarden met de prefix `[EN]` uit eerdere uitvoeringen. Sluit af met code 1 als er waarden worden gevonden — gebruik dit als een CI-gate om builds met onvolledige vertalingen te laten falen.
 
 ```bash
 i18n-rosetta audit
@@ -156,7 +156,7 @@ i18n-rosetta verify && echo "All good" # CI gate
 - Sleutelpariteit — alle bronsleutels zijn aanwezig in elk doelbestand
 - `[EN]` fallback-markeringen van eerdere uitvoeringen
 - Lege vertalingen
-- Script-naleving — niet-Latijnse locales dienen niet-ASCII-vertalingen te bevatten
+- Scriptnaleving — niet-Latijnse locales moeten niet-ASCII-vertalingen bevatten
 - Behoud van placeholders — ICU-placeholders komen overeen met de bron
 - Coderingsproblemen — BOM-markeringen, onzichtbare tekens
 - Bron-echo's — waarden die identiek zijn aan de bron (waarschuwing)
@@ -165,7 +165,7 @@ i18n-rosetta verify && echo "All good" # CI gate
 
 ## lint
 
-Scant de broncode op hardgecodeerde, gebruikersgerichte tekenreeksen die i18n-vertaalaanroepen zouden moeten gebruiken. Detecteert automatisch uw framework (next-intl, react-i18next, vue-i18n, Hugo).
+Scant de broncode op hardgecodeerde, gebruikersgerichte tekenreeksen (strings) die i18n-vertaalaanroepen zouden moeten gebruiken. Detecteert automatisch uw framework (next-intl, react-i18next, vue-i18n, Hugo).
 
 ```bash
 i18n-rosetta lint                    # exits 1 if issues found
@@ -176,17 +176,17 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 
 **Wat het detecteert:**
 - Hardgecodeerde tekenreeksen in JSX-tekst, `placeholder`, `alt`, `aria-label`, `title`
-- Bestanden met gebruikersgerichte content maar zonder i18n-framework import
+- Bestanden met gebruikersgerichte content maar zonder i18n-framework-import
 - Dode sleutels — locale-sleutels waarnaar geen enkel bronbestand verwijst
-- Dekkingsscore — percentage van tekenreeksen dat via i18n verloopt
+- Dekkingsscore — percentage van de tekenreeksen dat via i18n verloopt
 
-**Uitzonderingen**: Maak `.rosettaignore` aan in de hoofdmap van uw project (glob-patronen, zoals `.gitignore`).
+**Uitsluitingen**: Maak `.rosettaignore` aan in de root van uw project (glob-patronen, zoals `.gitignore`).
 
 ---
 
 ## wrap
 
-Plaatst hardgecodeerde tekenreeksen die zijn gedetecteerd door `lint` automatisch in `t()`-aanroepen. Maakt automatische back-ups voordat bestanden worden gewijzigd.
+Plaatst hardgecodeerde tekenreeksen die door `lint` zijn gedetecteerd automatisch in `t()`-aanroepen. Maakt automatische back-ups voordat bestanden worden gewijzigd.
 
 ```bash
 i18n-rosetta wrap                    # auto-wrap with backup
@@ -195,16 +195,16 @@ i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 ```
 
 **Veiligheidscontroles:**
-1. Git-clean controle (overgeslagen in dry-run)
+1. Git-clean-controle (overgeslagen in dry-run)
 2. Automatische back-up naar `.rosetta-backup/`
-3. Diff-voorbeeld voor elke bestandsschrijfactie
-4. `--undo`-ondersteuning om te herstellen vanuit een back-up
+3. Diff-voorbeeld voordat elk bestand wordt weggeschreven
+4. Ondersteuning voor `--undo` om te herstellen vanuit een back-up
 
 ---
 
 ## seo
 
-Genereer SEO-artefacten voor meertalige sites.
+Genereer SEO-artefacten voor meertalige websites.
 
 ```bash
 i18n-rosetta seo hreflang                                        # print hreflang tags
@@ -216,13 +216,13 @@ i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schem
 |------------|--------|
 | `hreflang` | `<link rel="alternate" hreflang>`-tags |
 | `sitemap` | Meertalige `sitemap.xml` |
-| `jsonld` | JSON-LD WebSite taalschema |
+| `jsonld` | JSON-LD WebSite-taalschema |
 
 ---
 
 ## integrity
 
-Detecteert corruptie en afwijkingen in vertaalde locale-bestanden.
+Detecteert corruptie en afwijkingen (drift) in vertaalde locale-bestanden.
 
 ```bash
 i18n-rosetta integrity               # exits 1 if issues found
@@ -230,11 +230,11 @@ i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
 **Wat het controleert:**
-- Corruptie van placeholders (bijv. `{name}` aanwezig in de bron maar ontbrekend in het doelbestand)
+- Placeholder-corruptie (bijv. `{name}` aanwezig in de bron, maar ontbreekt in het doelbestand)
 - Coderingsproblemen (mojibake, ongeldige Unicode)
-- Onvertaalde kopieën (doelwaarde identiek aan de bron)
-- Verweesde sleutels (sleutels in het doelbestand die niet bestaan in de bron)
-- Volledigheid van ICU MessageFormat meervoudscategorieën (bijv. Arabisch vereist 6 categorieën)
+- Onvertaalde kopieën (doelwaarde is identiek aan de bron)
+- Verweesde sleutels (sleutels in het doelbestand die niet in de bron bestaan)
+- Volledigheid van ICU MessageFormat meervoudscategorieën (bijv. Arabisch heeft 6 categorieën nodig)
 
 ---
 
@@ -251,15 +251,15 @@ i18n-rosetta tm clear --locale fr      # clear only French entries
 
 | Subcommando | Uitvoer |
 |------------|--------|
-| `stats` | Aantal vermeldingen, bestandsgrootte, uitsplitsing per locale |
-| `clear` | Verwijder cachebestand (volledig of per locale) |
+| `stats` | Aantal invoeren, bestandsgrootte, uitsplitsing per locale |
+| `clear` | Cachebestand verwijderen (volledig of per locale) |
 
 | Optie | Effect |
 |--------|--------|
-| `--locale <code>` | Wis alleen vermeldingen voor één locale |
-| `--yes` | Sla de bevestigingsprompt over |
+| `--locale <code>` | Wis alleen de invoeren voor één locale |
+| `--yes` | Bevestigingsprompt overslaan |
 
-Zie [Translation Memory](/docs/concepts/translation-memory) voor hoe TM werkt en wanneer u deze moet wissen.
+Zie [Translation Memory](/docs/concepts/translation-memory) voor informatie over hoe TM werkt en wanneer u deze moet wissen.
 
 ---
 
@@ -283,7 +283,7 @@ i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 |--------|--------|
 | `--locale <code>` | Doel-locale voor export (vereist) |
 | `--out <path>` | Aangepast uitvoerpad of map |
-| `--dry` | Voorbeeld van import zonder te schrijven |
+| `--dry` | Voorbeeld van import bekijken zonder weg te schrijven |
 
 Zie [Werken met professionele vertalers](/docs/guides/professional-translators) voor de volledige workflow.
 
@@ -291,7 +291,7 @@ Zie [Werken met professionele vertalers](/docs/guides/professional-translators) 
 
 ## status
 
-Toon de configuratie van paren, geïnstalleerde plug-ins, kwaliteitsniveaus en benchmarkscores.
+Toon de configuratie van talenparen, geïnstalleerde plug-ins, kwaliteitsniveaus en benchmarkscores.
 
 ```bash
 i18n-rosetta status
@@ -311,7 +311,7 @@ i18n-rosetta provenance
 
 ## plugin
 
-Beheer plug-ins voor vertaalmethoden. Plug-ins zijn vooraf verpakte vertaalrecepten die zijn geïnstalleerd in `.rosetta/methods/`.
+Beheer plug-ins voor vertaalmethoden. Plug-ins zijn vooraf verpakte vertaalrecepten die worden geïnstalleerd in `.rosetta/methods/`.
 
 ```bash
 i18n-rosetta plugin list                      # show installed plugins
@@ -319,7 +319,7 @@ i18n-rosetta plugin install ./my-method/      # install from local directory
 i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 ```
 
-Zie [Plug-in specificatie](/docs/reference/plugin-spec) voor het formaat van het plug-in manifest.
+Zie [Plug-in-specificatie](/docs/reference/plugin-spec) voor het formaat van het plug-in-manifest.
 
 ---
 
@@ -337,12 +337,12 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 | Subcommando | Uitvoer |
 |------------|--------|
 | `list` | Toont welke PUA-fonts nodig zijn en hun installatiestatus |
-| `install` | Downloadt fonts voor geconfigureerde talen |
+| `install` | Downloadt fonts voor de geconfigureerde talen |
 
 | Optie | Effect |
 |--------|--------|
-| `--dir <path>` | Overschrijf de font-uitvoermap (automatisch gedetecteerd op basis van projecttype) |
-| `--css` | Genereer een `conlang-fonts.css`-fragment naast de fonts |
+| `--dir <path>` | Overschrijf de uitvoermap voor fonts (automatisch gedetecteerd op basis van het projecttype) |
+| `--css` | Genereer een `conlang-fonts.css`-snippet naast de fonts |
 | `--config <path>` | Pad naar het configuratiebestand (gebruikt om te detecteren welke talen fonts nodig hebben) |
 
 **Automatische detectie:** De uitvoermap wordt afgeleid uit uw projectstructuur:
@@ -350,13 +350,13 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 - **Hugo** → `static/fonts/`
 - **Standaard** → `public/fonts/`
 
-**Native Unicode-converters** (`crk` → Cree Syllabics, `sr` → Servisch Cyrillisch) vereisen GEEN font-installatie.
+**Native Unicode-converters** (`crk` → Cree-syllabenschrift, `sr` → Servisch Cyrillisch) vereisen GEEN font-installatie.
 
 Zie [Kunsttalen, scripts & orthografie](/docs/guides/conlangs-scripts-orthography) voor volledige details over PUA-fonts.
 
-## Drielagen-pijplijn
+## Drielaagse pijplijn
 
-Gebruik `lint`, `sync` en `audit` samen voor een waterdichte i18n:
+Gebruik `lint`, `sync` en `audit` samen voor waterdichte i18n:
 
 ```json title="package.json"
 {
@@ -369,7 +369,7 @@ Gebruik `lint`, `sync` en `audit` samen voor een waterdichte i18n:
 ```
 
 | Laag | Commando | Wanneer | Doel |
-|-------|---------|---------|------|
+|-------|---------|------|---------|
 | **Lint** | `lint` | Pre-commit | Blokkeer commits met hardgecodeerde tekenreeksen |
 | **Sync** | `sync` | Post-commit / CI | Vertaal ontbrekende en gewijzigde sleutels |
 | **Verify** | `verify` | Post-sync / CI | Bevestig dat vertalingen aanwezig en correct zijn |
@@ -380,10 +380,10 @@ Gebruik `lint`, `sync` en `audit` samen voor een waterdichte i18n:
 ## Zie ook
 
 - [Configuratie](/docs/getting-started/configuration) — referentie voor het configuratiebestand
-- [Vertaalmethoden](/docs/guides/translation-methods) — methodeselectie per paar
+- [Vertaalmethoden](/docs/guides/translation-methods) — methodeselectie per talenpaar
 - [Translation Memory](/docs/concepts/translation-memory) — caching en kostenbesparingen
 - [Werken met professionele vertalers](/docs/guides/professional-translators) — XLIFF-workflow
-- [Plug-in specificatie](/docs/reference/plugin-spec) — formaat van het plug-in manifest
+- [Plug-in-specificatie](/docs/reference/plugin-spec) — formaat van het plug-in-manifest
 - [CI/CD-gids](/docs/guides/ci-cd) — CLI-commando's automatiseren in uw pijplijn
 - [Hoe Sync werkt](/docs/concepts/how-sync-works) — de sync-pijplijn begrijpen
 - [Quality Gate](/docs/concepts/quality-gate) — hoe vertalingen worden gevalideerd

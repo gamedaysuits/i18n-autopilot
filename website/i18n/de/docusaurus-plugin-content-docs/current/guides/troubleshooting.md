@@ -32,7 +32,7 @@ Ihr API-Schlüssel ist ungültig oder abgelaufen. Überprüfen Sie ihn unter [op
 
 ### "429 Too Many Requests" / Ratenbegrenzung
 
-Rosetta behandelt Ratenbegrenzungen intern mit einem exponentiellen Backoff. Wenn Sie wiederholt an Ratenbegrenzungen stoßen:
+Rosetta behandelt Ratenbegrenzungen intern mit einem exponentiellen Backoff. Wenn Sie regelmäßig an Ratenbegrenzungen stoßen:
 
 1. **Reduzieren Sie die Stapelgröße** in Ihrer Konfiguration:
    ```json
@@ -75,12 +75,12 @@ Anbieter mustern Modellnamen regelmäßig aus. Wenn Übersetzungen nach einem An
 
 ## Übersetzungsqualität
 
-### Übersetzungen spiegeln die Ausgangssprache wider
+### Übersetzungen geben die Ausgangssprache unverändert wieder
 
 Das Quality Gate fängt dies ab. Wenn eine Übersetzung mit der englischen Quelle identisch ist, wird sie abgelehnt und erneut versucht. Wenn das Problem weiterhin besteht:
 
-1. **Überprüfen Sie das Modell** — Einige Modelle schneiden bei bestimmten Sprachpaaren schlecht ab
-2. **Fügen Sie Register-Anweisungen hinzu** — Teilen Sie dem Modell mit, welche Sprache es erzeugen soll:
+1. **Überprüfen Sie das Modell** — Einige Modelle erzielen bei bestimmten Sprachpaaren schlechte Ergebnisse
+2. **Fügen Sie Anweisungen zum Sprachregister hinzu** — Teilen Sie dem Modell mit, welche Sprache es erzeugen soll:
    ```json
    {
      "languages": {
@@ -92,9 +92,9 @@ Das Quality Gate fängt dies ab. Wenn eine Übersetzung mit der englischen Quell
 
 ### Falsche Schriftausgabe (z. B. lateinischer Text für Japanisch)
 
-Die Überprüfung der Schriftkonformität des Quality Gates fängt die meisten Fälle ab. Wenn das Problem weiterhin besteht:
+Die Überprüfung der Schriftkonformität durch das Quality Gate fängt die meisten Fälle ab. Wenn das Problem weiterhin besteht:
 
-- Stellen Sie sicher, dass der Gebietsschema-Code (Locale-Code) korrekt ist (`ja`, nicht `jp`)
+- Stellen Sie sicher, dass der Gebietsschema-Code korrekt ist (`ja`, nicht `jp`)
 - Fügen Sie explizite Schriftanweisungen im Feld `register` hinzu:
   ```json
   { "register": "Japanese using hiragana, katakana, and kanji" }
@@ -102,26 +102,26 @@ Die Überprüfung der Schriftkonformität des Quality Gates fängt die meisten F
 
 ### Halluzinationsmuster in der Ausgabe
 
-Wiederholte Trigramm-Muster (z. B. "hallo hallo hallo") werden vom Detektor für Halluzinationsschleifen erfasst. Wenn die Ausgabe fehlerhaft ist, aber den Detektor passiert:
+Wiederholte Trigramm-Muster (z. B. "hallo hallo hallo") werden vom Detektor für Halluzinationsschleifen erfasst. Wenn die Ausgabe fehlerhaft ist, den Detektor aber passiert:
 
 1. **Reduzieren Sie die Stapelgröße** — Kleinere Stapel erzeugen fokussiertere Ausgaben
 2. **Verwenden Sie ein leistungsstärkeres Modell** — Größere Modelle halluzinieren bei nicht-lateinischen Schriften weniger
-3. **Fügen Sie Trainingsdaten (Coaching Data) hinzu** — Wörterbuchbegriffe verankern die Übersetzung
+3. **Fügen Sie Trainingsdaten hinzu** — Wörterbuchbegriffe verankern die Übersetzung
 
-## Datei- & Formatprobleme
+## Datei- und Formatprobleme
 
 ### "No locale files found"
 
-Rosetta erkennt Gebietsschema-Dateien (Locale-Dateien) automatisch. Wenn diese nicht gefunden werden können:
+Rosetta erkennt Gebietsschema-Dateien automatisch. Wenn diese nicht gefunden werden können:
 
-1. **Überprüfen Sie `localesDir`** — Muss auf das Verzeichnis verweisen, das die Locale-Dateien enthält:
+1. **Überprüfen Sie `localesDir`** — Muss auf das Verzeichnis verweisen, das die Gebietsschema-Dateien enthält:
    ```json
    { "localesDir": "./locales" }
    ```
-2. **Überprüfen Sie die Dateibenennung** — Dateien müssen nach dem Locale-Code benannt sein: `en.json`, `fr.json` usw.
+2. **Überprüfen Sie die Dateibenennung** — Dateien müssen nach dem Gebietsschema-Code benannt sein: `en.json`, `fr.json` usw.
 3. **Überprüfen Sie das Format** — Unterstützte Formate: JSON, verschachteltes JSON, YAML, TOML
 
-### Konflikte mit der Sperrdatei (Lock File)
+### Konflikte mit der Sperrdatei
 
 Wenn `.i18n-rosetta.lock` in einen fehlerhaften Zustand gerät:
 
@@ -147,13 +147,13 @@ npx i18n-rosetta sync --force-keys "hero.title"
 npx i18n-rosetta sync --force-keys "nav.home,nav.about,footer.copyright"
 ```
 
-Das Flag `--force-keys` überschreibt die Hash-Prüfung der Sperrdatei für diese spezifischen Schlüssel und erzwingt eine Neuübersetzung, ohne andere Schlüssel zu beeinträchtigen.
+Das Flag `--force-keys` überschreibt die Hash-Überprüfung der Sperrdatei für diese spezifischen Schlüssel und erzwingt eine Neuübersetzung, ohne andere Schlüssel zu beeinträchtigen.
 
 ### Inhaltsübersetzung beschädigt Codeblöcke
 
 Dies sollte nicht passieren — Codeblöcke werden vor der Übersetzung abgeschirmt. Falls es dennoch auftritt:
 
-1. Stellen Sie sicher, dass der Codeblock die Standard-Begrenzung (drei Backticks) verwendet
+1. Stellen Sie sicher, dass der Codeblock die Standard-Begrenzung (dreifache Backticks) verwendet
 2. Suchen Sie nach nicht geschlossenen Codeblöcken im Quell-Markdown
 3. Erstellen Sie ein Issue — dies ist ein Fehler im Sentinel-Abschirmsystem
 
@@ -163,7 +163,7 @@ Dies sollte nicht passieren — Codeblöcke werden vor der Übersetzung abgeschi
 
 Die Dateiüberwachung verwendet das native `fs.watch` von Node.js. Bekannte Probleme:
 
-- **Netzlaufwerke** — `fs.watch` funktioniert auf NFS/SMB-Freigaben nicht zuverlässig
+- **Netzwerklaufwerke** — `fs.watch` funktioniert auf NFS/SMB-Freigaben nicht zuverlässig
 - **Docker-Volumes** — Verwenden Sie den Polling-Modus oder führen Sie rosetta innerhalb des Containers aus
 - **Große Verzeichnisse** — Der Watcher überwacht `localesDir` rekursiv; sehr tiefe Verzeichnisbäume können die Limits des Betriebssystems überschreiten
 
@@ -192,7 +192,7 @@ Rosetta übersetzt standardmäßig alle Gebietsschemata parallel. Wenn die Synch
    ```json
    { "batchSize": 120 }
    ```
-3. **Passen Sie die Nebenläufigkeit (Concurrency) an** — Die Parallelität für JSON-Locales ist standardmäßig auf 50 und für Inhalte auf 12 eingestellt. Wenn Ihr API-Anbieter höhere Ratenbegrenzungen unterstützt:
+3. **Passen Sie die Nebenläufigkeit an** — Die Parallelität für JSON-Gebietsschemata ist standardmäßig auf 200 und für Inhalte auf 48 eingestellt. Wenn Ihr API-Anbieter höhere Ratenbegrenzungen unterstützt:
    ```bash
    npx i18n-rosetta sync --json-concurrency 80 --content-concurrency 20
    ```
@@ -201,7 +201,7 @@ Rosetta übersetzt standardmäßig alle Gebietsschemata parallel. Wenn die Synch
 ### Hohe API-Kosten
 
 - **Überprüfen Sie die Stapelgrößen** — Größere Stapel = weniger API-Aufrufe = geringere Kosten
-- **Verwenden Sie Translation Memory (Übersetzungsspeicher)** — TM ist standardmäßig aktiviert. Führen Sie `i18n-rosetta tm stats` aus, um zu überprüfen, ob es funktioniert. Wenn Sie nach mehreren Synchronisierungen 0 Einträge sehen, stimmt möglicherweise etwas mit den Berechtigungen Ihres `.rosetta/`-Verzeichnisses nicht
+- **Verwenden Sie Translation Memory** — TM ist standardmäßig aktiviert. Führen Sie `i18n-rosetta tm stats` aus, um zu überprüfen, ob es funktioniert. Wenn Sie nach mehreren Synchronisierungen 0 Einträge sehen, stimmt möglicherweise etwas mit den Berechtigungen Ihres `.rosetta/`-Verzeichnisses nicht
 - **Verwenden Sie Prompt-Caching** — Rosetta teilt System-/Benutzernachrichten auf, um Cache-Treffer bei Anthropic- und Google-Modellen zu erzielen
 - **Verwenden Sie Google Translate für Tier-2-Sprachen** — Siehe das Kochbuch [30 Sprachen übersetzen](/docs/tutorials/translate-30-languages)
 
@@ -218,9 +218,9 @@ i18n-rosetta tm clear --yes
 i18n-rosetta sync
 ```
 
-Siehe [Translation Memory](/docs/concepts/translation-memory) für Details zum Design der Cache-Schlüssel.
+Weitere Details zum Design der Cache-Schlüssel finden Sie unter [Translation Memory](/docs/concepts/translation-memory).
 
-## Immer noch Probleme?
+## Kommen Sie nicht weiter?
 
 - **[GitHub Issues](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Durchsuchen Sie bestehende Issues oder erstellen Sie ein neues
 - **[Architektur-Dokumentation](/docs/concepts/architecture)** — Verstehen Sie das Systemdesign

@@ -40,9 +40,9 @@ Execute `i18n-rosetta <command> --help` para obter ajuda detalhada sobre qualque
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
---json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 200)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -56,7 +56,7 @@ Execute `i18n-rosetta <command> --help` para obter ajuda detalhada sobre qualque
 
 ## init
 
-Assistente de configuração interativo que cria o `i18n-rosetta.config.json`. Orienta sobre o idioma de origem, idiomas de destino, formato de arquivo e modelo de tradução.
+Assistente de configuração interativo que cria o `i18n-rosetta.config.json`. Orienta sobre a localidade de origem, idiomas de destino, formato de arquivo e modelo de tradução.
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -67,7 +67,7 @@ i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 
 **Opção `--langs`**: Lista separada por vírgulas de códigos de idiomas de destino. Ignora o prompt de idioma e aplica as predefinições de registro padrão para cada idioma. Combine com `--yes` para uma configuração totalmente não interativa.
 
-**Predefinições de idioma**: Quando solicitado a informar os idiomas de destino, você pode digitar nomes de predefinições:
+**Predefinições de idioma**: Quando solicitado pelos idiomas de destino, você pode digitar os nomes das predefinições:
 - `european` → fr, de, es, it, pt, nl
 - `asian` → ja, zh, ko
 - `global` → fr, es, de, ja, zh, ko, pt, ar
@@ -96,13 +96,13 @@ i18n-rosetta sync --no-verify                        # skip post-sync verificati
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**Memória de Tradução**: Por padrão, o `sync` carrega o `.rosetta/tm.json` e fornece traduções em cache para valores de origem inalterados. Use `--no-tm` para ignorar o cache (útil ao trocar de provedor de tradução ou depurar qualidade). Consulte [Memória de Tradução](/docs/concepts/translation-memory).
+**Memória de Tradução**: Por padrão, o `sync` carrega o `.rosetta/tm.json` e fornece traduções em cache para valores de origem inalterados. Use `--no-tm` para ignorar o cache (útil ao trocar de provedores de tradução ou depurar a qualidade). Consulte [Memória de Tradução](/docs/concepts/translation-memory).
 
-**Detecção de alterações**: O rosetta armazena hashes SHA-256 no `.i18n-rosetta.lock`. Quando os valores de origem mudam, a próxima sincronização retraduz automaticamente essas chaves. Faça o commit do arquivo de bloqueio (lock file) para que todos os desenvolvedores compartilhem a mesma base.
+**Detecção de alterações**: O rosetta armazena hashes SHA-256 no `.i18n-rosetta.lock`. Quando os valores de origem mudam, a próxima sincronização retraduz automaticamente essas chaves. Faça o commit do arquivo de bloqueio (lock file) para que todos os desenvolvedores compartilhem a linha de base.
 
-**Paralelismo**: Tanto a tradução de chaves JSON quanto a tradução de conteúdo são executadas em paralelo. As localidades JSON são traduzidas simultaneamente (padrão: 50 localidades simultâneas), com lotes dentro de cada localidade também paralelizados (4 lotes simultâneos). A tradução de conteúdo (Markdown, MDX, postagens de blog) é executada em um pool de itens de trabalho plano (padrão: 12 chamadas de API simultâneas). Substitua com `--json-concurrency`, `--content-concurrency` ou `--concurrency` (define ambos).
+**Paralelismo**: Tanto a tradução de chaves JSON quanto a tradução de conteúdo são executadas em paralelo. As localidades JSON são traduzidas simultaneamente (padrão: 200 localidades simultâneas), com lotes dentro de cada localidade também paralelizados (4 lotes simultâneos). A tradução de conteúdo (Markdown, MDX, postagens de blog) é executada em um pool de itens de trabalho plano (padrão: 48 chamadas de API simultâneas). Substitua com `--json-concurrency`, `--content-concurrency` ou `--concurrency` (define ambos).
 
-**Saída**: A sincronização exibe um banner de versão, detecção de formato/framework, estimativa de custo e barras de progresso por localidade:
+**Saída**: O sync exibe um banner de versão, detecção de formato/framework, estimativa de custo e barras de progresso por localidade:
 
 ```
 i18n-rosetta v3.3.1
@@ -118,13 +118,13 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-As barras de progresso são atualizadas no local após cada lote (~80 chaves). Use `--quiet` apenas para erros/avisos ou `--json` para saída NDJSON legível por máquina. Ambos suprimem a barra de progresso e o banner.
+As barras de progresso são atualizadas no local após cada lote (~80 chaves). Use `--quiet` apenas para erros/avisos, ou `--json` para saída NDJSON legível por máquina. Ambos suprimem a barra de progresso e o banner.
 
 ---
 
 ## watch
 
-Sincronização automática quando o arquivo de localidade de origem é alterado. Executa até ser interrompido com `Ctrl+C`.
+Sincronização automática quando o arquivo de localidade de origem é alterado. É executado até ser interrompido com `Ctrl+C`.
 
 ```bash
 i18n-rosetta watch
@@ -144,7 +144,7 @@ i18n-rosetta audit
 
 ## verify
 
-Relê todos os arquivos de localidade do disco e verifica se as traduções estão realmente presentes e corretas. Esta é a mesma verificação que é executada automaticamente no final de cada `sync` (a menos que `--no-verify` seja passado).
+Lê novamente todos os arquivos de localidade do disco e verifica se as traduções estão realmente presentes e corretas. Esta é a mesma verificação executada automaticamente no final de cada `sync` (a menos que `--no-verify` seja passado).
 
 ```bash
 i18n-rosetta verify                    # verify all locale files
@@ -165,7 +165,7 @@ i18n-rosetta verify && echo "All good" # CI gate
 
 ## lint
 
-Verifica o código-fonte em busca de strings fixas (hardcoded) voltadas para o usuário que deveriam usar chamadas de tradução i18n. Detecta automaticamente seu framework (next-intl, react-i18next, vue-i18n, Hugo).
+Verifica o código-fonte em busca de strings hardcoded voltadas para o usuário que deveriam usar chamadas de tradução i18n. Detecta automaticamente seu framework (next-intl, react-i18next, vue-i18n, Hugo).
 
 ```bash
 i18n-rosetta lint                    # exits 1 if issues found
@@ -175,10 +175,10 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 ```
 
 **O que ele detecta:**
-- Strings fixas em texto JSX, `placeholder`, `alt`, `aria-label`, `title`
-- Arquivos com conteúdo voltado para o usuário, mas sem importação do framework i18n
+- Strings hardcoded em texto JSX, `placeholder`, `alt`, `aria-label`, `title`
+- Arquivos com conteúdo voltado para o usuário, mas sem importação de framework i18n
 - Chaves mortas — chaves de localidade que nenhum arquivo de origem faz referência
-- Pontuação de cobertura — porcentagem de strings que passam pelo i18n
+- Pontuação de cobertura — porcentagem de strings passando pelo i18n
 
 **Exclusões**: Crie o `.rosettaignore` na raiz do seu projeto (padrões glob, como `.gitignore`).
 
@@ -186,7 +186,7 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 
 ## wrap
 
-Envolve automaticamente as strings fixas detectadas pelo `lint` em chamadas `t()`. Cria backups automáticos antes de modificar os arquivos.
+Envolve automaticamente as strings hardcoded detectadas pelo `lint` em chamadas `t()`. Cria backups automáticos antes de modificar os arquivos.
 
 ```bash
 i18n-rosetta wrap                    # auto-wrap with backup
@@ -194,8 +194,8 @@ i18n-rosetta wrap --dry              # preview wrapping changes
 i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 ```
 
-**Garantias de segurança:**
-1. Verificação de git-clean (ignorada em dry-run)
+**Portões de segurança:**
+1. Verificação Git-clean (ignorada em dry-run)
 2. Backup automático para `.rosetta-backup/`
 3. Visualização de diff antes de cada gravação de arquivo
 4. Suporte a `--undo` para restaurar a partir do backup
@@ -213,7 +213,7 @@ i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schem
 ```
 
 | Subcomando | Saída |
-|------------|-------|
+|------------|--------|
 | `hreflang` | Tags `<link rel="alternate" hreflang>` |
 | `sitemap` | `sitemap.xml` multilíngue |
 | `jsonld` | Esquema de idioma JSON-LD WebSite |
@@ -222,7 +222,7 @@ i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schem
 
 ## integrity
 
-Detecta corrupção e desvios (drift) nos arquivos de localidade traduzidos.
+Detecta corrupção e desvios nos arquivos de localidade traduzidos.
 
 ```bash
 i18n-rosetta integrity               # exits 1 if issues found
@@ -230,11 +230,11 @@ i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
 **O que ele verifica:**
-- Corrupção de placeholder (ex: `{name}` presente na origem, mas ausente no destino)
+- Corrupção de placeholders (ex., `{name}` presente na origem, mas ausente no destino)
 - Problemas de codificação (mojibake, Unicode inválido)
 - Cópias não traduzidas (valor de destino idêntico à origem)
 - Chaves órfãs (chaves no destino que não existem na origem)
-- Integridade da categoria de plural do ICU MessageFormat (ex: o árabe precisa de 6 categorias)
+- Integridade da categoria de plural do ICU MessageFormat (ex., o árabe precisa de 6 categorias)
 
 ---
 
@@ -250,7 +250,7 @@ i18n-rosetta tm clear --locale fr      # clear only French entries
 ```
 
 | Subcomando | Saída |
-|------------|-------|
+|------------|--------|
 | `stats` | Contagem de entradas, tamanho do arquivo, detalhamento por localidade |
 | `clear` | Exclui o arquivo de cache (completo ou por localidade) |
 
@@ -275,7 +275,7 @@ i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 ```
 
 | Subcomando | Saída |
-|------------|-------|
+|------------|--------|
 | `export` | Gera `.xliff` a partir dos arquivos de localidade de origem + destino |
 | `import` | Mescla as traduções revisadas do `.xliff` nos arquivos de localidade |
 
@@ -319,13 +319,13 @@ i18n-rosetta plugin install ./my-method/      # install from local directory
 i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 ```
 
-Consulte [Especificação de Plugin](/docs/reference/plugin-spec) para ver o formato do manifesto do plugin.
+Consulte a [Especificação de Plugin](/docs/reference/plugin-spec) para ver o formato do manifesto do plugin.
 
 ---
 
 ## fonts
 
-Baixa e gerencia fontes da web PUA para conversores de script de idiomas construídos. Idiomas que usam caracteres da Área de Uso Privado (Klingon, Sindarin, Kryptoniano) precisam de fontes da web personalizadas para renderizar seus scripts. Este comando as baixa de repositórios de código aberto verificados.
+Baixa e gerencia fontes da web PUA para conversores de scripts de idiomas construídos. Idiomas que usam caracteres da Área de Uso Privado (Private Use Area - Klingon, Sindarin, Kryptoniano) precisam de fontes da web personalizadas para renderizar seus scripts. Este comando as baixa de repositórios de código aberto verificados.
 
 ```bash
 i18n-rosetta fonts list                           # show needed fonts
@@ -335,7 +335,7 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 ```
 
 | Subcomando | Saída |
-|------------|-------|
+|------------|--------|
 | `list` | Mostra quais fontes PUA são necessárias e seu status de instalação |
 | `install` | Baixa fontes para os idiomas configurados |
 
@@ -350,9 +350,9 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 - **Hugo** → `static/fonts/`
 - **Padrão** → `public/fonts/`
 
-**Conversores Unicode nativos** (`crk` → Silabário Cree, `sr` → Cirílico Sérvio) NÃO requerem instalação de fontes.
+**Conversores Unicode nativos** (`crk` → Silabário Cree, `sr` → Cirílico Sérvio) NÃO exigem a instalação de fontes.
 
-Consulte [Conlangs, Scripts e Ortografia](/docs/guides/conlangs-scripts-orthography) para obter detalhes completos sobre fontes PUA.
+Consulte [Conlangs, Scripts e Ortografia](/docs/guides/conlangs-scripts-orthography) para obter todos os detalhes sobre fontes PUA.
 
 ## Pipeline de Três Camadas
 
@@ -369,11 +369,11 @@ Use `lint`, `sync` e `audit` juntos para um i18n à prova de falhas:
 ```
 
 | Camada | Comando | Quando | Propósito |
-|--------|---------|--------|-----------|
-| **Lint** | `lint` | Pré-commit | Bloqueia commits com strings fixas |
+|-------|---------|------|---------|
+| **Lint** | `lint` | Pré-commit | Bloqueia commits com strings hardcoded |
 | **Sync** | `sync` | Pós-commit / CI | Traduz chaves ausentes e alteradas |
 | **Verify** | `verify` | Pós-sync / CI | Confirma se as traduções estão presentes e corretas |
-| **Audit** | `audit` | Etapa de build | Falha o deploy se alguma localidade tiver marcadores `[EN]` |
+| **Audit** | `audit` | Etapa de build | Falha a implantação se alguma localidade tiver marcadores `[EN]` |
 
 ---
 
@@ -386,4 +386,4 @@ Use `lint`, `sync` e `audit` juntos para um i18n à prova de falhas:
 - [Especificação de Plugin](/docs/reference/plugin-spec) — formato do manifesto do plugin
 - [Guia de CI/CD](/docs/guides/ci-cd) — automatizando comandos da CLI no seu pipeline
 - [Como o Sync Funciona](/docs/concepts/how-sync-works) — entendendo o pipeline de sincronização
-- [Portão de Qualidade (Quality Gate)](/docs/concepts/quality-gate) — como as traduções são validadas
+- [Portão de Qualidade](/docs/concepts/quality-gate) — como as traduções são validadas

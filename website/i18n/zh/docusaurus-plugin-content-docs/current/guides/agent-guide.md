@@ -1,14 +1,14 @@
 ---
 sidebar_position: 9
 title: "Agent 指南：使用 i18n-rosetta"
-description: "AI agent 如何安装、配置和运行 i18n-rosetta 以翻译本地化文件。"
+description: "AI agent 如何安装、配置并运行 i18n-rosetta 以翻译本地化文件。"
 ---
 # 智能体指南：使用 i18n-rosetta
 
 i18n-rosetta 是一个只需一条命令即可翻译应用本地化文件的 CLI 工具。本指南专为希望快速从零开始完成本地化文件翻译的 AI 智能体（或与 AI 智能体协作的开发者）编写。
 
-:::tip 已经很熟悉了？
-如果你只需要命令，请直接查看 [CLI 参考](/docs/reference/cli)。如果你想构建并基准测试某种翻译方法，请参阅 [Arena 智能体指南](https://mtevalarena.org/docs/getting-started/agent-guide)。
+:::tip 已经熟悉了？
+如果你只需要命令，请跳转至 [CLI 参考](/docs/reference/cli)。如果你想构建并基准测试某种翻译方法，请参阅 [Arena 智能体指南](https://mtevalarena.org/docs/getting-started/agent-guide)。
 :::
 
 ---
@@ -22,9 +22,9 @@ npx i18n-rosetta sync
 
 **要求：**
 - Node.js 18+
-- 翻译提供商的 API 密钥
+- 翻译服务提供商的 API 密钥
 
-**API 密钥设置** — 根据你使用的翻译方法，rosetta 至少需要一个密钥：
+**API 密钥设置** —— 根据你使用的翻译方法，rosetta 至少需要一个密钥：
 
 ```bash
 # Option 1: export (session only)
@@ -50,14 +50,14 @@ npx i18n-rosetta sync
 **执行过程：**
 1. 加载 `i18n-rosetta.config.json`（或自动检测设置）
 2. 扫描源本地化文件，展平嵌套键
-3. 与 `.i18n-rosetta.lock`（先前翻译值的 SHA-256 哈希）进行比对
+3. 与 `.i18n-rosetta.lock`（先前已翻译值的 SHA-256 哈希）进行比对
 4. 检查 `.rosetta/tm.json` 中的缓存翻译（翻译记忆库）
 5. 通过配置的方法仅翻译**已更改、缺失或过期的键**
-6. 对每条翻译运行质量关卡（5 项检查）
+6. 对每条翻译运行质量门禁（5 项检查）
 7. 将通过检查的翻译写入目标本地化文件
 8. 更新锁文件和 TM 缓存
 
-在修改一个键后的典型重新运行中，第 4 步会从缓存提供 142 个键，第 5 步仅翻译 1 个键。这就是后续同步既快又省钱的原因。
+在修改一个键后的典型重新运行中，第 4 步会从缓存中提供 142 个键，第 5 步仅翻译 1 个键。这就是后续同步既快又省钱的原因。
 
 ---
 
@@ -81,12 +81,12 @@ npx i18n-rosetta sync
 | 字段 | 用途 | 默认值 |
 |-------|---------|---------|
 | `inputLocale` | 源语言 | `en` |
-| `pairs` | 源语言→目标语言的映射及方法配置 | (必填) |
-| `localesDir` | 本地化文件所在位置 | (自动检测) |
+| `pairs` | 包含方法配置的源语言→目标语言映射 | (必填) |
+| `localesDir` | 本地化文件存放位置 | (自动检测) |
 | `model` | 用于 `llm`/`llm-coached` 方法的 LLM 模型 | `google/gemini-2.5-flash` |
 | `batchSize` | 每次 API 调用的键数量 | 80 (LLM), 128 (Google) |
-| `jsonConcurrency` | JSON 键的并行本地化翻译数 | 50 |
-| `contentConcurrency` | 内容翻译的并行 API 调用数 | 12 |
+| `jsonConcurrency` | JSON 键的并行本地化翻译数 | 200 |
+| `contentConcurrency` | 内容翻译的并行 API 调用数 | 48 |
 
 完整参考：[配置](/docs/getting-started/configuration)
 
@@ -94,7 +94,7 @@ npx i18n-rosetta sync
 
 ## 翻译方法
 
-| 方法 | 适用场景 | 成本 | 需要 API 密钥 |
+| 方法 | 适用场景 | 成本 | 所需 API 密钥 |
 |--------|------------|------|---------------|
 | **`llm`** | 通用，适合资源丰富的语言 | 按 Token 计费（取决于模型） | `OPENROUTER_API_KEY` |
 | **`llm-coached`** | 当你有目标语言的语法规则/词典时 | 按 Token 计费 + 辅导上下文 | `OPENROUTER_API_KEY` |
@@ -130,40 +130,40 @@ npx i18n-rosetta sync
 "en-fr": { "method": "llm-coached", "coachingFile": "coaching/fr.json" }
 ```
 
-质量关卡会验证词典术语是否确实出现在输出中——违规情况将记录为 `[TERM]` 警告。
+质量门禁会验证词典术语是否确实出现在输出中——违规情况会被记录为 `[TERM]` 警告。
 
 详情：[辅导数据](/docs/concepts/coaching-data)
 
 ---
 
-## 质量关卡
+## 质量门禁
 
 每条翻译在写入磁盘前都会经过五项自动检查：
 
 | 检查项 | 捕获内容 | 示例 |
 |-------|----------------|---------|
 | **空/空白** | 模型未返回任何内容 | `""` |
-| **源文回显** | 模型原样返回了英文输入 | 日语返回 `"Welcome"` |
+| **原文复读** | 模型原样返回了输入的英文 | 日语翻译返回 `"Welcome"` |
 | **幻觉循环** | 重复的三元组 (trigrams) | `"Qo' Qo' Qo' Qo'"` |
-| **长度膨胀** | 输出比源文长 4 倍以上 | 10 字符源文 → 50 字符输出 |
-| **书写系统合规** | 本地化语言的书写系统错误 | 阿拉伯语本地化返回拉丁文本 |
+| **长度膨胀** | 输出比原文长 4 倍以上 | 10 字符原文 → 50 字符输出 |
+| **书写系统合规** | 语言区域的书写系统错误 | 阿拉伯语区域出现拉丁文本 |
 
-失败项会以 `[GATE]` 前缀记录。没有静默回退——如果翻译失败，它会被报告，而不是被悄悄接受。
+失败项会以 `[GATE]` 前缀记录。没有静默回退机制——如果翻译失败，它会被报告，而不是被悄悄接受。
 
-详情：[质量关卡](/docs/concepts/quality-gate)
+详情：[质量门禁](/docs/concepts/quality-gate)
 
 ---
 
 ## 翻译记忆库
 
-Rosetta 将翻译缓存到 `.rosetta/tm.json` 中，以 源文本 + 本地化语言 + 方法 作为键。在后续同步中，未更改的键将从缓存中提供——无需 API 调用，没有成本。
+Rosetta 将翻译缓存到 `.rosetta/tm.json` 中，以 源文本 + 语言区域 + 方法 作为键。在后续同步中，未更改的键将直接从缓存中提供——无需调用 API，零成本。
 
 ```
 [TM] 142 key(s) served from cache
 Translating 3 key(s) to French (llm)... [OK]
 ```
 
-要在单次运行中绕过缓存：`npx i18n-rosetta sync --no-tm`
+若要在单次运行中绕过缓存：`npx i18n-rosetta sync --no-tm`
 
 详情：[翻译记忆库](/docs/concepts/translation-memory)
 
@@ -173,13 +173,13 @@ Translating 3 key(s) to French (llm)... [OK]
 
 Rosetta 会在你的项目中创建几个文件。了解它们的作用，以免意外删除或提交错误的文件：
 
-| 文件 | 用途 | Git 提交？ |
+| 文件 | 用途 | 提交到 Git？ |
 |------|---------|------|
-| `.i18n-rosetta.lock` | 已翻译源值的 SHA-256 哈希（用于更改检测） | **是** — 请提交此文件 |
-| `.i18n-rosetta-content.lock` | 同上，但用于 Markdown/MDX 内容文件 | **是** — 请提交此文件 |
-| `.rosetta/tm.json` | 翻译记忆库缓存 | **是** — 请提交此文件（为团队节省 API 成本） |
-| `.rosetta/coaching/` | 辅导数据目录 | **是** — 这是你的语言学知识 |
-| `i18n-rosetta.config.json` | 项目配置 | **是** — 请提交此文件 |
+| `.i18n-rosetta.lock` | 已翻译源值的 SHA-256 哈希（用于变更检测） | **是** —— 请提交此文件 |
+| `.i18n-rosetta-content.lock` | 同上，但用于 Markdown/MDX 内容文件 | **是** —— 请提交此文件 |
+| `.rosetta/tm.json` | 翻译记忆库缓存 | **是** —— 请提交此文件（为团队节省 API 成本） |
+| `.rosetta/coaching/` | 辅导数据目录 | **是** —— 这是你的语言学知识 |
+| `i18n-rosetta.config.json` | 项目配置 | **是** —— 请提交此文件 |
 
 ---
 
@@ -190,19 +190,19 @@ Rosetta 会在你的项目中创建几个文件。了解它们的作用，以免
 npx i18n-rosetta sync --pair en-fr
 ```
 
-**翻译所有配置的语言对：**
+**翻译所有已配置的语言对：**
 ```bash
 npx i18n-rosetta sync
 ```
-Rosetta 会并行翻译所有本地化语言。借助 TM 缓存，只有更改的键才会调用 API。
+Rosetta 会并行翻译所有语言区域。借助 TM 缓存，只有更改过的键才会调用 API。
 
 **内容模式（适用于 Docusaurus、Hugo 等的 Markdown/MDX）：**
 ```bash
 npx i18n-rosetta sync --content
 ```
-与本地化 JSON 一起翻译文档、博客文章和内容文件。使用并行并发（默认：12 个同时的 API 调用）。可通过 `--content-concurrency` 进行调整。
+在翻译本地化 JSON 的同时，翻译文档、博客文章和内容文件。使用并行并发（默认：同时进行 48 个 API 调用）。可通过 `--content-concurrency` 进行调整。
 
-**试运行（预览但不写入）：**
+**试运行（仅预览，不写入）：**
 ```bash
 npx i18n-rosetta sync --dry-run
 ```
@@ -236,18 +236,18 @@ npx i18n-rosetta audit
 | 问题 | 解决方法 |
 |---------|-----|
 | `OPENROUTER_API_KEY not set` | 导出密钥或将其添加到项目根目录的 `.env` 中 |
-| `No locale files found` | 在配置中设置 `localesDir`，或确保你的本地化文件符合标准命名（`en.json`，`fr.json`） |
-| `[GATE] Script compliance failed` | 目标本地化语言得到了拉丁文本而不是预期的书写系统 — 尝试使用其他模型或添加辅导数据 |
-| `[GATE] Source echo` | 模型原样返回了英文 — 添加辅导数据或更换模型通常可以解决此问题 |
-| 所有翻译均被缓存 | 使用 `--no-tm` 运行以绕过缓存，或使用 `--force-keys` 针对特定键运行 |
-| 锁文件冲突 | `.i18n-rosetta.lock` 使用 SHA-256 哈希 — 解决合并冲突时保留任一版本都是安全的，然后重新运行同步即可 |
+| `No locale files found` | 在配置中设置 `localesDir`，或确保你的本地化文件符合标准命名规范（`en.json`, `fr.json`） |
+| `[GATE] Script compliance failed` | 目标语言区域生成了拉丁文本，而不是预期的书写系统——请尝试使用其他模型或添加辅导数据 |
+| `[GATE] Source echo` | 模型原样返回了英文——添加辅导数据或更换模型通常可以解决此问题 |
+| 所有翻译均被缓存 | 使用 `--no-tm` 运行以绕过缓存，或使用 `--force-keys` 针对特定键绕过缓存 |
+| 锁文件冲突 | `.i18n-rosetta.lock` 使用 SHA-256 哈希——解决合并冲突时保留任一版本都是安全的，然后重新运行同步即可 |
 
 ---
 
 ## 下一步
 
-- [快速入门](/docs/getting-started/quick-start) — 完整的入门演练
-- [CLI 参考](/docs/reference/cli) — 所有命令和标志
-- [工作原理](/docs/how-it-works) — 同步流水线解析
-- [评估工具桥接](/docs/guides/bridge) — rosetta 如何连接到 Arena
-- **想构建你自己的翻译方法？** 请参阅 [Arena 智能体指南](https://mtevalarena.org/docs/getting-started/agent-guide) — 构建方法，证明其有效性，赢取奖品。
+- [快速入门](/docs/getting-started/quick-start) —— 完整的入门指南
+- [CLI 参考](/docs/reference/cli) —— 所有命令和标志
+- [工作原理](/docs/how-it-works) —— 同步流水线详解
+- [Eval Harness 桥接](/docs/guides/bridge) —— rosetta 如何连接到 Arena
+- **想构建你自己的翻译方法？** 请参阅 [Arena 智能体指南](https://mtevalarena.org/docs/getting-started/agent-guide) —— 构建方法，证明其有效性，赢取奖品。

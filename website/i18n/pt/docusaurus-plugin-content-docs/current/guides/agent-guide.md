@@ -1,13 +1,13 @@
 ---
 sidebar_position: 9
-title: "Guia do Agente: Usando o i18n-rosetta"
-description: "Como agentes de IA podem instalar, configurar e executar o i18n-rosetta para traduzir arquivos de localidade."
+title: "Guia para Agentes: Usando o i18n-rosetta"
+description: "Como agentes de IA podem instalar, configurar e executar o i18n-rosetta para traduzir arquivos de localização."
 ---
 # Guia do Agente: Usando o i18n-rosetta
 
-O i18n-rosetta é uma ferramenta de CLI que traduz os arquivos de localidade (locale) do seu aplicativo com um único comando. Este guia é para agentes de IA (ou desenvolvedores trabalhando com agentes de IA) que desejam ir do zero aos arquivos de localidade traduzidos rapidamente.
+O i18n-rosetta é uma ferramenta de CLI que traduz os arquivos de localização (locale) do seu aplicativo com um único comando. Este guia é para agentes de IA (ou desenvolvedores trabalhando com agentes de IA) que desejam ir do zero aos arquivos de localização traduzidos rapidamente.
 
-:::tip Já está familiarizado?
+:::tip Já conhece?
 Se você precisa apenas dos comandos, pule para a [Referência da CLI](/docs/reference/cli). Se você deseja criar e testar (benchmark) um método de tradução, consulte o [Guia do Agente da Arena](https://mtevalarena.org/docs/getting-started/agent-guide).
 :::
 
@@ -41,7 +41,7 @@ O Rosetta lê o `.env` automaticamente. Obtenha uma chave do OpenRouter em [open
 
 ## Primeira Sincronização
 
-O Rosetta detecta automaticamente seus arquivos de localidade, o formato deles (JSON, TOML, YAML, PO) e seus idiomas de destino:
+O Rosetta detecta automaticamente seus arquivos de localização, o formato deles (JSON, TOML, YAML, PO) e seus idiomas de destino:
 
 ```bash
 npx i18n-rosetta sync
@@ -49,13 +49,13 @@ npx i18n-rosetta sync
 
 **O que acontece:**
 1. Carrega o `i18n-rosetta.config.json` (ou detecta as configurações automaticamente)
-2. Verifica seu arquivo de localidade de origem e nivela (flattens) as chaves aninhadas
+2. Verifica seu arquivo de localização de origem, nivelando (flatten) as chaves aninhadas
 3. Compara com o `.i18n-rosetta.lock` (hashes SHA-256 de valores traduzidos anteriormente)
-4. Verifica o `.rosetta/tm.json` em busca de traduções em cache (Memória de Tradução)
-5. Traduz apenas as **chaves alteradas, ausentes ou desatualizadas** por meio do método configurado
-6. Executa o quality gate (5 verificações de qualidade) em cada tradução
-7. Grava as traduções aprovadas no arquivo de localidade de destino
-8. Atualiza o arquivo de bloqueio (lock file) e o cache da TM
+4. Verifica o `.rosetta/tm.json` em busca de traduções em cache (Translation Memory)
+5. Traduz apenas **chaves alteradas, ausentes ou desatualizadas** por meio do método configurado
+6. Executa o Quality Gate (5 verificações) em cada tradução
+7. Grava as traduções aprovadas no arquivo de localização de destino
+8. Atualiza o lock file e o cache da TM
 
 Em uma reexecução típica após alterar uma chave, a etapa 4 fornece 142 chaves do cache e a etapa 5 traduz 1 chave. É por isso que as sincronizações subsequentes são rápidas e baratas.
 
@@ -82,11 +82,11 @@ Campos principais:
 |-------|---------|---------|
 | `inputLocale` | Idioma de origem | `en` |
 | `pairs` | Mapa de origem→destino com a configuração do método | (obrigatório) |
-| `localesDir` | Onde os arquivos de localidade ficam | (detectado automaticamente) |
-| `model` | Modelo de LLM para os métodos `llm`/`llm-coached` | `google/gemini-2.5-flash` |
+| `localesDir` | Onde os arquivos de localização ficam | (detectado automaticamente) |
+| `model` | Modelo LLM para os métodos `llm`/`llm-coached` | `google/gemini-2.5-flash` |
 | `batchSize` | Chaves por chamada de API | 80 (LLM), 128 (Google) |
-| `jsonConcurrency` | Traduções de localidade em paralelo para chaves JSON | 50 |
-| `contentConcurrency` | Chamadas de API em paralelo para tradução de conteúdo | 12 |
+| `jsonConcurrency` | Traduções de localização paralelas para chaves JSON | 200 |
+| `contentConcurrency` | Chamadas de API paralelas para tradução de conteúdo | 48 |
 
 Referência completa: [Configuração](/docs/getting-started/configuration)
 
@@ -130,7 +130,7 @@ Referencie-o na configuração do seu par:
 "en-fr": { "method": "llm-coached", "coachingFile": "coaching/fr.json" }
 ```
 
-O quality gate verifica se os termos do dicionário realmente aparecem na saída — as violações são registradas como avisos `[TERM]`.
+O Quality Gate verifica se os termos do dicionário realmente aparecem na saída — as violações são registradas como avisos `[TERM]`.
 
 Detalhes: [Dados de Coaching](/docs/concepts/coaching-data)
 
@@ -140,23 +140,23 @@ Detalhes: [Dados de Coaching](/docs/concepts/coaching-data)
 
 Cada tradução passa por cinco verificações automatizadas antes de ser gravada no disco:
 
-| Verificação | O que ela detecta | Exemplo |
+| Verificação | O que ela captura | Exemplo |
 |-------|----------------|---------|
-| **Vazia/em branco** | O modelo não retornou nada | `""` |
+| **Vazio/em branco** | O modelo não retornou nada | `""` |
 | **Eco da origem** | O modelo retornou a entrada em inglês inalterada | `"Welcome"` para japonês |
 | **Loop de alucinação** | Trigramas repetidos | `"Qo' Qo' Qo' Qo'"` |
-| **Inflação de tamanho** | A saída é 4x+ mais longa que a origem | Origem de 10 caracteres → saída de 50 caracteres |
-| **Conformidade de script** | Script (alfabeto) errado para a localidade | Texto latino para localidade árabe |
+| **Inflação de tamanho** | A saída é 4x+ maior que a origem | Origem de 10 caracteres → saída de 50 caracteres |
+| **Conformidade de script** | Script incorreto para a localização | Texto latino para localização em árabe |
 
-As falhas são registradas com o prefixo `[GATE]`. Não há fallbacks silenciosos — se uma tradução falhar, ela será relatada, e não aceita silenciosamente.
+As falhas são registradas com o prefixo `[GATE]`. Sem fallbacks silenciosos — se uma tradução falhar, ela será relatada, não aceita silenciosamente.
 
 Detalhes: [Quality Gate](/docs/concepts/quality-gate)
 
 ---
 
-## Memória de Tradução
+## Translation Memory
 
-O Rosetta armazena as traduções em cache no `.rosetta/tm.json`, indexadas por texto de origem + localidade + método. Nas sincronizações subsequentes, as chaves inalteradas são fornecidas pelo cache — sem chamadas de API, sem custo.
+O Rosetta armazena as traduções em cache no `.rosetta/tm.json`, indexadas por texto de origem + localização + método. Nas sincronizações subsequentes, as chaves inalteradas são fornecidas pelo cache — sem chamadas de API, sem custo.
 
 ```
 [TM] 142 key(s) served from cache
@@ -165,21 +165,21 @@ Translating 3 key(s) to French (llm)... [OK]
 
 Para ignorar o cache em uma execução: `npx i18n-rosetta sync --no-tm`
 
-Detalhes: [Memória de Tradução](/docs/concepts/translation-memory)
+Detalhes: [Translation Memory](/docs/concepts/translation-memory)
 
 ---
 
 ## Arquivos Gerados
 
-O Rosetta cria vários arquivos no seu projeto. Saiba quais são para não excluí-los ou comitá-los acidentalmente de forma incorreta:
+O Rosetta cria vários arquivos no seu projeto. Saiba o que eles são para não excluir ou fazer commit dos arquivos errados acidentalmente:
 
 | Arquivo | Propósito | Git? |
 |------|---------|------|
-| `.i18n-rosetta.lock` | Hashes SHA-256 dos valores de origem traduzidos (detecção de alterações) | **Sim** — faça o commit |
-| `.i18n-rosetta-content.lock` | O mesmo, mas para arquivos de conteúdo Markdown/MDX | **Sim** — faça o commit |
-| `.rosetta/tm.json` | Cache da Memória de Tradução | **Sim** — faça o commit (economiza custos de API para a equipe) |
+| `.i18n-rosetta.lock` | Hashes SHA-256 dos valores de origem traduzidos (detecção de alterações) | **Sim** — faça commit disso |
+| `.i18n-rosetta-content.lock` | O mesmo, mas para arquivos de conteúdo Markdown/MDX | **Sim** — faça commit disso |
+| `.rosetta/tm.json` | Cache da Translation Memory | **Sim** — faça commit disso (economiza custos de API para a equipe) |
 | `.rosetta/coaching/` | Diretório de dados de coaching | **Sim** — este é o seu conhecimento linguístico |
-| `i18n-rosetta.config.json` | Configuração do projeto | **Sim** — faça o commit |
+| `i18n-rosetta.config.json` | Configuração do projeto | **Sim** — faça commit disso |
 
 ---
 
@@ -194,15 +194,15 @@ npx i18n-rosetta sync --pair en-fr
 ```bash
 npx i18n-rosetta sync
 ```
-O Rosetta traduz todas as localidades em paralelo. Com o cache da TM, apenas as chaves alteradas chegam à API.
+O Rosetta traduz todas as localizações em paralelo. Com o cache da TM, apenas as chaves alteradas atingem a API.
 
 **Modo de conteúdo (Markdown/MDX para Docusaurus, Hugo, etc.):**
 ```bash
 npx i18n-rosetta sync --content
 ```
-Traduz documentações, postagens de blog e arquivos de conteúdo junto com o JSON de localidade. Usa concorrência paralela (padrão: 12 chamadas de API simultâneas). Ajuste com `--content-concurrency`.
+Traduz documentos, postagens de blog e arquivos de conteúdo junto com o JSON de localização. Usa simultaneidade paralela (padrão: 48 chamadas de API simultâneas). Ajuste com `--content-concurrency`.
 
-**Dry run (simulação sem gravar):**
+**Dry run (visualização sem gravar):**
 ```bash
 npx i18n-rosetta sync --dry-run
 ```
@@ -223,7 +223,7 @@ npx i18n-rosetta status
 ```
 Mostra a cobertura, os níveis de qualidade e as informações do plugin para cada par.
 
-**Auditar fallbacks não traduzidos:**
+**Auditoria para fallbacks não traduzidos:**
 ```bash
 npx i18n-rosetta audit
 ```
@@ -236,18 +236,18 @@ Lista todos os valores de fallback `[EN]` que precisam de tradução.
 | Problema | Solução |
 |---------|-----|
 | `OPENROUTER_API_KEY not set` | Exporte a chave ou adicione-a ao `.env` na raiz do seu projeto |
-| `No locale files found` | Defina `localesDir` na configuração, ou certifique-se de que seus arquivos de localidade correspondam à nomenclatura padrão (`en.json`, `fr.json`) |
-| `[GATE] Script compliance failed` | Sua localidade de destino recebeu texto latino em vez do script (alfabeto) esperado — tente um modelo diferente ou adicione dados de coaching |
+| `No locale files found` | Defina `localesDir` na configuração ou certifique-se de que seus arquivos de localização correspondam à nomenclatura padrão (`en.json`, `fr.json`) |
+| `[GATE] Script compliance failed` | Sua localização de destino recebeu texto latino em vez do script esperado — tente um modelo diferente ou adicione dados de coaching |
 | `[GATE] Source echo` | O modelo retornou o inglês inalterado — dados de coaching ou um modelo diferente geralmente resolvem isso |
 | Todas as traduções em cache | Execute com `--no-tm` para ignorar o cache, ou `--force-keys` para chaves específicas |
-| Conflitos no arquivo de bloqueio (lock file) | O `.i18n-rosetta.lock` usa hashes SHA-256 — os conflitos de mesclagem (merge) são seguros de resolver mantendo qualquer uma das versões e, em seguida, executando a sincronização novamente |
+| Conflitos no lock file | O `.i18n-rosetta.lock` usa hashes SHA-256 — conflitos de mesclagem (merge) são seguros de resolver mantendo qualquer uma das versões e, em seguida, executando a sincronização novamente |
 
 ---
 
-## O Que Vem a Seguir
+## Próximos Passos
 
 - [Início Rápido](/docs/getting-started/quick-start) — passo a passo completo para começar
 - [Referência da CLI](/docs/reference/cli) — todos os comandos e flags
-- [Como Funciona](/docs/how-it-works) — o pipeline de sincronização explicado
+- [Como Funciona](/docs/how-it-works) — explicação do pipeline de sincronização
 - [A Ponte Eval Harness](/docs/guides/bridge) — como o rosetta se conecta à Arena
-- **Quer criar seu próprio método de tradução?** Consulte o [Guia do Agente da Arena](https://mtevalarena.org/docs/getting-started/agent-guide) — crie um método, prove que funciona e ganhe prêmios.
+- **Quer criar seu próprio método de tradução?** Consulte o [Guia do Agente da Arena](https://mtevalarena.org/docs/getting-started/agent-guide) — crie um método, prove que ele funciona e ganhe prêmios.

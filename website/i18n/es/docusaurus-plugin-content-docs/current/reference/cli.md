@@ -40,9 +40,9 @@ Ejecute `i18n-rosetta <command> --help` para obtener ayuda detallada sobre cualq
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
---json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 200)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -56,7 +56,7 @@ Ejecute `i18n-rosetta <command> --help` para obtener ayuda detallada sobre cualq
 
 ## init
 
-Asistente de configuración interactivo que crea `i18n-rosetta.config.json`. Le guía a través de la configuración de la configuración regional de origen, los idiomas de destino, el formato de archivo y el modelo de traducción.
+Asistente de configuración interactivo que crea `i18n-rosetta.config.json`. Le guía a través del idioma de origen, los idiomas de destino, el formato de archivo y el modelo de traducción.
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -96,11 +96,11 @@ i18n-rosetta sync --no-verify                        # skip post-sync verificati
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**Memoria de traducción (Translation Memory)**: De forma predeterminada, `sync` carga `.rosetta/tm.json` y sirve traducciones en caché para los valores de origen que no han cambiado. Utilice `--no-tm` para omitir la caché (útil al cambiar de proveedor de traducción o al depurar la calidad). Consulte [Memoria de traducción](/docs/concepts/translation-memory).
+**Memoria de traducción**: De forma predeterminada, `sync` carga `.rosetta/tm.json` y sirve traducciones en caché para los valores de origen que no han cambiado. Use `--no-tm` para omitir la caché (útil al cambiar de proveedor de traducción o depurar la calidad). Consulte [Memoria de traducción](/docs/concepts/translation-memory).
 
-**Detección de cambios**: rosetta almacena hashes SHA-256 en `.i18n-rosetta.lock`. Cuando los valores de origen cambian, la siguiente sincronización vuelve a traducir automáticamente esas claves. Confirme (commit) el archivo de bloqueo para que todos los desarrolladores compartan la línea base.
+**Detección de cambios**: rosetta almacena hashes SHA-256 en `.i18n-rosetta.lock`. Cuando los valores de origen cambian, la siguiente sincronización vuelve a traducir automáticamente esas claves. Confirme (commit) el archivo de bloqueo para que todos los desarrolladores compartan la misma base.
 
-**Paralelismo**: Tanto la traducción de claves JSON como la traducción de contenido se ejecutan en paralelo. Las configuraciones regionales JSON se traducen simultáneamente (predeterminado: 50 configuraciones regionales concurrentes), y los lotes dentro de cada configuración regional también se paralelizan (4 lotes concurrentes). La traducción de contenido (Markdown, MDX, publicaciones de blog) se ejecuta en un grupo de elementos de trabajo plano (predeterminado: 12 llamadas a la API concurrentes). Anule estos valores con `--json-concurrency`, `--content-concurrency` o `--concurrency` (establece ambos).
+**Paralelismo**: Tanto la traducción de claves JSON como la traducción de contenido se ejecutan en paralelo. Las configuraciones regionales JSON se traducen simultáneamente (predeterminado: 200 configuraciones regionales concurrentes), y los lotes dentro de cada configuración regional también se paralelizan (4 lotes concurrentes). La traducción de contenido (Markdown, MDX, publicaciones de blog) se ejecuta en un grupo de elementos de trabajo plano (predeterminado: 48 llamadas a la API concurrentes). Anúlelo con `--json-concurrency`, `--content-concurrency` o `--concurrency` (establece ambos).
 
 **Salida**: La sincronización muestra un banner de versión, detección de formato/framework, estimación de costos y barras de progreso por configuración regional:
 
@@ -118,7 +118,7 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-Las barras de progreso se actualizan en su lugar después de cada lote (~80 claves). Utilice `--quiet` solo para errores/advertencias, o `--json` para una salida NDJSON legible por máquina. Ambos suprimen la barra de progreso y el banner.
+Las barras de progreso se actualizan en su lugar después de cada lote (~80 claves). Use `--quiet` solo para errores/advertencias, o `--json` para una salida NDJSON legible por máquina. Ambos suprimen la barra de progreso y el banner.
 
 ---
 
@@ -134,7 +134,7 @@ i18n-rosetta watch
 
 ## audit
 
-Enumera todos los valores de respaldo no traducidos con el prefijo `[EN]` de ejecuciones anteriores. Sale con el código 1 si se encuentra alguno; utilícelo como una puerta de CI para hacer fallar las compilaciones con traducciones incompletas.
+Enumera todos los valores de respaldo no traducidos con el prefijo `[EN]` de ejecuciones anteriores. Sale con el código 1 si se encuentra alguno; úselo como una puerta de CI para hacer fallar las compilaciones con traducciones incompletas.
 
 ```bash
 i18n-rosetta audit
@@ -157,7 +157,7 @@ i18n-rosetta verify && echo "All good" # CI gate
 - Marcadores de respaldo `[EN]` de ejecuciones anteriores
 - Traducciones vacías
 - Cumplimiento de escritura: las configuraciones regionales no latinas deben tener traducciones no ASCII
-- Preservación de marcadores de posición: los marcadores de posición de ICU coinciden con el origen
+- Preservación de marcadores de posición: los marcadores de posición ICU coinciden con el origen
 - Problemas de codificación: marcadores BOM, caracteres invisibles
 - Ecos de origen: valores idénticos al origen (advertencia)
 
@@ -197,7 +197,7 @@ i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 **Controles de seguridad:**
 1. Verificación de estado limpio en Git (se omite en ejecuciones de prueba o dry-run)
 2. Copia de seguridad automática en `.rosetta-backup/`
-3. Vista previa de las diferencias (diff) antes de escribir cada archivo
+3. Vista previa de diferencias (diff) antes de escribir en cada archivo
 4. Soporte de `--undo` para restaurar desde la copia de seguridad
 
 ---
@@ -232,15 +232,15 @@ i18n-rosetta integrity --warn-only   # non-blocking
 **Qué verifica:**
 - Corrupción de marcadores de posición (por ejemplo, `{name}` presente en el origen pero ausente en el destino)
 - Problemas de codificación (mojibake, Unicode no válido)
-- Copias no traducidas (valor de destino idéntico al origen)
+- Copias no traducidas (valor de destino idéntico al de origen)
 - Claves huérfanas (claves en el destino que no existen en el origen)
-- Integridad de la categoría de plurales de ICU MessageFormat (por ejemplo, el árabe necesita 6 categorías)
+- Integridad de las categorías de plurales de ICU MessageFormat (por ejemplo, el árabe necesita 6 categorías)
 
 ---
 
 ## tm
 
-Administra la caché de la Memoria de traducción (`.rosetta/tm.json`). La TM almacena traducciones anteriores y las sirve en sincronizaciones posteriores en lugar de llamar a la API.
+Administra la caché de la memoria de traducción (`.rosetta/tm.json`). La TM almacena traducciones anteriores y las sirve en sincronizaciones posteriores en lugar de llamar a la API.
 
 ```bash
 i18n-rosetta tm stats                  # show cache statistics
@@ -265,7 +265,7 @@ Consulte [Memoria de traducción](/docs/concepts/translation-memory) para saber 
 
 ## xliff
 
-Exporta e importa archivos XLIFF 1.2 para la revisión por parte de traductores profesionales. XLIFF es el formato de intercambio universal compatible con herramientas CAT como memoQ, SDL Trados y Phrase.
+Exporte e importe archivos XLIFF 1.2 para la revisión por parte de traductores profesionales. XLIFF es el formato de intercambio universal compatible con herramientas CAT como memoQ, SDL Trados y Phrase.
 
 ```bash
 i18n-rosetta xliff export --locale fr                   # export French XLIFF
@@ -291,7 +291,7 @@ Consulte [Trabajar con traductores profesionales](/docs/guides/professional-tran
 
 ## status
 
-Muestra la configuración de pares, los complementos (plugins) instalados, los niveles de calidad y las puntuaciones de referencia (benchmarks).
+Muestra la configuración de pares, los complementos instalados, los niveles de calidad y las puntuaciones de referencia (benchmarks).
 
 ```bash
 i18n-rosetta status
@@ -311,7 +311,7 @@ i18n-rosetta provenance
 
 ## plugin
 
-Administra los complementos de métodos de traducción. Los complementos son recetas de traducción preempaquetadas que se instalan en `.rosetta/methods/`.
+Administra los complementos del método de traducción. Los complementos son recetas de traducción preempaquetadas que se instalan en `.rosetta/methods/`.
 
 ```bash
 i18n-rosetta plugin list                      # show installed plugins
@@ -325,7 +325,7 @@ Consulte [Especificación de complementos](/docs/reference/plugin-spec) para con
 
 ## fonts
 
-Descarga y administra fuentes web PUA para convertidores de escritura de idiomas construidos. Los idiomas que utilizan caracteres del Área de Uso Privado (Klingon, Sindarin, Kryptoniano) necesitan fuentes web personalizadas para renderizar sus escrituras. Este comando las descarga desde repositorios de código abierto verificados.
+Descarga y administra fuentes web PUA para convertidores de escritura de lenguas construidas. Los idiomas que usan caracteres del Área de Uso Privado (Klingon, Sindarin, Kryptoniano) necesitan fuentes web personalizadas para renderizar sus escrituras. Este comando las descarga desde repositorios de código abierto verificados.
 
 ```bash
 i18n-rosetta fonts list                           # show needed fonts
@@ -343,7 +343,7 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 |--------|--------|
 | `--dir <path>` | Anular el directorio de salida de fuentes (detectado automáticamente según el tipo de proyecto) |
 | `--css` | Generar un fragmento `conlang-fonts.css` junto a las fuentes |
-| `--config <path>` | Ruta al archivo de configuración (se usa para detectar qué idiomas necesitan fuentes) |
+| `--config <path>` | Ruta al archivo de configuración (usado para detectar qué idiomas necesitan fuentes) |
 
 **Detección automática:** El directorio de salida se infiere de la estructura de su proyecto:
 - **Docusaurus** → `static/fonts/` o `website/static/fonts/`
@@ -352,11 +352,11 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 
 **Los convertidores Unicode nativos** (`crk` → Silabario cree, `sr` → Cirílico serbio) NO requieren la instalación de fuentes.
 
-Consulte [Idiomas construidos, escrituras y ortografía](/docs/guides/conlangs-scripts-orthography) para obtener todos los detalles de las fuentes PUA.
+Consulte [Lenguas construidas, escrituras y ortografía](/docs/guides/conlangs-scripts-orthography) para obtener todos los detalles sobre las fuentes PUA.
 
 ## Pipeline de tres capas
 
-Utilice `lint`, `sync` y `audit` juntos para una i18n a prueba de balas:
+Use `lint`, `sync` y `audit` juntos para una i18n a prueba de fallos:
 
 ```json title="package.json"
 {
@@ -373,17 +373,17 @@ Utilice `lint`, `sync` y `audit` juntos para una i18n a prueba de balas:
 | **Lint** | `lint` | Pre-commit | Bloquear commits con cadenas codificadas |
 | **Sync** | `sync` | Post-commit / CI | Traducir claves faltantes y modificadas |
 | **Verify** | `verify` | Post-sync / CI | Confirmar que las traducciones estén presentes y sean correctas |
-| **Audit** | `audit` | Paso de compilación (Build) | Hacer fallar el despliegue si alguna configuración regional tiene marcadores `[EN]` |
+| **Audit** | `audit` | Paso de compilación | Hacer fallar la implementación si alguna configuración regional tiene marcadores `[EN]` |
 
 ---
 
 ## Consulte también
 
-- [Configuración](/docs/getting-started/configuration) — referencia del archivo de configuración
-- [Métodos de traducción](/docs/guides/translation-methods) — selección de método por par
-- [Memoria de traducción](/docs/concepts/translation-memory) — almacenamiento en caché y ahorro de costos
-- [Trabajar con traductores profesionales](/docs/guides/professional-translators) — flujo de trabajo XLIFF
-- [Especificación de complementos](/docs/reference/plugin-spec) — formato del manifiesto del complemento
-- [Guía de CI/CD](/docs/guides/ci-cd) — automatización de comandos de la CLI en su pipeline
-- [Cómo funciona la sincronización](/docs/concepts/how-sync-works) — comprensión del pipeline de sincronización
-- [Puerta de calidad](/docs/concepts/quality-gate) — cómo se validan las traducciones
+- [Configuración](/docs/getting-started/configuration): referencia del archivo de configuración
+- [Métodos de traducción](/docs/guides/translation-methods): selección de método por par
+- [Memoria de traducción](/docs/concepts/translation-memory): almacenamiento en caché y ahorro de costos
+- [Trabajar con traductores profesionales](/docs/guides/professional-translators): flujo de trabajo XLIFF
+- [Especificación de complementos](/docs/reference/plugin-spec): formato del manifiesto del complemento
+- [Guía de CI/CD](/docs/guides/ci-cd): automatización de comandos de la CLI en su pipeline
+- [Cómo funciona la sincronización](/docs/concepts/how-sync-works): comprensión del pipeline de sincronización
+- [Puerta de calidad](/docs/concepts/quality-gate): cómo se validan las traducciones

@@ -6,7 +6,7 @@ title: "Cómo funciona la sincronización"
 
 El comando `sync` es la operación principal de rosetta. Esto es lo que sucede cuando usted ejecuta `npx i18n-rosetta sync`.
 
-## Resumen del proceso
+## Descripción general del pipeline
 
 ```mermaid
 flowchart TD
@@ -38,7 +38,7 @@ flowchart TD
 Rosetta carga `i18n-rosetta.config.json` (o detecta automáticamente la configuración). Resuelve lo siguiente:
 - El locale de origen y los locales de destino
 - El gráfico de pares (qué combinaciones de origen→destino procesar)
-- La configuración de método, modelo y calidad por cada par
+- La configuración de método, modelo y calidad por par
 
 Antes de escanear los archivos, rosetta imprime un encabezado de inicio:
 
@@ -49,8 +49,8 @@ i18n-rosetta v3.3.1
 [INFO] Detected framework: Hugo
 ```
 
-- **Aviso de versión**: Muestra la versión instalada para la depuración y el reporte de problemas.
-- **Detección de formato**: Informa el formato del archivo y si fue detectado automáticamente `(auto)` o configurado explícitamente `(config)`. Es compatible con `json`, `toml` y `yaml`.
+- **Banner de versión**: Muestra la versión instalada para la depuración y los reportes de problemas.
+- **Detección de formato**: Reporta el formato del archivo y si fue detectado automáticamente `(auto)` o configurado explícitamente `(config)`. Soporta `json`, `toml` y `yaml`.
 - **Detección de framework**: Cuando se establece `contentDir`, identifica el framework (`Hugo`) para confirmar que la sincronización de contenido está activa.
 
 ### 2. Escaneo de origen
@@ -67,20 +67,20 @@ El archivo del locale de origen se carga y se aplana en un mapa de clave→valor
 
 ### 3. Detección de cambios
 
-Rosetta lee `.i18n-rosetta.lock`, que almacena los hashes SHA-256 de los valores de origen traducidos previamente. Para cada clave, verifica lo siguiente:
+Rosetta lee `.i18n-rosetta.lock`, el cual almacena los hashes SHA-256 de los valores de origen traducidos previamente. Para cada clave, verifica lo siguiente:
 
 | Condición | Acción |
 |-----------|--------|
-| La clave falta en el destino | **Traducir** |
-| El hash de origen cambió desde la última sincronización | **Volver a traducir** (desactualizado) |
+| Clave faltante en el destino | **Traducir** |
+| El hash de origen cambió desde la última sincronización | **Volver a traducir** (obsoleto) |
 | El valor de destino comienza con `[EN]` | **Volver a traducir** (marcador de respaldo heredado) |
-| El hash de origen no cambió, la clave existe | **Omitir** |
+| Hash de origen sin cambios, la clave existe | **Omitir** |
 
-Esta es la razón por la que rosetta solo traduce lo que cambió: no vuelve a traducir todo su archivo en cada sincronización.
+Esta es la razón por la que rosetta solo traduce lo que cambió; no vuelve a traducir todo su archivo en cada sincronización.
 
 ### 4. Procesamiento por lotes
 
-Las claves se agrupan en lotes (por defecto: 80 claves/lote para LLM, 128 para Google Translate). El procesamiento por lotes reduce las idas y vueltas de la API mientras mantiene los prompts manejables.
+Las claves se agrupan en lotes (predeterminado: 80 claves/lote para LLM, 128 para Google Translate). El procesamiento por lotes reduce las idas y vueltas de la API mientras mantiene los prompts manejables.
 
 Durante la traducción, rosetta muestra una barra de progreso en línea que se actualiza después de que se completa cada lote:
 
@@ -100,7 +100,7 @@ Antes del procesamiento por lotes, rosetta verifica la caché de la Memoria de t
   Translating 3 key(s) to French (llm)... [OK]
 ```
 
-La memoria de traducción (TM) es el principal mecanismo de ahorro de costos. Volver a ejecutar la sincronización después de un solo cambio de clave solo traduce esa clave, no todo el archivo. Consulte [Memoria de traducción](/docs/concepts/translation-memory) para obtener más detalles.
+La Memoria de traducción (TM) es el principal mecanismo de ahorro de costos. Volver a ejecutar la sincronización después del cambio de una sola clave solo traduce esa clave, no todo el archivo. Consulte [Memoria de traducción](/docs/concepts/translation-memory) para obtener más detalles.
 
 Para omitir la caché en una sola ejecución: `i18n-rosetta sync --no-tm`
 
@@ -108,12 +108,12 @@ Para omitir la caché en una sola ejecución: `i18n-rosetta sync --no-tm`
 
 Cada lote se envía al método de traducción configurado:
 
-- **`llm`**: Prompt estructurado a OpenRouter con instrucciones de guía de registro y género.
-- **`llm-coached`**: Igual que el anterior, pero con reglas gramaticales, diccionario y notas de estilo inyectadas.
-- **`google-translate`**: Solicitud por lotes de la API v2 de Google Cloud Translation.
-- **`api`**: HTTP POST a un endpoint remoto.
+- **`llm`**: Prompt estructurado a OpenRouter con instrucciones de guía de registro y género
+- **`llm-coached`**: Igual que el anterior, pero con reglas gramaticales, diccionario y notas de estilo inyectadas
+- **`google-translate`**: Solicitud por lotes a Google Cloud Translation API v2
+- **`api`**: HTTP POST a un endpoint remoto
 
-El mensaje del sistema (registro, guía de género, reglas) es idéntico en todos los lotes para un locale determinado, lo que permite el **almacenamiento en caché de prompts** (prompt caching): proveedores como Anthropic y Google almacenan en caché los mensajes repetidos del sistema, lo que reduce los costos de tokens.
+El mensaje del sistema (registro, guía de género, reglas) es idéntico en todos los lotes para un locale determinado, lo que permite el **almacenamiento en caché de prompts** (prompt caching): proveedores como Anthropic y Google almacenan en caché los mensajes del sistema repetidos, reduciendo los costos de tokens.
 
 ### 6. Puerta de calidad
 
@@ -122,10 +122,10 @@ Cada traducción se valida antes de escribirse en el disco. Se ejecutan cinco co
 | Comprobación | Qué detecta | Ejemplo |
 |-------|----------------|---------|
 | **Vacío/en blanco** | El modelo no devolvió nada | `""` |
-| **Eco del origen** | El modelo devolvió la entrada en inglés | `"Welcome"` para japonés |
+| **Eco de origen** | El modelo devolvió la entrada en inglés | `"Welcome"` para japonés |
 | **Bucle de alucinación** | Trigramas repetidos | `"Qo' Qo' Qo' Qo'"` |
-| **Inflación de longitud** | La salida es más de 4 veces más larga que el origen | Origen de 10 caracteres → salida de 50 caracteres |
-| **Cumplimiento de escritura** | Sistema de escritura incorrecto para el locale | Texto latino para un locale árabe |
+| **Inflación de longitud** | La salida es 4 veces o más larga que el origen | Origen de 10 caracteres → salida de 50 caracteres |
+| **Cumplimiento de escritura** | Sistema de escritura incorrecto para el locale | Texto latino para un locale en árabe |
 
 Las fallas se registran con un prefijo `[GATE]`. No hay respaldos silenciosos.
 
@@ -133,18 +133,18 @@ Consulte [Puerta de calidad](/docs/concepts/quality-gate) para obtener más deta
 
 ### 6b. Verificación de terminología
 
-Para los pares entrenados (coached) con un diccionario, rosetta verifica si el LLM realmente usó la terminología requerida después de la traducción. Las infracciones se registran como advertencias `[TERM]`:
+Para los pares entrenados (coached) con un diccionario, rosetta verifica si el LLM realmente utilizó la terminología requerida después de la traducción. Las infracciones se registran como advertencias `[TERM]`:
 
 ```
 [TERM] en→fr: 2 term violation(s)
   • "dashboard" → expected "tableau de bord" but got "panneau"
 ```
 
-Estas son advertencias, no errores de bloqueo: la traducción se escribe de todos modos.
+Estas son advertencias, no errores bloqueantes; la traducción se escribe de todos modos.
 
 ### 7. Cascada de reintentos
 
-En caso de falla de análisis JSON o errores a nivel de lote, rosetta vuelve a intentarlo con lotes progresivamente más pequeños:
+En caso de falla de análisis JSON o errores a nivel de lote, rosetta vuelve a intentar con lotes progresivamente más pequeños:
 
 ```
 Full batch (80 keys) → Failed
@@ -152,7 +152,7 @@ Full batch (80 keys) → Failed
       └→ Individual keys (1 each) → Isolates the problem key
 ```
 
-El presupuesto de reintentos está limitado por `maxRetries` (por defecto: 3) para evitar un gasto descontrolado de tokens.
+El presupuesto de reintentos está limitado por `maxRetries` (predeterminado: 3) para evitar un gasto descontrolado de tokens.
 
 ### 8. Escritura y bloqueo
 
@@ -160,14 +160,14 @@ Las traducciones aprobadas se escriben en el archivo del locale de destino, pres
 
 ### 9. Verificación
 
-Después de procesar todos los pares, rosetta vuelve a leer los archivos de locale escritos en el disco y ejecuta un paso de verificación (a menos que se establezca `--no-verify`). Esto detecta la brecha entre el éxito reportado de la sincronización y las claves que en realidad son incorrectas:
+Después de procesar todos los pares, rosetta vuelve a leer los archivos de locale escritos en el disco y ejecuta un paso de verificación (a menos que se establezca `--no-verify`). Esto detecta la brecha entre el éxito reportado por la sincronización y las claves que en realidad son incorrectas:
 
-- **Paridad de claves**: todas las claves de origen están presentes en cada destino.
-- **Marcadores de respaldo `[EN]`**: marcadores heredados de ejecuciones anteriores.
-- **Traducciones vacías**: valores en blanco que se filtraron.
-- **Cumplimiento de escritura**: locales no latinos con traducciones exclusivas de ASCII.
-- **Preservación de marcadores de posición**: los marcadores de posición de ICU coinciden con el origen.
-- **Problemas de codificación**: marcadores BOM, caracteres invisibles.
+- **Paridad de claves**: todas las claves de origen están presentes en cada destino
+- **Marcadores de respaldo `[EN]`**: marcadores heredados de ejecuciones anteriores
+- **Traducciones vacías**: valores en blanco que se filtraron
+- **Cumplimiento de escritura**: locales no latinos con traducciones que solo contienen ASCII
+- **Preservación de marcadores de posición**: los marcadores de posición ICU coinciden con el origen
+- **Problemas de codificación**: marcadores BOM, caracteres invisibles
 
 Esto también está disponible como un comando `i18n-rosetta verify` independiente para las puertas de CI.
 
@@ -177,13 +177,13 @@ Para los proyectos de Docusaurus y Hugo, `sync` ejecuta una segunda fase despué
 
 ### Cómo funciona
 
-1. Rosetta descubre todos los archivos de contenido de origen (`.md`, `.mdx`) recorriendo el directorio content/docs.
-2. Para cada par de archivo × locale, verifica un archivo de bloqueo de contenido separado (`.i18n-rosetta-content.lock`) en busca de cambios en el hash SHA-256.
-3. Los archivos modificados o faltantes se recopilan en un grupo de elementos de trabajo plano.
-4. El grupo se procesa con **concurrencia paralela** (por defecto: 12 llamadas simultáneas a la API).
+1. Rosetta descubre todos los archivos de contenido de origen (`.md`, `.mdx`) recorriendo el directorio content/docs
+2. Para cada par de archivo × locale, verifica un archivo de bloqueo de contenido separado (`.i18n-rosetta-content.lock`) en busca de cambios en el hash SHA-256
+3. Los archivos modificados o faltantes se recopilan en un grupo plano de elementos de trabajo (work-item pool)
+4. El grupo se procesa con **concurrencia paralela** (predeterminado: 12 llamadas simultáneas a la API)
 
 ```
-Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
+Phase 2: content (79 translations to process, 341 skipped, concurrency: 48)
 
     [1/79] (1%)  docs/concepts/security.md → ja [RE-TRANSLATE] (~3328s left)
     [2/79] (3%)  docs/concepts/security.md → th [RE-TRANSLATE] (~1821s left)
@@ -197,8 +197,8 @@ Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
 
 Tanto la Fase 1 (claves JSON) como la Fase 2 (contenido) ahora se ejecutan en paralelo:
 
-- **Fase 1**: Todas las traducciones de locale se inician de forma concurrente (por defecto: 50 locales simultáneos). Dentro de cada locale, los lotes de la API también se ejecutan en paralelo (4 lotes concurrentes). Una sincronización de 12 locales con 120 claves se completa en ~1 minuto en lugar de ~15 minutos.
-- **Fase 2**: Todas las combinaciones de archivo × locale se traducen como un grupo plano (por defecto: 12 llamadas simultáneas a la API). Diferentes archivos y diferentes locales se traducen simultáneamente.
+- **Fase 1**: Todas las traducciones de locales se inician de forma concurrente (predeterminado: 50 locales simultáneos). Dentro de cada locale, los lotes de la API también se ejecutan en paralelo (4 lotes concurrentes). Una sincronización de 12 locales con 120 claves se completa en ~1 minuto en lugar de ~15 minutos.
+- **Fase 2**: Todas las combinaciones de archivo × locale se traducen como un grupo plano (predeterminado: 12 llamadas simultáneas a la API). Diferentes archivos y diferentes locales se traducen simultáneamente.
 
 Controle el paralelismo con `--json-concurrency`, `--content-concurrency` o `--concurrency` (establece ambos):
 
@@ -217,18 +217,18 @@ npx i18n-rosetta sync --concurrency 4
 
 Durante la traducción, rosetta protege el contenido no traducible:
 
-- Los **bloques de código** (cercados y sangrados) se reemplazan con marcadores de posición.
-- Los campos de **frontmatter** que no están en la lista `translatableFields` se conservan tal cual.
-- Los **enlaces**, las rutas de imágenes y las etiquetas HTML están protegidos.
-- Los **shortcodes** y las variables de interpolación (por ejemplo, `{count}`, `{{.Params.title}}`) están resguardados.
+- **Bloques de código** (cercados y con sangría) se reemplazan con marcadores de posición
+- **Campos de frontmatter** que no están en la lista `translatableFields` se preservan tal cual
+- **Enlaces**, rutas de imágenes y etiquetas HTML están protegidos
+- **Shortcodes** y variables de interpolación (por ejemplo, `{count}`, `{{.Params.title}}`) están resguardados
 
 Después de la traducción, todos los marcadores de posición se restauran y validan. Si falta alguno o está dañado, la traducción se rechaza y se vuelve a intentar.
 
 ## Éxito parcial
 
-Un lote fallido no bloquea el resto. Si 9 de cada 10 lotes tienen éxito, esos 9 se escriben. El lote fallido se registra y usted puede volver a ejecutar `sync` para reintentar.
+Un lote fallido no bloquea al resto. Si 9 de cada 10 lotes tienen éxito, esos 9 se escriben. El lote fallido se registra y usted puede volver a ejecutar `sync` para reintentar.
 
-## Ejecución de prueba
+## Ejecución de prueba (Dry Run)
 
 Obtenga una vista previa de lo que cambiaría sin escribir ningún archivo:
 
@@ -236,9 +236,9 @@ Obtenga una vista previa de lo que cambiaría sin escribir ningún archivo:
 npx i18n-rosetta sync --dry-run
 ```
 
-## Forzar retraducción
+## Forzar nueva traducción
 
-Fuerce la retraducción de claves específicas incluso si no han cambiado:
+Fuerce la traducción de claves específicas incluso si no han cambiado:
 
 ```bash
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
@@ -246,7 +246,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## Estimación de costos
 
-Antes de traducir, rosetta genera un **informe de costos previo a la sincronización** que muestra los costos estimados por par. Esto se ejecuta automáticamente durante cada `sync`; usted lo ve antes de que se realicen llamadas a la API.
+Antes de traducir, rosetta genera un **reporte de costos previo a la sincronización** que muestra los costos estimados por par. Esto se ejecuta automáticamente durante cada `sync`; usted lo ve antes de que se realice cualquier llamada a la API.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -266,21 +266,21 @@ Cada método de traducción proporciona su propia estimación de costos:
 
 | Método | Base de costo | Precisión |
 |--------|-----------|-----------|
-| `google-translate` | Tarifa publicada por Google ($20/millón de caracteres) | Precisa |
-| `llm` | Varía según el modelo de OpenRouter | Depende del modelo: consulte los [precios de OpenRouter](https://openrouter.ai/models) |
+| `google-translate` | Tarifa publicada de Google ($20/millón de caracteres) | Exacta |
+| `llm` | Varía según el modelo de OpenRouter | Depende del modelo — consulte los [precios de OpenRouter](https://openrouter.ai/models) |
 | `llm-coached` | Igual que `llm` más los tokens de contexto de entrenamiento (coaching) | Depende del modelo |
-| `api` | Determinado por el servidor | Desconocida: no se puede estimar sin consultar el endpoint |
+| `api` | Determinado por el servidor | Desconocida — no se puede estimar sin consultar el endpoint |
 
-Cuando un método no puede determinar el costo (métodos LLM, API remotas), rosetta informa `—` en lugar de adivinar. Utilice `--dry` para ver las estimaciones de costos sin traducir realmente.
+Cuando un método no puede determinar el costo (métodos LLM, API remotas), rosetta reporta `—` en lugar de adivinar. Use `--dry` para ver las estimaciones de costos sin realizar la traducción.
 
 ---
 
 ## Consulte también
 
-- [Referencia de la CLI: sync](/docs/reference/cli#sync): indicadores y opciones de comandos
-- [Memoria de traducción](/docs/concepts/translation-memory): almacenamiento en caché y ahorro de costos
-- [Puerta de calidad](/docs/concepts/quality-gate): cómo se validan las traducciones
-- [Métodos de traducción](/docs/guides/translation-methods): cómo funciona cada método
-- [Trabajar con traductores profesionales](/docs/guides/professional-translators): flujo de trabajo XLIFF
-- [Configuración](/docs/getting-started/configuration): referencia de configuración
-- [Guía de CI/CD](/docs/guides/ci-cd): automatización de sincronizaciones en su pipeline
+- [Referencia de la CLI — sync](/docs/reference/cli#sync) — opciones y banderas del comando
+- [Memoria de traducción](/docs/concepts/translation-memory) — almacenamiento en caché y ahorro de costos
+- [Puerta de calidad](/docs/concepts/quality-gate) — cómo se validan las traducciones
+- [Métodos de traducción](/docs/guides/translation-methods) — cómo funciona cada método
+- [Trabajar con traductores profesionales](/docs/guides/professional-translators) — flujo de trabajo XLIFF
+- [Configuración](/docs/getting-started/configuration) — referencia de configuración
+- [Guía de CI/CD](/docs/guides/ci-cd) — automatización de sincronizaciones en su pipeline

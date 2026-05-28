@@ -6,11 +6,11 @@ title: "Dépannage"
 
 Problèmes courants et solutions pour i18n-rosetta.
 
-## API et authentification
+## API et Authentification
 
 ### "OPENROUTER_API_KEY not found"
 
-Rosetta nécessite une clé API pour la traduction par LLM. Définissez-la en tant que variable d'environnement :
+Rosetta nécessite une clé API pour la traduction par LLM. Définissez-la comme variable d'environnement :
 
 ```bash
 export OPENROUTER_API_KEY="sk-or-v1-..."
@@ -23,22 +23,22 @@ OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
 :::tip
-Si vous ne disposez que d'une clé API Google Translate, rosetta détecte automatiquement et utilise Google Translate comme méthode par défaut. Aucune modification de configuration n'est nécessaire.
+Si vous ne disposez que d'une clé API Google Translate, rosetta la détecte automatiquement et utilise Google Translate comme méthode par défaut. Aucune modification de configuration n'est nécessaire.
 :::
 
 ### "401 Unauthorized" provenant d'OpenRouter
 
 Votre clé API est invalide ou a expiré. Veuillez la vérifier sur [openrouter.ai/keys](https://openrouter.ai/keys).
 
-### "429 Too Many Requests" / Limitation de débit
+### "429 Too Many Requests" / Limitation de débit (Rate Limiting)
 
-Rosetta gère les limites de débit en interne avec un délai d'attente exponentiel. Si vous atteignez constamment les limites de débit :
+Rosetta gère les limites de débit en interne avec un recul exponentiel (exponential backoff). Si vous atteignez constamment les limites de débit :
 
 1. **Réduisez la taille des lots (batch size)** dans votre configuration :
    ```json
    { "batchSize": 15 }
    ```
-2. **Utilisez un modèle avec des limites de débit plus élevées** (par exemple, `google/gemini-3.5-flash` possède des limites généreuses)
+2. **Utilisez un modèle avec des limites de débit plus élevées** (par exemple, `google/gemini-3.5-flash` possède des limites généreuses).
 3. **Utilisez une méthode plus économique/rapide** pour les paires à fort volume — Google Translate n'a pas de limite de débit :
    ```json
    { "pairs": { "en:it": { "method": "google-translate" } } }
@@ -75,11 +75,11 @@ Les fournisseurs retirent régulièrement des noms de modèles. Si les traductio
 
 ## Qualité de la traduction
 
-### Les traductions reproduisent la langue source
+### Les traductions font écho à la langue source
 
 La barrière de qualité (quality gate) détecte cela. Si une traduction est identique à la source anglaise, elle est rejetée et réessayée. Si le problème persiste :
 
-1. **Vérifiez le modèle** — Certains modèles sont peu performants pour des paires de langues spécifiques
+1. **Vérifiez le modèle** — Certains modèles sont peu performants pour des paires de langues spécifiques.
 2. **Ajoutez des instructions de registre** — Indiquez au modèle quelle langue produire :
    ```json
    {
@@ -88,42 +88,42 @@ La barrière de qualité (quality gate) détecte cela. Si une traduction est ide
      }
    }
    ```
-3. **Essayez un autre modèle** — Passez de `gpt-4o-mini` à `gpt-4o` ou `google/gemini-2.5-pro`
+3. **Essayez un modèle différent** — Passez de `gpt-4o-mini` à `gpt-4o` ou `google/gemini-2.5-pro`.
 
-### Sortie de script incorrecte (par ex., texte latin pour le japonais)
+### Sortie de script incorrecte (par exemple, texte latin pour le japonais)
 
-La vérification de conformité du script de la barrière de qualité détecte la plupart des cas. Si le problème persiste :
+La vérification de conformité des scripts de la barrière de qualité détecte la plupart des cas. Si le problème persiste :
 
-- Vérifiez que le code de la locale est correct (`ja`, et non `jp`)
-- Ajoutez des instructions explicites concernant le script dans le champ `register` :
+- Vérifiez que le code de la langue (locale) est correct (`ja`, et non `jp`).
+- Ajoutez des instructions de script explicites dans le champ `register` :
   ```json
   { "register": "Japanese using hiragana, katakana, and kanji" }
   ```
 
-### Motifs d'hallucination dans la sortie
+### Modèles d'hallucination dans la sortie
 
-Les motifs de trigrammes répétés (par exemple, "hello hello hello") sont détectés par le détecteur de boucle d'hallucination. Si la sortie est incohérente mais passe le détecteur :
+Les motifs de trigrammes répétés (par exemple, "bonjour bonjour bonjour") sont détectés par le détecteur de boucles d'hallucination. Si la sortie est tronquée ou incohérente mais passe le détecteur :
 
-1. **Réduisez la taille des lots** — Des lots plus petits produisent des résultats plus ciblés
-2. **Utilisez un modèle plus puissant** — Les modèles plus grands hallucinent moins sur les scripts non latins
-3. **Ajoutez des données d'accompagnement (coaching data)** — Les termes du dictionnaire ancrent la traduction
+1. **Réduisez la taille des lots** — Des lots plus petits produisent des résultats plus ciblés.
+2. **Utilisez un modèle plus puissant** — Les modèles plus grands hallucinent moins sur les scripts non latins.
+3. **Ajoutez des données d'accompagnement (coaching data)** — Les termes du dictionnaire ancrent la traduction.
 
 ## Problèmes de fichiers et de formats
 
 ### "No locale files found"
 
-Rosetta détecte automatiquement les fichiers de locale. S'il ne parvient pas à les trouver :
+Rosetta détecte automatiquement les fichiers de langue. S'il ne peut pas les trouver :
 
-1. **Vérifiez `localesDir`** — Doit pointer vers le répertoire contenant les fichiers de locale :
+1. **Vérifiez `localesDir`** — Doit pointer vers le répertoire contenant les fichiers de langue :
    ```json
    { "localesDir": "./locales" }
    ```
-2. **Vérifiez le nommage des fichiers** — Les fichiers doivent être nommés selon le code de la locale : `en.json`, `fr.json`, etc.
-3. **Vérifiez le format** — Formats pris en charge : JSON, JSON imbriqué, YAML, TOML
+2. **Vérifiez le nommage des fichiers** — Les fichiers doivent être nommés selon le code de la langue : `en.json`, `fr.json`, etc.
+3. **Vérifiez le format** — Formats pris en charge : JSON, JSON imbriqué, YAML, TOML.
 
-### Conflits de fichiers de verrouillage (lock files)
+### Conflits de fichiers de verrouillage (Lock file)
 
-Si `.i18n-rosetta.lock` se retrouve dans un état corrompu :
+Si `.i18n-rosetta.lock` se retrouve dans un mauvais état :
 
 ```bash
 # Reset the lock file (next sync will retranslate everything)
@@ -153,9 +153,9 @@ L'indicateur `--force-keys` annule la vérification du hachage du fichier de ver
 
 Cela ne devrait pas se produire — les blocs de code sont protégés avant la traduction. Si cela se produit :
 
-1. Vérifiez que le bloc de code utilise un balisage standard (trois accents graves)
-2. Vérifiez la présence de blocs de code non fermés dans le Markdown source
-3. Ouvrez un ticket (issue) — il s'agit d'un bug dans le système de protection des sentinelles
+1. Vérifiez que le bloc de code utilise un encadrement standard (trois accents graves / backticks).
+2. Vérifiez s'il y a des blocs de code non fermés dans le Markdown source.
+3. Signalez un problème (issue) — il s'agit d'un bogue dans le système de protection des sentinelles.
 
 ## Problèmes liés à la CLI
 
@@ -163,9 +163,9 @@ Cela ne devrait pas se produire — les blocs de code sont protégés avant la t
 
 La surveillance des fichiers utilise la fonction native `fs.watch` de Node.js. Problèmes connus :
 
-- **Lecteurs réseau** — `fs.watch` ne fonctionne pas de manière fiable sur les montages NFS/SMB
-- **Volumes Docker** — Utilisez le mode d'interrogation (polling) ou exécutez rosetta à l'intérieur du conteneur
-- **Grands répertoires** — L'outil de surveillance surveille `localesDir` de manière récursive ; des arborescences très profondes peuvent dépasser les limites du système d'exploitation
+- **Lecteurs réseau** — `fs.watch` ne fonctionne pas de manière fiable sur les montages NFS/SMB.
+- **Volumes Docker** — Utilisez le mode d'interrogation (polling) ou exécutez rosetta à l'intérieur du conteneur.
+- **Grands répertoires** — Le système de surveillance surveille `localesDir` de manière récursive ; des arborescences très profondes peuvent dépasser les limites du système d'exploitation.
 
 ### `npx` exécute une ancienne version
 
@@ -185,29 +185,29 @@ i18n-rosetta sync
 
 ### La synchronisation est lente pour de nombreuses langues
 
-Rosetta traduit toutes les locales en parallèle par défaut. Si la synchronisation reste lente :
+Rosetta traduit toutes les langues en parallèle par défaut. Si la synchronisation est toujours lente :
 
-1. **Utilisez Google Translate pour les paires à fort volume** — C'est 10 à 50 fois plus rapide que la traduction par LLM
+1. **Utilisez Google Translate pour les paires à fort volume** — C'est 10 à 50 fois plus rapide que la traduction par LLM.
 2. **Augmentez la taille des lots** (la valeur par défaut est 80) :
    ```json
    { "batchSize": 120 }
    ```
-3. **Ajustez la simultanéité (concurrency)** — Le parallélisme des locales JSON est défini par défaut sur 50 et celui du contenu sur 12. Si votre fournisseur d'API prend en charge des limites de débit plus élevées :
+3. **Ajustez la simultanéité (concurrency)** — Le parallélisme des fichiers de langue JSON est défini par défaut sur 200 et celui du contenu sur 48. Si votre fournisseur d'API prend en charge des limites de débit plus élevées :
    ```bash
    npx i18n-rosetta sync --json-concurrency 80 --content-concurrency 20
    ```
-4. **Utilisez un modèle rapide** — `gpt-4o-mini` est considérablement plus rapide que `gpt-4o`
+4. **Utilisez un modèle rapide** — `gpt-4o-mini` est considérablement plus rapide que `gpt-4o`.
 
 ### Coûts d'API élevés
 
-- **Vérifiez la taille des lots** — Des lots plus grands = moins d'appels d'API = des coûts réduits
-- **Utilisez la mémoire de traduction (Translation Memory - TM)** — La TM est activée par défaut. Exécutez `i18n-rosetta tm stats` pour vérifier qu'elle fonctionne. Si vous voyez 0 entrée après plusieurs synchronisations, il se peut qu'il y ait un problème avec les autorisations de votre répertoire `.rosetta/`
-- **Utilisez la mise en cache des prompts** — Rosetta sépare les messages système/utilisateur pour obtenir des correspondances de cache sur les modèles Anthropic et Google
-- **Utilisez Google Translate pour les langues de niveau 2 (Tier 2)** — Consultez le guide pratique [Traduire 30 langues](/docs/tutorials/translate-30-languages)
+- **Vérifiez la taille des lots** — Des lots plus importants = moins d'appels d'API = des coûts réduits.
+- **Utilisez la mémoire de traduction (Translation Memory)** — La MT est activée par défaut. Exécutez `i18n-rosetta tm stats` pour vérifier qu'elle fonctionne. Si vous voyez 0 entrée après plusieurs synchronisations, il peut y avoir un problème avec les autorisations de votre répertoire `.rosetta/`.
+- **Utilisez la mise en cache des invites (prompt caching)** — Rosetta sépare les messages système/utilisateur pour obtenir des correspondances en cache sur les modèles Anthropic et Google.
+- **Utilisez Google Translate pour les langues de niveau 2** — Consultez le guide pratique [Traduire 30 langues](/docs/tutorials/translate-30-languages).
 
 ### Traductions obsolètes après un changement de fournisseur
 
-Si vous passez d'une méthode de traduction à une autre (par exemple, de `llm` à `deepl`), le cache de la TM peut encore fournir d'anciennes traductions de la méthode précédente pour les clés dont le texte source n'a pas changé. La clé de cache inclut le nom de la méthode, de sorte que la plupart des cas sont gérés automatiquement. Toutefois, si vous avez modifié `model` au sein de la même méthode :
+Si vous passez d'une méthode de traduction à une autre (par exemple, de `llm` à `deepl`), le cache de la MT peut toujours fournir d'anciennes traductions de la méthode précédente pour les clés dont le texte source n'a pas changé. La clé de cache inclut le nom de la méthode, la plupart des cas sont donc gérés automatiquement. Toutefois, si vous avez modifié `model` au sein de la même méthode :
 
 ```bash
 # Force fresh translations for all keys
@@ -218,10 +218,10 @@ i18n-rosetta tm clear --yes
 i18n-rosetta sync
 ```
 
-Consultez la section [Mémoire de traduction](/docs/concepts/translation-memory) pour plus de détails sur la conception des clés de cache.
+Consultez la section [Mémoire de traduction](/docs/concepts/translation-memory) pour obtenir des détails sur la conception des clés de cache.
 
 ## Toujours bloqué ?
 
-- **[Tickets GitHub (Issues)](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Recherchez parmi les tickets existants ou ouvrez-en un nouveau
-- **[Documentation sur l'architecture](/docs/concepts/architecture)** — Comprendre la conception du système
-- **[Barrière de qualité (Quality Gate)](/docs/concepts/quality-gate)** — Comment fonctionne la validation en arrière-plan
+- **[Problèmes GitHub (Issues)](https://github.com/gamedaysuits/i18n-rosetta/issues)** — Recherchez des problèmes existants ou signalez-en un nouveau.
+- **[Documentation sur l'architecture](/docs/concepts/architecture)** — Comprendre la conception du système.
+- **[Barrière de qualité (Quality Gate)](/docs/concepts/quality-gate)** — Comment fonctionne la validation en arrière-plan.

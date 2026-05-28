@@ -23,8 +23,8 @@ npx i18n-rosetta init
   "model": "google/gemini-3.5-flash",
   "defaultMethod": "llm",
   "batchSize": 80,
-  "jsonConcurrency": 50,
-  "contentConcurrency": 12,
+  "jsonConcurrency": 200,
+  "contentConcurrency": 48,
   "fallbackPrefix": "[EN] ",
   "apiKeyEnvVar": "OPENROUTER_API_KEY",
   "baseUrl": "",
@@ -47,7 +47,7 @@ npx i18n-rosetta init
 ```
 
 :::note typegen aún no está implementado
-El bloque de configuración `typegen` es reconocido y conservado por el cargador de configuración, pero la generación de tipos de TypeScript aún no está implementada. Este es un marcador de posición para una función planificada. Configurar estos valores no tiene ningún efecto.
+El bloque de configuración `typegen` es reconocido y preservado por el cargador de configuración, pero la generación de tipos de TypeScript aún no está implementada. Este es un marcador de posición para una función planeada. Configurar estos valores no tiene ningún efecto.
 :::
 
 
@@ -55,29 +55,29 @@ El bloque de configuración `typegen` es reconocido y conservado por el cargador
 
 | Campo | Tipo | Predeterminado | Descripción |
 |-------|------|---------|-------------|
-| `version` | `number` | `3` | Versión del esquema de configuración. Siempre es `3`. |
+| `version` | `number` | `3` | Versión del esquema de configuración. Siempre `3`. |
 | `inputLocale` | `string` | `"en"` | Código del idioma de origen (BCP 47). |
 | `localesDir` | `string` | `"./locales"` | Ruta a los archivos de configuración regional (locale). Rosetta escanea este directorio. |
 | `contentDir` | `string` | `null` | Directorio de contenido de Hugo. Habilita la traducción del cuerpo de Markdown. |
-| `translatableFields` | `string[]` | `null` | Anula los campos predeterminados traducibles del frontmatter para la traducción de contenido. `null` utiliza los valores predeterminados integrados (`title`, `description`, `summary`). |
-| `format` | `string` | `"auto"` | Formato de archivo: `json`, `toml`, `yaml` o `auto` (se detecta por la extensión). |
+| `translatableFields` | `string[]` | `null` | Anula los campos predeterminados del frontmatter traducibles para la traducción de contenido. `null` utiliza los valores predeterminados integrados (`title`, `description`, `summary`). |
+| `format` | `string` | `"auto"` | Formato de archivo: `json`, `toml`, `yaml` o `auto` (detectar desde la extensión). |
 | `model` | `string` | `"google/gemini-3.5-flash"` | Modelo predeterminado para los métodos LLM. El formato depende del método: OpenRouter utiliza `provider/model` (por ejemplo, `google/gemini-3.5-flash`); los proveedores directos utilizan nombres simples (por ejemplo, `gpt-4o`, `gemini-2.5-flash`). |
-| `defaultMethod` | `string` | `"llm"` | Método de traducción predeterminado: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Se anula con la bandera CLI `--method`. |
+| `defaultMethod` | `string` | `"llm"` | Método de traducción predeterminado: `llm`, `llm-coached`, `google-translate`, `deepl`, `microsoft-translator`, `libretranslate`, `openai`, `anthropic`, `gemini`, `api`. Es anulado por la bandera de la CLI `--method`. |
 | `batchSize` | `number` | `80` | Claves por lote de traducción. Mayor = menos llamadas a la API, pero prompts más grandes. |
-| `jsonConcurrency` | `number` | `50` | Máximo de traducciones de configuración regional en paralelo para la sincronización de claves JSON. Se anula con la bandera CLI `--json-concurrency`. |
-| `contentConcurrency` | `number` | `12` | Máximo de llamadas a la API en paralelo para la traducción de contenido (Markdown/MDX). Se anula con la bandera CLI `--content-concurrency`. |
-| `fallbackPrefix` | `string` | `"[EN] "` | Prefijo marcador utilizado por `audit` y `verify` para detectar valores heredados no traducidos de ejecuciones anteriores. Rosetta no escribe este prefijo, solo lo lee para su detección. |
-| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Nombre de la variable de entorno para la clave de la API. Anúlelo para usar nombres de variables de entorno personalizados. |
+| `jsonConcurrency` | `number` | `200` | Máximo de traducciones de locale en paralelo para la sincronización de claves JSON. Es anulado por la bandera de la CLI `--json-concurrency`. |
+| `contentConcurrency` | `number` | `48` | Máximo de llamadas a la API en paralelo para la traducción de contenido (Markdown/MDX). Es anulado por la bandera de la CLI `--content-concurrency`. |
+| `fallbackPrefix` | `string` | `"[EN] "` | Prefijo de marcador utilizado por `audit` y `verify` para detectar valores heredados no traducidos de ejecuciones anteriores. Rosetta no escribe este prefijo, solo lo lee para su detección. |
+| `apiKeyEnvVar` | `string` | `"OPENROUTER_API_KEY"` | Nombre de la variable de entorno para la clave de la API. Anúlelo para nombres de variables de entorno personalizados. |
 | `baseUrl` | `string` | `""` | URL base para la generación de artefactos SEO (hreflang, sitemaps, JSON-LD). |
 | `pairs` | `object` | `{}` | Anulaciones de método, modelo y calidad por par. Consulte [Configuración de pares](#pair-configuration). |
 | `languages` | `object` | `{}` | Anulaciones por idioma. Consulte [Configuración de idiomas](#language-configuration). |
 | `lint.srcDir` | `string` | `null` | Directorio de origen para el escaneo de lint. `null` = detección automática desde el framework. |
-| `lint.ignore` | `string[]` | `["node_modules", ...]` | Patrones glob a excluir del lint. |
+| `lint.ignore` | `string[]` | `["node_modules", ...]` | Patrones glob para excluir del lint. |
 | `lint.minLength` | `number` | `2` | Longitud mínima de la cadena para marcarla como codificada de forma rígida (hardcoded). |
 | `seo.urlPattern` | `string` | `"/:locale/:path"` | Plantilla de patrón de URL para la generación de etiquetas hreflang. |
-| `seo.pages` | `string[]` | `null` | Lista explícita de páginas para SEO. `null` = detección automática desde las claves de configuración regional. |
+| `seo.pages` | `string[]` | `null` | Lista explícita de páginas para SEO. `null` = detección automática desde las claves de locale. |
 | `typegen.output` | `string` | `null` | Ruta de salida para los tipos de TypeScript generados. `null` = deshabilitado. |
-| `typegen.autoGenerate` | `boolean` | `false` | Regenerar automáticamente los tipos después de cada sincronización. |
+| `typegen.autoGenerate` | `boolean` | `false` | Regenerar tipos automáticamente después de cada sincronización. |
 
 ## Configuración de pares
 
@@ -127,7 +127,7 @@ Cada idioma obtiene su registro predeterminado de la tabla de registros integrad
 
 ### Objeto con cadenas de registro
 
-El valor puede ser una **clave preestablecida** de la tarjeta del idioma, o un texto de registro personalizado:
+El valor puede ser una **clave preestablecida** de la tarjeta del idioma, o texto de registro personalizado:
 
 ```json
 {
@@ -139,7 +139,7 @@ El valor puede ser una **clave preestablecida** de la tarjeta del idioma, o un t
 }
 ```
 
-Rosetta verifica si la cadena coincide con una clave preestablecida en la tarjeta de idioma. Si es así, se utiliza el prompt de registro completo de la tarjeta. Si no, la cadena se utiliza tal cual. Consulte [Idiomas compatibles](/docs/reference/supported-languages#language-cards) para ver los valores preestablecidos disponibles.
+Rosetta verifica si la cadena coincide con una clave preestablecida en la tarjeta del idioma. Si es así, se utiliza el prompt de registro completo de la tarjeta. Si no, la cadena se utiliza tal cual. Consulte [Idiomas compatibles](/docs/reference/supported-languages#language-cards) para ver los ajustes preestablecidos disponibles.
 
 ### Objeto con configuración completa
 
@@ -173,7 +173,7 @@ Puede mezclar objetos abreviados y completos en el mismo bloque.
 | `script` | `string` | Código de escritura ISO 15924. Activa la validación de escritura en el control de calidad (quality gate). |
 
 :::info Cadena de herencia
-Las configuraciones se resuelven en este orden (la primera tiene prioridad):
+Las configuraciones se resuelven en este orden (la primera gana):
 
 **nivel de par** → **nivel de idioma** → **configuración global** → **valores predeterminados**
 
@@ -213,7 +213,7 @@ src/utils/constants.js
 
 ## Directorio `.rosetta/`
 
-Rosetta crea un directorio `.rosetta/` en la raíz de su proyecto para el estado interno. Por lo general, **debe agregar esto a `.gitignore`**; es una optimización local, no código fuente del proyecto:
+Rosetta crea un directorio `.rosetta/` en la raíz de su proyecto para el estado interno. Por lo general, **debería agregar esto a `.gitignore`**, ya que es una optimización local, no código fuente del proyecto:
 
 ```gitignore
 .rosetta/
@@ -221,7 +221,7 @@ Rosetta crea un directorio `.rosetta/` en la raíz de su proyecto para el estado
 
 | Archivo | Propósito | ¿Hacer commit? |
 |------|---------|--------|
-| `tm.json` | Caché de memoria de traducción: almacena traducciones anteriores indexadas por texto de origen + configuración regional + método | No (caché local) |
+| `tm.json` | Caché de la memoria de traducción: almacena traducciones anteriores indexadas por texto de origen + locale + método | No (caché local) |
 | `xliff/*.xliff` | Archivos de exportación XLIFF para revisión por traductores profesionales | No (transitorio) |
 | `methods/` | Manifiestos de plugins de métodos instalados | Sí (configuración compartida) |
 | `backups/` | Copias de seguridad previas al ajuste (creadas por `wrap --undo`) | No (red de seguridad) |
@@ -317,17 +317,17 @@ class MistralMethod extends DirectLLMMethod {
 }
 ```
 
-Obtendrá traducción, entrenamiento (coaching), bucles de reintento, validación de modelos, niveles de calidad y ayuda de configuración de forma gratuita. Solo la forma de la solicitud HTTP es específica del proveedor. Para los adaptadores que no son LLM y que utilizan `fetch()` sin procesar, utilice el ayudante compartido `fetchWithRetry()` de `lib/methods/fetch-with-retry.js` en lugar de escribir su propio bucle de reintento.
+Obtiene traducción, entrenamiento (coaching), bucles de reintento, validación de modelos, niveles de calidad y ayuda de configuración de forma gratuita. Solo la forma de la solicitud HTTP es específica del proveedor. Para los adaptadores que no son LLM y que utilizan `fetch()` sin procesar, utilice el ayudante compartido `fetchWithRetry()` de `lib/methods/fetch-with-retry.js` en lugar de escribir su propio bucle de reintento.
 
 ---
 
 ## Consulte también
 
-- [Referencia de la CLI](/docs/reference/cli) — todos los comandos y banderas
-- [Métodos de traducción](/docs/guides/translation-methods) — cómo elegir y mezclar métodos
-- [Memoria de traducción](/docs/concepts/translation-memory) — almacenamiento en caché y ahorro de costos
-- [Trabajar con traductores profesionales](/docs/guides/professional-translators) — flujo de trabajo con XLIFF
-- [Especificación de plugins](/docs/reference/plugin-spec) — formato del manifiesto del plugin de método
-- [Arquitectura](/docs/concepts/architecture) — cómo se conectan las piezas
-- [Idiomas compatibles](/docs/reference/supported-languages) — soporte de idiomas integrado
-- [Cómo funciona la sincronización](/docs/concepts/how-sync-works) — el pipeline de traducción
+- [Referencia de la CLI](/docs/reference/cli): todos los comandos y banderas
+- [Métodos de traducción](/docs/guides/translation-methods): cómo elegir y mezclar métodos
+- [Memoria de traducción](/docs/concepts/translation-memory): almacenamiento en caché y ahorro de costos
+- [Trabajar con traductores profesionales](/docs/guides/professional-translators): flujo de trabajo con XLIFF
+- [Especificación de plugins](/docs/reference/plugin-spec): formato del manifiesto del plugin de métodos
+- [Arquitectura](/docs/concepts/architecture): cómo se conectan las piezas
+- [Idiomas compatibles](/docs/reference/supported-languages): soporte de idiomas integrado
+- [Cómo funciona la sincronización](/docs/concepts/how-sync-works): el pipeline de traducción

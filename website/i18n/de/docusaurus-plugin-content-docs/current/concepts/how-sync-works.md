@@ -1,12 +1,12 @@
 ---
 sidebar_position: 2
-title: "Wie die Synchronisierung funktioniert"
+title: "Wie die Synchronisation funktioniert"
 ---
 # Wie die Synchronisierung funktioniert
 
-Der Befehl `sync` ist die Kernfunktion von rosetta. Im Folgenden erfahren Sie, was passiert, wenn Sie `npx i18n-rosetta sync` ausführen.
+Der Befehl `sync` ist die Kernfunktion von rosetta. Hier erfahren Sie, was passiert, wenn Sie `npx i18n-rosetta sync` ausführen.
 
-## Pipeline-Übersicht
+## Übersicht der Pipeline
 
 ```mermaid
 flowchart TD
@@ -33,14 +33,14 @@ flowchart TD
 
 ## Schritt für Schritt
 
-### 1. Konfigurationsauflösung
+### 1. Auflösung der Konfiguration
 
 Rosetta lädt `i18n-rosetta.config.json` (oder erkennt die Einstellungen automatisch). Dabei wird Folgendes aufgelöst:
 - Quell- und Zielsprachen
 - Der Paargraph (welche Quelle→Ziel-Kombinationen verarbeitet werden sollen)
 - Methoden-, Modell- und Qualitätseinstellungen pro Paar
 
-Vor dem Scannen der Dateien gibt rosetta einen Start-Header aus:
+Bevor die Dateien gescannt werden, gibt rosetta einen Start-Header aus:
 
 ```
 i18n-rosetta v3.3.1
@@ -76,11 +76,11 @@ Rosetta liest `.i18n-rosetta.lock`, wo die SHA-256-Hashes der zuvor übersetzten
 | Zielwert beginnt mit `[EN]` | **Neu übersetzen** (veraltete Fallback-Markierung) |
 | Quell-Hash unverändert, Schlüssel existiert | **Überspringen** |
 
-Aus diesem Grund übersetzt rosetta nur das, was sich geändert hat — es wird nicht bei jeder Synchronisierung Ihre gesamte Datei neu übersetzt.
+Aus diesem Grund übersetzt rosetta nur das, was sich geändert hat – es wird nicht bei jeder Synchronisierung Ihre gesamte Datei neu übersetzt.
 
-### 4. Stapelverarbeitung
+### 4. Stapelverarbeitung (Batching)
 
-Schlüssel werden in Stapeln gruppiert (Standard: 80 Schlüssel/Stapel für LLMs, 128 für Google Translate). Die Stapelverarbeitung reduziert API-Roundtrips und hält die Prompts gleichzeitig überschaubar.
+Schlüssel werden in Stapeln gruppiert (Standard: 80 Schlüssel/Stapel für LLMs, 128 für Google Translate). Die Stapelverarbeitung reduziert API-Aufrufe und hält die Prompts gleichzeitig überschaubar.
 
 Während der Übersetzung zeigt rosetta einen Inline-Fortschrittsbalken an, der nach Abschluss jedes Stapels aktualisiert wird:
 
@@ -89,18 +89,18 @@ Während der Übersetzung zeigt rosetta einen Inline-Fortschrittsbalken an, der 
      ████████████████░░░░░░░░░░░░░░░░ 1,440/2,847 keys
 ```
 
-Der Balken wird mithilfe des Wagenrücklaufs `\r` für direkte Aktualisierungen gerendert — kein Scrollen. Wird in den Modi `--quiet` und `--json` unterdrückt.
+Der Balken wird mithilfe des Wagenrücklaufs `\r` für direkte Aktualisierungen gerendert – kein Scrollen. Wird in den Modi `--quiet` und `--json` unterdrückt.
 
 ### 4b. Translation Memory
 
-Vor der Stapelverarbeitung prüft rosetta den Translation-Memory-Cache (`.rosetta/tm.json`). Schlüssel, deren Quelltext + Sprache + Methode mit einer vorherigen Übersetzung übereinstimmen, werden sofort aus dem Cache bereitgestellt — es ist kein API-Aufruf erforderlich.
+Vor der Stapelverarbeitung prüft rosetta den Translation-Memory-Cache (`.rosetta/tm.json`). Schlüssel, deren Quelltext + Sprache + Methode mit einer vorherigen Übersetzung übereinstimmen, werden sofort aus dem Cache bereitgestellt – es ist kein API-Aufruf erforderlich.
 
 ```
   [TM] 142 key(s) served from cache
   Translating 3 key(s) to French (llm)... [OK]
 ```
 
-Das Translation Memory ist der primäre Mechanismus zur Kosteneinsparung. Wenn Sie die Synchronisierung nach der Änderung eines einzelnen Schlüssels erneut ausführen, wird nur dieser eine Schlüssel übersetzt, nicht die gesamte Datei. Weitere Details finden Sie unter [Translation Memory](/docs/concepts/translation-memory).
+Das TM ist der wichtigste Mechanismus zur Kosteneinsparung. Wenn Sie die Synchronisierung nach der Änderung eines einzelnen Schlüssels erneut ausführen, wird nur dieser eine Schlüssel übersetzt, nicht die gesamte Datei. Weitere Details finden Sie unter [Translation Memory](/docs/concepts/translation-memory).
 
 Um den Cache für einen einzelnen Durchlauf zu umgehen: `i18n-rosetta sync --no-tm`
 
@@ -111,9 +111,9 @@ Jeder Stapel wird an die konfigurierte Übersetzungsmethode gesendet:
 - **`llm`**: Strukturierter Prompt an OpenRouter mit Anweisungen zu Register und geschlechtersensibler Sprache
 - **`llm-coached`**: Dasselbe, jedoch mit eingefügten Grammatikregeln, Wörterbuch und Stilhinweisen
 - **`google-translate`**: Stapelanfrage an die Google Cloud Translation API v2
-- **`api`**: HTTP-POST an einen Remote-Endpunkt
+- **`api`**: HTTP POST an einen Remote-Endpunkt
 
-Die Systemnachricht (Register, geschlechtersensible Sprache, Regeln) ist für alle Stapel einer bestimmten Sprache identisch. Dies ermöglicht **Prompt-Caching** — Anbieter wie Anthropic und Google zwischenspeichern wiederholte Systemnachrichten, was die Token-Kosten senkt.
+Die Systemnachricht (Register, geschlechtersensible Sprache, Regeln) ist für eine bestimmte Sprache über alle Stapel hinweg identisch, was **Prompt-Caching** ermöglicht – Anbieter wie Anthropic und Google zwischenspeichern wiederholte Systemnachrichten, wodurch die Token-Kosten gesenkt werden.
 
 ### 6. Quality Gate
 
@@ -121,26 +121,26 @@ Jede Übersetzung wird validiert, bevor sie auf die Festplatte geschrieben wird.
 
 | Prüfung | Was sie erkennt | Beispiel |
 |-------|----------------|---------|
-| **Leer/Blanko** | Modell hat nichts zurückgegeben | `""` |
+| **Leer/Blank** | Modell hat nichts zurückgegeben | `""` |
 | **Quell-Echo** | Modell hat die englische Eingabe zurückgegeben | `"Welcome"` für Japanisch |
 | **Halluzinationsschleife** | Wiederholte Trigramme | `"Qo' Qo' Qo' Qo'"` |
 | **Längeninflation** | Ausgabe ist 4×+ länger als die Quelle | 10-Zeichen-Quelle → 50-Zeichen-Ausgabe |
 | **Schrift-Konformität** | Falsches Schriftsystem für die Sprache | Lateinischer Text für arabische Sprache |
 
-Fehler werden mit dem Präfix `[GATE]` protokolliert. Es gibt keine stillen Fallbacks.
+Fehler werden mit einem `[GATE]`-Präfix protokolliert. Es gibt keine stillen Fallbacks.
 
 Weitere Details finden Sie unter [Quality Gate](/docs/concepts/quality-gate).
 
 ### 6b. Terminologieprüfung
 
-Bei gecoachten Paaren mit einem Wörterbuch prüft rosetta nach der Übersetzung, ob das LLM die erforderliche Terminologie tatsächlich verwendet hat. Verstöße werden als `[TERM]`-Warnungen protokolliert:
+Für gecoachte Paare mit einem Wörterbuch prüft rosetta nach der Übersetzung, ob das LLM die erforderliche Terminologie tatsächlich verwendet hat. Verstöße werden als `[TERM]`-Warnungen protokolliert:
 
 ```
 [TERM] en→fr: 2 term violation(s)
   • "dashboard" → expected "tableau de bord" but got "panneau"
 ```
 
-Dies sind Warnungen, keine blockierenden Fehler — die Übersetzung wird dennoch geschrieben.
+Dies sind Warnungen, keine blockierenden Fehler – die Übersetzung wird dennoch geschrieben.
 
 ### 7. Wiederholungskaskade
 
@@ -154,7 +154,7 @@ Full batch (80 keys) → Failed
 
 Das Budget für erneute Versuche ist durch `maxRetries` begrenzt (Standard: 3), um ausufernde Token-Ausgaben zu verhindern.
 
-### 8. Schreiben und Sperren
+### 8. Schreiben & Sperren
 
 Erfolgreiche Übersetzungen werden in die Zielsprachendatei geschrieben, wobei die ursprüngliche Verschachtelungsstruktur erhalten bleibt. Die Sperrdatei wird mit neuen SHA-256-Hashes aktualisiert.
 
@@ -163,27 +163,27 @@ Erfolgreiche Übersetzungen werden in die Zielsprachendatei geschrieben, wobei d
 Nachdem alle Paare verarbeitet wurden, liest rosetta die geschriebenen Sprachendateien erneut von der Festplatte und führt einen Verifizierungsdurchlauf durch (es sei denn, `--no-verify` ist festgelegt). Dies schließt die Lücke zwischen einer als erfolgreich gemeldeten Synchronisierung und tatsächlich fehlerhaften Schlüsseln:
 
 - **Schlüsselparität** — alle Quellschlüssel sind in jedem Ziel vorhanden
-- **`[EN]`-Fallback-Markierungen** — veraltete Markierungen aus früheren Durchläufen
+- **`[EN]` Fallback-Markierungen** — veraltete Markierungen aus früheren Durchläufen
 - **Leere Übersetzungen** — leere Werte, die durchgerutscht sind
 - **Schrift-Konformität** — nicht-lateinische Sprachen mit reinen ASCII-Übersetzungen
-- **Platzhaltererhaltung** — ICU-Platzhalter stimmen mit der Quelle überein
+- **Erhalt von Platzhaltern** — ICU-Platzhalter stimmen mit der Quelle überein
 - **Codierungsprobleme** — BOM-Markierungen, unsichtbare Zeichen
 
 Dies ist auch als eigenständiger Befehl `i18n-rosetta verify` für CI-Gates verfügbar.
 
 ## Inhaltsübersetzung (Phase 2)
 
-Für Docusaurus- und Hugo-Projekte führt `sync` nach der JSON-Schlüsselübersetzung eine zweite Phase aus. In dieser Phase werden Markdown- und MDX-Dateien (Dokumentationen, Blogbeiträge, Tutorials) mit denselben Methoden und demselben Quality Gate übersetzt.
+Für Docusaurus- und Hugo-Projekte führt `sync` nach der Übersetzung der JSON-Schlüssel eine zweite Phase aus. In dieser Phase werden Markdown- und MDX-Dateien (Dokumentationen, Blogbeiträge, Tutorials) mit denselben Methoden und demselben Quality Gate übersetzt.
 
 ### Wie es funktioniert
 
-1. Rosetta entdeckt alle Quellinhaltsdateien (`.md`, `.mdx`), indem es das Verzeichnis content/docs durchsucht.
-2. Für jedes Datei-×-Sprache-Paar wird eine separate Inhalts-Sperrdatei (`.i18n-rosetta-content.lock`) auf SHA-256-Hash-Änderungen geprüft.
-3. Geänderte oder fehlende Dateien werden in einem flachen Pool von Arbeitselementen gesammelt.
-4. Der Pool wird mit **paralleler Nebenläufigkeit** verarbeitet (Standard: 12 gleichzeitige API-Aufrufe).
+1. Rosetta ermittelt alle Quellinhaltsdateien (`.md`, `.mdx`), indem es das content/docs-Verzeichnis durchsucht
+2. Für jedes Paar aus Datei × Sprache wird eine separate Inhalts-Sperrdatei (`.i18n-rosetta-content.lock`) auf Änderungen der SHA-256-Hashes geprüft
+3. Geänderte oder fehlende Dateien werden in einem flachen Pool von Arbeitselementen gesammelt
+4. Der Pool wird mit **paralleler Nebenläufigkeit** verarbeitet (Standard: 12 gleichzeitige API-Aufrufe)
 
 ```
-Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
+Phase 2: content (79 translations to process, 341 skipped, concurrency: 48)
 
     [1/79] (1%)  docs/concepts/security.md → ja [RE-TRANSLATE] (~3328s left)
     [2/79] (3%)  docs/concepts/security.md → th [RE-TRANSLATE] (~1821s left)
@@ -195,10 +195,10 @@ Phase 2: content (79 translations to process, 341 skipped, concurrency: 12)
 
 ### Parallelität
 
-Sowohl Phase 1 (JSON-Schlüssel) als auch Phase 2 (Inhalte) laufen nun parallel:
+Sowohl Phase 1 (JSON-Schlüssel) als auch Phase 2 (Inhalte) laufen nun parallel ab:
 
 - **Phase 1**: Alle Sprachübersetzungen werden gleichzeitig ausgeführt (Standard: 50 gleichzeitige Sprachen). Innerhalb jeder Sprache laufen auch die API-Stapel parallel (4 gleichzeitige Stapel). Eine Synchronisierung von 12 Sprachen mit 120 Schlüsseln ist in ca. 1 Minute statt in ca. 15 Minuten abgeschlossen.
-- **Phase 2**: Alle Datei-×-Sprache-Kombinationen werden als flacher Pool übersetzt (Standard: 12 gleichzeitige API-Aufrufe). Verschiedene Dateien und verschiedene Sprachen werden simultan übersetzt.
+- **Phase 2**: Alle Kombinationen aus Datei × Sprache werden als flacher Pool übersetzt (Standard: 12 gleichzeitige API-Aufrufe). Verschiedene Dateien und verschiedene Sprachen werden simultan übersetzt.
 
 Steuern Sie die Parallelität mit `--json-concurrency`, `--content-concurrency` oder `--concurrency` (legt beides fest):
 
@@ -217,16 +217,16 @@ npx i18n-rosetta sync --concurrency 4
 
 Während der Übersetzung schützt rosetta nicht übersetzbare Inhalte:
 
-- **Codeblöcke** (umzäunt und eingerückt) werden durch Platzhalter ersetzt.
-- **Frontmatter**-Felder, die nicht in der Liste `translatableFields` stehen, bleiben unverändert erhalten.
-- **Links**, Bildpfade und HTML-Tags werden geschützt.
-- **Shortcodes** und Interpolationsvariablen (z. B. `{count}`, `{{.Params.title}}`) werden abgeschirmt.
+- **Codeblöcke** (umzäunt und eingerückt) werden durch Platzhalter ersetzt
+- **Frontmatter**-Felder, die nicht in der `translatableFields`-Liste stehen, bleiben unverändert erhalten
+- **Links**, Bildpfade und HTML-Tags werden geschützt
+- **Shortcodes** und Interpolationsvariablen (z. B. `{count}`, `{{.Params.title}}`) werden abgeschirmt
 
 Nach der Übersetzung werden alle Platzhalter wiederhergestellt und validiert. Wenn welche fehlen oder beschädigt sind, wird die Übersetzung abgelehnt und erneut versucht.
 
 ## Teilerfolg
 
-Ein fehlgeschlagener Stapel blockiert nicht den Rest. Wenn 9 von 10 Stapeln erfolgreich sind, werden diese 9 geschrieben. Der fehlgeschlagene Stapel wird protokolliert, und Sie können `sync` erneut ausführen, um es noch einmal zu versuchen.
+Ein fehlgeschlagener Stapel blockiert nicht den Rest. Wenn 9 von 10 Stapeln erfolgreich sind, werden diese 9 geschrieben. Der fehlgeschlagene Stapel wird protokolliert, und Sie können `sync` erneut ausführen, um einen neuen Versuch zu starten.
 
 ## Probelauf
 
@@ -246,7 +246,7 @@ npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 
 ## Kostenschätzung
 
-Vor der Übersetzung generiert rosetta einen **Kostenbericht vor der Synchronisierung**, der die geschätzten Kosten pro Paar anzeigt. Dieser wird bei jedem `sync` automatisch ausgeführt — Sie sehen ihn, bevor API-Aufrufe getätigt werden.
+Vor der Übersetzung erstellt rosetta einen **Kostenbericht vor der Synchronisierung**, der die geschätzten Kosten pro Paar anzeigt. Dieser wird bei jedem `sync` automatisch ausgeführt – Sie sehen ihn, bevor API-Aufrufe getätigt werden.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -268,10 +268,10 @@ Jede Übersetzungsmethode liefert ihre eigene Kostenschätzung:
 |--------|-----------|-----------|
 | `google-translate` | Veröffentlichter Tarif von Google (20 $/Million Zeichen) | Genau |
 | `llm` | Variiert je nach OpenRouter-Modell | Modellabhängig — siehe [OpenRouter-Preise](https://openrouter.ai/models) |
-| `llm-coached` | Wie `llm` plus Coaching-Kontext-Token | Modellabhängig |
-| `api` | Vom Server bestimmt | Unbekannt — kann ohne Abfrage des Endpunkts nicht geschätzt werden |
+| `llm-coached` | Wie `llm` zuzüglich Coaching-Kontext-Token | Modellabhängig |
+| `api` | Serverbestimmt | Unbekannt — kann ohne Abfrage des Endpunkts nicht geschätzt werden |
 
-Wenn eine Methode die Kosten nicht bestimmen kann (LLM-Methoden, Remote-APIs), meldet rosetta `—`, anstatt zu raten. Verwenden Sie `--dry`, um Kostenschätzungen anzuzeigen, ohne tatsächlich zu übersetzen.
+Wenn eine Methode die Kosten nicht ermitteln kann (LLM-Methoden, Remote-APIs), meldet rosetta `—`, anstatt zu raten. Verwenden Sie `--dry`, um Kostenschätzungen anzuzeigen, ohne tatsächlich zu übersetzen.
 
 ---
 

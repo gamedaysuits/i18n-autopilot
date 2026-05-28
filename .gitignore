@@ -56,6 +56,9 @@ scripts/enrich-tier3-batch.mjs
 # public GitHub repo. They contain SaaS planning, pricing strategy,
 # competitive details, and internal marketing assets.
 
+# Confidential internal docs — financial models, cap tables, investor materials
+internal/
+
 # Internal planning docs have been moved to crk-translate/docs/internal/ (private repo).
 # Nothing to gitignore here — they no longer exist in this repo.
 

@@ -8,9 +8,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **`docs/METHOD_PLUGIN_SPEC.md`**: Created SSOT method plugin specification. Content sourced from `website/docs/reference/plugin-spec.md`, stripped of Docusaurus frontmatter. Resolves dangling README link.
+- **`docs/SIGNIFICANCE_SPEC.md`**: Copied significance testing specification from `gds-mt-eval-harness/SIGNIFICANCE_SPEC.md` to the `docs/` SSOT directory. Harness copy retained.
+- **`supabase/migrations/`**: Two migrations version-controlling the Supabase schema. Added 10 columns to `run_cards` (SCORING_SPEC §9.1: `composite_score`, `quality_tier`, `method_class`, `cost_per_1k_tokens`, `median_latency_seconds`, `p95_latency_seconds`, etc.). Created `datasets` table (metadata-only registry of evaluation corpora). Dropped `language_cards` table (language cards are JSON files loaded at build time, not DB data).
+- **Git tags**: Created `v3.2.0`, `v3.3.0`, and `v3.3.1` tags on their respective commits.
+
+### Fixed
+- **Root file organization**: Moved 18 loose files (pitch decks, images, SVGs, research PDFs) from project root to `marketing/`, `diagrams/`, and `crk-translate/docs/research/`.
+- **Stale harness docs**: Replaced 3 GDS-branded docs in `crk-translate/docs/internal/harness/` with redirect notes pointing to canonical `rosetta/` versions.
+- **OCAP language**: Updated `grant-proposal-guide.md` from "guarantees OCAP" to "OCAP-forward design" per corrected project language.
+- **Deprecation notes**: Added deprecation warnings to `project-plan.md` (→ ROADMAP.md) and `revenue-model.md` (→ business-plan.md throughbill model).
+
+### Added
 - **`models` command** (`lib/commands/models.js`): Query available models from a provider's live API. `i18n-rosetta models --method gemini` lists all models, helping users pick exact slugs. Read-only — does not modify config.
 - **Centralized model service** (`lib/models.js`): Single source of truth for fetching available models from Gemini, OpenAI, and Anthropic APIs. In-memory cache prevents redundant API calls within a session.
 - **Dynamic model picker in `init` wizard**: When selecting a direct provider (Gemini, OpenAI, Anthropic), the wizard now fetches real models from the API and shows a numbered picker. No more hardcoded model lists.
+- **Parallel sync pipeline** (`lib/sync.js`): 10x speedup via concurrent locale-pair processing. Configurable via `jsonConcurrency` (default 200) and `contentConcurrency` (default 48). Translation pairs run in parallel, gated by concurrency limits.
+- **Pre-commit i18n hook** (`.githooks/`): Automatically translates staged doc files on commit. Gracefully skips when `OPENROUTER_API_KEY` is not set. Both repos (rosetta + arena) support this via `git config core.hooksPath .githooks`.
+- **SSOT doc sync system** (`docs/` → Arena + Rosetta sites): Scoring spec, benchmark spec, how-it-works, and history essay now have a canonical source in `docs/` with committed copies in the Arena and Rosetta doc sites.
+- **Three purpose-specific agent guides**: `docs/AGENTS.md` (redirect), `website/docs/guides/agent-guide.md` (for CLI users), `gds-mt-eval-harness/website/docs/getting-started/agent-guide.md` (for method researchers).
+- **Full i18n site translation**: Rosetta product site translated to 12 locales via dogfooding the CLI.
+- **Untranslated detection in diff engine** (`lib/diff.js`): Diff now detects legacy `[EN]` markers and flags them for re-translation.
 - **YAML format auto-detection** (`detectYAMLStyle()` in `lib/format.js`): Distinguishes Hugo i18n YAML (CLDR plural sub-keys only) from standard nested YAML by inspecting sub-key names.
 - **Standard nested YAML serializer** (`flatToNestedYAML()` in `lib/format.js`): Writes proper tree-structured YAML without Hugo's `other:` wrapping. Used automatically when `detectYAMLStyle()` returns `'nested'`.
 - **Version banner** (`output.banner()` in `lib/output.js`): Sync now prints `i18n-rosetta v<version>` at startup, reading the version from `package.json` via `createRequire`. Suppressed in `quiet` and `json` modes.
@@ -20,7 +38,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`onProgress` callback** (`lib/methods/llm.js`): LLM method's `translate()` now fires an optional `onProgress(completed, total)` callback after each batch chunk completes (~30 keys), enabling real-time progress reporting. Threaded through `translate-pair.js` and wired to `progressBar()` in `sync.js`.
 
 ### Changed
+- **Fail-loud architecture** (`lib/sync.js`): Removed `--fallback` flag and all `useFallback` code paths. Translation failures are now always errors with actionable messages — never silent write-and-move-on. Preflight check (`resolveRuntime`) validates API key and method readiness before starting.
 - **`DEFAULT_MODEL` → `DEFAULT_OPENROUTER_MODEL`**: Renamed across 16 files to clarify this constant is the OpenRouter fallback, not a universal default. Direct providers (Gemini, OpenAI, Anthropic) now resolve their own default model from their method class at runtime.
+- **Concurrency defaults**: `jsonConcurrency` bumped 50 → 200, `contentConcurrency` bumped 12 → 48.
 - **Pair graph model resolution** (`pairs.js`): Direct-provider pairs now receive `model: null` instead of the OpenRouter slug. Each provider's method class handles model selection internally, preventing cross-provider slug confusion.
 - **`writeLocaleFile()` signature**: New optional 5th parameter `yamlStyle` (`'hugo'|'nested'|null`) routes to the correct YAML serializer. Backward compatible — existing callers are unaffected.
 - **`buildDefaultConfig()` is now `async`**: Fetches the top model from the provider API in `--yes` mode instead of hardcoding. Test updated accordingly.
@@ -30,12 +50,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Security consolidation**: `isUnsafeKey()` (prototype pollution guard) moved from `lib/methods/llm.js` to `lib/security.js` alongside `isPathContained()`. Security surface map documented in the module header.
 - **Unknown method error**: `getMethod()` now throws a descriptive error for unrecognized translation method names instead of silently falling back to LLM. Prevents typos like `"gogle-translate"` from burning API spend on the wrong provider.
 - **Method strategy docs**: `fst-gated` and `human-review` marked as `(planned)` in `lib/methods/base.js` instead of appearing as existing options.
+- **npm package scope**: Internal spec files and artifacts now excluded from the published npm package.
 
 ### Fixed
 - **Lint `walkDir` false exclusions** (`lib/lint.js`): `fullPath.includes(ig)` matched ignore patterns as substrings anywhere in the absolute path (e.g., `"test"` matched `/user/test-project/src/`). Now uses basename matching only (`entry.name === ig`).
 - **YAML format mangling** (`lib/format.js`, `lib/sync.js`): Standard nested YAML files (e.g., `nav: { home: Home }`) were written back using Hugo's `other:` wrapping pattern. Sync now detects the source YAML style and preserves it on write.
 - **`--json` and `--quiet` flags on sync**: Were parsed by the CLI but had no effect — now properly wired.
 - **v2 backward compat**: `translateBatch()` defaults to `'llm'` when `pairConfig.method` is undefined (legacy callers that don't set a method field).
+- **Broken `DEFAULT_MODEL` export** (`index.js`): Programmatic API was exporting a renamed constant — fixed.
+- **Script converter locale exclusion**: `scriptConverter` locales (e.g., `crk-Cans`) were incorrectly included in `NON_LATIN_LOCALES` validation, causing false positives.
+- **Font rendering** (`lib/fonts.js`): Fixed font loading for PUA-based script converters.
 
 ## [3.3.1] - 2026-05-24
 

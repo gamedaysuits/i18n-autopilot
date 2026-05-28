@@ -24,7 +24,7 @@ i18n-rosetta tm <sub>          Manage Translation Memory cache (stats, clear)
 i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 ```
 
-Führen Sie `i18n-rosetta <command> --help` aus, um eine detaillierte Hilfe zu einem beliebigen Befehl zu erhalten.
+Führen Sie `i18n-rosetta <command> --help` aus, um detaillierte Hilfe zu einem beliebigen Befehl zu erhalten.
 
 ## Globale Optionen
 
@@ -40,9 +40,9 @@ Führen Sie `i18n-rosetta <command> --help` aus, um eine detaillierte Hilfe zu e
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
---json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 200)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -56,7 +56,7 @@ Führen Sie `i18n-rosetta <command> --help` aus, um eine detaillierte Hilfe zu e
 
 ## init
 
-Interaktiver Einrichtungsassistent, der `i18n-rosetta.config.json` erstellt. Führt Sie durch die Auswahl von Ausgangssprache, Zielsprachen, Dateiformat und Übersetzungsmodell.
+Interaktiver Einrichtungsassistent, der `i18n-rosetta.config.json` erstellt. Führt Sie durch die Quellsprache, Zielsprachen, das Dateiformat und das Übersetzungsmodell.
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -67,19 +67,19 @@ i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 
 **Option `--langs`**: Kommagetrennte Liste von Zielsprachencodes. Überspringt die Sprachabfrage und wendet die Standard-Registervorgaben für jede Sprache an. Kombinieren Sie dies mit `--yes` für eine vollständig nicht-interaktive Einrichtung.
 
-**Sprachvorgaben**: Wenn Sie nach Zielsprachen gefragt werden, können Sie die Namen der Vorgaben (Presets) eingeben:
+**Sprachvorgaben**: Wenn Sie nach Zielsprachen gefragt werden, können Sie die Namen der Vorgaben eingeben:
 - `european` → fr, de, es, it, pt, nl
 - `asian` → ja, zh, ko
 - `global` → fr, es, de, ja, zh, ko, pt, ar
 - `nordic` → da, fi, nb, sv
 
-Mischen von Vorgaben und einzelnen Codes: `european, ja` → fr, de, es, it, pt, nl, ja
+Mischen Sie Vorgaben und einzelne Codes: `european, ja` → fr, de, es, it, pt, nl, ja
 
 ---
 
 ## sync
 
-Übersetzt fehlende und veraltete Schlüssel (Keys) in allen Sprachdateien. Führt standardmäßig eine Überprüfung nach der Synchronisierung (Post-Sync-Verifizierung) durch.
+Übersetzt fehlende und veraltete Schlüssel über alle Sprachdateien hinweg. Führt standardmäßig eine Überprüfung nach der Synchronisierung (Post-Sync-Verifizierung) durch.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
@@ -96,11 +96,11 @@ i18n-rosetta sync --no-verify                        # skip post-sync verificati
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**Translation Memory**: Standardmäßig lädt `sync` die Datei `.rosetta/tm.json` und liefert zwischengespeicherte Übersetzungen für unveränderte Ausgangswerte. Verwenden Sie `--no-tm`, um den Cache zu umgehen (nützlich beim Wechsel von Übersetzungsanbietern oder bei der Fehlersuche in der Qualität). Siehe [Translation Memory](/docs/concepts/translation-memory).
+**Translation Memory**: Standardmäßig lädt `sync` die Datei `.rosetta/tm.json` und liefert zwischengespeicherte Übersetzungen für unveränderte Quellwerte. Verwenden Sie `--no-tm`, um den Cache zu umgehen (nützlich beim Wechsel von Übersetzungsanbietern oder bei der Fehlersuche in der Qualität). Siehe [Translation Memory](/docs/concepts/translation-memory).
 
-**Änderungserkennung**: rosetta speichert SHA-256-Hashes in `.i18n-rosetta.lock`. Wenn sich Ausgangswerte ändern, übersetzt die nächste Synchronisierung diese Schlüssel automatisch neu. Committen Sie die Lock-Datei, damit alle Entwickler dieselbe Basislinie teilen.
+**Änderungserkennung**: rosetta speichert SHA-256-Hashes in `.i18n-rosetta.lock`. Wenn sich Quellwerte ändern, übersetzt die nächste Synchronisierung diese Schlüssel automatisch neu. Committen Sie die Lock-Datei, damit alle Entwickler dieselbe Basislinie teilen.
 
-**Parallelität**: Sowohl die Übersetzung von JSON-Schlüsseln als auch die Inhaltsübersetzung laufen parallel. JSON-Sprachdateien werden gleichzeitig übersetzt (Standard: 50 gleichzeitige Sprachen), wobei Batches innerhalb jeder Sprache ebenfalls parallelisiert werden (4 gleichzeitige Batches). Die Inhaltsübersetzung (Markdown, MDX, Blogbeiträge) läuft in einem flachen Work-Item-Pool (Standard: 12 gleichzeitige API-Aufrufe). Überschreiben Sie dies mit `--json-concurrency`, `--content-concurrency` oder `--concurrency` (setzt beides).
+**Parallelität**: Sowohl die Übersetzung von JSON-Schlüsseln als auch die Inhaltsübersetzung laufen parallel. JSON-Sprachdateien werden gleichzeitig übersetzt (Standard: 200 gleichzeitige Sprachen), wobei Batches innerhalb jeder Sprache ebenfalls parallelisiert werden (4 gleichzeitige Batches). Die Inhaltsübersetzung (Markdown, MDX, Blogbeiträge) läuft in einem flachen Pool von Arbeitselementen (Standard: 48 gleichzeitige API-Aufrufe). Überschreiben Sie dies mit `--json-concurrency`, `--content-concurrency` oder `--concurrency` (setzt beides).
 
 **Ausgabe**: Die Synchronisierung zeigt ein Versionsbanner, die Format-/Framework-Erkennung, eine Kostenschätzung und Fortschrittsbalken pro Sprache an:
 
@@ -118,13 +118,13 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-Fortschrittsbalken werden nach jedem Batch (~80 Schlüssel) direkt aktualisiert. Verwenden Sie `--quiet` nur für Fehler/Warnungen oder `--json` für eine maschinenlesbare NDJSON-Ausgabe. Beide unterdrücken den Fortschrittsbalken und das Banner.
+Fortschrittsbalken werden nach jedem Batch (~80 Schlüssel) an Ort und Stelle aktualisiert. Verwenden Sie `--quiet` nur für Fehler/Warnungen oder `--json` für eine maschinenlesbare NDJSON-Ausgabe. Beide unterdrücken den Fortschrittsbalken und das Banner.
 
 ---
 
 ## watch
 
-Automatische Synchronisierung, wenn sich die Ausgangssprachdatei ändert. Läuft, bis der Vorgang mit `Ctrl+C` unterbrochen wird.
+Automatische Synchronisierung, wenn sich die Quellsprachdatei ändert. Läuft, bis es mit `Ctrl+C` unterbrochen wird.
 
 ```bash
 i18n-rosetta watch
@@ -134,7 +134,7 @@ i18n-rosetta watch
 
 ## audit
 
-Listet alle unübersetzten Fallback-Werte mit dem Präfix `[EN]` aus vorherigen Durchläufen auf. Wird mit dem Code 1 beendet, falls welche gefunden werden — verwenden Sie dies als CI-Gate, um Builds mit unvollständigen Übersetzungen fehlschlagen zu lassen.
+Listet alle unübersetzten Fallback-Werte mit dem Präfix `[EN]` aus vorherigen Durchläufen auf. Wird mit Code 1 beendet, falls welche gefunden werden — verwenden Sie dies als CI-Gate, um Builds mit unvollständigen Übersetzungen fehlschlagen zu lassen.
 
 ```bash
 i18n-rosetta audit
@@ -153,11 +153,11 @@ i18n-rosetta verify && echo "All good" # CI gate
 ```
 
 **Was überprüft wird:**
-- Schlüsselparität — alle Ausgangsschlüssel sind in jedem Ziel vorhanden
+- Schlüsselparität — alle Quellschlüssel sind in jedem Ziel vorhanden
 - `[EN]` Fallback-Markierungen aus vorherigen Durchläufen
 - Leere Übersetzungen
 - Schrift-Konformität — nicht-lateinische Sprachen sollten nicht-ASCII-Übersetzungen aufweisen
-- Erhalt von Platzhaltern — ICU-Platzhalter stimmen mit der Quelle überein
+- Erhaltung von Platzhaltern — ICU-Platzhalter stimmen mit der Quelle überein
 - Kodierungsprobleme — BOM-Markierungen, unsichtbare Zeichen
 - Quell-Echos — Werte, die mit der Quelle identisch sind (Warnung)
 
@@ -176,9 +176,9 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 
 **Was erkannt wird:**
 - Fest codierte Zeichenfolgen in JSX-Text, `placeholder`, `alt`, `aria-label`, `title`
-- Dateien mit benutzerorientiertem Inhalt, aber ohne i18n-Framework-Import
+- Dateien mit benutzerorientiertem Inhalt, aber ohne Import eines i18n-Frameworks
 - Tote Schlüssel — Sprachschlüssel, auf die keine Quelldatei verweist
-- Abdeckungsgrad (Coverage Score) — Prozentsatz der Zeichenfolgen, die über i18n laufen
+- Abdeckungsgrad — Prozentsatz der Zeichenfolgen, die über i18n verarbeitet werden
 
 **Ausschlüsse**: Erstellen Sie `.rosettaignore` im Stammverzeichnis Ihres Projekts (Glob-Muster, wie `.gitignore`).
 
@@ -195,7 +195,7 @@ i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 ```
 
 **Sicherheitsmechanismen:**
-1. Git-Clean-Prüfung (im Dry-Run übersprungen)
+1. Git-Clean-Überprüfung (wird im Dry-Run übersprungen)
 2. Automatisches Backup nach `.rosetta-backup/`
 3. Diff-Vorschau vor jedem Dateischreibvorgang
 4. `--undo`-Unterstützung zur Wiederherstellung aus dem Backup
@@ -230,9 +230,9 @@ i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
 **Was überprüft wird:**
-- Platzhalter-Beschädigung (z. B. `{name}` in der Quelle vorhanden, fehlt aber im Ziel)
+- Beschädigung von Platzhaltern (z. B. `{name}` in der Quelle vorhanden, fehlt aber im Ziel)
 - Kodierungsprobleme (Mojibake, ungültiger Unicode)
-- Unübersetzte Kopien (Zielwert identisch mit der Quelle)
+- Unübersetzte Kopien (Zielwert ist identisch mit der Quelle)
 - Verwaiste Schlüssel (Schlüssel im Ziel, die in der Quelle nicht existieren)
 - Vollständigkeit der Plural-Kategorien im ICU MessageFormat (z. B. benötigt Arabisch 6 Kategorien)
 
@@ -240,7 +240,7 @@ i18n-rosetta integrity --warn-only   # non-blocking
 
 ## tm
 
-Verwaltet den Translation Memory-Cache (`.rosetta/tm.json`). Das TM speichert frühere Übersetzungen und stellt diese bei nachfolgenden Synchronisierungen bereit, anstatt die API aufzurufen.
+Verwaltet den Translation Memory Cache (`.rosetta/tm.json`). TM speichert vorherige Übersetzungen und stellt diese bei nachfolgenden Synchronisierungen bereit, anstatt die API aufzurufen.
 
 ```bash
 i18n-rosetta tm stats                  # show cache statistics
@@ -257,9 +257,9 @@ i18n-rosetta tm clear --locale fr      # clear only French entries
 | Option | Auswirkung |
 |--------|--------|
 | `--locale <code>` | Nur Einträge für eine Sprache löschen |
-| `--yes` | Bestätigungsabfrage überspringen |
+| `--yes` | Bestätigungsaufforderung überspringen |
 
-Siehe [Translation Memory](/docs/concepts/translation-memory) für Informationen darüber, wie das TM funktioniert und wann es geleert werden sollte.
+Siehe [Translation Memory](/docs/concepts/translation-memory) für Informationen darüber, wie TM funktioniert und wann es geleert werden sollte.
 
 ---
 
@@ -276,7 +276,7 @@ i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 
 | Unterbefehl | Ausgabe |
 |------------|--------|
-| `export` | Generiert `.xliff` aus Ausgangs- und Zielsprachdateien |
+| `export` | Generiert `.xliff` aus Quell- und Zielsprachdateien |
 | `import` | Führt überprüfte `.xliff`-Übersetzungen in die Sprachdateien zusammen |
 
 | Option | Auswirkung |
@@ -285,7 +285,7 @@ i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 | `--out <path>` | Benutzerdefinierter Ausgabepfad oder -verzeichnis |
 | `--dry` | Import-Vorschau ohne Schreibvorgang |
 
-Siehe [Zusammenarbeit mit professionellen Übersetzern](/docs/guides/professional-translators) für den vollständigen Workflow.
+Siehe [Arbeiten mit professionellen Übersetzern](/docs/guides/professional-translators) für den vollständigen Workflow.
 
 ---
 
@@ -325,7 +325,7 @@ Siehe [Plugin-Spezifikation](/docs/reference/plugin-spec) für das Format des Pl
 
 ## fonts
 
-Lädt PUA-Webfonts für Skript-Konverter konstruierter Sprachen herunter und verwaltet diese. Sprachen, die Zeichen aus der Private Use Area verwenden (Klingonisch, Sindarin, Kryptonisch), benötigen benutzerdefinierte Webfonts, um ihre Schriften darzustellen. Dieser Befehl lädt sie aus verifizierten Open-Source-Repositories herunter.
+Lädt PUA-Webfonts für Skriptkonverter konstruierter Sprachen herunter und verwaltet diese. Sprachen, die Zeichen aus der Private Use Area verwenden (Klingonisch, Sindarin, Kryptonisch), benötigen benutzerdefinierte Webfonts, um ihre Schriften darzustellen. Dieser Befehl lädt sie aus verifizierten Open-Source-Repositories herunter.
 
 ```bash
 i18n-rosetta fonts list                           # show needed fonts
@@ -336,27 +336,27 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 
 | Unterbefehl | Ausgabe |
 |------------|--------|
-| `list` | Zeigt an, welche PUA-Fonts benötigt werden und deren Installationsstatus |
-| `install` | Lädt Fonts für konfigurierte Sprachen herunter |
+| `list` | Zeigt an, welche PUA-Schriftarten benötigt werden und deren Installationsstatus |
+| `install` | Lädt Schriftarten für konfigurierte Sprachen herunter |
 
 | Option | Auswirkung |
 |--------|--------|
-| `--dir <path>` | Überschreibt das Font-Ausgabeverzeichnis (wird automatisch anhand des Projekttyps erkannt) |
-| `--css` | Generiert ein `conlang-fonts.css`-Snippet zusammen mit den Fonts |
-| `--config <path>` | Pfad zur Konfigurationsdatei (wird verwendet, um zu erkennen, welche Sprachen Fonts benötigen) |
+| `--dir <path>` | Überschreibt das Ausgabeverzeichnis für Schriftarten (wird automatisch anhand des Projekttyps erkannt) |
+| `--css` | Generiert ein `conlang-fonts.css`-Snippet neben den Schriftarten |
+| `--config <path>` | Pfad zur Konfigurationsdatei (wird verwendet, um zu erkennen, welche Sprachen Schriftarten benötigen) |
 
 **Automatische Erkennung:** Das Ausgabeverzeichnis wird aus Ihrer Projektstruktur abgeleitet:
 - **Docusaurus** → `static/fonts/` oder `website/static/fonts/`
 - **Hugo** → `static/fonts/`
 - **Standard** → `public/fonts/`
 
-**Native Unicode-Konverter** (`crk` → Cree-Silbenschrift, `sr` → Serbisches Kyrillisch) erfordern KEINE Font-Installation.
+**Native Unicode-Konverter** (`crk` → Cree-Silbenschrift, `sr` → Serbisches Kyrillisch) erfordern KEINE Installation von Schriftarten.
 
-Siehe [Konstruierte Sprachen, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) für vollständige Details zu PUA-Fonts.
+Siehe [Konstruierte Sprachen, Schriften & Orthographie](/docs/guides/conlangs-scripts-orthography) für vollständige Details zu PUA-Schriftarten.
 
 ## Drei-Schichten-Pipeline
 
-Verwenden Sie `lint`, `sync` und `audit` zusammen für eine absolut zuverlässige i18n:
+Verwenden Sie `lint`, `sync` und `audit` zusammen für eine robuste i18n:
 
 ```json title="package.json"
 {
@@ -382,7 +382,7 @@ Verwenden Sie `lint`, `sync` und `audit` zusammen für eine absolut zuverlässig
 - [Konfiguration](/docs/getting-started/configuration) — Referenz zur Konfigurationsdatei
 - [Übersetzungsmethoden](/docs/guides/translation-methods) — Methodenauswahl pro Sprachpaar
 - [Translation Memory](/docs/concepts/translation-memory) — Caching und Kosteneinsparungen
-- [Zusammenarbeit mit professionellen Übersetzern](/docs/guides/professional-translators) — XLIFF-Workflow
+- [Arbeiten mit professionellen Übersetzern](/docs/guides/professional-translators) — XLIFF-Workflow
 - [Plugin-Spezifikation](/docs/reference/plugin-spec) — Format des Plugin-Manifests
 - [CI/CD-Leitfaden](/docs/guides/ci-cd) — Automatisierung von CLI-Befehlen in Ihrer Pipeline
 - [Wie Sync funktioniert](/docs/concepts/how-sync-works) — Verständnis der Sync-Pipeline

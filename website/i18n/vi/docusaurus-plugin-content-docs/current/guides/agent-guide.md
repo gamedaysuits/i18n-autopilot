@@ -1,19 +1,19 @@
 ---
 sidebar_position: 9
-title: "Hướng dẫn dành cho Agent: Sử dụng i18n-rosetta"
+title: "Hướng dẫn cho Agent: Sử dụng i18n-rosetta"
 description: "Cách các AI agent có thể cài đặt, cấu hình và chạy i18n-rosetta để dịch các tệp locale."
 ---
 # Hướng dẫn dành cho Agent: Sử dụng i18n-rosetta
 
-i18n-rosetta là một công cụ CLI giúp dịch các file locale của ứng dụng chỉ bằng một lệnh. Hướng dẫn này dành cho các AI agent (hoặc các lập trình viên làm việc với AI agent) muốn nhanh chóng đi từ con số không đến khi có các file locale đã được dịch hoàn chỉnh.
+i18n-rosetta là một công cụ CLI giúp dịch các tệp ngôn ngữ của ứng dụng chỉ với một lệnh. Hướng dẫn này dành cho các AI agent (hoặc các nhà phát triển làm việc với AI agent) muốn nhanh chóng đi từ con số không đến khi có các tệp ngôn ngữ đã được dịch hoàn chỉnh.
 
 :::tip Đã quen thuộc?
-Nếu bạn chỉ cần xem các lệnh, hãy chuyển đến [Tài liệu tham khảo CLI](/docs/reference/cli). Nếu bạn muốn xây dựng và đánh giá (benchmark) một phương pháp dịch, hãy xem [Hướng dẫn dành cho Agent trên Arena](https://mtevalarena.org/docs/getting-started/agent-guide).
+Nếu bạn chỉ cần các câu lệnh, hãy chuyển đến [Tài liệu tham khảo CLI](/docs/reference/cli). Nếu bạn muốn xây dựng và đánh giá (benchmark) một phương pháp dịch, hãy xem [Hướng dẫn dành cho Agent của Arena](https://mtevalarena.org/docs/getting-started/agent-guide).
 :::
 
 ---
 
-## Thiết lập môi trường
+## Thiết lập Môi trường
 
 ```bash
 # No global install needed — npx runs it directly
@@ -35,13 +35,13 @@ export GOOGLE_TRANSLATE_API_KEY="AIza..."    # for google-translate method
 echo 'OPENROUTER_API_KEY=sk-or-...' > .env
 ```
 
-Rosetta sẽ tự động đọc `.env`. Bạn có thể lấy OpenRouter key tại [openrouter.ai/keys](https://openrouter.ai/keys).
+Rosetta tự động đọc `.env`. Nhận OpenRouter key tại [openrouter.ai/keys](https://openrouter.ai/keys).
 
 ---
 
-## Lần đồng bộ đầu tiên
+## Đồng bộ lần đầu
 
-Rosetta tự động phát hiện các file locale của bạn, định dạng của chúng (JSON, TOML, YAML, PO) và các ngôn ngữ đích:
+Rosetta tự động phát hiện các tệp ngôn ngữ của bạn, định dạng của chúng (JSON, TOML, YAML, PO) và các ngôn ngữ đích:
 
 ```bash
 npx i18n-rosetta sync
@@ -49,21 +49,21 @@ npx i18n-rosetta sync
 
 **Điều gì sẽ xảy ra:**
 1. Tải `i18n-rosetta.config.json` (hoặc tự động phát hiện các cài đặt)
-2. Quét file locale nguồn của bạn, làm phẳng (flatten) các key lồng nhau
+2. Quét tệp ngôn ngữ nguồn của bạn, làm phẳng (flatten) các key lồng nhau
 3. So sánh với `.i18n-rosetta.lock` (mã băm SHA-256 của các giá trị đã dịch trước đó)
-4. Kiểm tra `.rosetta/tm.json` để tìm các bản dịch đã lưu trong cache (Translation Memory)
+4. Kiểm tra `.rosetta/tm.json` để tìm các bản dịch đã lưu trong bộ nhớ cache (Translation Memory)
 5. Chỉ dịch **các key đã thay đổi, bị thiếu hoặc đã cũ** thông qua phương pháp được cấu hình
-6. Chạy cổng kiểm tra chất lượng (quality gate với 5 bài kiểm tra) trên mỗi bản dịch
-7. Ghi các bản dịch đạt yêu cầu vào file locale đích
-8. Cập nhật lock file và bộ nhớ cache TM
+6. Chạy cổng kiểm soát chất lượng (quality gate với 5 bước kiểm tra) trên mỗi bản dịch
+7. Ghi các bản dịch đạt yêu cầu vào tệp ngôn ngữ đích
+8. Cập nhật tệp lock và bộ nhớ cache TM
 
-Trong một lần chạy lại thông thường sau khi thay đổi một key, bước 4 sẽ lấy 142 key từ cache và bước 5 chỉ dịch 1 key. Đây là lý do tại sao các lần đồng bộ tiếp theo diễn ra rất nhanh và tiết kiệm chi phí.
+Trong một lần chạy lại thông thường sau khi thay đổi một key, bước 4 sẽ lấy 142 key từ bộ nhớ cache và bước 5 chỉ dịch 1 key. Đây là lý do tại sao các lần đồng bộ tiếp theo diễn ra nhanh chóng và tiết kiệm chi phí.
 
 ---
 
 ## Cấu hình
 
-Tạo `i18n-rosetta.config.json` trong thư mục gốc của dự án:
+Tạo `i18n-rosetta.config.json` trong thư mục gốc dự án của bạn:
 
 ```json
 {
@@ -82,11 +82,11 @@ Các trường quan trọng:
 |-------|---------|---------|
 | `inputLocale` | Ngôn ngữ nguồn | `en` |
 | `pairs` | Ánh xạ nguồn→đích kèm cấu hình phương pháp | (bắt buộc) |
-| `localesDir` | Nơi lưu trữ các file locale | (tự động phát hiện) |
+| `localesDir` | Nơi lưu trữ các tệp ngôn ngữ | (tự động phát hiện) |
 | `model` | Mô hình LLM cho các phương pháp `llm`/`llm-coached` | `google/gemini-2.5-flash` |
-| `batchSize` | Số lượng key mỗi lần gọi API | 80 (LLM), 128 (Google) |
-| `jsonConcurrency` | Số bản dịch locale song song cho các key JSON | 50 |
-| `contentConcurrency` | Số lệnh gọi API song song để dịch nội dung | 12 |
+| `batchSize` | Số key trên mỗi lệnh gọi API | 80 (LLM), 128 (Google) |
+| `jsonConcurrency` | Dịch song song các ngôn ngữ cho các key JSON | 200 |
+| `contentConcurrency` | Các lệnh gọi API song song để dịch nội dung | 48 |
 
 Tài liệu tham khảo đầy đủ: [Cấu hình](/docs/getting-started/configuration)
 
@@ -94,13 +94,13 @@ Tài liệu tham khảo đầy đủ: [Cấu hình](/docs/getting-started/config
 
 ## Các phương pháp dịch
 
-| Phương pháp | Khi nào nên dùng | Chi phí | Cần API key |
+| Phương pháp | Khi nào nên dùng | Chi phí | API key cần thiết |
 |--------|------------|------|---------------|
 | **`llm`** | Đa mục đích, tốt cho các ngôn ngữ có nhiều tài nguyên | Theo token (tùy mô hình) | `OPENROUTER_API_KEY` |
 | **`llm-coached`** | Khi bạn có các quy tắc ngữ pháp/từ điển cho ngôn ngữ đích | Theo token + ngữ cảnh huấn luyện (coaching) | `OPENROUTER_API_KEY` |
-| **`google-translate`** | Các ngôn ngữ có nhiều tài nguyên mà GT hoạt động tốt | $20/triệu ký tự | `GOOGLE_TRANSLATE_API_KEY` |
-| **`api`** | Pipeline tùy chỉnh được lưu trữ phía sau một HTTP endpoint | Do server quyết định | Không (endpoint tự xử lý xác thực) |
-| **`plugin`** | Phương pháp đóng gói sẵn được cài đặt cục bộ | Khác nhau | Khác nhau |
+| **`google-translate`** | Các ngôn ngữ nhiều tài nguyên mà GT hoạt động tốt | $20/triệu ký tự | `GOOGLE_TRANSLATE_API_KEY` |
+| **`api`** | Pipeline tùy chỉnh được lưu trữ phía sau một HTTP endpoint | Do máy chủ quyết định | Không (endpoint xử lý xác thực) |
+| **`plugin`** | Phương pháp đóng gói sẵn được cài đặt cục bộ | Thay đổi | Thay đổi |
 
 Chi tiết: [Các phương pháp dịch](/docs/guides/translation-methods)
 
@@ -108,7 +108,7 @@ Chi tiết: [Các phương pháp dịch](/docs/guides/translation-methods)
 
 ## Dữ liệu huấn luyện (Coaching Data)
 
-Đối với các cặp `llm-coached`, dữ liệu huấn luyện (coaching data) sẽ định hướng LLM bằng kiến thức ngôn ngữ rõ ràng. Hãy tạo một file coaching:
+Đối với các cặp `llm-coached`, dữ liệu huấn luyện sẽ điều hướng LLM bằng các kiến thức ngôn ngữ rõ ràng. Hãy tạo một tệp huấn luyện:
 
 ```json title="coaching/fr.json"
 {
@@ -130,56 +130,56 @@ Tham chiếu nó trong cấu hình cặp ngôn ngữ của bạn:
 "en-fr": { "method": "llm-coached", "coachingFile": "coaching/fr.json" }
 ```
 
-Cổng kiểm tra chất lượng (quality gate) sẽ xác minh xem các thuật ngữ trong từ điển có thực sự xuất hiện trong kết quả đầu ra hay không — các vi phạm sẽ được ghi lại dưới dạng cảnh báo `[TERM]`.
+Cổng kiểm soát chất lượng sẽ xác minh rằng các thuật ngữ trong từ điển thực sự xuất hiện ở đầu ra — các vi phạm sẽ được ghi lại dưới dạng cảnh báo `[TERM]`.
 
 Chi tiết: [Dữ liệu huấn luyện](/docs/concepts/coaching-data)
 
 ---
 
-## Cổng kiểm tra chất lượng (Quality Gate)
+## Cổng kiểm soát chất lượng (Quality Gate)
 
-Mỗi bản dịch đều phải vượt qua năm bài kiểm tra tự động trước khi được ghi vào ổ đĩa:
+Mỗi bản dịch đều phải vượt qua năm bước kiểm tra tự động trước khi được ghi vào ổ đĩa:
 
-| Bài kiểm tra | Lỗi phát hiện được | Ví dụ |
+| Kiểm tra | Lỗi phát hiện được | Ví dụ |
 |-------|----------------|---------|
-| **Trống/rỗng (Empty/blank)** | Mô hình không trả về gì cả | `""` |
-| **Lặp lại nguồn (Source echo)** | Mô hình trả về nguyên văn đầu vào tiếng Anh | `"Welcome"` cho tiếng Nhật |
+| **Trống/rỗng (Empty/blank)** | Mô hình không trả về gì | `""` |
+| **Lặp lại nguồn (Source echo)** | Mô hình trả về đầu vào tiếng Anh không thay đổi | `"Welcome"` cho tiếng Nhật |
 | **Vòng lặp ảo giác (Hallucination loop)** | Lặp lại các trigram | `"Qo' Qo' Qo' Qo'"` |
-| **Độ dài tăng bất thường (Length inflation)** | Đầu ra dài hơn 4 lần so với nguồn | Nguồn 10 ký tự → Đầu ra 50 ký tự |
-| **Tuân thủ hệ chữ viết (Script compliance)** | Sai hệ chữ viết cho locale | Văn bản Latinh cho locale tiếng Ả Rập |
+| **Độ dài tăng bất thường (Length inflation)** | Đầu ra dài gấp 4 lần trở lên so với nguồn | Nguồn 10 ký tự → Đầu ra 50 ký tự |
+| **Tuân thủ hệ chữ viết (Script compliance)** | Sai hệ chữ viết cho ngôn ngữ | Văn bản Latinh cho ngôn ngữ tiếng Ả Rập |
 
-Các lỗi sẽ được ghi lại với tiền tố `[GATE]`. Không có cơ chế dự phòng ngầm (silent fallback) — nếu một bản dịch bị lỗi, nó sẽ được báo cáo chứ không được âm thầm chấp nhận.
+Các lỗi thất bại được ghi lại với tiền tố `[GATE]`. Không có cơ chế dự phòng ngầm (silent fallback) — nếu một bản dịch thất bại, nó sẽ được báo cáo chứ không được âm thầm chấp nhận.
 
-Chi tiết: [Cổng kiểm tra chất lượng](/docs/concepts/quality-gate)
+Chi tiết: [Cổng kiểm soát chất lượng](/docs/concepts/quality-gate)
 
 ---
 
 ## Bộ nhớ dịch thuật (Translation Memory)
 
-Rosetta lưu cache các bản dịch trong `.rosetta/tm.json`, được định danh bằng văn bản nguồn + locale + phương pháp. Trong các lần đồng bộ tiếp theo, các key không thay đổi sẽ được lấy từ cache — không cần gọi API, không tốn chi phí.
+Rosetta lưu trữ các bản dịch trong `.rosetta/tm.json`, được định danh bằng văn bản nguồn + ngôn ngữ + phương pháp. Trong các lần đồng bộ tiếp theo, các key không thay đổi sẽ được lấy từ bộ nhớ cache — không cần gọi API, không tốn chi phí.
 
 ```
 [TM] 142 key(s) served from cache
 Translating 3 key(s) to French (llm)... [OK]
 ```
 
-Để bỏ qua cache cho một lần chạy: `npx i18n-rosetta sync --no-tm`
+Để bỏ qua bộ nhớ cache cho một lần chạy: `npx i18n-rosetta sync --no-tm`
 
 Chi tiết: [Bộ nhớ dịch thuật](/docs/concepts/translation-memory)
 
 ---
 
-## Các file được tạo ra
+## Các tệp được tạo
 
-Rosetta tạo ra một số file trong dự án của bạn. Hãy nắm rõ chúng là gì để bạn không vô tình xóa hoặc commit nhầm:
+Rosetta tạo ra một số tệp trong dự án của bạn. Hãy nắm rõ chúng là gì để bạn không vô tình xóa hoặc commit nhầm:
 
-| File | Mục đích | Git? |
+| Tệp | Mục đích | Git? |
 |------|---------|------|
-| `.i18n-rosetta.lock` | Mã băm SHA-256 của các giá trị nguồn đã dịch (để phát hiện thay đổi) | **Có** — hãy commit file này |
-| `.i18n-rosetta-content.lock` | Tương tự, nhưng dành cho các file nội dung Markdown/MDX | **Có** — hãy commit file này |
-| `.rosetta/tm.json` | Cache của Bộ nhớ dịch thuật (Translation Memory) | **Có** — hãy commit file này (giúp tiết kiệm chi phí API cho team) |
-| `.rosetta/coaching/` | Thư mục chứa dữ liệu huấn luyện (coaching data) | **Có** — đây là kiến thức ngôn ngữ của bạn |
-| `i18n-rosetta.config.json` | Cấu hình dự án | **Có** — hãy commit file này |
+| `.i18n-rosetta.lock` | Mã băm SHA-256 của các giá trị nguồn đã dịch (phát hiện thay đổi) | **Có** — hãy commit tệp này |
+| `.i18n-rosetta-content.lock` | Tương tự, nhưng dành cho các tệp nội dung Markdown/MDX | **Có** — hãy commit tệp này |
+| `.rosetta/tm.json` | Bộ nhớ cache của Translation Memory | **Có** — hãy commit tệp này (tiết kiệm chi phí API cho nhóm) |
+| `.rosetta/coaching/` | Thư mục dữ liệu huấn luyện | **Có** — đây là kiến thức ngôn ngữ của bạn |
+| `i18n-rosetta.config.json` | Cấu hình dự án | **Có** — hãy commit tệp này |
 
 ---
 
@@ -190,19 +190,19 @@ Rosetta tạo ra một số file trong dự án của bạn. Hãy nắm rõ chú
 npx i18n-rosetta sync --pair en-fr
 ```
 
-**Dịch tất cả các cặp ngôn ngữ đã cấu hình:**
+**Dịch tất cả các cặp đã cấu hình:**
 ```bash
 npx i18n-rosetta sync
 ```
-Rosetta sẽ dịch tất cả các locale song song. Với bộ nhớ cache TM, chỉ những key bị thay đổi mới gọi đến API.
+Rosetta dịch tất cả các ngôn ngữ song song. Với bộ nhớ cache TM, chỉ những key bị thay đổi mới gọi đến API.
 
 **Chế độ nội dung (Markdown/MDX cho Docusaurus, Hugo, v.v.):**
 ```bash
 npx i18n-rosetta sync --content
 ```
-Dịch tài liệu, bài đăng blog và các file nội dung cùng với locale JSON. Sử dụng xử lý đồng thời song song (mặc định: 12 lệnh gọi API cùng lúc). Bạn có thể tinh chỉnh bằng `--content-concurrency`.
+Dịch tài liệu, bài viết blog và các tệp nội dung song song với JSON ngôn ngữ. Sử dụng tính năng xử lý đồng thời (mặc định: 48 lệnh gọi API cùng lúc). Có thể tinh chỉnh bằng `--content-concurrency`.
 
-**Chạy thử (xem trước mà không ghi file):**
+**Chạy thử (xem trước mà không ghi):**
 ```bash
 npx i18n-rosetta sync --dry-run
 ```
@@ -212,7 +212,7 @@ npx i18n-rosetta sync --dry-run
 npx i18n-rosetta sync --force-keys "hero.title,nav.about"
 ```
 
-**Bắt buộc dịch lại tất cả các file nội dung:**
+**Bắt buộc dịch lại tất cả các tệp nội dung:**
 ```bash
 npx i18n-rosetta sync --force-content
 ```
@@ -223,7 +223,7 @@ npx i18n-rosetta status
 ```
 Hiển thị mức độ bao phủ, các cấp độ chất lượng và thông tin plugin cho từng cặp ngôn ngữ.
 
-**Kiểm tra các giá trị dự phòng chưa được dịch:**
+**Kiểm tra các giá trị dự phòng (fallback) chưa được dịch:**
 ```bash
 npx i18n-rosetta audit
 ```
@@ -235,19 +235,19 @@ Liệt kê tất cả các giá trị dự phòng `[EN]` cần được dịch.
 
 | Vấn đề | Cách khắc phục |
 |---------|-----|
-| `OPENROUTER_API_KEY not set` | Export key đó hoặc thêm nó vào `.env` trong thư mục gốc của dự án |
-| `No locale files found` | Thiết lập `localesDir` trong cấu hình, hoặc đảm bảo các file locale của bạn khớp với cách đặt tên chuẩn (`en.json`, `fr.json`) |
-| `[GATE] Script compliance failed` | Locale đích của bạn nhận được văn bản Latinh thay vì hệ chữ viết mong đợi — hãy thử một mô hình khác hoặc thêm dữ liệu huấn luyện (coaching data) |
-| `[GATE] Source echo` | Mô hình trả về tiếng Anh không thay đổi — thêm dữ liệu huấn luyện hoặc dùng một mô hình khác thường sẽ khắc phục được lỗi này |
-| Tất cả các bản dịch đều được lấy từ cache | Chạy với `--no-tm` để bỏ qua cache, hoặc dùng `--force-keys` cho các key cụ thể |
-| Xung đột lock file | `.i18n-rosetta.lock` sử dụng mã băm SHA-256 — bạn có thể giải quyết xung đột merge một cách an toàn bằng cách giữ lại một trong hai phiên bản, sau đó chạy lại lệnh đồng bộ |
+| `OPENROUTER_API_KEY not set` | Export key hoặc thêm nó vào `.env` trong thư mục gốc dự án của bạn |
+| `No locale files found` | Thiết lập `localesDir` trong cấu hình, hoặc đảm bảo các tệp ngôn ngữ của bạn khớp với cách đặt tên chuẩn (`en.json`, `fr.json`) |
+| `[GATE] Script compliance failed` | Ngôn ngữ đích của bạn nhận được văn bản Latinh thay vì hệ chữ viết mong đợi — hãy thử một mô hình khác hoặc thêm dữ liệu huấn luyện |
+| `[GATE] Source echo` | Mô hình trả về tiếng Anh không thay đổi — dữ liệu huấn luyện hoặc một mô hình khác thường sẽ khắc phục được lỗi này |
+| Tất cả các bản dịch đều được lưu trong cache | Chạy với `--no-tm` để bỏ qua bộ nhớ cache, hoặc `--force-keys` cho các key cụ thể |
+| Xung đột tệp lock | `.i18n-rosetta.lock` sử dụng mã băm SHA-256 — các xung đột khi merge có thể được giải quyết an toàn bằng cách giữ lại một trong hai phiên bản, sau đó chạy lại quá trình đồng bộ |
 
 ---
 
 ## Bước tiếp theo
 
 - [Bắt đầu nhanh](/docs/getting-started/quick-start) — hướng dẫn chi tiết để bắt đầu
-- [Tài liệu tham khảo CLI](/docs/reference/cli) — mọi lệnh và cờ (flag)
-- [Cách thức hoạt động](/docs/how-it-works) — giải thích về luồng đồng bộ
+- [Tài liệu tham khảo CLI](/docs/reference/cli) — mọi câu lệnh và cờ (flag)
+- [Cách thức hoạt động](/docs/how-it-works) — giải thích về quy trình đồng bộ
 - [Cầu nối Eval Harness](/docs/guides/bridge) — cách rosetta kết nối với Arena
-- **Bạn muốn xây dựng phương pháp dịch của riêng mình?** Hãy xem [Hướng dẫn dành cho Agent trên Arena](https://mtevalarena.org/docs/getting-started/agent-guide) — xây dựng một phương pháp, chứng minh nó hoạt động tốt và giành giải thưởng.
+- **Bạn muốn xây dựng phương pháp dịch của riêng mình?** Hãy xem [Hướng dẫn dành cho Agent của Arena](https://mtevalarena.org/docs/getting-started/agent-guide) — xây dựng một phương pháp, chứng minh nó hoạt động hiệu quả và giành giải thưởng.

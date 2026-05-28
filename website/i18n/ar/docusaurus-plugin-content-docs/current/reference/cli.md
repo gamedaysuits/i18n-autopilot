@@ -24,7 +24,7 @@ i18n-rosetta tm <sub>          Manage Translation Memory cache (stats, clear)
 i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 ```
 
-قم بتشغيل `i18n-rosetta <command> --help` للحصول على مساعدة مفصلة حول أي أمر.
+شغّل `i18n-rosetta <command> --help` للحصول على مساعدة مفصلة حول أي أمر.
 
 ## الخيارات العامة
 
@@ -40,9 +40,9 @@ i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 --method <method>       Translation method: llm, google-translate (default: from config)
 --format <fmt>          Locale file format: json, toml, yaml, or auto
 --dry, --dry-run        Preview changes without writing files
---concurrency <n>       Max parallel API calls (sets both JSON and content, default: 12)
---json-concurrency <n>  Max parallel locale translations for JSON keys (default: 50)
---content-concurrency <n> Max parallel API calls for content translation (default: 12)
+--concurrency <n>       Max parallel API calls (sets both JSON and content, default: 48)
+--json-concurrency <n>  Max parallel locale translations for JSON keys (default: 200)
+--content-concurrency <n> Max parallel API calls for content translation (default: 48)
 --force-content         Re-translate all content files (clears content lock)
 --force-keys <keys>     Comma-separated dot-notation keys to force re-translate
 --no-tm                 Skip Translation Memory cache for this sync run
@@ -56,7 +56,7 @@ i18n-rosetta xliff <sub>       Export/import XLIFF 1.2 for professional review
 
 ## init
 
-معالج إعداد تفاعلي يقوم بإنشاء `i18n-rosetta.config.json`. يرشدك عبر تحديد اللغة المصدر، واللغات المستهدفة، وتنسيق الملف، ونموذج الترجمة.
+معالج إعداد تفاعلي يقوم بإنشاء `i18n-rosetta.config.json`. يرشدك عبر لغة المصدر، واللغات المستهدفة، وتنسيق الملف، ونموذج الترجمة.
 
 ```bash
 i18n-rosetta init                          # interactive wizard
@@ -65,9 +65,9 @@ i18n-rosetta init --yes --langs fr,de,ja   # quick setup with specific languages
 i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 ```
 
-**خيار `--langs`**: قائمة برموز اللغات المستهدفة مفصولة بفواصل. يتخطى مطالبة اللغة ويطبق الإعدادات المسبقة الافتراضية للأسلوب (register) لكل لغة. ادمجه مع `--yes` لإعداد غير تفاعلي بالكامل.
+**خيار `--langs`**: قائمة برموز اللغات المستهدفة مفصولة بفواصل. يتخطى مطالبة اللغة ويطبق الإعدادات المسبقة الافتراضية للأسلوب لكل لغة. ادمجه مع `--yes` لإعداد غير تفاعلي بالكامل.
 
-**الإعدادات المسبقة للغات**: عند مطالبتك باللغات المستهدفة، يمكنك كتابة أسماء الإعدادات المسبقة:
+**الإعدادات المسبقة للغات**: عند مطالبتك بإدخال اللغات المستهدفة، يمكنك كتابة أسماء الإعدادات المسبقة:
 - `european` → fr, de, es, it, pt, nl
 - `asian` → ja, zh, ko
 - `global` → fr, es, de, ja, zh, ko, pt, ar
@@ -79,7 +79,7 @@ i18n-rosetta init --source en --dir ./i18n # overrides with defaults
 
 ## sync
 
-يترجم المفاتيح المفقودة والقديمة عبر جميع ملفات اللغات. يقوم بتشغيل التحقق بعد المزامنة افتراضيًا.
+يترجم المفاتيح المفقودة والقديمة عبر جميع ملفات اللغات. يُشغّل عملية التحقق بعد المزامنة افتراضيًا.
 
 ```bash
 i18n-rosetta sync                                   # translate everything
@@ -96,11 +96,11 @@ i18n-rosetta sync --no-verify                        # skip post-sync verificati
 i18n-rosetta sync --no-tm                            # skip cache, fresh API calls
 ```
 
-**ذاكرة الترجمة (Translation Memory)**: افتراضيًا، يقوم `sync` بتحميل `.rosetta/tm.json` ويقدم الترجمات المخبأة للقيم المصدرية غير المتغيرة. استخدم `--no-tm` لتجاوز ذاكرة التخزين المؤقت (مفيد عند تبديل مزودي الترجمة أو تصحيح أخطاء الجودة). راجع [ذاكرة الترجمة](/docs/concepts/translation-memory).
+**ذاكرة الترجمة (Translation Memory)**: افتراضيًا، يقوم `sync` بتحميل `.rosetta/tm.json` ويقدم الترجمات المخزنة مؤقتًا للقيم المصدرية غير المتغيرة. استخدم `--no-tm` لتجاوز ذاكرة التخزين المؤقت (مفيد عند تبديل مزودي الترجمة أو تصحيح أخطاء الجودة). راجع [ذاكرة الترجمة](/docs/concepts/translation-memory).
 
-**اكتشاف التغييرات**: يقوم rosetta بتخزين تجزئات SHA-256 في `.i18n-rosetta.lock`. عندما تتغير القيم المصدرية، تقوم المزامنة التالية تلقائيًا بإعادة ترجمة تلك المفاتيح. قم بإيداع (commit) ملف القفل (lock file) حتى يتشارك جميع المطورين نفس الأساس.
+**اكتشاف التغييرات**: تقوم rosetta بتخزين تجزئات SHA-256 في `.i18n-rosetta.lock`. عندما تتغير القيم المصدرية، تقوم المزامنة التالية تلقائيًا بإعادة ترجمة تلك المفاتيح. قم بإيداع (Commit) ملف القفل حتى يتشارك جميع المطورين نفس الأساس.
 
-**التوازي (Parallelism)**: تعمل كل من ترجمة مفاتيح JSON وترجمة المحتوى بالتوازي. تُترجم لغات JSON في وقت واحد (الافتراضي: 50 لغة متزامنة)، مع توازي الدفعات داخل كل لغة أيضًا (4 دفعات متزامنة). تعمل ترجمة المحتوى (Markdown، MDX، منشورات المدونة) في تجمع عناصر عمل مسطح (الافتراضي: 12 استدعاء API متزامن). يمكنك تجاوز هذه القيم باستخدام `--json-concurrency` أو `--content-concurrency` أو `--concurrency` (يضبط كليهما).
+**التوازي (Parallelism)**: تعمل كل من ترجمة مفاتيح JSON وترجمة المحتوى بالتوازي. تُترجم ملفات لغات JSON في وقت واحد (الافتراضي: 200 لغة متزامنة)، مع توازي الدفعات داخل كل لغة أيضًا (4 دفعات متزامنة). تعمل ترجمة المحتوى (Markdown، وMDX، ومنشورات المدونة) في تجمع عناصر عمل مسطح (الافتراضي: 48 استدعاء API متزامن). يمكنك تجاوز هذه القيم باستخدام `--json-concurrency`، أو `--content-concurrency`، أو `--concurrency` (يضبط كليهما).
 
 **المخرجات**: تعرض المزامنة لافتة الإصدار، واكتشاف التنسيق/إطار العمل، وتقدير التكلفة، وأشرطة التقدم لكل لغة:
 
@@ -118,13 +118,13 @@ i18n-rosetta v3.3.1
 [OK] Synced 5,694 keys total.
 ```
 
-يتم تحديث أشرطة التقدم في مكانها بعد كل دفعة (حوالي 80 مفتاحًا). استخدم `--quiet` للأخطاء/التحذيرات فقط، أو `--json` لمخرجات NDJSON القابلة للقراءة آليًا. كلاهما يخفي شريط التقدم واللافتة.
+تُحدَّث أشرطة التقدم في مكانها بعد كل دفعة (~80 مفتاحًا). استخدم `--quiet` للأخطاء/التحذيرات فقط، أو `--json` لمخرجات NDJSON قابلة للقراءة آليًا. كلاهما يخفي شريط التقدم واللافتة.
 
 ---
 
 ## watch
 
-مزامنة تلقائية عند تغير ملف اللغة المصدر. يستمر في العمل حتى تتم مقاطعته باستخدام `Ctrl+C`.
+مزامنة تلقائية عند تغير ملف لغة المصدر. يستمر في العمل حتى تتم مقاطعته باستخدام `Ctrl+C`.
 
 ```bash
 i18n-rosetta watch
@@ -134,7 +134,7 @@ i18n-rosetta watch
 
 ## audit
 
-يسرد جميع القيم الاحتياطية غير المترجمة المسبوقة بـ `[EN]` من عمليات التشغيل السابقة. يخرج برمز 1 إذا تم العثور على أي منها — استخدمه كبوابة CI لإفشال عمليات البناء ذات الترجمات غير المكتملة.
+يسرد جميع القيم الاحتياطية غير المترجمة المسبوقة بـ `[EN]` من عمليات التشغيل السابقة. يخرج بالرمز 1 إذا تم العثور على أي منها — استخدمه كبوابة CI لإفشال عمليات البناء ذات الترجمات غير المكتملة.
 
 ```bash
 i18n-rosetta audit
@@ -144,7 +144,7 @@ i18n-rosetta audit
 
 ## verify
 
-يعيد قراءة جميع ملفات اللغات من القرص ويتحقق من أن الترجمات موجودة بالفعل وصحيحة. هذا هو نفس التحقق الذي يعمل تلقائيًا في نهاية كل `sync` (ما لم يتم تمرير `--no-verify`).
+يعيد قراءة جميع ملفات اللغات من القرص ويتحقق من أن الترجمات موجودة بالفعل وصحيحة. هذا هو نفس التحقق الذي يتم تشغيله تلقائيًا في نهاية كل `sync` (ما لم يتم تمرير `--no-verify`).
 
 ```bash
 i18n-rosetta verify                    # verify all locale files
@@ -153,19 +153,19 @@ i18n-rosetta verify && echo "All good" # CI gate
 ```
 
 **ما يتحقق منه:**
-- تطابق المفاتيح — جميع المفاتيح المصدرية موجودة في كل لغة مستهدفة
+- تطابق المفاتيح — جميع مفاتيح المصدر موجودة في كل هدف
 - علامات التراجع `[EN]` من عمليات التشغيل السابقة
 - الترجمات الفارغة
 - التوافق مع نظام الكتابة — يجب أن تحتوي اللغات غير اللاتينية على ترجمات غير ASCII
-- الحفاظ على العناصر النائبة — تتطابق العناصر النائبة لـ ICU مع المصدر
-- مشكلات الترميز — علامات BOM، الأحرف غير المرئية
-- صدى المصدر — قيم مطابقة للمصدر (تحذير)
+- الحفاظ على العناصر النائبة — تطابق العناصر النائبة لـ ICU مع المصدر
+- مشكلات الترميز — علامات BOM، والأحرف غير المرئية
+- تكرار المصدر — القيم المطابقة للمصدر (تحذير)
 
 ---
 
 ## lint
 
-يفحص الكود المصدري بحثًا عن السلاسل النصية الثابتة (hardcoded) المواجهة للمستخدم والتي يجب أن تستخدم استدعاءات ترجمة i18n. يكتشف إطار العمل الخاص بك تلقائيًا (next-intl، react-i18next، vue-i18n، Hugo).
+يفحص الكود المصدري بحثًا عن السلاسل النصية الثابتة (hardcoded) الموجهة للمستخدم والتي يجب أن تستخدم استدعاءات ترجمة i18n. يكتشف إطار العمل الخاص بك تلقائيًا (next-intl، react-i18next، vue-i18n، Hugo).
 
 ```bash
 i18n-rosetta lint                    # exits 1 if issues found
@@ -175,12 +175,12 @@ i18n-rosetta lint --min-length 4     # minimum string length to flag
 ```
 
 **ما يكتشفه:**
-- السلاسل النصية الثابتة في نصوص JSX، و `placeholder`، و `alt`، و `aria-label`، و `title`
-- الملفات التي تحتوي على محتوى مواجه للمستخدم ولكن لا تحتوي على استيراد لإطار عمل i18n
+- السلاسل النصية الثابتة في نص JSX، و`placeholder`، و`alt`، و`aria-label`، و`title`
+- الملفات التي تحتوي على محتوى موجه للمستخدم ولكن لا تتضمن استيرادًا لإطار عمل i18n
 - المفاتيح الميتة — مفاتيح اللغة التي لا يشير إليها أي ملف مصدري
-- درجة التغطية — نسبة السلاسل النصية التي تمر عبر i18n
+- درجة التغطية — النسبة المئوية للسلاسل النصية التي تمر عبر i18n
 
-**الاستثناءات**: قم بإنشاء `.rosettaignore` في جذر مشروعك (أنماط glob، مثل `.gitignore`).
+**الاستثناءات**: أنشئ `.rosettaignore` في جذر مشروعك (أنماط glob، مثل `.gitignore`).
 
 ---
 
@@ -196,7 +196,7 @@ i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 
 **بوابات الأمان:**
 1. التحقق من نظافة Git (يتم تخطيه في التشغيل التجريبي dry-run)
-2. نسخ احتياطي تلقائي إلى `.rosetta-backup/`
+2. النسخ الاحتياطي التلقائي إلى `.rosetta-backup/`
 3. معاينة الفروق (Diff) قبل كتابة كل ملف
 4. دعم `--undo` للاستعادة من النسخة الاحتياطية
 
@@ -204,7 +204,7 @@ i18n-rosetta wrap --undo             # restore from .rosetta-backup/
 
 ## seo
 
-إنشاء عناصر تحسين محركات البحث (SEO) للمواقع متعددة اللغات.
+إنشاء عناصر SEO للمواقع متعددة اللغات.
 
 ```bash
 i18n-rosetta seo hreflang                                        # print hreflang tags
@@ -214,7 +214,7 @@ i18n-rosetta seo jsonld --base-url https://example.com           # JSON-LD schem
 
 | الأمر الفرعي | المخرجات |
 |------------|--------|
-| `hreflang` | علامات `<link rel="alternate" hreflang>` |
+| `hreflang` | وسوم `<link rel="alternate" hreflang>` |
 | `sitemap` | `sitemap.xml` متعدد اللغات |
 | `jsonld` | مخطط لغة موقع الويب JSON-LD |
 
@@ -230,11 +230,11 @@ i18n-rosetta integrity --warn-only   # non-blocking
 ```
 
 **ما يتحقق منه:**
-- تلف العناصر النائبة (مثلًا، `{name}` موجود في المصدر ولكنه مفقود في الهدف)
-- مشكلات الترميز (mojibake، Unicode غير صالح)
-- النسخ غير المترجمة (القيمة المستهدفة مطابقة للمصدر)
-- المفاتيح اليتيمة (مفاتيح في الهدف غير موجودة في المصدر)
-- اكتمال فئات الجمع في ICU MessageFormat (مثلًا، تحتاج اللغة العربية إلى 6 فئات)
+- تلف العناصر النائبة (مثل `{name}` الموجود في المصدر ولكنه مفقود في الهدف)
+- مشكلات الترميز (mojibake، وUnicode غير صالح)
+- النسخ غير المترجمة (قيمة الهدف مطابقة للمصدر)
+- المفاتيح اليتيمة (المفاتيح في الهدف التي لا وجود لها في المصدر)
+- اكتمال فئات الجمع في ICU MessageFormat (على سبيل المثال، تحتاج اللغة العربية إلى 6 فئات)
 
 ---
 
@@ -251,21 +251,21 @@ i18n-rosetta tm clear --locale fr      # clear only French entries
 
 | الأمر الفرعي | المخرجات |
 |------------|--------|
-| `stats` | عدد الإدخالات، حجم الملف، التفصيل لكل لغة |
+| `stats` | عدد الإدخالات، وحجم الملف، وتفصيل لكل لغة |
 | `clear` | حذف ملف ذاكرة التخزين المؤقت (بالكامل أو لكل لغة) |
 
 | الخيار | التأثير |
 |--------|--------|
-| `--locale <code>` | مسح الإدخالات الخاصة بلغة واحدة فقط |
+| `--locale <code>` | مسح الإدخالات للغة واحدة فقط |
 | `--yes` | تخطي مطالبة التأكيد |
 
-راجع [ذاكرة الترجمة](/docs/concepts/translation-memory) لمعرفة كيفية عمل ذاكرة الترجمة ومتى يجب مسحها.
+راجع [ذاكرة الترجمة](/docs/concepts/translation-memory) لمعرفة كيفية عمل ذاكرة الترجمة (TM) ومتى يجب مسحها.
 
 ---
 
 ## xliff
 
-تصدير واستيراد ملفات XLIFF 1.2 لمراجعتها من قبل مترجمين محترفين. XLIFF هو تنسيق التبادل العالمي المدعوم من قبل أدوات الترجمة بمساعدة الحاسوب (CAT) مثل memoQ و SDL Trados و Phrase.
+تصدير واستيراد ملفات XLIFF 1.2 لمراجعتها من قبل المترجمين المحترفين. XLIFF هو تنسيق التبادل العالمي المدعوم من أدوات الترجمة بمساعدة الحاسوب (CAT) مثل memoQ، وSDL Trados، وPhrase.
 
 ```bash
 i18n-rosetta xliff export --locale fr                   # export French XLIFF
@@ -276,16 +276,16 @@ i18n-rosetta xliff import ./reviewed.xliff --dry        # preview import
 
 | الأمر الفرعي | المخرجات |
 |------------|--------|
-| `export` | إنشاء `.xliff` من ملفات اللغة المصدر + الهدف |
-| `import` | دمج ترجمات `.xliff` المراجعة في ملفات اللغات |
+| `export` | إنشاء `.xliff` من ملفات لغة المصدر + الهدف |
+| `import` | دمج ترجمات `.xliff` المراجَعة في ملفات اللغات |
 
 | الخيار | التأثير |
 |--------|--------|
 | `--locale <code>` | اللغة المستهدفة للتصدير (مطلوب) |
 | `--out <path>` | مسار أو دليل مخرجات مخصص |
-| `--dry` | معاينة الاستيراد دون الكتابة |
+| `--dry` | معاينة الاستيراد دون كتابة |
 
-راجع [العمل مع المترجمين المحترفين](/docs/guides/professional-translators) لسير العمل الكامل.
+راجع [العمل مع المترجمين المحترفين](/docs/guides/professional-translators) للحصول على سير العمل بالكامل.
 
 ---
 
@@ -311,7 +311,7 @@ i18n-rosetta provenance
 
 ## plugin
 
-إدارة إضافات طرق الترجمة. الإضافات عبارة عن وصفات ترجمة معبأة مسبقًا ومثبتة في `.rosetta/methods/`.
+إدارة إضافات طرق الترجمة. الإضافات هي وصفات ترجمة معبأة مسبقًا ومثبتة في `.rosetta/methods/`.
 
 ```bash
 i18n-rosetta plugin list                      # show installed plugins
@@ -325,7 +325,7 @@ i18n-rosetta plugin remove crk-coached-v1     # remove a plugin
 
 ## fonts
 
-تنزيل وإدارة خطوط الويب PUA لمحولات نصوص اللغات المصطنعة (constructed language). اللغات التي تستخدم أحرف منطقة الاستخدام الخاص (Private Use Area) مثل (Klingon و Sindarin و Kryptonian) تحتاج إلى خطوط ويب مخصصة لعرض نصوصها. يقوم هذا الأمر بتنزيلها من مستودعات مفتوحة المصدر تم التحقق منها.
+تنزيل وإدارة خطوط الويب PUA لمحولات نصوص اللغات المصطنعة. تحتاج اللغات التي تستخدم أحرف منطقة الاستخدام الخاص (Private Use Area) مثل (Klingon، وSindarin، وKryptonian) إلى خطوط ويب مخصصة لعرض نصوصها. يقوم هذا الأمر بتنزيلها من مستودعات مفتوحة المصدر تم التحقق منها.
 
 ```bash
 i18n-rosetta fonts list                           # show needed fonts
@@ -337,26 +337,26 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 | الأمر الفرعي | المخرجات |
 |------------|--------|
 | `list` | يعرض خطوط PUA المطلوبة وحالة تثبيتها |
-| `install` | ينزل الخطوط للغات المكونة |
+| `install` | ينزل الخطوط للغات المكوّنة |
 
 | الخيار | التأثير |
 |--------|--------|
-| `--dir <path>` | تجاوز دليل مخرجات الخطوط (يتم اكتشافه تلقائيًا من نوع المشروع) |
+| `--dir <path>` | تجاوز دليل مخرجات الخطوط (يُكتشف تلقائيًا من نوع المشروع) |
 | `--css` | إنشاء مقتطف `conlang-fonts.css` بجانب الخطوط |
 | `--config <path>` | مسار ملف التكوين (يُستخدم لاكتشاف اللغات التي تحتاج إلى خطوط) |
 
-**الاكتشاف التلقائي:** يُستنتج دليل المخرجات من بنية مشروعك:
+**الاكتشاف التلقائي:** يُستنتج دليل المخرجات من هيكل مشروعك:
 - **Docusaurus** → `static/fonts/` أو `website/static/fonts/`
 - **Hugo** → `static/fonts/`
 - **الافتراضي** → `public/fonts/`
 
 **محولات Unicode الأصلية** (`crk` → Cree Syllabics، `sr` → Serbian Cyrillic) لا تتطلب تثبيت خطوط.
 
-راجع [اللغات المصطنعة، والنصوص، والإملاء](/docs/guides/conlangs-scripts-orthography) للحصول على التفاصيل الكاملة لخطوط PUA.
+راجع [اللغات المصطنعة والنصوص وقواعد الإملاء](/docs/guides/conlangs-scripts-orthography) للحصول على التفاصيل الكاملة لخطوط PUA.
 
 ## مسار العمل ثلاثي الطبقات
 
-استخدم `lint` و `sync` و `audit` معًا للحصول على نظام i18n محكم:
+استخدم `lint`، و`sync`، و`audit` معًا للحصول على نظام i18n محكم:
 
 ```json title="package.json"
 {
@@ -370,10 +370,10 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 
 | الطبقة | الأمر | متى | الغرض |
 |-------|---------|------|---------|
-| **الفحص (Lint)** | `lint` | قبل الإيداع (Pre-commit) | حظر الإيداعات التي تحتوي على سلاسل نصية ثابتة |
-| **المزامنة (Sync)** | `sync` | بعد الإيداع / CI | ترجمة المفاتيح المفقودة والمتغيرة |
-| **التحقق (Verify)** | `verify` | بعد المزامنة / CI | تأكيد وجود الترجمات وصحتها |
-| **التدقيق (Audit)** | `audit` | خطوة البناء | إفشال النشر إذا كانت أي لغة تحتوي على علامات `[EN]` |
+| **Lint** | `lint` | قبل الإيداع (Pre-commit) | حظر الإيداعات التي تحتوي على سلاسل نصية ثابتة |
+| **Sync** | `sync` | بعد الإيداع / CI | ترجمة المفاتيح المفقودة والمعدلة |
+| **Verify** | `verify` | بعد المزامنة / CI | تأكيد وجود الترجمات وصحتها |
+| **Audit** | `audit` | خطوة البناء | إفشال النشر إذا كانت أي لغة تحتوي على علامات `[EN]` |
 
 ---
 
@@ -383,7 +383,7 @@ i18n-rosetta fonts install --dir ./public/fonts   # custom output directory
 - [طرق الترجمة](/docs/guides/translation-methods) — اختيار الطريقة لكل زوج
 - [ذاكرة الترجمة](/docs/concepts/translation-memory) — التخزين المؤقت وتوفير التكاليف
 - [العمل مع المترجمين المحترفين](/docs/guides/professional-translators) — سير عمل XLIFF
-- [مواصفات الإضافة](/docs/reference/plugin-spec) — تنسيق بيان الإضافة
+- [مواصفات الإضافة](/docs/reference/plugin-spec) — تنسيق بيان الإضافة (manifest)
 - [دليل CI/CD](/docs/guides/ci-cd) — أتمتة أوامر CLI في مسار عملك
 - [كيف تعمل المزامنة](/docs/concepts/how-sync-works) — فهم مسار عمل المزامنة
 - [بوابة الجودة](/docs/concepts/quality-gate) — كيفية التحقق من صحة الترجمات
