@@ -193,7 +193,7 @@ Rosetta translates all locales in parallel by default. If sync is still slow:
    ```json
    { "batchSize": 120 }
    ```
-3. **Tune concurrency** — JSON locale parallelism defaults to 50 and content to 12. If your API provider supports higher rate limits:
+3. **Tune concurrency** — JSON locale parallelism defaults to 200 and content to 48. If your API provider supports higher rate limits:
    ```bash
    npx i18n-rosetta sync --json-concurrency 80 --content-concurrency 20
    ```

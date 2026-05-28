@@ -86,7 +86,7 @@ Key fields:
 | `localesDir` | Where locale files live | (auto-detected) |
 | `model` | LLM model for `llm`/`llm-coached` methods | `google/gemini-2.5-flash` |
 | `batchSize` | Keys per API call | 80 (LLM), 128 (Google) |
-| `jsonConcurrency` | Parallel locale translations for JSON keys | 50 |
+| `jsonConcurrency` | Parallel locale translations for JSON keys | 200 |
 | `contentConcurrency` | Parallel API calls for content translation | 48 |
 
 Full reference: [Configuration](/docs/getting-started/configuration)
