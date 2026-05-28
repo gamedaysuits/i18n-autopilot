@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **输出**：同步操作会显示版本横幅、格式/框架检测结果、成本估算以及每个语言环境的进度条：
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)

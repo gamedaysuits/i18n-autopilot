@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **Sortie** : La synchronisation affiche une bannière de version, la détection du format/framework, une estimation des coûts et des barres de progression par locale :
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)

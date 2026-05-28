@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **출력**: 동기화 시 버전 배너, 형식/프레임워크 감지 결과, 예상 비용 및 로케일별 진행률 표시줄이 나타나요:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)

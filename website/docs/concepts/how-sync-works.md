@@ -44,7 +44,7 @@ Rosetta loads `i18n-rosetta.config.json` (or auto-detects settings). It resolves
 Before scanning files, rosetta prints a startup header:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

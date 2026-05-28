@@ -43,7 +43,7 @@ O rosetta carrega o `i18n-rosetta.config.json` (ou detecta as configurações au
 Antes de escanear os arquivos, o rosetta imprime um cabeçalho de inicialização:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

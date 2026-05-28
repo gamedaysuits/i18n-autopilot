@@ -43,7 +43,7 @@ Nilo-load ng Rosetta ang `i18n-rosetta.config.json` (o nag-a-auto-detect ng sett
 Bago mag-scan ng files, nagpi-print ang rosetta ng startup header:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

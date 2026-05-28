@@ -43,7 +43,7 @@ Rosetta 会加载 `i18n-rosetta.config.json`（或自动检测设置）。它会
 在扫描文件之前，rosetta 会打印启动信息头：
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

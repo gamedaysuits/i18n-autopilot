@@ -43,7 +43,7 @@ Rosetta tải `i18n-rosetta.config.json` (hoặc tự động phát hiện các 
 Trước khi quét các tệp, rosetta in ra một tiêu đề khởi động:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

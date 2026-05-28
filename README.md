@@ -271,7 +271,7 @@ Framework setup guides: [docs/INTEGRATION_GUIDES.md](https://github.com/gamedays
 When you run `sync`, rosetta shows exactly what's happening:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

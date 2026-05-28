@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **เอาต์พุต**: Sync จะแสดงแบนเนอร์เวอร์ชัน, การตรวจจับรูปแบบ/เฟรมเวิร์ก, การประเมินต้นทุน และแถบความคืบหน้าของแต่ละ locale:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)

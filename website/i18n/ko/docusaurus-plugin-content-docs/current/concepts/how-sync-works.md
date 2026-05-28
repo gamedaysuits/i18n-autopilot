@@ -43,7 +43,7 @@ rosetta는 `i18n-rosetta.config.json`를 불러오거나 설정을 자동으로 
 파일을 스캔하기 전에 rosetta는 시작 헤더를 출력해요:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

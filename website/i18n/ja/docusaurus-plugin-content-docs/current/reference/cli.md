@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **出力**: 同期処理では、バージョンバナー、フォーマット/フレームワークの検出、コスト見積もり、およびロケールごとのプログレスバーが表示されます。
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)

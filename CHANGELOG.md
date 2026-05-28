@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.2] - 2026-05-27
+
 ### Added
 - **`docs/METHOD_PLUGIN_SPEC.md`**: Created SSOT method plugin specification. Content sourced from `website/docs/reference/plugin-spec.md`, stripped of Docusaurus frontmatter. Resolves dangling README link.
 - **`docs/SIGNIFICANCE_SPEC.md`**: Copied significance testing specification from `gds-mt-eval-harness/SIGNIFICANCE_SPEC.md` to the `docs/` SSOT directory. Harness copy retained.

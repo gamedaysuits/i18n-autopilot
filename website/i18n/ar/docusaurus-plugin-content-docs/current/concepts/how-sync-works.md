@@ -43,7 +43,7 @@ flowchart TD
 قبل فحص الملفات، يطبع rosetta ترويسة بدء التشغيل:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Detected framework: Hugo

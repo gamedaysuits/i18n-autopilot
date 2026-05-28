@@ -105,7 +105,7 @@ i18n-rosetta sync --no-tm                            # skip cache, fresh API cal
 **Đầu ra**: Lệnh sync hiển thị banner phiên bản, phát hiện định dạng/framework, ước tính chi phí và thanh tiến trình cho từng ngôn ngữ:
 
 ```
-i18n-rosetta v3.3.1
+i18n-rosetta v3.3.2
 
 [INFO] Detected format: json (auto)
 [INFO] Source: en.json (2,847 keys)
