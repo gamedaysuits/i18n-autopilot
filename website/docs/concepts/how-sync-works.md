@@ -18,7 +18,7 @@ flowchart TD
     TM -->|Hits| TC["Serve from cache"]
     TM -->|Misses| E{"Keys to translate?"}
     E -->|No| F["Done ✓"]
-    E -->|Yes| G["Batch keys\n(default 30/batch)"]
+    E -->|Yes| G["Batch keys\n(default 80/batch)"]
     G --> H["Translate batch\n(method-specific)"]
     H --> I["Quality gate\n(validate each key)"]
     I --> TERM["Terminology check\n(coached pairs)"]
@@ -81,7 +81,7 @@ This is why rosetta only translates what changed — it's not re-translating you
 
 ### 4. Batching
 
-Keys are grouped into batches (default: 30 keys/batch for LLM, 128 for Google Translate). Batching reduces API round trips while keeping prompts manageable.
+Keys are grouped into batches (default: 80 keys/batch for LLM, 128 for Google Translate). Batching reduces API round trips while keeping prompts manageable.
 
 During translation, rosetta displays an inline progress bar that updates after each batch completes:
 
@@ -148,9 +148,9 @@ These are warnings, not blocking errors — the translation is still written.
 On JSON parse failure or batch-level errors, rosetta retries with progressively smaller batches:
 
 ```
-Full batch (30 keys) → Failed
-Half batch (15 keys) → Failed
-Individual keys (1 each) → Isolates the problem key
+Full batch (80 keys) → Failed
+  └→ Half batch (40 keys) → 1 failure
+      └→ Individual keys (1 each) → Isolates the problem key
 ```
 
 The retry budget is capped by `maxRetries` (default: 3) to prevent runaway token spend.

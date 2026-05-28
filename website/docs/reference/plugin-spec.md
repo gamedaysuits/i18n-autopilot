@@ -41,7 +41,7 @@ A method plugin is a single JSON file (`method.json`) with optional coaching dat
   "config": {
     "model": "google/gemini-3.5-flash",
     "register": "formal",
-    "batchSize": 30,
+    "batchSize": 80,
     "temperature": 0.2
   },
 
@@ -83,7 +83,7 @@ A method plugin is a single JSON file (`method.json`) with optional coaching dat
 | `author` | string | — | Who developed/tested this method |
 | `config.model` | string | — | OpenRouter model identifier |
 | `config.register` | string | — | Target language register/tone |
-| `config.batchSize` | number | — | Keys per API batch (1–200, default: 30) |
+| `config.batchSize` | number | — | Keys per API batch (1–200, default: 80) |
 | `config.temperature` | number | — | LLM temperature (0.0–2.0, default: 0.3) |
 | `benchmarks` | object | — | Per-locale benchmark results |
 | `provenance` | object | — | Licensing and resource dependencies |

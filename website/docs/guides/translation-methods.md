@@ -60,7 +60,7 @@ flowchart TD
 Translates via any LLM on [OpenRouter](https://openrouter.ai). This is the default method and the most versatile.
 
 **How it works:**
-1. Batches keys (default 30/batch) with register and context instructions
+1. Batches keys (default 80/batch) with register and context instructions
 2. Sends to OpenRouter as a structured prompt
 3. Parses the JSON response
 4. Validates each translation through the [quality gate](/docs/concepts/quality-gate)
@@ -454,7 +454,7 @@ Moving between methods? The model format and env var change — here's the map:
 
 ## Cost Comparison
 
-Approximate cost per 1,000 translated keys (assumes ~10 tokens per key, 30 keys per batch):
+Approximate cost per 1,000 translated keys (assumes ~10 tokens per key, 80 keys per batch):
 
 | Method | Cost / 1K Keys | Speed | Quality | Best For |
 |--------|----------------|-------|---------|----------|

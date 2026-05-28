@@ -56,8 +56,8 @@ For locales with a configured `script` field (e.g., `"script": "cans"` for Plain
 When a batch fails (JSON parse error or quality gate rejections), rosetta retries with progressively smaller batches:
 
 ```
-Full batch (30 keys) → parse error
-  └→ Half batch (15 keys) → 2 failures
+Full batch (80 keys) → parse error
+  └→ Half batch (40 keys) → 2 failures
       └→ Individual keys (1 each) → isolates the 2 problem keys
 ```
 

@@ -21,7 +21,7 @@ rosetta auto-detects your locale files, format, and target languages. It transla
 You could write a quick loop that calls Google Translate on each key. Most developers do — it takes about 30 lines. Here's where it breaks:
 
 - **No change detection.** Update an English string — the translation stays stale forever. rosetta tracks every source value with SHA-256 hashes and re-translates only what changed.
-- **No batching.** One API call per key means 200 keys = 200 round trips. rosetta batches intelligently (configurable, default 30 keys/batch for LLM, 128 for Google).
+- **No batching.** One API call per key means 200 keys = 200 round trips. rosetta batches intelligently (configurable, default 80 keys/batch for LLM, 128 for Google).
 - **No caching.** Every sync re-translates everything. rosetta's Translation Memory caches translations by source text + locale + method — re-running sync after one key change only translates that one key, not the entire file.
 - **No quality gate.** Machine translation hallucinates, echoes the source back, or outputs in the wrong script. rosetta validates every translation before writing it — wrong-script, length inflation, and source echoes are caught and rejected.
 - **No format awareness.** Hardcoded to JSON? rosetta handles JSON, TOML, YAML, and Hugo Markdown (frontmatter + body) with auto-detection.
